@@ -73,7 +73,7 @@ public class Day02Tests {
     private String executeProgram(String input, int targetOutput) {
         for (int noun = 0; noun <= 99; noun++) {
             for (int verb = 0; verb <= 99; verb++) {
-                int[] positions = convertStringOfIntsToIntArray(input);
+                int[] positions = utils.convertCommaSeparatedStringToIntArray(input);
 
                 positions[1] = noun;
                 positions[2] = verb;
@@ -92,7 +92,7 @@ public class Day02Tests {
     }
 
     private String executeProgram(String input) {
-        int[] positions = convertStringOfIntsToIntArray(input);
+        int[] positions = utils.convertCommaSeparatedStringToIntArray(input);
         return executeProgram(positions);
     }
 
@@ -132,12 +132,4 @@ public class Day02Tests {
         result = result.substring(0, result.length() - 1);
         return result;
     }
-
-    // @TODO - could be a utilities method?
-    private int[] convertStringOfIntsToIntArray(String input) {
-        return Stream.of(input.split(",")).
-                mapToInt(Integer::parseInt).
-                toArray();
-    }
-
 }
