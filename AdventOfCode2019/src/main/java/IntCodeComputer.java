@@ -51,8 +51,23 @@ public class IntCodeComputer {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
+                int lefthand = -99;
+                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                    lefthand = positions[parameter_1];
+                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                    lefthand = parameter_1;
+                }
+
+                int righthand = -99;
+                if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
+                    righthand = positions[parameter_2];
+                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                    righthand = parameter_2;
+                }
+
+
                 int writeToIndex = positions[instructionPointer + 3];
-                if (parameter_1 < parameter_2) {
+                if (lefthand < righthand) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
