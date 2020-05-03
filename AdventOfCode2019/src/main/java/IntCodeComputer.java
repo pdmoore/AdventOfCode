@@ -63,7 +63,6 @@ public class IntCodeComputer {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
-
                 int lefthand = -99;
                 if (mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
@@ -82,7 +81,14 @@ public class IntCodeComputer {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
-                if (parameter_1 == 0) {
+                int lefthand = -99;
+                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                    lefthand = positions[parameter_1];
+                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                    lefthand = parameter_1;
+                }
+
+                if (lefthand == 0) {
                     instructionPointer = parameter_2;
                 } else {
                     instructionPointer += 3;
