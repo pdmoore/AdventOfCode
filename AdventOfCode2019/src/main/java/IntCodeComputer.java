@@ -76,8 +76,6 @@ public class IntCodeComputer {
                     instructionPointer = parameter_2;
                 }
             } else if (OPCODE_JUMP_IF_FALSE == opcode) {
-                guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
-
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 

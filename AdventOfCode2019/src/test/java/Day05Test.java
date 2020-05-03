@@ -121,13 +121,23 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void Opcode_JumpIfFalse_ImmediateMode_NotHandledYet() {
-        String input = "1006,1,23,5,99,-99";
-        String expected = "not supported yet";
+    @Test
+    public void Opcode_JumpIfFalse_ImmediateMode_firstParamIsZero() {
+        String input = "1106,0,5,666,666,99";
+        String expected = "1106,0,5,666,666,99";
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
+/*
+    @Test
+    public void Opcode_JumpIfTrue_ImmediateMode_firstParamIsNonZero() {
+        String input = "1105,0,666,99";
+        String expected = "1105,0,666,99";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+     */
 
     @Test
     public void Opcode_LessThan_PositionMode_FirstParam_LessThan_SecondParam() {
