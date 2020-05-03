@@ -148,19 +148,17 @@ public class Day05Test {
     }
 
     @Test
-    @Ignore
     public void Opcode_LessThan_PositionMode_FirstParam_EqualTo_SecondParam() {
-        String input = "7,23,23,5,99,-99";
-        String expected = "7,23,23,5,99,0";
+        String input = "7,6,7,5,99,-99,1,1";
+        String expected = "7,6,7,5,99,0,1,1";
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
 
     @Test
-    @Ignore
     public void Opcode_LessThan_PositionMode_FirstParam_GreaterThan_SecondParam() {
-        String input = "7,100,23,5,99,-99";
-        String expected = "7,100,23,5,99,0";
+        String input = "7,6,7,5,99,-99,2,1";
+        String expected = "7,6,7,5,99,0,2,1";
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
