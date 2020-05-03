@@ -114,10 +114,9 @@ public class Day05Test {
     }
 
     @Test
-    @Ignore
     public void Opcode_JumpIfFalse_PositionMode_firstParamIsNotZero() {
-        String input = "6,100,99,1001,7,9,7,90";
-        String expected = "6,100,99,1001,7,9,7,99";
+        String input = "6,4,666,99,1";
+        String expected = "6,4,666,99,1";
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
