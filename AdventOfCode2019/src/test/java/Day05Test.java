@@ -128,16 +128,14 @@ public class Day05Test {
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
-/*
+
     @Test
-    public void Opcode_JumpIfTrue_ImmediateMode_firstParamIsNonZero() {
-        String input = "1105,0,666,99";
-        String expected = "1105,0,666,99";
+    public void Opcode_JumpIfFalse_ImmediateMode_firstParamIsNonZero() {
+        String input = "1106,1,666,99";
+        String expected = "1106,1,666,99";
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
-
-     */
 
     @Test
     public void Opcode_LessThan_PositionMode_FirstParam_LessThan_SecondParam() {
