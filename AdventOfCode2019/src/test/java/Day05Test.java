@@ -1,3 +1,4 @@
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -72,14 +73,141 @@ public class Day05Test {
         assertEquals("3,0,0,0,0,0,0,0,0,13087969,", output.toString());
     }
 
+    /*
+    Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+     */
+
+    // TODO - not sure about difference of Position/Immediate mode on jump opcodes
+    @Test
+    public void Opcode_JumpIfTrue_PositionMode_firstParamIsNonZero() {
+        String input = "5,8,7,33,22,11,44,99,1";
+        String expected = "5,8,7,33,22,11,44,99,1";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_JumpIfTrue_PositionMode_firstParamIsZero() {
+        String input = "5,8,99,1001,7,9,7,90,0";
+        String expected = "5,8,99,1001,7,9,7,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_JumpIfTrue_ImmediateMode_firstParamIsZero() {
+        String input = "1105,1,5,666,666,99";
+        String expected = "1105,1,5,666,666,99";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_JumpIfTrue_ImmediateMode_firstParamIsNonZero() {
+        String input = "1105,0,666,99";
+        String expected = "1105,0,666,99";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_JumpIfFalse_PositionMode_firstParamIsZero() {
+        String input = "6,0,7,1001,7,9,7,99";
+        String expected = "6,0,7,1001,7,9,7,99";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_JumpIfFalse_PositionMode_firstParamIsNotZero() {
+        String input = "6,100,99,1001,7,9,7,90";
+        String expected = "6,100,99,1001,7,9,7,99";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Opcode_JumpIfFalse_ImmediateMode_NotHandledYet() {
+        String input = "1006,1,23,5,99,-99";
+        String expected = "not supported yet";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_LessThan_PositionMode_FirstParam_LessThan_SecondParam() {
+        String input = "7,23,100,5,99,-99";
+        String expected = "7,23,100,5,99,1";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_LessThan_PositionMode_FirstParam_EqualTo_SecondParam() {
+        String input = "7,23,23,5,99,-99";
+        String expected = "7,23,23,5,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Opcode_LessThan_PositionMode_FirstParam_GreaterThan_SecondParam() {
+        String input = "7,100,23,5,99,-99";
+        String expected = "7,100,23,5,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Opcode_LessThan_ImmediateMode_NotHandledYet() {
+        String input = "1007,1,23,5,99,-99";
+        String expected = "not supported yet";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    //TODO - Opcode 8 equal write 1
+    //TODO - Opcode 8 not equal write 0
+
+    //TODO - Opcode 8 guard against Immediate Mode
+    @Test(expected = IllegalArgumentException.class)
+    public void Opcode_EqualTo_ImmediateMode_NotHandledYet() {
+        // TODO passes right now because 8 is unrecognized
+        String input = "1008,1,23,5,99,-99";
+        String expected = "not supported yet";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void LongerExample_PositionMode() {
+
+        String input = "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9";
+        String expected = "3,12,6,12,15,1,13,14,13,4,13,99,1,1,1,9";
+        StringBuffer output = new StringBuffer();
+        String actual = new IntCodeComputer().executeProgram(input, output);
+        assertEquals(expected, actual);
+        assertEquals("1,", output.toString());
+    }
+
+    // TODO Start Here
+    // Added the guard clause for immediate mode to the Jump If True and this test fails
+    // see what the actual program as - 1105 third param - am I getting lucky and passing for the wrong reason?
+    @Test
+    public void LongerExample_ImmediateMode() {
+        String input = "3,3,1105,-1,9,1101,0,0,12,4,12,99,1";
+        String expected = "3,3,1105,1,9,1101,0,0,12,4,12,99,1";
+        StringBuffer output = new StringBuffer();
+        String actual = new IntCodeComputer().executeProgram(input, output);
+        assertEquals(expected, actual);
+        assertEquals("1,", output.toString());
+    }
+
+    //TODO - Largest example at bottom of description page
+
     // TODO
     // Can there be multiple outputs? maybe pass in a collector to hold all output?
     // - error coverage - Parameters that an instruction writes to will never be in immediate mode.
-    // - Combine this solution with Day02 in a separate class - should work for both
-    // - How did I enter the puzzle input for Day02?
-
-// Solution code below
-//----------------------------------------------------------------------------------------
-
 
 }
