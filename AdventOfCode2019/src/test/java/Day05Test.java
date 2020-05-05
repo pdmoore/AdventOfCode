@@ -169,7 +169,21 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void Opcode_LessThan_ImmediateMode_FirstParam_Equals_SecondParam() {
+        String input = "1107,23,23,5,99,666";
+        String expected = "1107,23,23,5,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
 
+    @Test
+    public void Opcode_LessThan_ImmediateMode_FirstParam_GreaterThan_SecondParam() {
+        String input = "1107,32,23,5,99,666";
+        String expected = "1107,32,23,5,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
 
     @Test
     public void Opcode_Equals_PositionMode_FirstParam_Equals_SecondParam() {
