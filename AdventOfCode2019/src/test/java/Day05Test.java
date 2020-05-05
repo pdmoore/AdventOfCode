@@ -62,6 +62,9 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
+    //TODO - Need an immediate mode test for Opcode 4 (output)
+
+
     //TODO - is the actual worth checking here?
     // TODO - output is comma-separated for now, might not make sense later
     @Test
