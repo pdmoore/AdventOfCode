@@ -137,8 +137,6 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
-    //TODO confirm tests from here down have correct test input for Position and Immediate modes
-
     @Test
     public void Opcode_LessThan_PositionMode_FirstParam_LessThan_SecondParam() {
         String input = "7,6,7,5,99,-99,0,1";
@@ -196,9 +194,6 @@ public class Day05Test {
         assertEquals("1,", output.toString());
     }
 
-    // TODO Start Here
-    // Added the guard clause for immediate mode to the Jump If True and this test fails
-    // see what the actual program as - 1105 third param - am I getting lucky and passing for the wrong reason?
     @Test
     public void LongerExample_ImmediateMode() {
         String input = "3,3,1105,-1,9,1101,0,0,12,4,12,99,1";
