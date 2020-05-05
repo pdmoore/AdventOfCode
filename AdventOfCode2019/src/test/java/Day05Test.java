@@ -193,6 +193,14 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void Opcode_Equals_ImmediateMode_FirstParam_NotEquals_SecondParam() {
+        String input = "1108,23,32,5,99,666";
+        String expected = "1108,23,32,5,99,0";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
 
     @Test
     public void LongerExample_PositionMode() {
