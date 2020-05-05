@@ -169,13 +169,23 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
+
+
     //TODO - Opcode 8 equal write 1
     //TODO - Opcode 8 not equal write 0
+    @Test
+    public void Opcode_Equals_PositionMode_FirstParam_Equals_SecondParam() {
+        String input = "8,6,7,5,99,-99,1,1";
+        String expected = "8,6,7,5,99,1,1,1";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+
 
     //TODO - Opcode 8 guard against Immediate Mode
     @Test(expected = IllegalArgumentException.class)
     public void Opcode_EqualTo_ImmediateMode_NotHandledYet() {
-        // TODO passes right now because 8 is unrecognized
         String input = "1008,1,23,5,99,-99";
         String expected = "not supported yet";
         String actual = new IntCodeComputer().executeProgram(input);

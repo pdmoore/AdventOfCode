@@ -6,6 +6,7 @@ public class IntCodeComputer {
     static final int OPCODE_JUMP_IF_TRUE  = 5;
     static final int OPCODE_JUMP_IF_FALSE = 6;
     static final int OPCODE_LESS_THAN = 7;
+    static final int OPCODE_EQUALS    = 8;
 
     static final int OPCODE_HALT = 99;
     static final int POSITION_MODE = 0;
@@ -13,9 +14,6 @@ public class IntCodeComputer {
     static final int NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION = 2;
     static final int NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION = 4;
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;
-
-
-    //TODO - Opcode 8
 
     public String executeProgram(String input) {
         int[] positions = utils.convertCommaSeparatedStringToIntArray(input);
@@ -45,7 +43,19 @@ public class IntCodeComputer {
             int mode2ndParam = (nextInstruction / 1000) % 10;
             int mode3rdParam = (nextInstruction / 10000);
 
-            if (OPCODE_LESS_THAN == opcode) {
+            if (OPCODE_EQUALS == opcode) {
+                guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
+                
+                int writeToIndex = positions[instructionPointer + 3];
+//                if (lefthand < righthand) {
+                    positions[writeToIndex] = 1;
+//                } else {
+//                    positions[writeToIndex] = 0;
+//                }
+
+
+                instructionPointer += 4;
+            } else if (OPCODE_LESS_THAN == opcode) {
                 guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
 
                 int parameter_1 = positions[instructionPointer + 1];
@@ -64,7 +74,6 @@ public class IntCodeComputer {
                 } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     righthand = parameter_2;
                 }
-
 
                 int writeToIndex = positions[instructionPointer + 3];
                 if (lefthand < righthand) {
