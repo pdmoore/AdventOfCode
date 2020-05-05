@@ -158,9 +158,11 @@ public class IntCodeComputer {
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
                 if (opcode == IntCodeComputer.OPCODE_INPUT) {
+                    guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (opcode == IntCodeComputer.OPCODE_OUTPUT) {
+                    guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     output.append(positions[parameter_1]);
                     output.append(",");
