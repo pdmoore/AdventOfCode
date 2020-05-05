@@ -45,14 +45,21 @@ public class IntCodeComputer {
 
             if (OPCODE_EQUALS == opcode) {
                 guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
-                
-                int writeToIndex = positions[instructionPointer + 3];
-//                if (lefthand < righthand) {
-                    positions[writeToIndex] = 1;
-//                } else {
-//                    positions[writeToIndex] = 0;
-//                }
 
+                int parameter_1 = positions[instructionPointer + 1];
+                int parameter_2 = positions[instructionPointer + 2];
+
+                int lefthand = positions[parameter_1];
+                int righthand = positions[parameter_2];
+
+                //TODO handle immediate mode?
+
+                int writeToIndex = positions[instructionPointer + 3];
+                if (lefthand == righthand) {
+                    positions[writeToIndex] = 1;
+                } else {
+                    positions[writeToIndex] = 0;
+                }
 
                 instructionPointer += 4;
             } else if (OPCODE_LESS_THAN == opcode) {

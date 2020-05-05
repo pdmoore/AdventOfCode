@@ -181,9 +181,16 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void Opcode_Equals_PositionMode_FirstParam_NotEquals_SecondParam() {
+        String input = "8,6,7,5,99,-99,2,1";
+        String expected = "8,6,7,5,99,0,2,1";
+        String actual = new IntCodeComputer().executeProgram(input);
+        assertEquals(expected, actual);
+    }
 
 
-    //TODO - Opcode 8 guard against Immediate Mode
+
     @Test(expected = IllegalArgumentException.class)
     public void Opcode_EqualTo_ImmediateMode_NotHandledYet() {
         String input = "1008,1,23,5,99,-99";
@@ -191,7 +198,6 @@ public class Day05Test {
         String actual = new IntCodeComputer().executeProgram(input);
         assertEquals(expected, actual);
     }
-
 
     @Test
     public void LongerExample_PositionMode() {
