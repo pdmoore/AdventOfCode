@@ -28,7 +28,6 @@ public class IntCodeComputer {
     public String executeProgram(int[] positions, StringBuffer output) {
         int instructionPointer = 0;
         while (true) {
-
             //TODO - compose method to make loop readable
 
             int nextInstruction = positions[instructionPointer];
