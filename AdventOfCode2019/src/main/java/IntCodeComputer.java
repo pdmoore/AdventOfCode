@@ -97,32 +97,11 @@ public class IntCodeComputer {
                     instructionPointer += 3;
                 }
             } else if (isTwoParameterInstruction(instruction._opcode)) {
-                //TODO - convert to instruction
-
-                int parameter_1 = positions[instructionPointer + 1];
-                int parameter_2 = positions[instructionPointer + 2];
-
-                int lefthand = -1;
-                int righthand = -2;
-
-                // TODO combine dupe logic
-                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-                    lefthand = positions[parameter_1];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    lefthand = parameter_1;
-                }
-
-                if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
-                    righthand = positions[parameter_2];
-                } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    righthand = parameter_2;
-                }
-
                 int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
-                    positions[writeToIndex] = lefthand * righthand;
+                    positions[writeToIndex] = instruction._parameter1 * instruction._parameter2;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
-                    positions[writeToIndex] = lefthand + righthand;
+                    positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
 
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
@@ -163,7 +142,9 @@ public class IntCodeComputer {
 
         int righthand = parameter2;
         if (opcode == OPCODE_EQUALS ||
-            opcode == OPCODE_LESS_THAN) {
+            opcode == OPCODE_LESS_THAN ||
+            opcode == OPCODE_MULTIPLY ||
+            opcode == OPCODE_ADD) {
             if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                 righthand = positions[parameter2];
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
