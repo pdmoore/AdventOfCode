@@ -45,7 +45,7 @@ public class IntCodeComputer {
                 int righthand = -99;
                 if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
                     righthand = positions[instruction._parameter2];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                     righthand = instruction._parameter2;
                 }
 
@@ -71,7 +71,7 @@ public class IntCodeComputer {
                 int righthand = -99;
                 if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
                     righthand = positions[parameter_2];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                     righthand = parameter_2;
                 }
 
