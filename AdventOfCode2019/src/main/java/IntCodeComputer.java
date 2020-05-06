@@ -79,10 +79,7 @@ public class IntCodeComputer {
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
                     output.append(positions[instruction._parameter1]);
                     output.append(",");
-                } else {
-                    //TODO - validate the opcode inside the Instruction ctor - remove this check
-                    throw new IllegalArgumentException("unknown opcode: " + instruction._opcode);
-                }
+                } 
             }
 
             instructionPointer += instruction._jumpLength;
@@ -92,6 +89,7 @@ public class IntCodeComputer {
     private Instruction grabNextInstruction(int instructionPointer, int[] positions) {
         int nextInstruction = positions[instructionPointer];
         int opcode = nextInstruction % 10;
+        validateOpcode(opcode);
 
         int mode1stParam = (nextInstruction / 100) % 10;
         int mode2ndParam = (nextInstruction / 1000) % 10;
@@ -130,6 +128,13 @@ public class IntCodeComputer {
         Instruction instruction = new Instruction(opcode, lefthand, righthand);
 
         return instruction;
+    }
+
+    private void validateOpcode(int opcode) {
+        if (opcode == OPCODE_HALT) return;
+
+        if (opcode < OPCODE_ADD || opcode > OPCODE_EQUALS)
+            throw new IllegalArgumentException("unknown opcode: " + opcode);
     }
 
     private void guardAgainstImmediateMode(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
