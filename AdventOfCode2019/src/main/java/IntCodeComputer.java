@@ -30,8 +30,8 @@ public class IntCodeComputer {
     public String executeProgram(int[] positions, StringBuffer output) {
         int instructionPointer = 0;
         while (true) {
-            //TODO - compose method to make loop readable
-
+            
+            //TODO get rid of special handling of Halt here
             int nextInstruction = positions[instructionPointer];
 
             if (nextInstruction == IntCodeComputer.OPCODE_HALT) {
@@ -83,11 +83,13 @@ public class IntCodeComputer {
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-                    int parameter_1 = positions[instructionPointer + 1];
 
+                    //TODO - use param from instruction
+                    int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
 
+                    //TODO - use param from instruction
                     int parameter_1 = positions[instructionPointer + 1];
 
                     output.append(positions[parameter_1]);
