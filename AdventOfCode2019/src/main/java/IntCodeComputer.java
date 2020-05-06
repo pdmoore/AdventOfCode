@@ -67,20 +67,8 @@ public class IntCodeComputer {
                     instructionPointer = instruction._parameter2;
                 }
             } else if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
-                //TODO - convert to instruction
-
-                int parameter_1 = positions[instructionPointer + 1];
-                int parameter_2 = positions[instructionPointer + 2];
-
-                int lefthand = -99;
-                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-                    lefthand = positions[parameter_1];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    lefthand = parameter_1;
-                }
-
-                if (lefthand == 0) {
-                    instructionPointer = parameter_2;
+                if (instruction._parameter1 == 0) {
+                    instructionPointer = instruction._parameter2;
                 } else {
                     instructionPointer += 3;
                 }
