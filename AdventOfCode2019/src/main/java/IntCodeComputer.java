@@ -52,25 +52,8 @@ public class IntCodeComputer {
                 //TODO store the length to jump in the instruction?
                 instructionPointer += 4;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
-//                int parameter_1 = positions[instructionPointer + 1];
-                int parameter_2 = positions[instructionPointer + 2];
-
-//                int lefthand = -99;
-//                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-//                    lefthand = positions[parameter_1];
-//                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-//                    lefthand = parameter_1;
-//                }
-
-                int righthand = -99;
-                if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
-                    righthand = positions[parameter_2];
-                } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    righthand = parameter_2;
-                }
-
                 int writeToIndex = positions[instructionPointer + 3];
-                if (instruction._parameter1 < righthand) {
+                if (instruction._parameter1 < instruction._parameter2) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
@@ -172,10 +155,9 @@ public class IntCodeComputer {
             lefthand = parameter1;
         }
 
-
-        //TODO - eventually want to calc and pass this in the ctor, but need to know if instruction takes two params or not
         int righthand = parameter2;
-        if (opcode == OPCODE_EQUALS) {
+        if (opcode == OPCODE_EQUALS ||
+            opcode == OPCODE_LESS_THAN) {
             if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                 righthand = positions[parameter2];
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
