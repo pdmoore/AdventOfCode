@@ -52,15 +52,15 @@ public class IntCodeComputer {
                 //TODO store the length to jump in the instruction?
                 instructionPointer += 4;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
-                int parameter_1 = positions[instructionPointer + 1];
+//                int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
-                int lefthand = -99;
-                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-                    lefthand = positions[parameter_1];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    lefthand = parameter_1;
-                }
+//                int lefthand = -99;
+//                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
+//                    lefthand = positions[parameter_1];
+//                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+//                    lefthand = parameter_1;
+//                }
 
                 int righthand = -99;
                 if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
@@ -70,7 +70,7 @@ public class IntCodeComputer {
                 }
 
                 int writeToIndex = positions[instructionPointer + 3];
-                if (lefthand < righthand) {
+                if (instruction._parameter1 < righthand) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
