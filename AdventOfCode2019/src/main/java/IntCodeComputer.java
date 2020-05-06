@@ -3,10 +3,10 @@ public class IntCodeComputer {
     static final int OPCODE_MULTIPLY = 2;
     static final int OPCODE_INPUT = 3;
     static final int OPCODE_OUTPUT = 4;
-    static final int OPCODE_JUMP_IF_TRUE  = 5;
+    static final int OPCODE_JUMP_IF_TRUE = 5;
     static final int OPCODE_JUMP_IF_FALSE = 6;
     static final int OPCODE_LESS_THAN = 7;
-    static final int OPCODE_EQUALS    = 8;
+    static final int OPCODE_EQUALS = 8;
 
     static final int OPCODE_HALT = 99;
     static final int POSITION_MODE = 0;
@@ -43,12 +43,13 @@ public class IntCodeComputer {
             if (OPCODE_EQUALS == instruction._opcode) {
 
                 int writeToIndex = positions[instructionPointer + 3];
-                if (instruction._parameter1 == instruction._righthand) {
+                if (instruction._parameter1 == instruction._parameter2) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
                 }
 
+                //TODO store the length to jump in the instruction?
                 instructionPointer += 4;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
@@ -172,23 +173,24 @@ public class IntCodeComputer {
         }
 
 
-        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, lefthand, parameter2);
+        //TODO - eventually want to calc and pass this in the ctor, but need to know if instruction takes two params or not
+        int righthand = parameter2;
         if (opcode == OPCODE_EQUALS) {
-            int righthand = -99;
-            if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
-                righthand = positions[instruction._parameter2];
-            } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
-                righthand = instruction._parameter2;
+            if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
+                righthand = positions[parameter2];
+            } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
+                righthand = parameter2;
             }
-            instruction._righthand = righthand;
         }
+
+        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, lefthand, righthand);
 
         return instruction;
     }
 
     private void guardAgainstImmediateMode(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
         if (mode1stParam == IMMEDIATE_MODE ||
-            mode2ndParam == IMMEDIATE_MODE ||
+                mode2ndParam == IMMEDIATE_MODE ||
                 mode3rdParam == IMMEDIATE_MODE) {
             throw new IllegalArgumentException("Immediate mode not supported for: " + opcode);
         }
@@ -206,7 +208,6 @@ public class IntCodeComputer {
         final int _mode3rdParam;
         final int _parameter1;
         final int _parameter2;
-        public int _righthand;
 
         public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam, int parameter1, int parameter2) {
             _opcode = opcode;
