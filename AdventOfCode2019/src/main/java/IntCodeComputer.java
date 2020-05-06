@@ -48,8 +48,6 @@ public class IntCodeComputer {
                 } else {
                     positions[writeToIndex] = 0;
                 }
-
-                instructionPointer += instruction._jumpLength;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._parameter1 < instruction._parameter2) {
@@ -57,8 +55,6 @@ public class IntCodeComputer {
                 } else {
                     positions[writeToIndex] = 0;
                 }
-
-                instructionPointer += instruction._jumpLength;
             } else if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
                 if (instruction._parameter1 == 0) {
                     instructionPointer += 3;
@@ -78,8 +74,6 @@ public class IntCodeComputer {
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
                     positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
-
-                instructionPointer += instruction._jumpLength;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
 
@@ -96,8 +90,9 @@ public class IntCodeComputer {
                 } else {
                     throw new IllegalArgumentException("unknown opcode: " + instruction._opcode);
                 }
-                instructionPointer += instruction._jumpLength;
             }
+
+            instructionPointer += instruction._jumpLength;
         }
     }
 
@@ -121,9 +116,9 @@ public class IntCodeComputer {
 
         int righthand = parameter2;
         if (opcode == OPCODE_EQUALS ||
-            opcode == OPCODE_LESS_THAN ||
-            opcode == OPCODE_MULTIPLY ||
-            opcode == OPCODE_ADD) {
+                opcode == OPCODE_LESS_THAN ||
+                opcode == OPCODE_MULTIPLY ||
+                opcode == OPCODE_ADD) {
             if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                 righthand = positions[parameter2];
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
@@ -168,12 +163,18 @@ public class IntCodeComputer {
 
         private int opcodeSize(int opcode) {
             switch (opcode) {
-                case OPCODE_EQUALS: return 4;
-                case OPCODE_LESS_THAN: return 4;
-                case OPCODE_MULTIPLY: return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
-                case OPCODE_ADD: return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
-                case OPCODE_INPUT: return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
-                case OPCODE_OUTPUT: return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
+                case OPCODE_EQUALS:
+                    return 4;
+                case OPCODE_LESS_THAN:
+                    return 4;
+                case OPCODE_MULTIPLY:
+                    return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                case OPCODE_ADD:
+                    return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                case OPCODE_INPUT:
+                    return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
+                case OPCODE_OUTPUT:
+                    return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
             }
             return 0;
         }
