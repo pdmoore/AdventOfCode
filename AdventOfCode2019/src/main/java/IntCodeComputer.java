@@ -41,16 +41,9 @@ public class IntCodeComputer {
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
             if (OPCODE_EQUALS == instruction._opcode) {
-// xxxx
-                int righthand = -99;
-                if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
-                    righthand = positions[instruction._parameter2];
-                } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    righthand = instruction._parameter2;
-                }
 
                 int writeToIndex = positions[instructionPointer + 3];
-                if (instruction._parameter1 == righthand) {
+                if (instruction._parameter1 == instruction._righthand) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
@@ -178,7 +171,17 @@ public class IntCodeComputer {
             lefthand = parameter1;
         }
 
+
         Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, lefthand, parameter2);
+        if (opcode == OPCODE_EQUALS) {
+            int righthand = -99;
+            if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
+                righthand = positions[instruction._parameter2];
+            } else if (instruction._mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
+                righthand = instruction._parameter2;
+            }
+            instruction._righthand = righthand;
+        }
 
         return instruction;
     }
@@ -203,6 +206,7 @@ public class IntCodeComputer {
         final int _mode3rdParam;
         final int _parameter1;
         final int _parameter2;
+        public int _righthand;
 
         public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam, int parameter1, int parameter2) {
             _opcode = opcode;
