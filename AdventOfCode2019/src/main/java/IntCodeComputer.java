@@ -41,21 +41,21 @@ public class IntCodeComputer {
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
             if (OPCODE_EQUALS == instruction._opcode) {
-                int parameter_1 = positions[instructionPointer + 1];
-                int parameter_2 = positions[instructionPointer + 2];
+//                int parameter_1 = positions[instructionPointer + 1];
+//                int parameter_2 = positions[instructionPointer + 2];
 
                 int lefthand = -99;
                 if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-                    lefthand = positions[parameter_1];
+                    lefthand = positions[instruction._parameter1];
                 } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    lefthand = parameter_1;
+                    lefthand = instruction._parameter1;
                 }
 
                 int righthand = -99;
                 if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
-                    righthand = positions[parameter_2];
+                    righthand = positions[instruction._parameter2];
                 } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    righthand = parameter_2;
+                    righthand = instruction._parameter2;
                 }
 
                 int writeToIndex = positions[instructionPointer + 3];
