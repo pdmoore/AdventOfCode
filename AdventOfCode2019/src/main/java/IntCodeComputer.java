@@ -30,7 +30,7 @@ public class IntCodeComputer {
     public String executeProgram(int[] positions, StringBuffer output) {
         int instructionPointer = 0;
         while (true) {
-            
+
             //TODO get rid of special handling of Halt here
             int nextInstruction = positions[instructionPointer];
 
@@ -50,7 +50,7 @@ public class IntCodeComputer {
                 }
 
                 //TODO store the length to jump in the instruction?
-                instructionPointer += 4;
+                instructionPointer += instruction._jumpLength;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._parameter1 < instruction._parameter2) {
@@ -157,11 +157,21 @@ public class IntCodeComputer {
         final int _opcode;
         final int _parameter1;
         final int _parameter2;
+        final int _jumpLength;
 
         public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam, int parameter1, int parameter2) {
             _opcode = opcode;
             _parameter1 = parameter1;
             _parameter2 = parameter2;
+
+            _jumpLength = opcodeSize(opcode);
+        }
+
+        private int opcodeSize(int opcode) {
+            switch (opcode) {
+                case OPCODE_EQUALS: return 4;
+            }
+            return 0;
         }
     }
 }
