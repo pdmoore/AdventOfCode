@@ -177,7 +177,10 @@ public class IntCodeComputer {
         int mode2ndParam = (nextInstruction / 1000) % 10;
         int mode3rdParam = (nextInstruction / 10000);
 
-        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam);
+        int parameter_1 = positions[instructionPointer + 1];
+        int parameter_2 = positions[instructionPointer + 2];
+
+        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, parameter_1, parameter_2);
 
         return instruction;
     }
@@ -200,12 +203,17 @@ public class IntCodeComputer {
         final int _mode1stParam;
         final int _mode2ndParam;
         final int _mode3rdParam;
+        final int _parameter1;
+        final int _parameter2;
 
-        public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
+        public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam, int parameter1, int parameter2) {
             _opcode = opcode;
             _mode1stParam = mode1stParam;
             _mode2ndParam = mode2ndParam;
             _mode3rdParam = mode3rdParam;
+
+            _parameter1 = parameter1;
+            _parameter2 = parameter2;
         }
     }
 }
