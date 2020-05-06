@@ -61,6 +61,8 @@ public class IntCodeComputer {
 
                 instructionPointer += 4;
             } else if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
+                //TODO - convert to instruction
+
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -77,6 +79,8 @@ public class IntCodeComputer {
                     instructionPointer = parameter_2;
                 }
             } else if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
+                //TODO - convert to instruction
+
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -93,6 +97,8 @@ public class IntCodeComputer {
                     instructionPointer += 3;
                 }
             } else if (isTwoParameterInstruction(instruction._opcode)) {
+                //TODO - convert to instruction
+
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
