@@ -132,7 +132,7 @@ public class IntCodeComputer {
             guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
         }
 
-        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, lefthand, righthand);
+        Instruction instruction = new Instruction(opcode, mode1stParam, lefthand, righthand);
 
         return instruction;
     }
@@ -156,7 +156,7 @@ public class IntCodeComputer {
         final int _parameter2;
         final int _jumpLength;
 
-        public Instruction(int opcode, int mode1stParam, int mode2ndParam, int parameter1, int parameter2) {
+        public Instruction(int opcode, int mode1stParam, int parameter1, int parameter2) {
             _opcode = opcode;
             _parameter1 = parameter1;
             _parameter2 = parameter2;
