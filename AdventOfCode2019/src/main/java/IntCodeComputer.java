@@ -33,7 +33,6 @@ public class IntCodeComputer {
 
             //TODO get rid of special handling of Halt here
             int nextInstruction = positions[instructionPointer];
-
             if (nextInstruction == IntCodeComputer.OPCODE_HALT) {
                 return utils.convertIntArrayToCommaSeparatedString(positions);
             }
@@ -76,12 +75,7 @@ public class IntCodeComputer {
                 }
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-
-                    //TODO - use param from instruction
-                    int parameter_1 = positions[instructionPointer + 1];
-//                    int parameter_1 = instruction._parameter1;
-
-                    positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
+                    positions[instruction._parameter1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
 
                     //TODO - use param from instruction
@@ -111,11 +105,16 @@ public class IntCodeComputer {
         int parameter2 = positions[instructionPointer + 2];
 
         int lefthand = -99;
-        if (mode1stParam == IntCodeComputer.POSITION_MODE) {
-            lefthand = positions[parameter1];
-        } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+        if (opcode == OPCODE_INPUT) {
             lefthand = parameter1;
+        } else {
+            if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                lefthand = positions[parameter1];
+            } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                lefthand = parameter1;
+            }
         }
+
 
         int righthand = parameter2;
         if (opcode == OPCODE_EQUALS ||
