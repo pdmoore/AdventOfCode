@@ -40,7 +40,6 @@ public class IntCodeComputer {
 
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
-            int mode1stParam = (nextInstruction / 100) % 10;
             int mode2ndParam = (nextInstruction / 1000) % 10;
             int mode3rdParam = (nextInstruction / 10000);
 
@@ -49,16 +48,16 @@ public class IntCodeComputer {
                 int parameter_2 = positions[instructionPointer + 2];
 
                 int lefthand = -99;
-                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     lefthand = parameter_1;
                 }
 
                 int righthand = -99;
                 if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                     righthand = positions[parameter_2];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     righthand = parameter_2;
                 }
 
@@ -75,16 +74,16 @@ public class IntCodeComputer {
                 int parameter_2 = positions[instructionPointer + 2];
 
                 int lefthand = -99;
-                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     lefthand = parameter_1;
                 }
 
                 int righthand = -99;
                 if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                     righthand = positions[parameter_2];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     righthand = parameter_2;
                 }
 
@@ -101,9 +100,9 @@ public class IntCodeComputer {
                 int parameter_2 = positions[instructionPointer + 2];
 
                 int lefthand = -99;
-                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     lefthand = parameter_1;
                 }
 
@@ -117,9 +116,9 @@ public class IntCodeComputer {
                 int parameter_2 = positions[instructionPointer + 2];
 
                 int lefthand = -99;
-                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     lefthand = parameter_1;
                 }
 
@@ -136,9 +135,9 @@ public class IntCodeComputer {
                 int righthand = -2;
 
                 // TODO combine dupe logic
-                if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
                     lefthand = positions[parameter_1];
-                } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
                     lefthand = parameter_1;
                 }
 
@@ -158,7 +157,7 @@ public class IntCodeComputer {
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-                    guardAgainstImmediateMode(instruction._opcode, mode1stParam, mode2ndParam, mode3rdParam);
+                    guardAgainstImmediateMode(instruction._opcode, instruction._mode1stParam, mode2ndParam, mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
@@ -201,13 +200,13 @@ public class IntCodeComputer {
     class Instruction {
 
         final int _opcode;
-        final int _mode1stparam;
+        final int _mode1stParam;
         final int _mode2ndparam;
         final int _mode3rdparam;
 
         public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
             _opcode = opcode;
-            _mode1stparam = mode1stParam;
+            _mode1stParam = mode1stParam;
             _mode2ndparam = mode2ndParam;
             _mode3rdparam = mode3rdParam;
         }
