@@ -15,6 +15,8 @@ public class IntCodeComputer {
     static final int NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION = 4;
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;
 
+    // TODO would be nice to have each instruction be able to dump to log
+
     public String executeProgram(String input) {
         int[] positions = utils.convertCommaSeparatedStringToIntArray(input);
         return executeProgram(positions, new StringBuffer());
@@ -36,13 +38,13 @@ public class IntCodeComputer {
                 return utils.convertIntArrayToCommaSeparatedString(positions);
             }
 
-            int opcode = nextInstruction % 10;
+            Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
             int mode1stParam = (nextInstruction / 100) % 10;
             int mode2ndParam = (nextInstruction / 1000) % 10;
             int mode3rdParam = (nextInstruction / 10000);
 
-            if (OPCODE_EQUALS == opcode) {
+            if (OPCODE_EQUALS == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -60,7 +62,6 @@ public class IntCodeComputer {
                     righthand = parameter_2;
                 }
 
-
                 int writeToIndex = positions[instructionPointer + 3];
                 if (lefthand == righthand) {
                     positions[writeToIndex] = 1;
@@ -69,7 +70,7 @@ public class IntCodeComputer {
                 }
 
                 instructionPointer += 4;
-            } else if (OPCODE_LESS_THAN == opcode) {
+            } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -95,7 +96,7 @@ public class IntCodeComputer {
                 }
 
                 instructionPointer += 4;
-            } else if (OPCODE_JUMP_IF_TRUE == opcode) {
+            } else if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -111,7 +112,7 @@ public class IntCodeComputer {
                 } else {
                     instructionPointer = parameter_2;
                 }
-            } else if (OPCODE_JUMP_IF_FALSE == opcode) {
+            } else if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -127,7 +128,7 @@ public class IntCodeComputer {
                 } else {
                     instructionPointer += 3;
                 }
-            } else if (isTwoParameterInstruction(opcode)) {
+            } else if (isTwoParameterInstruction(instruction._opcode)) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
 
@@ -148,28 +149,41 @@ public class IntCodeComputer {
                 }
 
                 int writeToIndex = positions[instructionPointer + 3];
-                if (opcode == IntCodeComputer.OPCODE_MULTIPLY) {
+                if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
                     positions[writeToIndex] = lefthand * righthand;
-                } else if (opcode == IntCodeComputer.OPCODE_ADD) {
+                } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
                     positions[writeToIndex] = lefthand + righthand;
                 }
 
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
-                if (opcode == IntCodeComputer.OPCODE_INPUT) {
-                    guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
+                if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
+                    guardAgainstImmediateMode(instruction._opcode, mode1stParam, mode2ndParam, mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
-                } else if (opcode == IntCodeComputer.OPCODE_OUTPUT) {
+                } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
                     int parameter_1 = positions[instructionPointer + 1];
                     output.append(positions[parameter_1]);
                     output.append(",");
                 } else {
-                    throw new IllegalArgumentException("unknown opcode: " + opcode);
+                    throw new IllegalArgumentException("unknown opcode: " + instruction._opcode);
                 }
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
             }
         }
+    }
+
+    private Instruction grabNextInstruction(int instructionPointer, int[] positions) {
+        int nextInstruction = positions[instructionPointer];
+        int opcode = nextInstruction % 10;
+
+        int mode1stParam = (nextInstruction / 100) % 10;
+        int mode2ndParam = (nextInstruction / 1000) % 10;
+        int mode3rdParam = (nextInstruction / 10000);
+
+        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam);
+
+        return instruction;
     }
 
     private void guardAgainstImmediateMode(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
@@ -184,4 +198,18 @@ public class IntCodeComputer {
         return opcode == IntCodeComputer.OPCODE_ADD || opcode == IntCodeComputer.OPCODE_MULTIPLY;
     }
 
+    class Instruction {
+
+        final int _opcode;
+        final int _mode1stparam;
+        final int _mode2ndparam;
+        final int _mode3rdparam;
+
+        public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam) {
+            _opcode = opcode;
+            _mode1stparam = mode1stParam;
+            _mode2ndparam = mode2ndParam;
+            _mode3rdparam = mode3rdParam;
+        }
+    }
 }
