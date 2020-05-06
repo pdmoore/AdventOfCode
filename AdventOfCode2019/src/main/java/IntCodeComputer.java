@@ -77,11 +77,7 @@ public class IntCodeComputer {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
                     positions[instruction._parameter1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
-
-                    //TODO - use param from instruction
-                    int parameter_1 = positions[instructionPointer + 1];
-
-                    output.append(positions[parameter_1]);
+                    output.append(positions[instruction._parameter1]);
                     output.append(",");
                 } else {
                     //TODO - validate the opcode inside the Instruction ctor - remove this check
@@ -105,7 +101,7 @@ public class IntCodeComputer {
         int parameter2 = positions[instructionPointer + 2];
 
         int lefthand = -99;
-        if (opcode == OPCODE_INPUT) {
+        if (opcode == OPCODE_INPUT || opcode == OPCODE_OUTPUT) {
             lefthand = parameter1;
         } else {
             if (mode1stParam == IntCodeComputer.POSITION_MODE) {
