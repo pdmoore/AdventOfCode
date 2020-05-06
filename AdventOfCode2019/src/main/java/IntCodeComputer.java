@@ -41,16 +41,7 @@ public class IntCodeComputer {
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
             if (OPCODE_EQUALS == instruction._opcode) {
-//                int parameter_1 = positions[instructionPointer + 1];
-//                int parameter_2 = positions[instructionPointer + 2];
-
-                int lefthand = -99;
-                if (instruction._mode1stParam == IntCodeComputer.POSITION_MODE) {
-                    lefthand = positions[instruction._parameter1];
-                } else if (instruction._mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
-                    lefthand = instruction._parameter1;
-                }
-
+// xxxx
                 int righthand = -99;
                 if (instruction._mode2ndParam == IntCodeComputer.POSITION_MODE) {
                     righthand = positions[instruction._parameter2];
@@ -59,7 +50,7 @@ public class IntCodeComputer {
                 }
 
                 int writeToIndex = positions[instructionPointer + 3];
-                if (lefthand == righthand) {
+                if (instruction._parameter1 == righthand) {
                     positions[writeToIndex] = 1;
                 } else {
                     positions[writeToIndex] = 0;
@@ -177,10 +168,17 @@ public class IntCodeComputer {
         int mode2ndParam = (nextInstruction / 1000) % 10;
         int mode3rdParam = (nextInstruction / 10000);
 
-        int parameter_1 = positions[instructionPointer + 1];
-        int parameter_2 = positions[instructionPointer + 2];
+        int parameter1 = positions[instructionPointer + 1];
+        int parameter2 = positions[instructionPointer + 2];
 
-        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, parameter_1, parameter_2);
+        int lefthand = -99;
+        if (mode1stParam == IntCodeComputer.POSITION_MODE) {
+            lefthand = positions[parameter1];
+        } else if (mode1stParam == IntCodeComputer.IMMEDIATE_MODE) {
+            lefthand = parameter1;
+        }
+
+        Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, lefthand, parameter2);
 
         return instruction;
     }
