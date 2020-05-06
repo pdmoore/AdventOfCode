@@ -40,9 +40,6 @@ public class IntCodeComputer {
 
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
-//            int mode2ndParam = (nextInstruction / 1000) % 10;
-            int mode3rdParam = (nextInstruction / 10000);
-
             if (OPCODE_EQUALS == instruction._opcode) {
                 int parameter_1 = positions[instructionPointer + 1];
                 int parameter_2 = positions[instructionPointer + 2];
@@ -157,7 +154,7 @@ public class IntCodeComputer {
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-                    guardAgainstImmediateMode(instruction._opcode, instruction._mode1stParam, instruction._mode2ndParam, mode3rdParam);
+                    guardAgainstImmediateMode(instruction._opcode, instruction._mode1stParam, instruction._mode2ndParam, instruction._mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
