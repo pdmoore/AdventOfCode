@@ -83,11 +83,13 @@ public class IntCodeComputer {
                 instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-                    guardAgainstImmediateMode(instruction._opcode, instruction._mode1stParam, instruction._mode2ndParam, instruction._mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
+
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
+
                     int parameter_1 = positions[instructionPointer + 1];
+
                     output.append(positions[parameter_1]);
                     output.append(",");
                 } else {
@@ -127,6 +129,9 @@ public class IntCodeComputer {
                 righthand = parameter2;
             }
         }
+        if (opcode == IntCodeComputer.OPCODE_INPUT) {
+            guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
+        }
 
         Instruction instruction = new Instruction(opcode, mode1stParam, mode2ndParam, mode3rdParam, lefthand, righthand);
 
@@ -148,18 +153,11 @@ public class IntCodeComputer {
     class Instruction {
 
         final int _opcode;
-        final int _mode1stParam;
-        final int _mode2ndParam;
-        final int _mode3rdParam;
         final int _parameter1;
         final int _parameter2;
 
         public Instruction(int opcode, int mode1stParam, int mode2ndParam, int mode3rdParam, int parameter1, int parameter2) {
             _opcode = opcode;
-            _mode1stParam = mode1stParam;
-            _mode2ndParam = mode2ndParam;
-            _mode3rdParam = mode3rdParam;
-
             _parameter1 = parameter1;
             _parameter2 = parameter2;
         }
