@@ -162,7 +162,6 @@ public class IntCodeComputer {
                     int parameter_1 = positions[instructionPointer + 1];
                     positions[parameter_1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
                 } else if (opcode == IntCodeComputer.OPCODE_OUTPUT) {
-                    guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
                     int parameter_1 = positions[instructionPointer + 1];
                     output.append(positions[parameter_1]);
                     output.append(",");
