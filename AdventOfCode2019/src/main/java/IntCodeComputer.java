@@ -49,7 +49,6 @@ public class IntCodeComputer {
                     positions[writeToIndex] = 0;
                 }
 
-                //TODO store the length to jump in the instruction?
                 instructionPointer += instruction._jumpLength;
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int writeToIndex = positions[instructionPointer + 3];
@@ -59,7 +58,7 @@ public class IntCodeComputer {
                     positions[writeToIndex] = 0;
                 }
 
-                instructionPointer += 4;
+                instructionPointer += instruction._jumpLength;
             } else if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
                 if (instruction._parameter1 == 0) {
                     instructionPointer += 3;
@@ -80,7 +79,7 @@ public class IntCodeComputer {
                     positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
 
-                instructionPointer += IntCodeComputer.NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                instructionPointer += instruction._jumpLength;
             } else {
                 if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
 
@@ -97,7 +96,7 @@ public class IntCodeComputer {
                 } else {
                     throw new IllegalArgumentException("unknown opcode: " + instruction._opcode);
                 }
-                instructionPointer += IntCodeComputer.NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
+                instructionPointer += instruction._jumpLength;
             }
         }
     }
@@ -170,6 +169,11 @@ public class IntCodeComputer {
         private int opcodeSize(int opcode) {
             switch (opcode) {
                 case OPCODE_EQUALS: return 4;
+                case OPCODE_LESS_THAN: return 4;
+                case OPCODE_MULTIPLY: return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                case OPCODE_ADD: return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                case OPCODE_INPUT: return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
+                case OPCODE_OUTPUT: return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
             }
             return 0;
         }
