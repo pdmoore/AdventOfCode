@@ -39,6 +39,7 @@ public class IntCodeComputer {
                 case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
                 case OPCODE_JUMP_IF_TRUE: instructionPointer = performJumpIfTrue(instruction, instructionPointer); break;
                 case OPCODE_JUMP_IF_FALSE: instructionPointer = performJumpIfFalse(instruction, instructionPointer); break;
+                case OPCODE_INPUT: performInput(positions, instruction); break;
             }
 
             if (isTwoParameterInstruction(instruction._opcode)) {
@@ -49,9 +50,7 @@ public class IntCodeComputer {
                     positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
             } else {
-                if (instruction._opcode == IntCodeComputer.OPCODE_INPUT) {
-                    positions[instruction._parameter1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
-                } else if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
+                if (instruction._opcode == IntCodeComputer.OPCODE_OUTPUT) {
                     output.append(positions[instruction._parameter1]);
                     output.append(",");
                 } 
@@ -59,6 +58,10 @@ public class IntCodeComputer {
 
             instructionPointer += instruction._jumpLength;
         }
+    }
+
+    private void performInput(int[] positions, Instruction instruction) {
+        positions[instruction._parameter1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
     }
 
     private int performJumpIfFalse(Instruction instruction, int instructionPointer) {
