@@ -37,15 +37,10 @@ public class IntCodeComputer {
                 case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
                 case OPCODE_EQUALS: performEquals(positions, instruction); break;
                 case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
+                case OPCODE_JUMP_IF_TRUE: instructionPointer = performJumpIfTrue(instruction, instructionPointer); break;
             }
 
-            if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
-                if (instruction._parameter1 == 0) {
-                    instructionPointer += 3;
-                } else {
-                    instructionPointer = instruction._parameter2;
-                }
-            } else if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
+            if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
                 if (instruction._parameter1 == 0) {
                     instructionPointer = instruction._parameter2;
                 } else {
@@ -68,6 +63,14 @@ public class IntCodeComputer {
             }
 
             instructionPointer += instruction._jumpLength;
+        }
+    }
+
+    private int performJumpIfTrue(Instruction instruction, int instructionPointer) {
+        if (instruction._parameter1 == 0) {
+            return instructionPointer + 3;
+        } else {
+            return instruction._parameter2;
         }
     }
 
