@@ -38,15 +38,10 @@ public class IntCodeComputer {
                 case OPCODE_EQUALS: performEquals(positions, instruction); break;
                 case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
                 case OPCODE_JUMP_IF_TRUE: instructionPointer = performJumpIfTrue(instruction, instructionPointer); break;
+                case OPCODE_JUMP_IF_FALSE: instructionPointer = performJumpIfFalse(instruction, instructionPointer); break;
             }
 
-            if (OPCODE_JUMP_IF_FALSE == instruction._opcode) {
-                if (instruction._parameter1 == 0) {
-                    instructionPointer = instruction._parameter2;
-                } else {
-                    instructionPointer += 3;
-                }
-            } else if (isTwoParameterInstruction(instruction._opcode)) {
+            if (isTwoParameterInstruction(instruction._opcode)) {
                 int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
                     positions[writeToIndex] = instruction._parameter1 * instruction._parameter2;
@@ -63,6 +58,14 @@ public class IntCodeComputer {
             }
 
             instructionPointer += instruction._jumpLength;
+        }
+    }
+
+    private int performJumpIfFalse(Instruction instruction, int instructionPointer) {
+        if (instruction._parameter1 == 0) {
+            return instruction._parameter2;
+        } else {
+            return instructionPointer + 3;
         }
     }
 
