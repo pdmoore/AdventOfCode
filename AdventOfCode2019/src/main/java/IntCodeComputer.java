@@ -13,7 +13,7 @@ public class IntCodeComputer {
     static final int IMMEDIATE_MODE = 1;
     static final int NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION = 2;
     static final int NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION = 4;
-    static final int INPUT_IS_ALWAYS_THE_SAME = 1;
+    static final int INPUT_IS_ALWAYS_THE_SAME = 1;;
 
     // TODO would be nice to have each instruction be able to dump to log
 
@@ -38,12 +38,10 @@ public class IntCodeComputer {
             }
 
             if (OPCODE_EQUALS == instruction._opcode) {
-
-                int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._parameter1 == instruction._parameter2) {
-                    positions[writeToIndex] = 1;
+                    positions[instruction._writeToIndex] = 1;
                 } else {
-                    positions[writeToIndex] = 0;
+                    positions[instruction._writeToIndex] = 0;
                 }
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
                 int writeToIndex = positions[instructionPointer + 3];
@@ -122,12 +120,16 @@ public class IntCodeComputer {
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                 righthand = parameter2;
             }
+
         }
         if (opcode == IntCodeComputer.OPCODE_INPUT) {
             guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
         }
 
         Instruction instruction = new Instruction(opcode, lefthand, righthand);
+        if (opcode == OPCODE_EQUALS) {
+            instruction._writeToIndex = positions[instructionPointer + 3];
+        }
 
         return instruction;
     }
@@ -157,6 +159,7 @@ public class IntCodeComputer {
         final int _parameter1;
         final int _parameter2;
         final int _jumpLength;
+        int _writeToIndex;
 
         public Instruction(int opcode, int parameter1, int parameter2) {
             _opcode = opcode;
