@@ -32,9 +32,6 @@ public class IntCodeComputer {
         while (true) {
 
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
-//            if (OPCODE_HALT == instruction._opcode) {
-//                return utils.convertIntArrayToCommaSeparatedString(positions);
-//            }
 
             switch (instruction._opcode) {
                 case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
