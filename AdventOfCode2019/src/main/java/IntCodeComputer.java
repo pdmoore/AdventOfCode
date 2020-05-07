@@ -44,11 +44,10 @@ public class IntCodeComputer {
                     positions[instruction._writeToIndex] = 0;
                 }
             } else if (OPCODE_LESS_THAN == instruction._opcode) {
-                int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._parameter1 < instruction._parameter2) {
-                    positions[writeToIndex] = 1;
+                    positions[instruction._writeToIndex] = 1;
                 } else {
-                    positions[writeToIndex] = 0;
+                    positions[instruction._writeToIndex] = 0;
                 }
             } else if (OPCODE_JUMP_IF_TRUE == instruction._opcode) {
                 if (instruction._parameter1 == 0) {
@@ -127,7 +126,7 @@ public class IntCodeComputer {
         }
 
         Instruction instruction = new Instruction(opcode, lefthand, righthand);
-        if (opcode == OPCODE_EQUALS) {
+        if (opcode == OPCODE_EQUALS || opcode == OPCODE_LESS_THAN) {
             instruction._writeToIndex = positions[instructionPointer + 3];
         }
 
