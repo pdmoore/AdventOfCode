@@ -31,13 +31,10 @@ public class IntCodeComputer {
         int instructionPointer = 0;
         while (true) {
 
-            //TODO get rid of special handling of Halt here
-            int nextInstruction = positions[instructionPointer];
-            if (nextInstruction == IntCodeComputer.OPCODE_HALT) {
+            Instruction instruction = grabNextInstruction(instructionPointer, positions);
+            if (OPCODE_HALT == instruction._opcode) {
                 return utils.convertIntArrayToCommaSeparatedString(positions);
             }
-
-            Instruction instruction = grabNextInstruction(instructionPointer, positions);
 
             if (OPCODE_EQUALS == instruction._opcode) {
 
@@ -88,6 +85,10 @@ public class IntCodeComputer {
 
     private Instruction grabNextInstruction(int instructionPointer, int[] positions) {
         int nextInstruction = positions[instructionPointer];
+        if (nextInstruction == OPCODE_HALT) {
+            return new Instruction(nextInstruction, -1, -1);
+        }
+
         int opcode = nextInstruction % 10;
         validateOpcode(opcode);
 
