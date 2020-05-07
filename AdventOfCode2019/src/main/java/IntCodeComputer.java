@@ -35,15 +35,10 @@ public class IntCodeComputer {
 
             switch (instruction._opcode) {
                 case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
+                case OPCODE_EQUALS: performEquals(positions, instruction);
             }
 
-            if (OPCODE_EQUALS == instruction._opcode) {
-                if (instruction._parameter1 == instruction._parameter2) {
-                    positions[instruction._writeToIndex] = 1;
-                } else {
-                    positions[instruction._writeToIndex] = 0;
-                }
-            } else if (OPCODE_LESS_THAN == instruction._opcode) {
+            if (OPCODE_LESS_THAN == instruction._opcode) {
                 if (instruction._parameter1 < instruction._parameter2) {
                     positions[instruction._writeToIndex] = 1;
                 } else {
@@ -78,6 +73,14 @@ public class IntCodeComputer {
             }
 
             instructionPointer += instruction._jumpLength;
+        }
+    }
+
+    private void performEquals(int[] positions, Instruction instruction) {
+        if (instruction._parameter1 == instruction._parameter2) {
+            positions[instruction._writeToIndex] = 1;
+        } else {
+            positions[instruction._writeToIndex] = 0;
         }
     }
 
