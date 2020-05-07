@@ -43,6 +43,8 @@ public class IntCodeComputer {
                 case OPCODE_OUTPUT: output.append(performOutput(positions, instruction)); break;
             }
 
+            //TODO - set the writeToIndex in the instruction (line 145ish)
+            // then split this if and add to switch statement above
             if (isTwoParameterInstruction(instruction._opcode)) {
                 int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
@@ -50,12 +52,14 @@ public class IntCodeComputer {
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
                     positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
-            } 
+            }
 
             instructionPointer += instruction._jumpLength;
         }
     }
 
+    // TODO - Can the logic in this mini-methods be moved to the instruction itself?
+    // subclass instruction and have a perform method?
     private String performOutput(int[] positions, Instruction instruction) {
         return positions[instruction._parameter1] + ",";
     }
@@ -96,6 +100,7 @@ public class IntCodeComputer {
         }
     }
 
+    // TODO This is by far the largest method - can it be simpler?
     private Instruction grabNextInstruction(int instructionPointer, int[] positions) {
         int nextInstruction = positions[instructionPointer];
         if (nextInstruction == OPCODE_HALT) {
@@ -122,7 +127,6 @@ public class IntCodeComputer {
                 lefthand = parameter1;
             }
         }
-
 
         int righthand = parameter2;
         if (opcode == OPCODE_EQUALS ||
