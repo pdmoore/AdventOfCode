@@ -54,11 +54,10 @@ public class IntCodeComputer {
             //TODO - set the writeToIndex in the instruction (line 145ish)
             // then split this if and add to switch statement above
             if (isTwoParameterInstruction(instruction._opcode)) {
-                int writeToIndex = positions[instructionPointer + 3];
                 if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
-                    positions[writeToIndex] = instruction._parameter1 * instruction._parameter2;
+                    positions[instruction._writeToIndex] = instruction._parameter1 * instruction._parameter2;
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
-                    positions[writeToIndex] = instruction._parameter1 + instruction._parameter2;
+                    positions[instruction._writeToIndex] = instruction._parameter1 + instruction._parameter2;
                 }
             }
 
@@ -152,7 +151,8 @@ public class IntCodeComputer {
         }
 
         Instruction instruction = new Instruction(opcode, lefthand, righthand);
-        if (opcode == OPCODE_EQUALS || opcode == OPCODE_LESS_THAN) {
+        if (opcode == OPCODE_EQUALS || opcode == OPCODE_LESS_THAN ||
+                (opcode == OPCODE_ADD || opcode == OPCODE_MULTIPLY)) {
             instruction._writeToIndex = positions[instructionPointer + 3];
         }
 
