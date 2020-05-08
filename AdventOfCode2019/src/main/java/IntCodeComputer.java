@@ -54,13 +54,21 @@ public class IntCodeComputer {
             //TODO - set the writeToIndex in the instruction (line 145ish)
             // then split this if and add to switch statement above
                 if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
-                    positions[instruction._writeToIndex] = instruction._parameter1 * instruction._parameter2;
+                    performMultiply(positions, instruction);
                 } else if (instruction._opcode == IntCodeComputer.OPCODE_ADD) {
-                    positions[instruction._writeToIndex] = instruction._parameter1 + instruction._parameter2;
+                    performAdd(positions, instruction);
                 }
 
             instructionPointer += instruction._jumpLength;
         }
+    }
+
+    private void performAdd(int[] positions, Instruction instruction) {
+        positions[instruction._writeToIndex] = instruction._parameter1 + instruction._parameter2;
+    }
+
+    private void performMultiply(int[] positions, Instruction instruction) {
+        positions[instruction._writeToIndex] = instruction._parameter1 * instruction._parameter2;
     }
 
     // TODO - Can the logic in this mini-methods be moved to the instruction itself?
