@@ -11,8 +11,6 @@ public class IntCodeComputer {
     static final int OPCODE_HALT = 99;
     static final int POSITION_MODE = 0;
     static final int IMMEDIATE_MODE = 1;
-    static final int NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION = 2;
-    static final int NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION = 4;
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;;
     private final int _inputValue;
 
@@ -40,17 +38,19 @@ public class IntCodeComputer {
         while (true) {
 
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
+//TODO add a debug flag that outputs the current command and the full positions array
+// allow the flag to be set from a test
 
             switch (instruction._opcode) {
                 case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
-                case OPCODE_EQUALS: performEquals(positions, instruction); break;
-                case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
                 case OPCODE_JUMP_IF_TRUE: instructionPointer = performJumpIfTrue(instruction, instructionPointer); break;
                 case OPCODE_JUMP_IF_FALSE: instructionPointer = performJumpIfFalse(instruction, instructionPointer); break;
+                case OPCODE_EQUALS: performEquals(positions, instruction); break;
+                case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
+                case OPCODE_MULTIPLY: performMultiply(positions, instruction); break;
+                case OPCODE_ADD: performAdd(positions, instruction); break;
                 case OPCODE_INPUT: performInput(positions, instruction); break;
                 case OPCODE_OUTPUT: output.append(performOutput(positions, instruction)); break;
-                case OPCODE_ADD: performAdd(positions, instruction); break;
-                case OPCODE_MULTIPLY: performMultiply(positions, instruction); break;
             }
 
             instructionPointer += instruction._jumpLength;
@@ -174,10 +174,6 @@ public class IntCodeComputer {
         }
     }
 
-    private boolean isTwoParameterInstruction(int opcode) {
-        return opcode == IntCodeComputer.OPCODE_ADD || opcode == IntCodeComputer.OPCODE_MULTIPLY;
-    }
-
     class Instruction {
 
         final int _opcode;
@@ -198,13 +194,12 @@ public class IntCodeComputer {
             switch (opcode) {
                 case OPCODE_EQUALS:
                 case OPCODE_LESS_THAN:
-                    return 4;
                 case OPCODE_MULTIPLY:
                 case OPCODE_ADD:
-                    return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
+                    return 4;
                 case OPCODE_INPUT:
                 case OPCODE_OUTPUT:
-                    return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
+                    return 2;
             }
             return 0;
         }
