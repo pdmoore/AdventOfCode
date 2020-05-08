@@ -138,7 +138,6 @@ public class IntCodeComputer {
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                 righthand = parameter2;
             }
-
         }
         if (opcode == IntCodeComputer.OPCODE_INPUT) {
             guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
@@ -190,15 +189,12 @@ public class IntCodeComputer {
         private int opcodeSize(int opcode) {
             switch (opcode) {
                 case OPCODE_EQUALS:
-                    return 4;
                 case OPCODE_LESS_THAN:
                     return 4;
                 case OPCODE_MULTIPLY:
-                    return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
                 case OPCODE_ADD:
                     return NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION;
                 case OPCODE_INPUT:
-                    return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
                 case OPCODE_OUTPUT:
                     return NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION;
             }
