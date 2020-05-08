@@ -14,6 +14,14 @@ public class IntCodeComputer {
     static final int NUM_VALUES_IN_INPUT_OR_OUTPUT_INSTRUCTION = 2;
     static final int NUM_VALUES_IN_ADD_OR_MULTIPLY_INSTRUCTION = 4;
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;;
+    private final int _inputValue;
+
+    public IntCodeComputer() {
+        _inputValue = INPUT_IS_ALWAYS_THE_SAME;
+    }
+    public IntCodeComputer(int inputValue) {
+        _inputValue = inputValue;
+    }
 
     // TODO would be nice to have each instruction be able to dump to log
 
@@ -65,7 +73,7 @@ public class IntCodeComputer {
     }
 
     private void performInput(int[] positions, Instruction instruction) {
-        positions[instruction._parameter1] = IntCodeComputer.INPUT_IS_ALWAYS_THE_SAME;
+        positions[instruction._parameter1] = _inputValue;
     }
 
     private int performJumpIfFalse(Instruction instruction, int instructionPointer) {
