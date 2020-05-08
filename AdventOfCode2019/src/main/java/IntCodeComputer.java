@@ -50,14 +50,9 @@ public class IntCodeComputer {
                 case OPCODE_INPUT: performInput(positions, instruction); break;
                 case OPCODE_OUTPUT: output.append(performOutput(positions, instruction)); break;
                 case OPCODE_ADD: performAdd(positions, instruction); break;
+                case OPCODE_MULTIPLY: performMultiply(positions, instruction); break;
             }
 
-            //TODO - set the writeToIndex in the instruction (line 145ish)
-            // then split this if and add to switch statement above
-                if (instruction._opcode == IntCodeComputer.OPCODE_MULTIPLY) {
-                    performMultiply(positions, instruction);
-                }
-                
             instructionPointer += instruction._jumpLength;
         }
     }
