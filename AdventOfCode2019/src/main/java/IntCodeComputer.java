@@ -14,6 +14,8 @@ public class IntCodeComputer {
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;;
     private final int _inputValue;
 
+    boolean _verbose = false;
+
     public IntCodeComputer() {
         _inputValue = INPUT_IS_ALWAYS_THE_SAME;
     }
@@ -36,10 +38,10 @@ public class IntCodeComputer {
     public String executeProgram(int[] positions, StringBuffer output) {
         int instructionPointer = 0;
         while (true) {
+            if (_verbose) System.out.println(utils.convertIntArrayToCommaSeparatedString(positions));
 
             Instruction instruction = grabNextInstruction(instructionPointer, positions);
-//TODO add a debug flag that outputs the current command and the full positions array
-// allow the flag to be set from a test
+            if (_verbose) System.out.println(instruction.toString());
 
             switch (instruction._opcode) {
                 case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
@@ -51,6 +53,11 @@ public class IntCodeComputer {
                 case OPCODE_ADD: performAdd(positions, instruction); break;
                 case OPCODE_INPUT: performInput(positions, instruction); break;
                 case OPCODE_OUTPUT: output.append(performOutput(positions, instruction)); break;
+            }
+
+            if (_verbose) {
+                System.out.println(utils.convertIntArrayToCommaSeparatedString(positions));
+                System.out.println(" ");
             }
 
             instructionPointer += instruction._jumpLength;
@@ -146,6 +153,7 @@ public class IntCodeComputer {
                 righthand = parameter2;
             }
         }
+
         if (opcode == IntCodeComputer.OPCODE_INPUT) {
             guardAgainstImmediateMode(opcode, mode1stParam, mode2ndParam, mode3rdParam);
         }
@@ -202,6 +210,21 @@ public class IntCodeComputer {
                     return 2;
             }
             return 0;
+        }
+
+
+        @Override
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            sb.append(_opcode);
+            sb.append(":");
+            sb.append(_parameter1);
+            sb.append(",");
+            sb.append(_parameter2);
+            sb.append(" - ");
+            sb.append(_writeToIndex);
+
+            return sb.toString();
         }
     }
 }
