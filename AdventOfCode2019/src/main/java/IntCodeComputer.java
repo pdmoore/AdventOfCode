@@ -146,7 +146,9 @@ public class IntCodeComputer {
         if (opcode == OPCODE_EQUALS ||
                 opcode == OPCODE_LESS_THAN ||
                 opcode == OPCODE_MULTIPLY ||
-                opcode == OPCODE_ADD) {
+                opcode == OPCODE_ADD ||
+                opcode == OPCODE_JUMP_IF_TRUE ||
+                opcode == OPCODE_JUMP_IF_FALSE) {
             if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                 righthand = positions[parameter2];
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {

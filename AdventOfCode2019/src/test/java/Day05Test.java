@@ -240,18 +240,16 @@ public class Day05Test {
         assertEquals("1,", output.toString());
     }
 
-    //TODO LongerExample with Zero Input - verify the example is correct!
     @Test
-    @Ignore("This example seems wrong")
     public void LongerExample_PositionMode_InputZero() {
         String input = "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9";
-        String expected = "3,12,6,12,15,1,13,14,13,4,13,99,1,1,1,9";
+        String expected = "3,12,6,12,15,1,13,14,13,4,13,99,0,0,1,9";
         StringBuffer output = new StringBuffer();
         IntCodeComputer sut = new IntCodeComputer(0);
         sut._verbose = true;
         String actual = sut.executeProgram(input, output);
         assertEquals(expected, actual);
-        assertEquals("1,", output.toString());
+        assertEquals("0,", output.toString());
     }
 
     @Test
@@ -259,7 +257,7 @@ public class Day05Test {
         String input = "3,3,1105,-1,9,1101,0,0,12,4,12,99,1";
         String expected = "3,3,1105,1,9,1101,0,0,12,4,12,99,1";
         StringBuffer output = new StringBuffer();
-        String actual = new IntCodeComputer().executeProgram(input, output);
+        String actual = new IntCodeComputer(1).executeProgram(input, output);
         assertEquals(expected, actual);
         assertEquals("1,", output.toString());
     }
