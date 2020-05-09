@@ -62,11 +62,6 @@ public class Day05Test {
         assertEquals(expected, actual);
     }
 
-    //TODO - Need an immediate mode test for Opcode 4 (output)
-
-
-    //TODO - is the actual worth checking here?
-    // TODO - output is comma-separated for now, might not make sense later
     @Test
     public void solution_1_testFile() {
         String input = utils.fileAsString("data/aoc19.5.txt");
@@ -78,9 +73,10 @@ public class Day05Test {
 
     @Test
     public void Opcode_JumpIfTrue_PositionMode_firstParamIsNonZero() {
-        String input = "5,8,7,33,22,11,44,99,1";
-        String expected = "5,8,7,33,22,11,44,99,1";
-        String actual = new IntCodeComputer().executeProgram(input);
+        String input = "5,9,7,33,22,11,44,8,99,1";
+        String expected = "5,9,7,33,22,11,44,8,99,1";
+        IntCodeComputer sut = new IntCodeComputer();
+        String actual = sut.executeProgram(input);
         assertEquals(expected, actual);
     }
 
@@ -246,7 +242,6 @@ public class Day05Test {
         String expected = "3,12,6,12,15,1,13,14,13,4,13,99,0,0,1,9";
         StringBuffer output = new StringBuffer();
         IntCodeComputer sut = new IntCodeComputer(0);
-        sut._verbose = true;
         String actual = sut.executeProgram(input, output);
         assertEquals(expected, actual);
         assertEquals("0,", output.toString());
@@ -278,6 +273,7 @@ public class Day05Test {
         assertEquals("1001,", output.toString());
     }
 
+    //TODO - ignored
     @Test
     @Ignore("TODO - failing due to trying to jump to 999 instead of outout 999")
     public void LargerExample_InputValue_LessThan8() {
