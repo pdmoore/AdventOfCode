@@ -266,17 +266,13 @@ public class Day05Test {
 
 
     @Test
-    @Ignore("Failing with Index 999 out of bounds for length 47 but not obvious why it's wrong")
-    public void LargerExample_InputValue_Below8() {
+    public void LargerExample_InputValue_Equals8() {
         String input = "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
-//        String expected = "3,3,1105,1,9,1101,0,0,12,4,12,99,1";
         StringBuffer output = new StringBuffer();
-        String actual = new IntCodeComputer().executeProgram(input, output);
-//        assertEquals(expected, actual);
-        assertEquals("999,", output.toString());
+        String actual = new IntCodeComputer(8).executeProgram(input, output);
+        assertEquals("1000,", output.toString());
     }
 
-    // TODO Larger example with input of 8, expect 1000
     // TODO Larger example with input > 8, expect 1001
 
     // TODO
