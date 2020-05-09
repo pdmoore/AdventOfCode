@@ -110,18 +110,22 @@ public class Day05Test {
         String input = "6,5,3,4,99,0";
         String expected = "6,5,3,4,99,0";
         IntCodeComputer sut = new IntCodeComputer();
-        sut._verbose = true;
         String actual = sut.executeProgram(input);
         assertEquals(expected, actual);
     }
 
     @Test
     public void Opcode_JumpIfFalse_PositionMode_firstParamIsNotZero() {
-        String input = "6,4,666,99,1";
-        String expected = "6,4,666,99,1";
-        String actual = new IntCodeComputer().executeProgram(input);
+        String input = "6,8,0,1001,7,9,7,90,1";
+        String expected = "6,8,0,1001,7,9,7,99,1";
+        IntCodeComputer sut = new IntCodeComputer();
+        String actual = sut.executeProgram(input);
         assertEquals(expected, actual);
     }
+
+    // TODO - decide if this is a valid program:
+    // 6,3,99,1  -- it is jump false that doesn't use 2nd param so advances to next instruction, 99
+    // current impl tries to parse 2nd param as index of position 99 before evaluating jump
 
     @Test
     public void Opcode_JumpIfFalse_ImmediateMode_firstParamIsZero() {
