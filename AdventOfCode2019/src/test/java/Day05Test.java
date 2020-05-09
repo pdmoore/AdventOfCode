@@ -264,13 +264,20 @@ public class Day05Test {
         assertEquals("1,", output.toString());
     }
 
-
     @Test
     public void LargerExample_InputValue_Equals8() {
         String input = "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
         StringBuffer output = new StringBuffer();
         String actual = new IntCodeComputer(8).executeProgram(input, output);
         assertEquals("1000,", output.toString());
+    }
+
+    @Test
+    public void LargerExample_InputValue_GreaterThan8() {
+        String input = "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
+        StringBuffer output = new StringBuffer();
+        String actual = new IntCodeComputer(9).executeProgram(input, output);
+        assertEquals("1001,", output.toString());
     }
 
     // TODO Larger example with input > 8, expect 1001
