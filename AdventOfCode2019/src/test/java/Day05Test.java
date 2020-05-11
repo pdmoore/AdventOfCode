@@ -314,4 +314,12 @@ public class Day05Test {
     // Can there be multiple outputs? maybe pass in a collector to hold all output?
     // - error coverage - Parameters that an instruction writes to will never be in immediate mode.
 
+
+    @Test
+    public void solution_2_testFile() {
+        String input = utils.fileAsString("data/aoc19.5.txt");
+        StringBuffer output = new StringBuffer();
+        String actual = new IntCodeComputer(5).executeProgram(input, output);
+        assertEquals("14110739", output.toString());
+    }
 }
