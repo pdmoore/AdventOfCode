@@ -124,6 +124,15 @@ public class Day05Test {
     }
 
     @Test
+    public void Opcode_JumpIfFalse_PositionMode_firstParamIsZero_MinimalProgram() {
+        String input = "6,4,3,99,1";
+        String expected = "6,4,3,99,1";
+        IntCodeComputer sut = new IntCodeComputer();
+        String actual = sut.executeProgram(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void Opcode_JumpIfFalse_PositionMode_firstParamIsNotZero() {
         String input = "6,8,0,1001,7,9,7,90,1";
         String expected = "6,8,0,1001,7,9,7,99,1";
