@@ -246,8 +246,12 @@ public class IntCodeComputer {
                 case OPCODE_INPUT:
                 case OPCODE_OUTPUT:
                     return 2;
+                case OPCODE_JUMP_IF_TRUE:
+                case OPCODE_JUMP_IF_FALSE:
+                case OPCODE_HALT:
+                    return 0;
             }
-            return 0;
+            throw new IllegalArgumentException("unsupported opcode: " + opcode);
         }
 
 
