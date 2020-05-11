@@ -11,7 +11,8 @@ public class IntCodeComputer {
     static final int OPCODE_HALT = 99;
     static final int POSITION_MODE = 0;
     static final int IMMEDIATE_MODE = 1;
-    static final int INPUT_IS_ALWAYS_THE_SAME = 1;;
+    static final int INPUT_IS_ALWAYS_THE_SAME = 1;
+    ;
     private final int _inputValue;
 
     boolean _verbose = false;
@@ -19,6 +20,7 @@ public class IntCodeComputer {
     public IntCodeComputer() {
         _inputValue = INPUT_IS_ALWAYS_THE_SAME;
     }
+
     public IntCodeComputer(int inputValue) {
         _inputValue = inputValue;
     }
@@ -44,15 +46,32 @@ public class IntCodeComputer {
             if (_verbose) System.out.println(instruction.toString());
 
             switch (instruction._opcode) {
-                case OPCODE_HALT: return utils.convertIntArrayToCommaSeparatedString(positions);
-                case OPCODE_JUMP_IF_TRUE: instructionPointer = performJumpIfTrue(instruction, instructionPointer); break;
-                case OPCODE_JUMP_IF_FALSE: instructionPointer = performJumpIfFalse(instruction, instructionPointer); break;
-                case OPCODE_EQUALS: performEquals(positions, instruction); break;
-                case OPCODE_LESS_THAN: performLessThan(positions, instruction); break;
-                case OPCODE_MULTIPLY: performMultiply(positions, instruction); break;
-                case OPCODE_ADD: performAdd(positions, instruction); break;
-                case OPCODE_INPUT: performInput(positions, instruction); break;
-                case OPCODE_OUTPUT: output.append(performOutput(positions, instruction)); break;
+                case OPCODE_HALT:
+                    return utils.convertIntArrayToCommaSeparatedString(positions);
+                case OPCODE_JUMP_IF_TRUE:
+                    instructionPointer = performJumpIfTrue(instruction, instructionPointer);
+                    break;
+                case OPCODE_JUMP_IF_FALSE:
+                    instructionPointer = performJumpIfFalse(instruction, instructionPointer);
+                    break;
+                case OPCODE_EQUALS:
+                    performEquals(positions, instruction);
+                    break;
+                case OPCODE_LESS_THAN:
+                    performLessThan(positions, instruction);
+                    break;
+                case OPCODE_MULTIPLY:
+                    performMultiply(positions, instruction);
+                    break;
+                case OPCODE_ADD:
+                    performAdd(positions, instruction);
+                    break;
+                case OPCODE_INPUT:
+                    performInput(positions, instruction);
+                    break;
+                case OPCODE_OUTPUT:
+                    output.append(performOutput(positions, instruction));
+                    break;
             }
 
             if (_verbose) {
@@ -146,11 +165,23 @@ public class IntCodeComputer {
         if (opcode == OPCODE_EQUALS ||
                 opcode == OPCODE_LESS_THAN ||
                 opcode == OPCODE_MULTIPLY ||
-                opcode == OPCODE_ADD ||
-                opcode == OPCODE_JUMP_IF_TRUE ||
-                opcode == OPCODE_JUMP_IF_FALSE) {
+                opcode == OPCODE_ADD) {
             if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
                 righthand = positions[parameter2];
+            } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
+                righthand = parameter2;
+            }
+        } else if (opcode == OPCODE_JUMP_IF_TRUE ||
+                opcode == OPCODE_JUMP_IF_FALSE) {
+            //TODO - jump commands that short-circuit should not try to grab an invalid position
+            // For now, doing a try catch but it should really not evaluate the second param until
+            // that second param is actually needed
+            if (mode2ndParam == IntCodeComputer.POSITION_MODE) {
+                try {
+                    righthand = positions[parameter2];
+                } catch (Exception e) {
+                    righthand = -99;
+                }
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                 righthand = parameter2;
             }

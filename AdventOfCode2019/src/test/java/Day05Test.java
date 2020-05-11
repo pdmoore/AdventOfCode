@@ -91,8 +91,8 @@ public class Day05Test {
 
     @Test
     public void Opcode_JumpIfTrue_PositionMode_firstParamIsZero_MinimalProgram() {
-        String input = "5,3,99,0";
-        String expected = "5,3,99,0";
+        String input = "5,4,3,99,0";
+        String expected = "5,4,3,99,0";
         IntCodeComputer sut = new IntCodeComputer();
         String actual = sut.executeProgram(input);
         assertEquals(expected, actual);
