@@ -185,6 +185,8 @@ public class IntCodeComputer {
             } else if (mode2ndParam == IntCodeComputer.IMMEDIATE_MODE) {
                 righthand = parameter2;
             }
+        } else if (opcode == OPCODE_INPUT) {
+            righthand = -111;
         }
 
         if (opcode == IntCodeComputer.OPCODE_INPUT) {
@@ -250,11 +252,11 @@ public class IntCodeComputer {
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append(_opcode);
-            sb.append(":");
+            sb.append(": p1=");
             sb.append(_parameter1);
-            sb.append(",");
+            sb.append(", p2=");
             sb.append(_parameter2);
-            sb.append(" - ");
+            sb.append(" - write:");
             sb.append(_writeToIndex);
 
             return sb.toString();
