@@ -46,8 +46,6 @@ public class IntCodeComputer {
             if (_verbose) System.out.println(instruction.toString());
 
 
-            // TODO - if instructionpointer is set by JUMP command, it should not
-            // be updated at the end of the loop!
             switch (instruction._opcode) {
                 case OPCODE_HALT:
                     return utils.convertIntArrayToCommaSeparatedString(positions);
