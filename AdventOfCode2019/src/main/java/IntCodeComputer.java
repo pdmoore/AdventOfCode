@@ -12,7 +12,7 @@ public class IntCodeComputer {
     static final int POSITION_MODE = 0;
     static final int IMMEDIATE_MODE = 1;
     static final int INPUT_IS_ALWAYS_THE_SAME = 1;
-    ;
+
     private final int _inputValue;
 
     boolean _verbose = false;
