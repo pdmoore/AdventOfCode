@@ -95,7 +95,7 @@ public class day01Tests {
                 masses.add(i);
             }
         } catch (Exception err) {
-            err.printStackTrace();
+            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
             throw new RuntimeException("error while processing " + puzzleInputFile);
         }
         return masses;
