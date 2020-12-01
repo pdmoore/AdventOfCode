@@ -10,12 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day01Tests {
 
-    /*
-- refactor
-- utils
-- hint as to what the path should be for the file!
-     */
-
     @Test
     public void part1_example() {
         List<Integer> input = Arrays.asList(new Integer[]
@@ -36,6 +30,8 @@ public class day01Tests {
         assertEquals(241861950, actual);
     }
 
+    // Refactor to have a single method, with a 2 or 3 indicating how many to sum
+    // the loop goes from 0 to size minus (2 or 3)
     private int solveForTwoEntries(List<Integer> input) {
         for (int i = 0; i < input.size(); i++) {
             for (int j = i + 1; j < input.size(); j++) {
@@ -48,7 +44,6 @@ public class day01Tests {
 
         return 0;
     }
-
 
     private int solveForThreeEntries(List<Integer> input) {
         for (int i = 0; i < input.size(); i++) {
