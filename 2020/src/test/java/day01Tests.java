@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,26 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class day01Tests {
 
     /*
-- bigint?
 - refactor
 - utils
 - hint as to what the path should be for the file!
-
      */
-
 
     @Test
     public void part1_example() {
         List<Integer> input = Arrays.asList(new Integer[]
-                {
-                        1721,
-                        979,
-                        366,
-                        299,
-                        675,
-                        1456});
+                { 1721, 979, 366, 299, 675, 1456});
 
-        int actual = solve(input);
+        int actual = solveForTwoEntries(input);
 
         assertEquals(514579, actual);
     }
@@ -39,20 +29,28 @@ public class day01Tests {
     @Test
     public void part2_example() {
         List<Integer> input = Arrays.asList(new Integer[]
-                {
-                        1721,
-                        979,
-                        366,
-                        299,
-                        675,
-                        1456});
+                { 1721, 979, 366, 299, 675, 1456});
 
-        int actual = solvePart2(input);
+        int actual = solveForThreeEntries(input);
 
         assertEquals(241861950, actual);
     }
 
-    private int solvePart2(List<Integer> input) {
+    private int solveForTwoEntries(List<Integer> input) {
+        for (int i = 0; i < input.size(); i++) {
+            for (int j = i + 1; j < input.size(); j++) {
+                int sum = input.get(i) + input.get(j);
+                if (2020 == sum) {
+                    return input.get(i) * input.get(j);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    private int solveForThreeEntries(List<Integer> input) {
         for (int i = 0; i < input.size(); i++) {
             for (int j = i + 1; j < input.size(); j++) {
                 for (int k = j + 1; k < input.size(); k++) {
@@ -68,12 +66,11 @@ public class day01Tests {
         return 0;
     }
 
-
     @Test
     public void part1_solution() {
         List<Integer> input = fileToIntegerList("./data/day01-part01");
 
-        int actual = solve(input);
+        int actual = solveForTwoEntries(input);
 
         assertEquals(802011, actual);
     }
@@ -82,23 +79,9 @@ public class day01Tests {
     public void part2_solution() {
         List<Integer> input = fileToIntegerList("./data/day01-part01");
 
-        int actual = solvePart2(input);
+        int actual = solveForThreeEntries(input);
 
         assertEquals(248607374, actual);
-    }
-
-
-    private int solve(List<Integer> input) {
-        for (int i = 0; i < input.size(); i++) {
-            for (int j = i + 1; j < input.size(); j++) {
-                int sum = input.get(i) + input.get(j);
-                if (2020 == sum) {
-                    return input.get(i) * input.get(j);
-                }
-            }
-        }
-
-        return 0;
     }
 
 
