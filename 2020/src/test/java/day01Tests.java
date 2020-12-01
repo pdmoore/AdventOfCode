@@ -68,7 +68,7 @@ public class day01Tests {
 
     @Test
     public void part1_solution() {
-        List<Integer> input = fileToIntegerList("./data/day01-part01");
+        List<Integer> input = Utilities.fileToIntegerList("./data/day01-part01");
 
         int actual = solveForTwoEntries(input);
 
@@ -77,27 +77,10 @@ public class day01Tests {
 
     @Test
     public void part2_solution() {
-        List<Integer> input = fileToIntegerList("./data/day01-part01");
+        List<Integer> input = Utilities.fileToIntegerList("./data/day01-part01");
 
         int actual = solveForThreeEntries(input);
 
         assertEquals(248607374, actual);
-    }
-
-
-    static List<Integer> fileToIntegerList(String puzzleInputFile) {
-        List<Integer> masses = new ArrayList<>();
-        try {
-            File f = new File(puzzleInputFile);
-            Scanner scanner = new Scanner(f);
-            while (scanner.hasNext()) {
-                int i = scanner.nextInt();
-                masses.add(i);
-            }
-        } catch (Exception err) {
-            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
-            throw new RuntimeException("error while processing " + puzzleInputFile);
-        }
-        return masses;
     }
 }
