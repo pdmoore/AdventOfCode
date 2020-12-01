@@ -4,19 +4,33 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Utilities {
-    static List<Integer> fileToIntegerList(String puzzleInputFile) {
-        List<Integer> masses = new ArrayList<>();
+
+    // File contains one integer per line
+    static List<Integer> fileToIntegerList(String pathAndFileName) {
+        List<Integer> integers = new ArrayList<>();
         try {
-            File f = new File(puzzleInputFile);
+            File f = new File(pathAndFileName);
             Scanner scanner = new Scanner(f);
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
-                masses.add(i);
+                integers.add(i);
             }
         } catch (Exception err) {
             System.out.println("File not found in this directory " + System.getProperty("user.dir"));
-            throw new RuntimeException("error while processing " + puzzleInputFile);
+            throw new RuntimeException("error while processing " + pathAndFileName);
         }
-        return masses;
+        return integers;
     }
+
+
+    // AoC17 has
+    // List<List<Integer>> readFileAsListOfListOfIntegers(String fileName)
+    // AoC18 has
+    // static List<String> getFileContentsAsStrings(String filename)
+    // static String fileAsString(String filename)
+    // public static char[][] convertInputToMap(List<String> inputAsStrings)
+    // AoC19 has
+    // public static String fileAsString(String filenameWithPath)
+    // public static String convertIntArrayToCommaSeparatedString(int[] ints)
+    // public static int[] convertCommaSeparatedStringToIntArray(String input)
 }
