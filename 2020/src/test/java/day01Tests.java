@@ -24,13 +24,13 @@ public class day01Tests {
     @Test
     public void part1_example() {
         List<Integer> input = Arrays.asList(new Integer[]
-        {
-                1721,
-                979,
-                366,
-                299,
-                675,
-                1456});
+                {
+                        1721,
+                        979,
+                        366,
+                        299,
+                        675,
+                        1456});
 
         int actual = solve(input);
 
@@ -38,13 +38,12 @@ public class day01Tests {
     }
 
     @Test
-    @Disabled
     public void part1_solution() {
-//        List<Integer> input = fileToIntegerList("../data/day01-part01.txt);
+        List<Integer> input = fileToIntegerList("./data/day01-part01");
 
-//        int actual = solve(input);
+        int actual = solve(input);
 
-//        assertEquals(-99, actual);
+        assertEquals(802011, actual);
     }
 
 
@@ -62,17 +61,16 @@ public class day01Tests {
     }
 
 
-
     static List<Integer> fileToIntegerList(String puzzleInputFile) {
         List<Integer> masses = new ArrayList<>();
-        try{
+        try {
             File f = new File(puzzleInputFile);
             Scanner scanner = new Scanner(f);
-            while (scanner.hasNext()){
+            while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 masses.add(i);
             }
-        }catch(Exception err){
+        } catch (Exception err) {
             err.printStackTrace();
             throw new RuntimeException("error while processing " + puzzleInputFile);
         }
