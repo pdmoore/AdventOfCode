@@ -1,10 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,7 +10,7 @@ public class day01Tests {
     @Test
     public void part1_example() {
         List<Integer> input = Arrays.asList(new Integer[]
-                { 1721, 979, 366, 299, 675, 1456});
+                {1721, 979, 366, 299, 675, 1456});
 
         int actual = solveForTwoEntries(input);
 
@@ -23,7 +20,7 @@ public class day01Tests {
     @Test
     public void part2_example() {
         List<Integer> input = Arrays.asList(new Integer[]
-                { 1721, 979, 366, 299, 675, 1456});
+                {1721, 979, 366, 299, 675, 1456});
 
         int actual = solveForThreeEntries(input);
 
