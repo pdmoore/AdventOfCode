@@ -63,11 +63,7 @@ public class day02Tests {
         boolean firstMatch = letter.equals(password.charAt(requiredPosition1 - 1));
         boolean secondMatch = letter.equals(password.charAt(requiredPosition2 - 1));
 
-        if (firstMatch) {
-            return !secondMatch;
-        } else {
-            return secondMatch;
-        }
+        return firstMatch ^ secondMatch;
     }
 
 
