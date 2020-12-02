@@ -5,12 +5,6 @@ import java.util.List;
 
 public class day02Tests {
 
-    /*
-1-3 a: abcde is valid: position 1 contains a and position 3 does not.
-1-3 b: cdefg is invalid: neither position 1 nor position 3 contains b.
-2-9 c: ccccccccc is invalid: both position 2 and position 9 contain c.
-     */
-
     @Test
     public void validSledPasswords() {
         Assertions.assertTrue(validateSledPassword("1-3 a: abcde"));
@@ -23,17 +17,17 @@ public class day02Tests {
     }
 
     @Test
-    public void validTobaggonPasswords() {
-        Assertions.assertTrue(validateTobaggonPassword("1-3 a: abcde"));
+    public void validTobogganPasswords() {
+        Assertions.assertTrue(validateTobogganPassword("1-3 a: abcde"));
     }
 
     @Test
-    public void invalidTobaggonPasswords() {
-        Assertions.assertFalse(validateTobaggonPassword("1-3 b: cdefg"));
-        Assertions.assertFalse(validateTobaggonPassword("2-9 c: ccccccccc"));
+    public void invalidTobogganPasswords() {
+        Assertions.assertFalse(validateTobogganPassword("1-3 b: cdefg"));
+        Assertions.assertFalse(validateTobogganPassword("2-9 c: ccccccccc"));
     }
 
-    private boolean validateTobaggonPassword(String input) {
+    private boolean validateTobogganPassword(String input) {
         String[] elements = input.split(" ");
         Character letter = elements[1].charAt(0);
 
@@ -79,12 +73,12 @@ public class day02Tests {
 
         for (String line :
                 passwordLines) {
-            if (validateTobaggonPassword(line)) {
+            if (validateTobogganPassword(line)) {
                 actual++;
             }
         }
 
-        Assertions.assertEquals(-99, actual);
+        Assertions.assertEquals(428, actual);
     }
 
     private boolean validateSledPassword(String input) {
