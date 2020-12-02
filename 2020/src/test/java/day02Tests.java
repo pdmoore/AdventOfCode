@@ -27,28 +27,6 @@ public class day02Tests {
         Assertions.assertFalse(validateTobogganPassword("2-9 c: ccccccccc"));
     }
 
-    private boolean validateTobogganPassword(String input) {
-        String[] elements = input.split(" ");
-        Character letter = elements[1].charAt(0);
-
-        String positions = elements[0];
-        String[] bounds = positions.split("-");
-        int requiredPosition1 = Integer.parseInt(bounds[0]);
-        int requiredPosition2 = Integer.parseInt(bounds[1]);
-
-        char firstChar = elements[2].charAt(requiredPosition1 - 1);
-        boolean firstMatch = letter.equals(firstChar);
-        char secondChar = elements[2].charAt(requiredPosition2 - 1);
-        boolean secondMatch = letter.equals(secondChar);
-
-        if (firstMatch) {
-            return !secondMatch;
-        } else {
-            return secondMatch;
-        }
-    }
-
-
     @Test
     public void day02_part01() {
         List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
@@ -80,6 +58,26 @@ public class day02Tests {
 
         Assertions.assertEquals(428, actual);
     }
+
+    private boolean validateTobogganPassword(String input) {
+        String[] elements = input.split(" ");
+        Character letter = elements[1].charAt(0);
+
+        String[] bounds = elements[0].split("-");
+        int requiredPosition1 = Integer.parseInt(bounds[0]);
+        int requiredPosition2 = Integer.parseInt(bounds[1]);
+
+        String password = elements[2];
+        boolean firstMatch = letter.equals(password.charAt(requiredPosition1 - 1));
+        boolean secondMatch = letter.equals(password.charAt(requiredPosition2 - 1));
+
+        if (firstMatch) {
+            return !secondMatch;
+        } else {
+            return secondMatch;
+        }
+    }
+
 
     private boolean validateSledPassword(String input) {
         String[] elements = input.split(" ");
