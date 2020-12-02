@@ -22,6 +22,21 @@ public class Utilities {
         return integers;
     }
 
+    static List<String> getFileContentsAsStrings(String filename) {
+        List<String> lines = new ArrayList<>();
+        try {
+            File f = new File(filename);
+            Scanner scanner = new Scanner(f);
+
+            while (scanner.hasNext()) {
+                lines.add(scanner.nextLine());
+            }
+        } catch(Exception err){
+            err.printStackTrace();
+        }
+        return lines;
+    }
+
 
     // AoC17 has
     // List<List<Integer>> readFileAsListOfListOfIntegers(String fileName)

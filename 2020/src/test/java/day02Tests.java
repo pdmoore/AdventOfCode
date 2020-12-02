@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class day02Tests {
 
     /*
@@ -27,6 +29,24 @@ INVALID
     @Test
     public void invalidPasswords() {
         Assertions.assertFalse(validatePassword("1-3 b: cdefg"));
+    }
+
+    @Test
+    public void day02_part01() {
+        // read file as list of strings
+        List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
+
+        // loop through strings and count the Valid==true
+        int actual = 0;
+
+        for (String line :
+                passwordLines) {
+            if (validatePassword(line)) {
+                actual++;
+            }
+        }
+
+        Assertions.assertEquals(396, actual);
     }
 
     private boolean validatePassword(String input) {
