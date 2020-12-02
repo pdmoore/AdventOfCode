@@ -54,12 +54,12 @@ public class day02Tests {
     private boolean validateTobogganPassword(String input) {
         String[] elements = input.split(" ");
         Character letter = elements[1].charAt(0);
+        String password = elements[2];
 
         String[] bounds = elements[0].split("-");
         int requiredPosition1 = Integer.parseInt(bounds[0]);
         int requiredPosition2 = Integer.parseInt(bounds[1]);
 
-        String password = elements[2];
         boolean firstMatch = letter.equals(password.charAt(requiredPosition1 - 1));
         boolean secondMatch = letter.equals(password.charAt(requiredPosition2 - 1));
 
@@ -73,17 +73,16 @@ public class day02Tests {
 
     private boolean validateSledPassword(String input) {
         String[] elements = input.split(" ");
-
         Character letter = elements[1].charAt(0);
         String password = elements[2];
-
-        long countOfLetter = password.chars()
-                .filter(c -> c == letter)
-                .count();
 
         String[] bounds = elements[0].split("-");
         int lowerBound = Integer.parseInt(bounds[0]);
         int upperBound = Integer.parseInt(bounds[1]);
+
+        long countOfLetter = password.chars()
+                .filter(c -> c == letter)
+                .count();
 
         return lowerBound <= countOfLetter && countOfLetter <= upperBound;
     }
