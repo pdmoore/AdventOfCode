@@ -33,8 +33,6 @@ public class day02Tests {
         Assertions.assertFalse(validateTobaggonPassword("2-9 c: ccccccccc"));
     }
 
-
-
     private boolean validateTobaggonPassword(String input) {
         String[] elements = input.split(" ");
         Character letter = elements[1].charAt(0);
@@ -71,6 +69,22 @@ public class day02Tests {
         }
 
         Assertions.assertEquals(396, actual);
+    }
+
+    @Test
+    public void day02_part02() {
+        List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
+
+        int actual = 0;
+
+        for (String line :
+                passwordLines) {
+            if (validateTobaggonPassword(line)) {
+                actual++;
+            }
+        }
+
+        Assertions.assertEquals(-99, actual);
     }
 
     private boolean validateSledPassword(String input) {
