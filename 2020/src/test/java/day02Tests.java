@@ -39,15 +39,8 @@ public class day02Tests {
     @Test
     public void day02_part02() {
         List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
-
-        int actual = 0;
-
-        for (String line :
-                passwordLines) {
-            if (validateTobogganPassword(line)) {
-                actual++;
-            }
-        }
+        
+        int actual = (int) passwordLines.stream().filter(b -> validateTobogganPassword(b)).count();
 
         Assertions.assertEquals(428, actual);
     }
