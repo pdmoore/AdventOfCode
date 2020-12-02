@@ -31,7 +31,10 @@ public class day02Tests {
     public void day02_part01() {
         List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
 
-        int actual = (int) passwordLines.stream().filter(b -> validateSledPassword(b)).count();
+        int actual = (int) passwordLines
+                .stream()
+                .filter(b -> validateSledPassword(b))
+                .count();
 
         Assertions.assertEquals(396, actual);
     }
@@ -40,7 +43,10 @@ public class day02Tests {
     public void day02_part02() {
         List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
         
-        int actual = (int) passwordLines.stream().filter(b -> validateTobogganPassword(b)).count();
+        int actual = (int) passwordLines
+                .stream()
+                .filter(b -> validateTobogganPassword(b))
+                .count();
 
         Assertions.assertEquals(428, actual);
     }
