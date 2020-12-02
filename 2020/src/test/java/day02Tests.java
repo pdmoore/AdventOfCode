@@ -82,19 +82,17 @@ public class day02Tests {
     private boolean validateSledPassword(String input) {
         String[] elements = input.split(" ");
 
-        String letter = elements[1].substring(0,1);
+        Character letter = elements[1].charAt(0);
+        String password = elements[2];
 
-        String removedLetter = elements[2].replaceAll(letter, "");
+        long countOfLetter = password.chars()
+                .filter(c -> c == letter)
+                .count();
 
-        int occurencesOfLetter = elements[2].length() - removedLetter.length();
-
-        String counts = elements[0];
-        String[] bounds = counts.split("-");
+        String[] bounds = elements[0].split("-");
         int lowerBound = Integer.parseInt(bounds[0]);
         int upperBound = Integer.parseInt(bounds[1]);
 
-        return lowerBound <= occurencesOfLetter && occurencesOfLetter <= upperBound;
+        return lowerBound <= countOfLetter && countOfLetter <= upperBound;
     }
-
-
 }
