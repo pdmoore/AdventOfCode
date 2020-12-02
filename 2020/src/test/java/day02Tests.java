@@ -31,14 +31,7 @@ public class day02Tests {
     public void day02_part01() {
         List<String> passwordLines = Utilities.getFileContentsAsStrings("./data/day02-part01");
 
-        int actual = 0;
-
-        for (String line :
-                passwordLines) {
-            if (validateSledPassword(line)) {
-                actual++;
-            }
-        }
+        int actual = (int) passwordLines.stream().filter(b -> validateSledPassword(b)).count();
 
         Assertions.assertEquals(396, actual);
     }
