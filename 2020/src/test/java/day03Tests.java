@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ public class day03Tests {
     @Test
     public void part1_example() {
         List<String> slope = new ArrayList<>();
-
         slope.add("..##.......");
         slope.add("#...#...#..");
         slope.add(".#....#..#.");
@@ -36,6 +34,7 @@ public class day03Tests {
         slope.add("#.##...#...");
         slope.add("#...##....#");
         slope.add(".#..#...#.#");
+
         int treeCount = toboggan(slope, 3, 1);
 
         assertEquals(7, treeCount);
@@ -64,7 +63,6 @@ public class day03Tests {
         slope.add("#...##....#");
         slope.add(".#..#...#.#");
 
-
         int actual = toboggan(slope, 1, 1) *
                 toboggan(slope, 3, 1) *
                 toboggan(slope, 5, 1) *
@@ -87,27 +85,27 @@ public class day03Tests {
         BigInteger expected = new BigInteger("3064612320");
 
         assertEquals(expected, actual1.multiply(actual2).multiply(actual3).multiply(actual4).multiply(actual5));
-
     }
-
 
     private int toboggan(List<String> slope, int deltaX, int deltaY) {
         int treeCount = 0;
         int x = 0;
         int y = 0;
+        int slopeWidth = slope.get(0).length();
 
         while (y < slope.size()) {
-            x += deltaX;
-            if (x >= slope.get(y).length()) {
-                x -= slope.get(y).length();
-            }
-
             y += deltaY;
             if (y >= slope.size()) {
                 break;
             }
+            String currentRow = slope.get(y);
 
-            if (slope.get(y).charAt(x) == '#') {
+            x += deltaX;
+            if (x >= slopeWidth) {
+                x -= slopeWidth;
+            }
+
+            if (currentRow.charAt(x) == '#') {
                 treeCount++;
             }
         }
