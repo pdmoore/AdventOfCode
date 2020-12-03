@@ -7,43 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day03Tests {
 
-
-
-    /*
-
-
-
-Sample Input
-
-..##.......
-#...#...#..
-.#....#..#.
-..#.#...#.#
-.#...##..#.
-..#.##.....
-.#.#.#....#
-.#........#
-#.##...#...
-#...##....#
-.#..#...#.#
-
-right 3, down 1,
-until bottom is reached
-
-when right edge is exceeded, just rewrap to 0
-
-
-"./data/day03-part01"
-
-
-- read a line and get a char[] out of it
-- all the lines are stacked
-- start at top and move x + 3, y + 1
-- if y > size return count
-- if (this cell == #) treeCount++
-
-     */
-
     @Test
     public void part1_simplestCase() {
 
@@ -51,7 +14,7 @@ when right edge is exceeded, just rewrap to 0
         slope.add("..##.......");
         slope.add("#...#...#..");
 
-        int treeCount = toboggan(slope);
+        int treeCount = toboggan(slope, 3, 1);
 
         assertEquals(0, treeCount);
     }
@@ -71,7 +34,7 @@ when right edge is exceeded, just rewrap to 0
         slope.add("#.##...#...");
         slope.add("#...##....#");
         slope.add(".#..#...#.#");
-        int treeCount = toboggan(slope);
+        int treeCount = toboggan(slope, 3, 1);
 
         assertEquals(7, treeCount);
     }
@@ -80,27 +43,25 @@ when right edge is exceeded, just rewrap to 0
     @Test
     public void day3_part1() {
         List<String> slope = Utilities.fileToStringList("./data/day03-part01");
-        int treeCount = toboggan(slope);
+        int treeCount = toboggan(slope, 3, 1);
 
         assertEquals(162, treeCount);
     }
 
 
 
-
-
-    private int toboggan(List<String> slope) {
+    private int toboggan(List<String> slope, int deltaX, int deltaY) {
         int treeCount = 0;
         int x = 0;
         int y = 0;
 
         while (y < slope.size()) {
-            x += 3;
+            x += deltaX;
             if (x >= slope.get(y).length()) {
                 x -= slope.get(y).length();
             }
 
-            y += 1;
+            y += deltaY;
             if (y >= slope.size()) {
                 break;
             }
