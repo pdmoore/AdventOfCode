@@ -98,14 +98,10 @@ public class day03Tests {
             if (y >= slope.size()) {
                 break;
             }
-            String currentRow = slope.get(y);
 
-            x += deltaX;
-            if (x >= slopeWidth) {
-                x -= slopeWidth;
-            }
+            x = (x + deltaX) % slopeWidth;
 
-            if (currentRow.charAt(x) == '#') {
+            if (slope.get(y).charAt(x) == '#') {
                 treeCount++;
             }
         }
