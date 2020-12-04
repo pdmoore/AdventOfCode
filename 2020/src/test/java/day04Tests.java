@@ -3,8 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class day04Tests {
     /*
@@ -40,8 +39,6 @@ The first passport is valid - all eight fields are present. The second passport 
 The third passport is interesting; the only missing field is cid, so it looks like data from North Pole Credentials, not a passport at all!
 Surely, nobody would mind if you made the system temporarily ignore missing cid fields. Treat this "passport" as valid.
 
-
-
 The fourth passport is missing two fields, cid and byr. Missing cid is fine, but missing any other field is not, so this passport is invalid.
 
 ..part 1 has 8 keys, or 7 keys but not the CID
@@ -55,20 +52,58 @@ List<String> slope = Utilities.fileToStringList("./data/day04-part01");
 
     @Test
     public void part1_validPassport_Has8Keys() {
-
         List<String> input = new ArrayList<>();
         input.add("ecl:gry pid:860033327 eyr:2020 hcl:#fffffd");
         input.add("byr:1937 iyr:2017 cid:147 hgt:183cm");
         input.add("");
 
         String passportString = passportOnOneLine(input);
-
-
         Passport p = new Passport(passportString);
 
         assertTrue(p.IsValid());
-
     }
+
+    @Test
+    public void part1_invalidPassport() {
+        List<String> input = new ArrayList<>();
+        input.add("iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884");
+        input.add("hcl:#cfa07d byr:1929");
+        input.add("");
+
+        String passportString = passportOnOneLine(input);
+        Passport p = new Passport(passportString);
+
+        assertFalse(p.IsValid());
+    }
+
+    @Test
+    public void part1_validPassport_OnlyMissingCID() {
+        List<String> input = new ArrayList<>();
+        input.add("hcl:#ae17e1 iyr:2013");
+        input.add("eyr:2024");
+        input.add("ecl:brn pid:760753108 byr:1931");
+        input.add("hgt:179cm");
+        input.add("");
+
+        String passportString = passportOnOneLine(input);
+        Passport p = new Passport(passportString);
+
+        assertTrue(p.IsValid());
+    }
+
+    @Test
+    public void part1_invalid_TooFewFields() {
+        List<String> input = new ArrayList<>();
+        input.add("hcl:#cfa07d eyr:2025 pid:166559648");
+        input.add("iyr:2011 ecl:brn hgt:59in");
+        input.add("");
+
+        String passportString = passportOnOneLine(input);
+        Passport p = new Passport(passportString);
+
+        assertFalse(p.IsValid());
+    }
+
 
     private String passportOnOneLine(List<String> input) {
         String result = "";
@@ -91,6 +126,20 @@ List<String> slope = Utilities.fileToStringList("./data/day04-part01");
 
         public boolean IsValid() {
             String[] keyPairs = passportString.split(" ");
+            if (keyPairs.length == 8) {
+                return true;
+            }
+
+            if (keyPairs.length == 7) {
+                for (String keyPair :
+                        keyPairs) {
+                    if (keyPair.contains("cid")) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             return keyPairs.length == 8;
         }
     }
