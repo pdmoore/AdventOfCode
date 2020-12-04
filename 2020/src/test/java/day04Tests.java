@@ -44,9 +44,6 @@ The fourth passport is missing two fields, cid and byr. Missing cid is fine, but
 ..part 1 has 8 keys, or 7 keys but not the CID
 invalid otherwise
 
-
-List<String> slope = Utilities.fileToStringList("./data/day04-part01");
-
      */
 
 
@@ -104,6 +101,47 @@ List<String> slope = Utilities.fileToStringList("./data/day04-part01");
         assertFalse(p.IsValid());
     }
 
+    @Test
+    public void part1_solution() {
+        List<String> rawInput = Utilities.fileToStringList("./data/day04-part01");
+
+        List<Passport> passports = convertInputToPassports(rawInput);
+
+        int validCount = 0;
+        for (Passport p:
+                passports) {
+            if (p.IsValid()) {
+                validCount++;
+            }
+        }
+        assertEquals(279, passports.size());
+        assertEquals(213, validCount);
+    }
+
+    private List<Passport> convertInputToPassports(List<String> input) {
+        List<Passport> passports = new ArrayList<>();
+
+        String passportLine = "";
+        for (String line :
+                input) {
+
+            if (line.isEmpty()) {
+                passports.add(new Passport(passportLine));
+                passportLine = "";
+            } else {
+                passportLine += line;
+                passportLine += " ";
+            }
+        }
+
+        if (!passportLine.isEmpty()) {
+            passports.add(new Passport(passportLine));
+        }
+
+        return passports;
+    }
+
+
 
     private String passportOnOneLine(List<String> input) {
         String result = "";
@@ -140,7 +178,7 @@ List<String> slope = Utilities.fileToStringList("./data/day04-part01");
                 return true;
             }
 
-            return keyPairs.length == 8;
+            return false;
         }
     }
 }
