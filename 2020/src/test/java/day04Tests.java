@@ -115,7 +115,8 @@ invalid otherwise
             }
         }
         assertEquals(279, passports.size());
-        assertEquals(213, validCount);
+//        assertEquals(213, validCount);  // valid passports without field validation
+        assertEquals(147, validCount);
     }
 
     private List<Passport> convertInputToPassports(List<String> input) {
@@ -140,7 +141,6 @@ invalid otherwise
 
         return passports;
     }
-
 
 
     private String passportOnOneLine(List<String> input) {
@@ -182,18 +182,6 @@ invalid otherwise
         }
 
         private boolean validateData(String[] keyPairs) {
-            /*
-byr (Birth Year) - four digits; at least 1920 and at most 2002.
-iyr (Issue Year) - four digits; at least 2010 and at most 2020.
-eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
-hgt (Height) - a number followed by either cm or in:
-If cm, the number must be at least 150 and at most 193.
-If in, the number must be at least 59 and at most 76.
-hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
-ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
-pid (Passport ID) - a nine-digit number, including leading zeroes.
-             */
-
             for (int i = 0; i < keyPairs.length; i++) {
                 String[] field = keyPairs[i].split(":");
                 switch (field[0]) {
@@ -208,7 +196,6 @@ pid (Passport ID) - a nine-digit number, including leading zeroes.
             }
 
             return true;
-
         }
 
         private boolean validateBirthYear(String byr) {
@@ -240,20 +227,12 @@ pid (Passport ID) - a nine-digit number, including leading zeroes.
         private boolean validateHairColor(String hcl) {
             if (hcl.charAt(0) != '#' || hcl.length() != 7) return false;
 
-            System.out.println(hcl);
-
+            // all of the input passed this check
             for (int i = 1; i < hcl.length(); i++) {
                 if (Character.digit(hcl.charAt(i), 16) == -1) {
                     return false;
                 }
             }
-
-
-
-            // confirm each of remaining 6 characters 0-9, a-f
-
-            //        hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
-
 
             return true;
         }
@@ -271,7 +250,6 @@ pid (Passport ID) - a nine-digit number, including leading zeroes.
             return validEyeColors.contains(ecl);
         }
 
-        // Didn't seem to have any input with non-digit pid????
         private boolean validatePassportID(String pid) {
             if (pid.length() != 9) return false;
             String regex = "[0-9]+";
