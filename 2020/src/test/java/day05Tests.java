@@ -57,6 +57,14 @@ public class day05Tests {
         assertEquals(820, actual);
     }
 
+    @Test
+    public void part1_solution() {
+        List<String> passes = Utilities.fileToStringList("./data/day05-part01");
+        int actual = largestSeatIDOf(passes);
+        assertEquals(890, actual);
+    }
+
+
     private int largestSeatIDOf(List<String> passes) {
         int result = 0;
         for (String boardingPass :
