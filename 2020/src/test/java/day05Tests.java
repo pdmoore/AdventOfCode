@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,7 @@ public class day05Tests {
      */
 
 
-//    BFFFBBFRRR: row 70, column 7, seat ID 567.
+    //    BFFFBBFRRR: row 70, column 7, seat ID 567.
 //    FFFBBBFRRR: row 14, column 7, seat ID 119.
 //    BBFFBBFRLL: row 102, column 4, seat ID 820.
     @Test
@@ -62,6 +63,35 @@ public class day05Tests {
         List<String> passes = Utilities.fileToStringList("./data/day05-part01");
         int actual = largestSeatIDOf(passes);
         assertEquals(890, actual);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<String> passes = Utilities.fileToStringList("./data/day05-part01");
+        int result = leftoverSeats(passes);
+        assertEquals(651, result);
+    }
+
+    private int leftoverSeats(List<String> passes) {
+        int largestSeatId = 890;   //could calculate
+        List<Integer> remainingSeatIDs = new ArrayList<>();
+        for (String boardingPass :
+                passes) {
+            remainingSeatIDs.add(seatIdFor(boardingPass));
+        }
+
+        Collections.sort(remainingSeatIDs);
+
+        int previousSeatID = remainingSeatIDs.get(0);
+        for (int i = 1; i < remainingSeatIDs.size(); i++) {
+            int thisSeatID = remainingSeatIDs.get(i);
+            if (thisSeatID - previousSeatID != 1) {
+                return (previousSeatID + 1);
+            }
+            previousSeatID = thisSeatID;
+        }
+
+        return 0;
     }
 
 
