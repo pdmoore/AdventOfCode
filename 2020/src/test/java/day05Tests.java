@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -73,7 +74,6 @@ public class day05Tests {
     }
 
     private int leftoverSeats(List<String> passes) {
-        int largestSeatId = 890;   //could calculate
         List<Integer> remainingSeatIDs = new ArrayList<>();
         for (String boardingPass :
                 passes) {
@@ -94,14 +94,12 @@ public class day05Tests {
         return 0;
     }
 
-
     private int largestSeatIDOf(List<String> passes) {
-        int result = 0;
-        for (String boardingPass :
-                passes) {
-            result = Math.max(result, seatIdFor(boardingPass));
-        }
-        return result;
+        return passes.
+                stream().
+                map(b -> seatIdFor(b)).
+                max(Integer::compare).
+                get();
     }
 
 
