@@ -172,7 +172,6 @@ public class day06Tests {
         List<String> input = new ArrayList<>();
         input.add("ab");
         input.add("ac");
-        input.add("");
 
         int result = commonAnswersOf(input);
         assertEquals(1, result);
@@ -185,7 +184,6 @@ public class day06Tests {
         input.add("a");
         input.add("a");
         input.add("a");
-        input.add("");
 
         int result = commonAnswersOf(input);
         assertEquals(1, result);
@@ -246,21 +244,14 @@ public class day06Tests {
 
 
     private int commonAnswersOf(List<String> input) {
-        if (input.size() == 1) {
-            int i = uniqueAnswersOf(input);
-            return i;
-        }
-
         Set<Character> answers = new TreeSet<Character>();
         String first = input.get(0);
         answers.addAll(uniqueCharactersIn(first));
 
         for (int i = 1; i < input.size(); i++) {
-            if (!input.get(i).isEmpty()) {
-                answers.retainAll(uniqueCharactersIn(input.get(i)));
-                if (answers.isEmpty()) {
-                    return 0;
-                }
+            answers.retainAll(uniqueCharactersIn(input.get(i)));
+            if (answers.isEmpty()) {
+                return 0;
             }
         }
 
