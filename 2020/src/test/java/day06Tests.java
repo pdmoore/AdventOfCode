@@ -260,18 +260,15 @@ public class day06Tests {
         Set<Character> answers = new TreeSet<Character>();
 
         String first = input.get(0);
+        answers.addAll(uniqueCharactersIn(first));
+
         for (int i = 1; i < input.size(); i++) {
 
             if (!input.get(i).isEmpty()) {
 
+                answers.retainAll(uniqueCharactersIn(input.get(i)));
                 if (answers.isEmpty()) {
-                    answers.addAll(uniqueCharactersIn(first));
-                    answers.retainAll(uniqueCharactersIn(input.get(i)));
-                    if (answers.isEmpty()) {
-                        return 0;
-                    }
-                } else {
-                    answers.retainAll(uniqueCharactersIn(input.get(i)));
+                    return 0;
                 }
 
             }
