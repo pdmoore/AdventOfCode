@@ -241,40 +241,28 @@ public class day06Tests {
 
         int result = part2Solution(input);
 
-        // getting result of 3657, 3650 which is too high
-        // eyeballing it all looks good
-
-        assertEquals(-99, result);
+        assertEquals(3640, result);
     }
 
 
     private int commonAnswersOf(List<String> input) {
-//        System.out.println(input);
-
-        // when only one person answers, just collect their responses
         if (input.size() == 1) {
             int i = uniqueAnswersOf(input);
             return i;
         }
 
         Set<Character> answers = new TreeSet<Character>();
-
         String first = input.get(0);
         answers.addAll(uniqueCharactersIn(first));
 
         for (int i = 1; i < input.size(); i++) {
-
             if (!input.get(i).isEmpty()) {
-
                 answers.retainAll(uniqueCharactersIn(input.get(i)));
                 if (answers.isEmpty()) {
                     return 0;
                 }
-
             }
         }
-
-//        System.out.println("answer: " +  answers + "    " + answers.size());
 
         return answers.size();
     }
