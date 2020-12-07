@@ -81,6 +81,19 @@ split on comma
         return input;
     }
 
+    private List<String> createSampleInput_part2() {
+        List<String> input = new ArrayList<>();
+        input.add("shiny gold bags contain 2 dark red bags.");
+        input.add("dark red bags contain 2 dark orange bags.");
+        input.add("dark orange bags contain 2 dark yellow bags.");
+        input.add("dark yellow bags contain 2 dark green bags.");
+        input.add("dark green bags contain 2 dark blue bags.");
+        input.add("dark blue bags contain 2 dark violet bags.");
+        input.add("dark violet bags contain no other bags.");
+        return input;
+    }
+
+
     @Test
     public void part1_example_solution() {
         List<String> input = createSampleInput();
@@ -103,25 +116,35 @@ split on comma
     @Test
     public void part2_example1() {
         List<String> input = createSampleInput();
-        Map<String, List<String>> bagMap  = buildMap(input);
+        Map<String, List<String>> bagMap = buildMap(input);
 
         String target = "shiny gold";
-
         int actual = countBagsContainedBy(bagMap, target);
+
         assertEquals(32, actual);
+    }
+
+    @Test
+    public void part2_example2() {
+        List<String> input = createSampleInput_part2();
+        Map<String, List<String>> bagMap = buildMap(input);
+
+        String target = "shiny gold";
+        int actual = countBagsContainedBy(bagMap, target);
+
+        assertEquals(126, actual);
     }
 
     @Test
     public void part2_solution() {
         List<String> input = Utilities.fileToStringList("./data/day07-part01");
-        Map<String, List<String>> bagMap  = buildMap(input);
+        Map<String, List<String>> bagMap = buildMap(input);
 
         String target = "shiny gold";
 
         int actual = countBagsContainedBy(bagMap, target);
-        assertEquals(0, actual);
+        assertEquals(4165, actual);
     }
-
 
 
     private int countBagsContainedBy(Map<String, List<String>> bagMap, String target) {
@@ -132,8 +155,8 @@ split on comma
 
     private int countBagsContainedBy(int bagCount, Map<String, List<String>> bagMap, List<String> values) {
 
-        for (String value:
-               values) {
+        for (String value :
+                values) {
             int x = value.indexOf(" ");
             String valueAsKey = justTheKey(value);
             int countOfValue = Integer.parseInt(value.substring(0, x));
@@ -150,7 +173,7 @@ split on comma
 
 
     private int findBagsContaining(List<String> input, String target) {
-        Map<String, List<String>> bagMap  = buildMap(input);
+        Map<String, List<String>> bagMap = buildMap(input);
 
         int bagsContainingTarget = 0;
 
@@ -253,9 +276,6 @@ split on comma
 
         return result;
     }
-
-
-
 
 
 }
