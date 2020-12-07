@@ -147,6 +147,8 @@ split on comma
     }
 
 
+//-----------------------------
+
     private int countBagsContainedBy(Map<String, List<String>> bagMap, String target) {
         List<String> keysWithin = bagMap.get(target);
 
@@ -167,10 +169,6 @@ split on comma
 
         return bagCount;
     }
-
-
-//-----------------------------
-
 
     private int findBagsContaining(List<String> input, String target) {
         Map<String, List<String>> bagMap = buildMap(input);
@@ -209,7 +207,7 @@ split on comma
         for (String valueIsNowKey :
                 values) {
 
-            // NEED TO REMOVE THE NUMBERS FROM THE VALUE AT THIS POINT
+            // value is the number and type color: 2 vibrant plum bags
             String keyFromValue = justTheKey(valueIsNowKey);
 
             if (bagSearchFindsTarget(bagMap, keyFromValue, target)) {
@@ -276,6 +274,4 @@ split on comma
 
         return result;
     }
-
-
 }
