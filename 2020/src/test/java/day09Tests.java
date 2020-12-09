@@ -67,7 +67,35 @@ for each remainder number - loop through preamble list and check for a + b, if f
                 assertEquals(BigInteger.valueOf(217430975), x);
             }
         }
+    }
 
+    @Test
+    public void part2_example() {
+        List<BigInteger> input = new ArrayList<>();
+        input.add(BigInteger.valueOf(35));
+        input.add(BigInteger.valueOf(20));
+        input.add(BigInteger.valueOf(15));
+        input.add(BigInteger.valueOf(25));
+        input.add(BigInteger.valueOf(47));
+        input.add(BigInteger.valueOf(40));
+        input.add(BigInteger.valueOf(62));
+        input.add(BigInteger.valueOf(55));
+        input.add(BigInteger.valueOf(65));
+        input.add(BigInteger.valueOf(95));
+        input.add(BigInteger.valueOf(102));
+        input.add(BigInteger.valueOf(117));
+        input.add(BigInteger.valueOf(150));
+        input.add(BigInteger.valueOf(182));
+        input.add(BigInteger.valueOf(127));
+        input.add(BigInteger.valueOf(219));
+        input.add(BigInteger.valueOf(299));
+        input.add(BigInteger.valueOf(277));
+        input.add(BigInteger.valueOf(309));
+        input.add(BigInteger.valueOf(576));
+
+        //TODO stopped here on Tuesday night - see not in findWeakness
+        int actual = findWeakness(input, 127);
+        assertEquals(62, actual);
     }
 
 
@@ -88,8 +116,16 @@ for each remainder number - loop through preamble list and check for a + b, if f
     }
 
 
-    private List<Integer> loadPreamble(List<Integer> input, int i) {
-        return input.subList(0, i);
+    private int findWeakness(List<BigInteger> input, int target) {
+        // for i = 0 to size
+        // sum i plus the next n numbers
+        // if the sum equals, stop and return i + last element
+        // if sum > target, stop and try next i starting point
+
+
+
+        return 0;
     }
+
 
 }
