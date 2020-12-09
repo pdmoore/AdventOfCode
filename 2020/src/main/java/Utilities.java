@@ -1,4 +1,5 @@
 import java.io.File;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,6 +27,23 @@ public class Utilities {
         return integers;
     }
 
+    public static List<BigInteger> fileToBigIntegerList(String pathAndFileName) {
+        List<BigInteger> integers = new ArrayList<>();
+        try {
+            File f = new File(pathAndFileName);
+            Scanner scanner = new Scanner(f);
+            while (scanner.hasNext()) {
+                integers.add(scanner.nextBigInteger());
+            }
+            scanner.close();
+        } catch (Exception err) {
+            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
+            throw new RuntimeException("error while processing " + pathAndFileName);
+        }
+        return integers;
+    }
+
+
     static List<String> fileToStringList(String pathAndFileName) {
         List<String> lines = new ArrayList<>();
         try {
@@ -42,6 +60,7 @@ public class Utilities {
         }
         return lines;
     }
+
 
 
     // AoC17 has
