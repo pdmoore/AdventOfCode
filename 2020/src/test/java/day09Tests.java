@@ -98,17 +98,12 @@ for each remainder number - loop through preamble list and check for a + b, if f
         assertEquals(BigInteger.valueOf(62), actual);
     }
 
-    // Tried twice and answers were too low
-    // TODO - Why is the example coming up with an answer that is off?
     @Test
-    @Disabled
     public void part2_solution() {
         List<BigInteger> input = Utilities.fileToBigIntegerList("./data/day09-part01");
         BigInteger actual = findWeakness(input, BigInteger.valueOf(217430975));
-        assertEquals(BigInteger.valueOf(27244348), actual);
+        assertEquals(BigInteger.valueOf(28509180), actual);
     }
-
-
 
 // ------------------
 
@@ -126,26 +121,29 @@ for each remainder number - loop through preamble list and check for a + b, if f
         return false;
     }
 
-
-    // TODO the idea seems legit, but the implementation is off
-    // when the target and sum matches, the result isn't correct
-    // TODO the sum.compareTo doesn't even work
     private BigInteger findWeakness(List<BigInteger> input, BigInteger target) {
         BigInteger sum = BigInteger.valueOf(0);
         for (int smallest = 0; smallest < input.size(); smallest++) {
             sum = input.get(smallest);
 
             for (int i = smallest + 1; i < input.size(); i++) {
-                sum = sum.add(input.get(i));
+                BigInteger add = input.get(i);
+                sum = sum.add(add);
 
                 if (sum.equals(target)) {
-                    BigInteger small = input.get(smallest);
-                    BigInteger large = input.get(i);  // NO IDEA WHY -1 !!!
-                    BigInteger result = small.add(large);
+
+                    BigInteger min = input.get(smallest);
+                    BigInteger max = BigInteger.valueOf(0);
+                    for (int x = smallest + 1; x <= i ; x++) {
+                        min = min.min(input.get(x));
+                        max = max.max(input.get(x));
+                    }
+
+                    BigInteger result = min.add(max);
                     return result;
                 }
 
-                if (sum.compareTo(target) < 0) {
+                if (target.compareTo(sum) > 0) {
                     continue;
                 }
             }
