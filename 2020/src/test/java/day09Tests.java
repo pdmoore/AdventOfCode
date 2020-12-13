@@ -123,24 +123,23 @@ for each remainder number - loop through preamble list and check for a + b, if f
 
     private BigInteger findWeakness(List<BigInteger> input, BigInteger target) {
         BigInteger sum = BigInteger.valueOf(0);
+        BigInteger min = BigInteger.valueOf(0);
+        BigInteger max = BigInteger.valueOf(0);
+
         for (int smallest = 0; smallest < input.size(); smallest++) {
             sum = input.get(smallest);
+            min = sum;
+            max = BigInteger.valueOf(0);
+
 
             for (int i = smallest + 1; i < input.size(); i++) {
                 BigInteger add = input.get(i);
                 sum = sum.add(add);
+                min = min.min(add);
+                max = max.max(add);
 
                 if (sum.equals(target)) {
-
-                    BigInteger min = input.get(smallest);
-                    BigInteger max = BigInteger.valueOf(0);
-                    for (int x = smallest + 1; x <= i ; x++) {
-                        min = min.min(input.get(x));
-                        max = max.max(input.get(x));
-                    }
-
-                    BigInteger result = min.add(max);
-                    return result;
+                    return min.add(max);
                 }
 
                 if (target.compareTo(sum) > 0) {
