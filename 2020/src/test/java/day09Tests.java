@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -93,10 +94,20 @@ for each remainder number - loop through preamble list and check for a + b, if f
         input.add(BigInteger.valueOf(309));
         input.add(BigInteger.valueOf(576));
 
-        //TODO stopped here on Tuesday night - see not in findWeakness
-        int actual = findWeakness(input, 127);
-        assertEquals(62, actual);
+        BigInteger actual = findWeakness(input, BigInteger.valueOf(127));
+        assertEquals(BigInteger.valueOf(62), actual);
     }
+
+    // Tried twice and answers were too low
+    // TODO - Why is the example coming up with an answer that is off?
+    @Test
+    @Disabled
+    public void part2_solution() {
+        List<BigInteger> input = Utilities.fileToBigIntegerList("./data/day09-part01");
+        BigInteger actual = findWeakness(input, BigInteger.valueOf(217430975));
+        assertEquals(BigInteger.valueOf(27244348), actual);
+    }
+
 
 
 // ------------------
@@ -116,15 +127,31 @@ for each remainder number - loop through preamble list and check for a + b, if f
     }
 
 
-    private int findWeakness(List<BigInteger> input, int target) {
-        // for i = 0 to size
-        // sum i plus the next n numbers
-        // if the sum equals, stop and return i + last element
-        // if sum > target, stop and try next i starting point
+    // TODO the idea seems legit, but the implementation is off
+    // when the target and sum matches, the result isn't correct
+    // TODO the sum.compareTo doesn't even work
+    private BigInteger findWeakness(List<BigInteger> input, BigInteger target) {
+        BigInteger sum = BigInteger.valueOf(0);
+        for (int smallest = 0; smallest < input.size(); smallest++) {
+            sum = input.get(smallest);
 
+            for (int i = smallest + 1; i < input.size(); i++) {
+                sum = sum.add(input.get(i));
 
+                if (sum.equals(target)) {
+                    BigInteger small = input.get(smallest);
+                    BigInteger large = input.get(i);  // NO IDEA WHY -1 !!!
+                    BigInteger result = small.add(large);
+                    return result;
+                }
 
-        return 0;
+                if (sum.compareTo(target) < 0) {
+                    continue;
+                }
+            }
+        }
+
+        return BigInteger.valueOf(0);
     }
 
 
