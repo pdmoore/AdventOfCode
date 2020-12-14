@@ -84,6 +84,31 @@ public class day10Tests {
         assertEquals(2760, result);
     }
 
+    @Test
+    public void part2_simpleExample() {
+        int result = solvePart2(createSimpleInput());
+
+        assertEquals(8, result);
+    }
+
+    @Test
+    public void part2_secondExample() {
+        int result = solvePart2(createSecondInput());
+
+        assertEquals(19208, result);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<Integer> input = Utilities.fileToIntegerList("./data/day10-part01");
+        int result = solvePart2(input);
+
+        assertEquals(-99, result);
+    }
+
+
+
+//----------------------------------------------
 
     private int solvePart1(List<Integer> input) {
         Collections.sort(input);
@@ -109,5 +134,83 @@ public class day10Tests {
         return jolt1 * jolt3;
     }
 
+
+    class Node {
+        int joltage;
+        List<Node> children;
+
+        public Node(int j) {
+            joltage = j;
+            children = new ArrayList<>();
+        }
+
+        public void addChild(Node child) {
+            children.add(child);
+        }
+    }
+
+    private int solvePart2(List<Integer> input) {
+        Collections.sort(input);
+
+        Node root = new Node(0);
+        root.joltage = 0;
+
+        recurse(input, 0, root);
+
+        return numLeavesThatMatch(root, input.get(input.size() - 1));
+    }
+
+    private void recurse(List<Integer> input, int i, Node node) {
+        if (i >= input.size()) return;
+
+        Integer nextInput = input.get(i);
+        if (nextInput - node.joltage <= 3) {
+            Node child = new Node(input.get(i));
+            child.joltage = input.get(i);
+            node.addChild(child);
+            recurse(input, i + 1, child);
+        }
+        if (i < input.size() - 1) {
+            nextInput = input.get(i + 1);
+            if (nextInput - node.joltage <= 3) {
+                Node child = new Node(input.get(i));
+                child.joltage = input.get(i + 1);
+                node.addChild(child);
+                recurse(input, i + 2, child);
+            }
+        }
+        if (i < input.size() - 2) {
+            nextInput = input.get(i + 2);
+            if (nextInput - node.joltage <= 3) {
+                Node child = new Node(input.get(i + 2));
+                child.joltage = input.get(i + 2);
+                node.addChild(child);
+                recurse(input, i + 3, child);
+            }
+        }
+    }
+
+    //TODO - not sure - do I need to recursively do this?
+    private int numLeavesThatMatch(Node root, Integer terminator) {
+        int leafCount = 0;
+
+        leafCount += childrenMatching(root, terminator);
+
+        return leafCount;
+    }
+
+    private int childrenMatching(Node node, Integer terminator) {
+        if (node.joltage == terminator) {
+            return 1;
+        }
+
+        int count = 0;
+        for (Node child :
+                node.children) {
+            count += childrenMatching(child, terminator);
+        }
+
+        return count;
+    }
 
 }
