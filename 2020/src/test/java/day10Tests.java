@@ -1,9 +1,7 @@
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -85,27 +83,26 @@ public class day10Tests {
     }
 
     @Test
-    public void part2_simpleExample() {
-        int result = solvePart2(createSimpleInput());
+    public void part2_simpleExample_recursiveSolution() {
+        int result = solvePart2_recursionOutOfMemory(createSimpleInput());
+
+        assertEquals(8, result);
+    }
+
+    @Test
+    @Disabled("disabled - Double counts most of the possible paths")
+    public void part2_simpleExample_AnotherRecursionSolution() {
+        int result = solvePart2ByCountingPaths(createSimpleInput());
 
         assertEquals(8, result);
     }
 
     @Test
     public void part2_secondExample() {
-        int result = solvePart2(createSecondInput());
+        int result = solvePart2_recursionOutOfMemory(createSecondInput());
 
         assertEquals(19208, result);
     }
-
-    @Test
-    public void part2_solution() {
-        List<Integer> input = Utilities.fileToIntegerList("./data/day10-part01");
-        int result = solvePart2(input);
-
-        assertEquals(-99, result);
-    }
-
 
 
 //----------------------------------------------
@@ -149,7 +146,7 @@ public class day10Tests {
         }
     }
 
-    private int solvePart2(List<Integer> input) {
+    private int solvePart2_recursionOutOfMemory(List<Integer> input) {
         Collections.sort(input);
 
         Node root = new Node(0);
@@ -190,7 +187,6 @@ public class day10Tests {
         }
     }
 
-    //TODO - not sure - do I need to recursively do this?
     private int numLeavesThatMatch(Node root, Integer terminator) {
         int leafCount = 0;
 
@@ -212,5 +208,115 @@ public class day10Tests {
 
         return count;
     }
+
+
+    private int solvePart2ByCountingPaths(List<Integer> input) {
+        Collections.sort(input);
+        int finalJoltage = input.get(input.size() - 1);
+        return recurseAndTrackPaths(input, finalJoltage);
+    }
+
+    private int recurseAndTrackPaths(List<Integer> input, int finalJoltage) {
+        int count = 1;
+
+        for (int i = 1; i < input.size(); i++) {
+            List<Integer> copy = new ArrayList<>();
+            copy.addAll(input);
+            copy.remove(i);
+
+            if (validChain(copy, finalJoltage)) {
+                count += recurseAndTrackPaths(copy, finalJoltage);
+            }
+        }
+
+        return count;
+    }
+
+    private boolean validChain(List<Integer> chain, int finalJoltage) {
+        if (chain.get(chain.size() - 1) != finalJoltage) return false;
+
+        int currentJoltage = chain.get(0);
+        for (int i = 1; i < chain.size(); i++) {
+            if (chain.get(i) - currentJoltage <= 3) {
+                currentJoltage = chain.get(i);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    @Test
+    public void part2_simpleExample_GroupPathsTogether() {
+        long result = solvePart2WithoutRecursion(createSimpleInput());
+
+        assertEquals(8, result);
+    }
+
+    @Test
+    public void part2_secondExample_GroupPathsTogether() {
+        long result = solvePart2WithoutRecursion(createSecondInput());
+
+        assertEquals(19208, result);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<Integer> input = Utilities.fileToIntegerList("./data/day10-part01");
+        long result = solvePart2WithoutRecursion(input);
+        long expected = 13816758796288L;
+        assertEquals(expected, result);
+    }
+
+    private long solvePart2WithoutRecursion(List<Integer> input) {
+        Collections.sort(input);
+
+        int lastAdapterJoltage = input.get(input.size() - 1);
+        final long[] sums = new long[lastAdapterJoltage + 1];
+        sums[0] = 1;
+
+        for (int i = 0; i < input.size(); i++) {
+            int thisJoltage = input.get(i);
+            final long x = thisJoltage >= 3 ? sums[thisJoltage - 3] : 0;
+            final long y = thisJoltage >= 2 ? sums[thisJoltage - 2] : 0;
+            final long z = thisJoltage >= 1 ? sums[thisJoltage - 1] : 0;
+            sums[thisJoltage] = x + y + z;
+        }
+
+        return sums[sums.length - 1];
+    }
+
+    // One of the abandoned recursive approaches
+    // Given the sorted input, creates a list of groups of adapters
+    // Adapters within a group are within one joltage of each other
+    private List<List<Integer>> buildGrouping(List<Integer> input) {
+        List<List<Integer>> groups = new ArrayList<>();
+
+        List<Integer> group = new ArrayList<>();
+        int lastJoltage = 0;
+        group.add(lastJoltage);
+
+        for (int i = 0; i < input.size(); i++) {
+            int thisJoltage = input.get(i);
+            if (group.size() == 4 || thisJoltage - lastJoltage != 1) {
+                groups.add(group);
+                group = new ArrayList<>();
+                group.add(thisJoltage);
+            } else {
+                group.add(thisJoltage);
+            }
+
+            lastJoltage = thisJoltage;
+        }
+
+        if (!group.isEmpty()) {
+            groups.add(group);
+        }
+
+        return groups;
+    }
+
 
 }
