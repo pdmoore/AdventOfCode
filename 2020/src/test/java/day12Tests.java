@@ -6,16 +6,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day12Tests {
-
-    /*
-
-handle nsew
-handle f
-handle lr
-
-calc manhattan distance from 0,0 to position x,y
-     */
-
     public List<String> createSampleInput() {
         List<String> input = new ArrayList<>();
         input.add("F10");
@@ -27,17 +17,55 @@ calc manhattan distance from 0,0 to position x,y
     }
 
     @Test
-    public void foo() {
+    public void turnsLeft() {
+        Location l = new Location(0, 0, Location.Direction.EAST);
+        l = l.turn('L', 90);
+        assertEquals(Location.Direction.NORTH, l.facing);
+        l = l.turn('L', 90);
+        assertEquals(Location.Direction.WEST, l.facing);
+        l = l.turn('L', 90);
+        assertEquals(Location.Direction.SOUTH, l.facing);
+        l = l.turn('L', 90);
+        assertEquals(Location.Direction.EAST, l.facing);
+    }
+
+    @Test
+    public void turnsRight() {
+        Location l = new Location(0, 0, Location.Direction.EAST);
+        l = l.turn('R', 90);
+        assertEquals(Location.Direction.SOUTH, l.facing);
+        l = l.turn('R', 90);
+        assertEquals(Location.Direction.WEST, l.facing);
+        l = l.turn('R', 90);
+        assertEquals(Location.Direction.NORTH, l.facing);
+        l = l.turn('R', 90);
+        assertEquals(Location.Direction.EAST, l.facing);
+    }
+
+    @Test
+    public void part1_example() {
         List<String> input = createSampleInput();
+        Location startAt = new Location(0, 0);
+
+        Location endAt = processInstructions(startAt, input);
+
+        int result = computeDistance(endAt);
+        assertEquals(17+8, result);
+    }
+
+    @Test
+    public void part1_solution() {
+        List<String> input = Utilities.fileToStringList("./data/day12-part01");
 
         Location startAt = new Location(0, 0);
 
         Location endAt = processInstructions(startAt, input);
 
         int result = computeDistance(endAt);
-
-        assertEquals(17+8, result);
+        assertEquals(1177, result);
     }
+
+//-----------------------
 
     private Location processInstructions(Location startAt, List<String> input) {
         Location currentAt = new Location(startAt);
@@ -51,13 +79,14 @@ calc manhattan distance from 0,0 to position x,y
             switch (direction) {
                 case 'F': currentAt = currentAt.forward(amount);  break;
                 case 'N': currentAt = currentAt.north(amount);    break;
-                case 'R': currentAt = currentAt.turn(direction, amount); break;
+                case 'S': currentAt = currentAt.south(amount);    break;
+                case 'E': currentAt = currentAt.east(amount);    break;
+                case 'W': currentAt = currentAt.west(amount);    break;
+                case 'R':
+                case 'L': currentAt = currentAt.turn(direction, amount); break;
                 default: System.out.println("NOT HANDLED: " + instruction);
              }
-
-
         }
-
 
         return currentAt;
     }
@@ -86,6 +115,7 @@ calc manhattan distance from 0,0 to position x,y
         }
 
         public Location forward(int amount) {
+            //TODO reuse the direction methods
             switch (facing) {
                 case EAST: return new Location(x + amount, y, facing);
                 case WEST: return new Location(x - amount, y, facing);
@@ -100,15 +130,33 @@ calc manhattan distance from 0,0 to position x,y
             return new Location(x, y + amount, facing);
         }
 
+        public Location south(int amount) {
+            return new Location(x, y - amount, facing);
+        }
+
+        public Location east(int amount) {
+            return new Location(x + amount, y, facing);
+        }
+
+        public Location west(int amount) {
+            return new Location(x - amount, y, facing);
+        }
+
         public Location turn(Character direction, int amount) {
-System.out.println("turn amount: " + amount);
-            //TODO handle 90, 180, etc - scan input for values
-            //TODO hard coded for the sample input
-            return new Location(x, y, Direction.SOUTH);
+            int rotate = amount / 90;
+System.out.print(facing + "  " + direction +  amount + " -->" );
+            if (direction == 'L') {
+                rotate = 0 - rotate;
+            }
+
+            int newIndex = Math.abs(((facing.ordinal() + rotate) + 4) % 4);
+            Direction newFace = Direction.values()[newIndex];
+System.out.println(newFace);
+            return new Location(x, y, newFace);
         }
 
         enum Direction {
-            EAST, WEST, NORTH, SOUTH
+            EAST, SOUTH, WEST, NORTH
         }
     }
 }
