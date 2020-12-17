@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day11Tests {
 
+    static final int VISIBLE_OCCUPIED_THRESHOLD_PART_1 = 4;
+    static final int VISIBLE_OCCUPIED_THRESHOLD_PART_2 = 5;
 
     /*
 
@@ -44,7 +46,7 @@ L  Empty Seat
     public void part1_simpleExample() {
         List<String> input = createSampleInput();
 
-        input = occupySeats(input);
+        input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_1);
 
         int result = occupiedSeatCount(input);
 
@@ -52,14 +54,36 @@ L  Empty Seat
     }
 
     @Test
-    public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day11-part01");
+    public void part2_simpleExample() {
+        List<String> input = createSampleInput();
 
-        input = occupySeats(input);
+        input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_2);
 
         int result = occupiedSeatCount(input);
 
-        assertEquals(-99, result);
+        assertEquals(26, result);
+    }
+
+    @Test
+    public void part1_solution() {
+        List<String> input = Utilities.fileToStringList("./data/day11-part01");
+
+        input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_1);
+
+        int result = occupiedSeatCount(input);
+
+        assertEquals(2281, result);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<String> input = Utilities.fileToStringList("./data/day11-part01");
+
+        input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_2);
+
+        int result = occupiedSeatCount(input);
+
+        assertEquals(2085, result);
     }
 
 
@@ -92,8 +116,8 @@ L  Empty Seat
     }
 
 
-    private List<String> occupySeats(List<String> input) {
-        //eventually loop, detecting for stasis
+    private List<String> occupySeats(List<String> input, int visibleOccupiedThreshold) {
+
         List<String> nextIteration = new ArrayList<>();
         int rowLength = input.get(0).length();
 
@@ -104,7 +128,14 @@ L  Empty Seat
                 String newRow = "";
                 for (int y = 0; y < rowLength; y++) {
 
-                    int neighbors = occupiedNeighborCount(input, x, y);
+                    // cheat until I pass a function into this method
+                    int neighbors = 0;
+                    if (visibleOccupiedThreshold == VISIBLE_OCCUPIED_THRESHOLD_PART_1) {
+                        neighbors = adjacentOccupiedNeighborCount(input, x, y);
+                    } else {
+                        neighbors = visibleOccupiedNeighborCount(input, x, y);
+                    }
+
                     char thisSeat = input.get(x).charAt(y);
                     if (thisSeat == '.') {
                         newRow += '.';
@@ -117,7 +148,7 @@ L  Empty Seat
                             newRow += 'L';
                         }
                     } else { // assumed occupied #
-                        if (neighbors >= 4) {
+                        if (neighbors >= visibleOccupiedThreshold) {
                             newRow += 'L';
                             madeAChange = true;
                         } else {
@@ -135,8 +166,7 @@ L  Empty Seat
         return input;
     }
 
-    private int occupiedNeighborCount(List<String> input, int x, int y) {
-
+    private int adjacentOccupiedNeighborCount(List<String> input, int x, int y) {
         // 0 1 2
         // 3 X 4
         // 5 6 7
@@ -167,6 +197,52 @@ L  Empty Seat
         }
 
         return neighborOccupied;
+    }
+
+
+    private int visibleOccupiedNeighborCount(List<String> input, int x, int y) {
+
+        //instead of immediate adjacent, follow the vector from x,y in all 8 directions, only counting those seats that are occupied
+        int visibleOccupied = 0;
+
+        visibleOccupied += occupiedInDirection(input, x, y, -1, -1);
+        visibleOccupied += occupiedInDirection(input, x, y, 0, -1);
+        visibleOccupied += occupiedInDirection(input, x, y, 1, -1);
+        visibleOccupied += occupiedInDirection(input, x, y, -1, 0);
+        visibleOccupied += occupiedInDirection(input, x, y, 1, 0);
+        visibleOccupied += occupiedInDirection(input, x, y, -1, 1);
+        visibleOccupied += occupiedInDirection(input, x, y, 0, 1);
+        visibleOccupied += occupiedInDirection(input, x, y, 1, 1);
+
+        return visibleOccupied;
+    }
+
+    private int occupiedInDirection(List<String> input, int x, int y, int deltaX, int deltaY) {
+        // 0 1 2
+        // 3 X 4
+        // 5 6 7
+        // check edge conditions first
+        // check seat occupied
+        // return zero for empty seat
+        // ignore floor
+        int rowLength = input.get(0).length();
+
+        int currX = x + deltaX;
+        int currY = y + deltaY;
+
+        boolean keepChecking = (currX >= 0 && currX < input.size()) && (currY >= 0 && currY < rowLength);
+
+        while (keepChecking) {
+            if (input.get(currX).charAt(currY) == '#') return 1;
+            if (input.get(currX).charAt(currY) == 'L') return 0;
+
+            currX += deltaX;
+            currY += deltaY;
+
+            keepChecking = (currX >= 0 && currX < input.size()) && (currY >= 0 && currY < rowLength);
+        }
+
+        return 0;
     }
 
 
