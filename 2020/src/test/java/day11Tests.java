@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -86,7 +87,7 @@ L  Empty Seat
         assertEquals(2085, result);
     }
 
-
+//------------------------------------------------
 
     private int occupiedSeatCount(List<String> input) {
         int count = 0;
@@ -96,6 +97,7 @@ L  Empty Seat
                 input) {
             count += row.chars().filter(c -> c == '#').count();
         }
+
 
         return count;
     }
