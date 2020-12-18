@@ -47,7 +47,7 @@ public class day12Tests {
         List<String> input = createSampleInput();
         Location startAt = new Location(0, 0);
 
-        Location endAt = processInstructions(startAt, input);
+        Location endAt = processInstructionsPart1(startAt, input);
 
         int result = computeDistance(endAt);
         assertEquals(17+8, result);
@@ -59,15 +59,32 @@ public class day12Tests {
 
         Location startAt = new Location(0, 0);
 
-        Location endAt = processInstructions(startAt, input);
+        Location endAt = processInstructionsPart1(startAt, input);
 
         int result = computeDistance(endAt);
         assertEquals(1177, result);
     }
 
+    @Test
+    public void part2_example() {
+        List<String> input = createSampleInput();
+        Location waypoint = new Location(10, 1);
+        Location ship = new Location(0, 0);
+
+        // waypoint is lost at the end of this process
+        Location endAt = processInstructionsPart2(input, ship, waypoint);
+
+        assertEquals(214, endAt.x);
+        assertEquals(-72, endAt.y);
+
+        int result = computeDistance(endAt);
+        assertEquals(214+72, result);
+    }
+
+
 //-----------------------
 
-    private Location processInstructions(Location startAt, List<String> input) {
+    private Location processInstructionsPart1(Location startAt, List<String> input) {
         Location currentAt = new Location(startAt);
 
         for (String instruction :
@@ -152,8 +169,75 @@ public class day12Tests {
             return new Location(x, y, newFace);
         }
 
+        // used in part 2, might not be part of core location?
+        // need to consider direction
+        public Location forward(int amount, Location waypoint) {
+            int magnitudeX = waypoint.x * amount;
+            int magnitudeY = waypoint.y * amount;
+
+            int newX = this.x + magnitudeX;
+            int newY = this.y + magnitudeY;
+
+            Location newShip = new Location(newX, newY, facing);
+            return newShip;
+        }
+
+        @Override
+        public String toString() {
+            return "Location{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    ", facing=" + facing +
+                    '}';
+        }
+
+        public Location adjust(Character direction, int amount) {
+            if (amount == 180) {
+                return new Location(0 - x, 0 - y);
+            }
+
+            if (direction == 'R') {
+                if (amount == 90) {
+                    return new Location(y, 0 - x);
+                }
+            }
+
+            return null;
+        }
+
         enum Direction {
             EAST, SOUTH, WEST, NORTH
         }
     }
+
+
+    private Location processInstructionsPart2(List<String> input, Location shipStarting, Location waypointStarting) {
+        Location ship = new Location(shipStarting);
+        Location waypoint = new Location(waypointStarting);
+
+        for (String instruction :
+                input) {
+//System.out.println("process: " + instruction);
+            Character direction = instruction.charAt(0);
+            int amount = Integer.parseInt(instruction.substring(1));
+
+            switch (direction) {
+                case 'F': ship = ship.forward(amount, waypoint); break;
+                case 'N': waypoint = waypoint.north(amount);   break;
+                case 'S': waypoint = waypoint.south(amount);   break;
+                case 'E': waypoint = waypoint.east(amount);    break;
+                case 'W': waypoint = waypoint.west(amount);    break;
+                case 'R':
+                case 'L': ship = ship.turn(direction, amount);
+                          waypoint = waypoint.adjust(direction, amount); break;
+                default: System.out.println("NOT HANDLED: " + instruction);
+            }
+
+//            System.out.println("ship " + ship);
+//            System.out.println("wayp " + waypoint);
+        }
+
+        return ship;
+    }
+
 }
