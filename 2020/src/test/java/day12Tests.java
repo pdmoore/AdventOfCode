@@ -77,9 +77,9 @@ public class day12Tests {
             int amount = Integer.parseInt(instruction.substring(1));
 
             switch (direction) {
-                case 'F': currentAt = currentAt.forward(amount);  break;
-                case 'N': currentAt = currentAt.north(amount);    break;
-                case 'S': currentAt = currentAt.south(amount);    break;
+                case 'F': currentAt = currentAt.forward(amount); break;
+                case 'N': currentAt = currentAt.north(amount);   break;
+                case 'S': currentAt = currentAt.south(amount);   break;
                 case 'E': currentAt = currentAt.east(amount);    break;
                 case 'W': currentAt = currentAt.west(amount);    break;
                 case 'R':
@@ -115,12 +115,11 @@ public class day12Tests {
         }
 
         public Location forward(int amount) {
-            //TODO reuse the direction methods
             switch (facing) {
-                case EAST: return new Location(x + amount, y, facing);
-                case WEST: return new Location(x - amount, y, facing);
-                case NORTH: return new Location(x, y + amount, facing);
-                case SOUTH: return new Location(x, y - amount, facing);
+                case EAST: return east(amount);
+                case WEST: return west(amount);
+                case NORTH: return north(amount);
+                case SOUTH: return south(amount);
             }
 
             return null;
@@ -144,14 +143,12 @@ public class day12Tests {
 
         public Location turn(Character direction, int amount) {
             int rotate = amount / 90;
-System.out.print(facing + "  " + direction +  amount + " -->" );
             if (direction == 'L') {
                 rotate = 0 - rotate;
             }
 
             int newIndex = Math.abs(((facing.ordinal() + rotate) + 4) % 4);
             Direction newFace = Direction.values()[newIndex];
-System.out.println(newFace);
             return new Location(x, y, newFace);
         }
 
