@@ -1,11 +1,70 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day12Tests {
+
+
+    @Test
+    public void simpleRotateAbout_origin() {
+        Location pivot = new Location(0, 0, Location.Direction.EAST);
+        Location pointToRotate = new Location(10, 5, Location.Direction.EAST);
+
+        Location result = pointToRotate.rotateAbout(pivot, 'R', 90);
+
+        Assertions.assertAll(
+                () -> assertEquals(5, result.x),
+                () -> assertEquals(-10, result.y)
+        );
+    }
+
+    @Test
+    public void location_rotateAbout_right90() {
+        Location pivot = new Location(170, 38, Location.Direction.EAST);
+        Location waypoint = new Location(180, 42, Location.Direction.EAST);
+
+        Location result = waypoint.rotateAbout(pivot, 'R', 90);
+
+        Assertions.assertAll(
+                () -> assertEquals(174, result.x),
+                () -> assertEquals(28, result.y),
+                () -> assertEquals(Location.Direction.EAST, result.facing)
+        );
+    }
+
+    @Test
+    public void location_rotateAbout_right180() {
+        Location pivot = new Location(0, 0, Location.Direction.EAST);
+        Location waypoint = new Location(3, 5, Location.Direction.EAST);
+
+        Location result = waypoint.rotateAbout(pivot, 'R', 180);
+
+        Assertions.assertAll(
+                () -> assertEquals(-3, result.x),
+                () -> assertEquals(-5, result.y),
+                () -> assertEquals(Location.Direction.EAST, result.facing)
+        );
+    }
+
+    @Test
+    public void location_rotateAbout_left90() {
+        Location pivot = new Location(170, 38, Location.Direction.EAST);
+        Location waypoint = new Location(174, 28, Location.Direction.EAST);
+
+        Location result = waypoint.rotateAbout(pivot, 'L', 90);
+
+        Assertions.assertAll(
+                () -> assertEquals(180, result.x),
+                () -> assertEquals(42, result.y),
+                () -> assertEquals(Location.Direction.EAST, result.facing)
+        );
+    }
+
     public List<String> createSampleInput() {
         List<String> input = new ArrayList<>();
         input.add("F10");
@@ -50,7 +109,7 @@ public class day12Tests {
         Location endAt = processInstructionsPart1(startAt, input);
 
         int result = computeDistance(endAt);
-        assertEquals(17+8, result);
+        assertEquals(17 + 8, result);
     }
 
     @Test
@@ -74,12 +133,28 @@ public class day12Tests {
         // waypoint is lost at the end of this process
         Location endAt = processInstructionsPart2(input, ship, waypoint);
 
-        assertEquals(214, endAt.x);
-        assertEquals(-72, endAt.y);
+        Assertions.assertAll(
+                () -> assertEquals(214, endAt.x),
+                () -> assertEquals(-72, endAt.y)
+        );
 
         int result = computeDistance(endAt);
-        assertEquals(214+72, result);
+        assertEquals(214 + 72, result);
     }
+
+    @Test
+    public void part2_solution() {
+        List<String> input = Utilities.fileToStringList("./data/day12-part01");
+
+        Location waypoint = new Location(10, 1);
+        Location ship = new Location(0, 0);
+
+        Location endAt = processInstructionsPart2(input, ship, waypoint);
+
+        int result = computeDistance(endAt);
+        assertEquals(46530, result);
+    }
+
 
 
 //-----------------------
@@ -94,15 +169,28 @@ public class day12Tests {
             int amount = Integer.parseInt(instruction.substring(1));
 
             switch (direction) {
-                case 'F': currentAt = currentAt.forward(amount); break;
-                case 'N': currentAt = currentAt.north(amount);   break;
-                case 'S': currentAt = currentAt.south(amount);   break;
-                case 'E': currentAt = currentAt.east(amount);    break;
-                case 'W': currentAt = currentAt.west(amount);    break;
+                case 'F':
+                    currentAt = currentAt.forward(amount);
+                    break;
+                case 'N':
+                    currentAt = currentAt.north(amount);
+                    break;
+                case 'S':
+                    currentAt = currentAt.south(amount);
+                    break;
+                case 'E':
+                    currentAt = currentAt.east(amount);
+                    break;
+                case 'W':
+                    currentAt = currentAt.west(amount);
+                    break;
                 case 'R':
-                case 'L': currentAt = currentAt.turn(direction, amount); break;
-                default: System.out.println("NOT HANDLED: " + instruction);
-             }
+                case 'L':
+                    currentAt = currentAt.turn(direction, amount);
+                    break;
+                default:
+                    System.out.println("NOT HANDLED: " + instruction);
+            }
         }
 
         return currentAt;
@@ -133,10 +221,14 @@ public class day12Tests {
 
         public Location forward(int amount) {
             switch (facing) {
-                case EAST: return east(amount);
-                case WEST: return west(amount);
-                case NORTH: return north(amount);
-                case SOUTH: return south(amount);
+                case EAST:
+                    return east(amount);
+                case WEST:
+                    return west(amount);
+                case NORTH:
+                    return north(amount);
+                case SOUTH:
+                    return south(amount);
             }
 
             return null;
@@ -172,13 +264,21 @@ public class day12Tests {
         // used in part 2, might not be part of core location?
         // need to consider direction
         public Location forward(int amount, Location waypoint) {
-            int magnitudeX = waypoint.x * amount;
-            int magnitudeY = waypoint.y * amount;
+            int waypointOffsetX = this.x - waypoint.x;
+            int waypointOffsetY = this.y - waypoint.y;
+
+            int magnitudeX = (waypoint.x - this.x) * amount;
+            int magnitudeY = (waypoint.y - this.y) * amount;
 
             int newX = this.x + magnitudeX;
             int newY = this.y + magnitudeY;
 
             Location newShip = new Location(newX, newY, facing);
+
+            // method has side effect of altering the waypoint
+            waypoint.x = newShip.x - waypointOffsetX;
+            waypoint.y = newShip.y - waypointOffsetY;
+
             return newShip;
         }
 
@@ -191,18 +291,17 @@ public class day12Tests {
                     '}';
         }
 
-        public Location adjust(Character direction, int amount) {
-            if (amount == 180) {
-                return new Location(0 - x, 0 - y);
-            }
-
+        public Location rotateAbout(Location pivot, Character direction, int amount) {
+            int angle = amount;
             if (direction == 'R') {
-                if (amount == 90) {
-                    return new Location(y, 0 - x);
-                }
+                angle = 0 - amount;
             }
 
-            return null;
+            double[] pt = { x, y };
+            AffineTransform.getRotateInstance(Math.toRadians(angle), pivot.x, pivot.y).transform(pt, 0, pt, 0, 1);
+            int newX = (int) pt[0];
+            int newY = (int) pt[1];
+            return new Location(newX, newY, facing);
         }
 
         enum Direction {
@@ -217,24 +316,33 @@ public class day12Tests {
 
         for (String instruction :
                 input) {
-//System.out.println("process: " + instruction);
             Character direction = instruction.charAt(0);
             int amount = Integer.parseInt(instruction.substring(1));
 
             switch (direction) {
-                case 'F': ship = ship.forward(amount, waypoint); break;
-                case 'N': waypoint = waypoint.north(amount);   break;
-                case 'S': waypoint = waypoint.south(amount);   break;
-                case 'E': waypoint = waypoint.east(amount);    break;
-                case 'W': waypoint = waypoint.west(amount);    break;
+                case 'F':
+                    ship = ship.forward(amount, waypoint);
+                    break;
+                case 'N':
+                    waypoint = waypoint.north(amount);
+                    break;
+                case 'S':
+                    waypoint = waypoint.south(amount);
+                    break;
+                case 'E':
+                    waypoint = waypoint.east(amount);
+                    break;
+                case 'W':
+                    waypoint = waypoint.west(amount);
+                    break;
                 case 'R':
-                case 'L': ship = ship.turn(direction, amount);
-                          waypoint = waypoint.adjust(direction, amount); break;
-                default: System.out.println("NOT HANDLED: " + instruction);
+                case 'L':
+                    ship = ship.turn(direction, amount);
+                    waypoint = waypoint.rotateAbout(ship, direction, amount);
+                    break;
+                default:
+                    System.out.println("NOT HANDLED: " + instruction);
             }
-
-//            System.out.println("ship " + ship);
-//            System.out.println("wayp " + waypoint);
         }
 
         return ship;
