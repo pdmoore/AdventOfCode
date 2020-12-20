@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -42,7 +43,7 @@ public class day13Tests {
     }
 
     @Test
-    public void part2_exampleInput() {
+    public void part2_exampleInput1() {
         String input = "7,13,x,x,59,x,31,19";
         BigInteger result = part2Solve(input);
         BigInteger expected = BigInteger.valueOf(1068781);
@@ -50,6 +51,39 @@ public class day13Tests {
     }
 
     @Test
+    public void part2_exampleInput2() {
+        String input = "67,7,59,61";
+        BigInteger result = part2Solve(input);
+        BigInteger expected = BigInteger.valueOf(754018);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void part2_exampleInput3() {
+        String input = "67,x,7,59,61";
+        BigInteger result = part2Solve(input);
+        BigInteger expected = BigInteger.valueOf(779210);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void part2_exampleInput4() {
+        String input = "67,7,x,59,61";
+        BigInteger result = part2Solve(input);
+        BigInteger expected = BigInteger.valueOf(1261476);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void part2_exampleInput5() {
+        String input = "1789,37,47,1889";
+        BigInteger result = part2Solve(input);
+        BigInteger expected = BigInteger.valueOf(1202161486);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @Disabled
     public void part2_solution() {
         String input = createSolutionInput();
         BigInteger result = part2Solve(input);
@@ -58,6 +92,8 @@ public class day13Tests {
     }
 
 
+//    private BigInteger part2Solve(String input) {
+//    }
 
 
     //--------------------------------------------
