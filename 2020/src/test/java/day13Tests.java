@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -98,6 +97,7 @@ public class day13Tests {
             busIDs.add(busID.equals("x") ? -1 : Long.parseLong(busID));
         }
 
+
         // assumes first entry is always a valid busID
         final long firstBusID = busIDs.get(0);
         long lowestCommonMultiple = firstBusID;
@@ -106,6 +106,7 @@ public class day13Tests {
         int index = 1;
         while (true) {
             final long busID = busIDs.get(index);
+
             if (busID == -1) {
                 index++;
                 continue;
