@@ -139,7 +139,6 @@ public class day15Tests {
             turn++;
         }
 
-
         return lastNumberSpoken;
     }
 }
