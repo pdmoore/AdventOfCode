@@ -18,25 +18,73 @@ public class day15Tests {
 
     @Test
     public void part1_sample() {
-        int actual = solvePart1(createSampleInput());
+        int actual = solvePart1(createSampleInput(), 2020);
 
         assertEquals(436, actual);
     }
 
     @Test
     public void part1_solution() {
-        int actual = solvePart1(createDay15Input());
+        int actual = solvePart1(createDay15Input(), 2020);
 
         assertEquals(517, actual);
     }
 
+    @Test
+    public void part2_sample() {
+        int actual = solvePart1(createSampleInput(), 30000000);
+        assertEquals(175594, actual);
+    }
 
+    @Test
+    public void part2_sample2() {
+        int actual = solvePart1("1,3,2", 30000000);
+        assertEquals(2578, actual);
+    }
 
-    private int solvePart1(String stringInput) {
+    @Test
+    public void part2_sample3() {
+        int actual = solvePart1("2,1,3", 30000000);
+        assertEquals(3544142, actual);
+    }
+
+    @Test
+    public void part2_sample4() {
+        int actual = solvePart1("1,2,3", 30000000);
+        assertEquals(261214, actual);
+    }
+
+    @Test
+    public void part2_sample5() {
+        int actual = solvePart1("2,3,1", 30000000);
+        assertEquals(6895259, actual);
+    }
+
+    @Test
+    public void part2_sample6() {
+        int actual = solvePart1("3,2,1", 30000000);
+        assertEquals(18, actual);
+    }
+
+    @Test
+    public void part2_sample7() {
+        int actual = solvePart1("3,1,2", 30000000);
+        assertEquals(362, actual);
+    }
+
+    @Test
+    public void part2_solution() {
+        int actual = solvePart1(createDay15Input(), 30000000);
+
+        assertEquals(1047739, actual);
+    }
+
+//-------------------------------
+
+    private int solvePart1(String stringInput, int lastIndex) {
         List<Integer> input = Stream.of(stringInput.split(","))
                 .map(s -> Integer.parseInt(s)).collect(Collectors.toList());
 
-        final int lastIndex = 2020;
         Map<Integer, List<Integer>> spoken = new HashMap<>();
         int turn = 1;
         int lastNumberSpoken = 0;
@@ -57,6 +105,10 @@ public class day15Tests {
 
             if (!spoken.containsKey(lastNumberSpoken)) {
                 lastNumberSpoken = 0;
+                if (!spoken.containsKey(0)) {
+                    List<Integer> spokenOnTurn = new ArrayList<>();
+                    spoken.put(0, spokenOnTurn);
+                }
                 spoken.get(0).add(turn);
             } else {
                 //has been spoken
@@ -64,6 +116,10 @@ public class day15Tests {
 
                 if (spokeOnTurn.size() == 1) {
                     lastNumberSpoken = 0;
+                    if (!spoken.containsKey(0)) {
+                        List<Integer> spokenOnTurn = new ArrayList<>();
+                        spoken.put(0, spokenOnTurn);
+                    }
                     spoken.get(0).add(turn);
                 } else {
                     int lastTurnSpoken = spokeOnTurn.size() - 1;
