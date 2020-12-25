@@ -6,20 +6,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day25Tests {
-
-
-    /*
-
-20201227
-
-The handshake used by the card and the door involves an operation that transforms a subject number. To transform a subject number, start with the value 1.
-Then, a number of times called the loop size, perform the following steps:
-
-Set the value to itself multiplied by the subject number.
-Set the value to the remainder after dividing the value by 20201227.
-
-     */
-
+    
     public static final int SUBJECT_NUMBER = 7;
 
     public List<String> createPart1Input() {
@@ -52,21 +39,16 @@ Set the value to the remainder after dividing the value by 20201227.
     @Test
     public void part1_solution() {
         int result = findEcnryptionKey(8252394, 6269621);
-        assertEquals(-99, result);
+        assertEquals(181800, result);
 
     }
 
     private int findEcnryptionKey(int cardPublicKey, int doorPublicKey) {
-
         int cardLoopSize = discoverLoopSize(cardPublicKey);
-        int doorLoopSize = discoverLoopSize(doorPublicKey);
+        return calculateEncryptionKey(doorPublicKey, cardLoopSize);
 
-        int encryptionKey_1 = calculateEncryptionKey(doorPublicKey, cardLoopSize);
+//        int doorLoopSize = discoverLoopSize(doorPublicKey);
 //        int encryptionKey_2 = calculateEncryptionKey(cardPublicKey, doorLoopSize);
-
-        return encryptionKey_1;
-
-
     }
 
     private int calculateEncryptionKey(int subjectNumber, int loopCount) {
