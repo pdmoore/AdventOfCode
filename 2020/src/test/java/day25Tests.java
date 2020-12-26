@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day25Tests {
-    
+
     public static final int SUBJECT_NUMBER = 7;
 
     public List<String> createPart1Input() {
