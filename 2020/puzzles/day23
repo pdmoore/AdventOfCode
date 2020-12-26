@@ -12,7 +12,7 @@ Each move, the crab does the following actions:
 - The crab places the cups it just picked up so that they are immediately clockwise of the destination cup. They keep the same order as when they were picked up.
 - The crab selects a new current cup: the cup which is immediately clockwise of the current cup.
 
-For example, suppose your cup labeling were 389125467. If the crab were to do merely 10 moves, the following changes would occur:
+For example, suppose your cup labeling were x. If the crab were to do merely 10 moves, the following changes would occur:
 
 -- move 1 --
 cups: (3) 8  9  1  2  5  4  6  7
