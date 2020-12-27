@@ -8,6 +8,12 @@
 - [ ] day 20 - tile arrangement (rotate array, match edges)
 - [ ] day 21 - allergen finder
 - [ ] day 22 - PART 2 - recursive card game (war)
-- [ ] day 23 - IN PROGRESS - linked list, splice
+- [ ] day 23 - linked list, splice
 - [ ] day 24 - hexagonal tile traversal
 - [ ] day 25 - PART 2 - completes after finishing all other days
+
+
+### Notes
+
+- Day 23 - trash int[] approach and start over
+
