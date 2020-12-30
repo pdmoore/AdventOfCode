@@ -1,6 +1,5 @@
 ### 2020 stuff to do
 
-- [ ] day 14 - PART 2 - recursion
 - [ ] day 16 - ticket scanning (fields, range of values)
 - [ ] day 17 - 3d grid of cubes (GoL?)
 - [ ] day 18 - expression evaluation, left-to-right precedence

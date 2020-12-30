@@ -10,18 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day14Tests {
 
-    /*
-- Read file as string
-- Parse a line - either as a new bitmask (stored as string?)
-- or as memory location and new value to write
-- apply bitmask to value
-- save value in memory location
-- sum all memory location values
-
--- assuming Long is enough for mem/values
-
-     */
-
     public List<String> createPart_1_SampleInput() {
         List<String> input = new ArrayList<>();
         input.add("mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X");
@@ -91,7 +79,6 @@ public class day14Tests {
 
 //-----------------------
 
-
     private long part1Solve(List<String> input) {
         String mask = "";
 
@@ -102,22 +89,23 @@ public class day14Tests {
             if (inputLine.charAt(1) == 'a') {
                 mask = processInputAsNewMask(inputLine);
             } else {
-                // process input line as memwrite
                 MemWrite mw = processInputAsMemoryWrite(inputLine);
 
-                // apply mask to memwrite object
                 mw.applyMask(mask);
 
-                // update memoryLocations address, maskedValue
-                if (memoryLocations.containsKey(mw.address)) {
-                    memoryLocations.replace(mw.address, mw);
-                } else {
-                    memoryLocations.put(mw.address, mw);
-                }
+                addUpdateMemWrite((Map<Long, MemWrite>) memoryLocations, mw);
             }
         }
 
         return sumOfMasked(memoryLocations);
+    }
+
+    private void addUpdateMemWrite(Map<Long, MemWrite> memoryLocations, MemWrite mw) {
+        if (memoryLocations.containsKey(mw.address)) {
+            memoryLocations.replace(mw.address, mw);
+        } else {
+            memoryLocations.put(mw.address, mw);
+        }
     }
 
     private long part2Solve(List<String> input) {
@@ -130,18 +118,8 @@ public class day14Tests {
             if (inputLine.charAt(1) == 'a') {
                 mask = processInputAsNewMask(inputLine);
             } else {
-                // process input line as memwrite
-                // recursively adding each mw to the memoryLocations
                 MemWrite seed = processInputAsMemoryWrite(inputLine);
-
                 writeToAllAddresses(seed.address, seed.unmaskedValue, mask, memoryLocations);
-
-                // update memoryLocations address, maskedValue
-//                if (memoryLocations.containsKey(seed.address)) {
-//                    memoryLocations.replace(seed.address, seed);
-//                } else {
-//                    memoryLocations.put(seed.address, seed);
-//                }
             }
         }
 
@@ -150,15 +128,6 @@ public class day14Tests {
 
     private void writeToAllAddresses(long initialAddress, long value, String mask, Map<Long, MemWrite> memoryLocations) {
         String addressWithX = applyMaskToAddress(initialAddress, mask);
-
-//TODO - continue here
-        // result has the correct address with X in all places
-        // call the recurse method, passing in the string 'result', the value to write, and the memoryLocations
-        // the recurse method:
-        // no X found, then create a memWrite for the 'result' and value, and place it in memoryLocations
-        // X found, replace it with 0 and call recurse again
-        //          replace it with 1 and call recurse again
-
         recurse(addressWithX, value, memoryLocations);
     }
 
@@ -168,12 +137,7 @@ public class day14Tests {
             // no X, it's a valid memory address
             long actualAddress = Long.parseLong(addressWithX, 2);
             MemWrite mw = new MemWrite(actualAddress, value);
-            if (memoryLocations.containsKey(mw.address)) {
-                memoryLocations.replace(mw.address, mw);
-            } else {
-                memoryLocations.put(mw.address, mw);
-            }
-
+            addUpdateMemWrite(memoryLocations, mw);
             return;
         }
 
