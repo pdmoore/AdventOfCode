@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +22,7 @@ public class day14Tests {
 
      */
 
-    public List<String> createSampleInput() {
+    public List<String> createPart_1_SampleInput() {
         List<String> input = new ArrayList<>();
         input.add("mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X");
         input.add("mem[8] = 11");
@@ -29,6 +30,16 @@ public class day14Tests {
         input.add("mem[8] = 0");
         return input;
     }
+
+    public List<String> createPart_2_SampleInput() {
+        List<String> input = new ArrayList<>();
+        input.add("mask = 000000000000000000000000000000X1001X");
+        input.add("mem[42] = 100");
+        input.add("mask = 00000000000000000000000000000000X0XX");
+        input.add("mem[26] = 1");
+        return input;
+    }
+
 
     @Test
     public void testMaskLineProcessing() {
@@ -47,7 +58,7 @@ public class day14Tests {
 
     @Test
     public void part1_sampleInput() {
-        long actual = part1Solve(createSampleInput());
+        long actual = part1Solve(createPart_1_SampleInput());
         assertEquals(165, actual);
     }
 
@@ -63,6 +74,19 @@ public class day14Tests {
         List<String> input = Utilities.fileToStringList("./data/day14-part01");
         long actual = part1Solve(input);
         assertEquals(10885823581193L, actual);
+    }
+
+    @Test
+    public void part2_sampleInput() {
+        long actual = part2Solve(createPart_2_SampleInput());
+        assertEquals(208, actual);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<String> input = Utilities.fileToStringList("./data/day14-part01");
+        long actual = part2Solve(input);
+        assertEquals(3816594901962L, actual);
     }
 
 //-----------------------
@@ -93,19 +117,105 @@ public class day14Tests {
             }
         }
 
-        return sumOf(memoryLocations);
+        return sumOfMasked(memoryLocations);
     }
 
-    private long sumOf(Map<Long, MemWrite> memoryLocations) {
-        long sum = 0;
-        for (MemWrite mw :
-                memoryLocations.values()) {
-            sum += mw.maskedValue;
+    private long part2Solve(List<String> input) {
+        String mask = "";
+
+        Map<Long, MemWrite> memoryLocations = new HashMap<>();
+
+        for (String inputLine:
+                input) {
+            if (inputLine.charAt(1) == 'a') {
+                mask = processInputAsNewMask(inputLine);
+            } else {
+                // process input line as memwrite
+                // recursively adding each mw to the memoryLocations
+                MemWrite seed = processInputAsMemoryWrite(inputLine);
+
+                writeToAllAddresses(seed.address, seed.unmaskedValue, mask, memoryLocations);
+
+                // update memoryLocations address, maskedValue
+//                if (memoryLocations.containsKey(seed.address)) {
+//                    memoryLocations.replace(seed.address, seed);
+//                } else {
+//                    memoryLocations.put(seed.address, seed);
+//                }
+            }
         }
 
-        return sum;
+        return sumOfUnmasked(memoryLocations);
     }
 
+    private void writeToAllAddresses(long initialAddress, long value, String mask, Map<Long, MemWrite> memoryLocations) {
+        String addressWithX = applyMaskToAddress(initialAddress, mask);
+
+//TODO - continue here
+        // result has the correct address with X in all places
+        // call the recurse method, passing in the string 'result', the value to write, and the memoryLocations
+        // the recurse method:
+        // no X found, then create a memWrite for the 'result' and value, and place it in memoryLocations
+        // X found, replace it with 0 and call recurse again
+        //          replace it with 1 and call recurse again
+
+        recurse(addressWithX, value, memoryLocations);
+    }
+
+    private void recurse(String addressWithX, long value, Map<Long, MemWrite> memoryLocations) {
+        int anyX = addressWithX.indexOf('X');
+        if (anyX == -1) {
+            // no X, it's a valid memory address
+            long actualAddress = Long.parseLong(addressWithX, 2);
+            MemWrite mw = new MemWrite(actualAddress, value);
+            if (memoryLocations.containsKey(mw.address)) {
+                memoryLocations.replace(mw.address, mw);
+            } else {
+                memoryLocations.put(mw.address, mw);
+            }
+
+            return;
+        }
+
+        // there was an X - replace it with a 0 then a 1, and try on those new address strings
+        StringBuilder xBecomes0 = new StringBuilder(addressWithX);
+        xBecomes0.setCharAt(anyX, '0');
+        recurse(xBecomes0.toString(), value, memoryLocations);
+        StringBuilder xBecomes1 = new StringBuilder(addressWithX);
+        xBecomes1.setCharAt(anyX, '1');
+        recurse(xBecomes1.toString(), value, memoryLocations);
+    }
+
+    private String applyMaskToAddress(long initialAddress, String mask) {
+        String initialAddressBits = Long.toBinaryString(initialAddress);
+        String paddedAddress = String.format("%1$" + mask.length() + "s", initialAddressBits).replace(' ', '0');
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mask.length(); i++) {
+            if (mask.charAt(i) == 'X') {
+                sb.append('X');
+            } else if (mask.charAt(i) == '1') {
+                sb.append('1');
+            } else {
+                sb.append(paddedAddress.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+
+
+    private long sumOfMasked(Map<Long, MemWrite> memoryLocations) {
+        return memoryLocations.values()
+                .stream()
+                .map(mw -> mw.maskedValue)
+                .collect(Collectors.summingLong(Long::longValue));
+    }
+
+    private long sumOfUnmasked(Map<Long, MemWrite> memoryLocations) {
+        return memoryLocations.values()
+                .stream()
+                .map(mw -> mw.unmaskedValue)
+                .collect(Collectors.summingLong(Long::longValue));
+    }
 
     private MemWrite processInputAsMemoryWrite(String input) {
         int indexOfCloseBrace = input.indexOf("]");
