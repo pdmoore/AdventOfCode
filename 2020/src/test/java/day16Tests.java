@@ -36,7 +36,7 @@ public class day16Tests {
     @Test
     public void part1_Solutiont() {
         int actual = solvePart1(Utilities.fileToStringList("./data/day16-part01"));
-        assertEquals(999, actual);
+        assertEquals(20231, actual);
     }
 
 //-----------------------------
