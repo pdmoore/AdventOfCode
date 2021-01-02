@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,7 +58,7 @@ public class day16Tests {
     }
 
     @Test
-    public void part1_Solutiont() {
+    public void part1_Solution() {
         int actual = solvePart1(Utilities.fileToStringList("./data/day16-part01"));
         assertEquals(20231, actual);
     }
@@ -67,6 +68,12 @@ public class day16Tests {
         long actual = solvePart2(createSampleInput_Part2());
         long expected = 1716;  // just multiplying all 3 fields in tis example
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void part2_Solution() {
+        long actual = solvePart2(Utilities.fileToStringList("./data/day16-part01"));
+        assertEquals(999L, actual);
     }
 
 
@@ -79,7 +86,7 @@ public class day16Tests {
         //parse the input, build map of legal Numbers and the fields they map to
         int mode = 0;
         int result = 0;
-        for (String inputLine:
+        for (String inputLine :
                 input) {
             if (inputLine.trim().isEmpty()) continue;
             if (inputLine.startsWith("your ticket")) mode = 1;
@@ -134,7 +141,7 @@ public class day16Tests {
 
         // Split input into three different sets of data: rules, your ticket, all nearby tickets
         int mode = 0;
-        for (String inputLine:
+        for (String inputLine :
                 input) {
             if (inputLine.trim().isEmpty()) continue;
             if (inputLine.startsWith("your ticket")) mode = 1;
@@ -150,7 +157,9 @@ public class day16Tests {
         }
 
         // discard tickets with fields that don't appear in the rules
+        List<TicketRule> ticketRules = createTicketRules(rules);
         List<String> validNearbyTickets = discardInvalidTickets(rules, allNearbyTickets);
+
 
         //TODO
         // - Collect all the field position values together (all items in field1, field2, etc)
@@ -159,16 +168,112 @@ public class day16Tests {
         //   - let's me map the field position to the rule name
         // - finally for all the "departure" rules, use the field position to multiply the values on my your ticket
 
+        int numberOfFields = validNearbyTickets.get(0).split(",").length;
+        Map<Integer, Set<Integer>> valuesByFieldPosition = new HashMap<>();
+        for (int i = 0; i < numberOfFields; i++) {
+            Set<Integer> valuesForField = new HashSet<>();
+            for (String ticket :
+                    validNearbyTickets) {
+                String[] ticketFieldValues = ticket.split(",");
+                valuesForField.add(Integer.parseInt(ticketFieldValues[i]));
+            }
+            valuesByFieldPosition.put(i, valuesForField);
+        }
 
-        return 0;
+//TODO - start over
+// strategy is to figure out which set of fields support which rule
+// set of fields may work for more than one rule
+// some fields will only work for one rule
+// trace the example by hand to confirm components
+// then rewrite with some better diagostics for when things break down
+// Current impl had a cycle on Fields 16 and 18 and never halted, hence the 'breaker' flag
+        List<Integer> unmatchedFields = new ArrayList<>();
+        List<String> unmatchedRules = new ArrayList<>();
+        for (int i = 0; i < numberOfFields; i++) {
+            unmatchedRules.add(ticketRules.get(i).fieldName);
+            unmatchedFields.add(i);
+        }
+
+        Map<String, Integer> ruleNameToFieldPosition = new HashMap<>();
+        int i = 0;
+        int breaker = 0;
+        while (!unmatchedRules.isEmpty()) {
+            if (unmatchedFields.contains(i)) {
+                try {
+                    Set<Integer> valuesForField = valuesByFieldPosition.get(i);
+                    String ruleName = ruleThatWorksFor(ticketRules, valuesForField, unmatchedRules);
+                    ruleNameToFieldPosition.put(ruleName, i);
+                    unmatchedFields.remove(new Integer(i));
+                    unmatchedRules.remove(ruleName);
+                } catch (Exception e) {
+//                    System.out.println("more than one rule works for position " + i + " -- " + valuesByFieldPosition);
+                }
+            }
+
+            i++;
+            if (i > numberOfFields) i = 0;
+
+            breaker++;
+            if (breaker > 40) {
+                System.out.println(ruleNameToFieldPosition);
+                break;
+            }
+        }
+//TODO ends here
+
+
+        // current approach finds "departure" for the fields 14,15,17,19 with a cycle on 16,18...
+        // multiplied those together and submitted but the answer '341859272509' was too low
+        // The values seem to fit the rules which means the approach to find rulesToField is broken
+        BigInteger result = BigInteger.valueOf(61)
+                .multiply(BigInteger.valueOf(109))
+                .multiply(BigInteger.valueOf(73))
+                .multiply(BigInteger.valueOf(97))
+                .multiply(BigInteger.valueOf(137))
+                .multiply(BigInteger.valueOf(53));
+
+        return 44;
     }
 
+    //TODO - some input may match more than one rule - in that case
+    // pass in only the remaining valid rules
+    // do multiple passes until all the rules are uniquely assigned
+    private String ruleThatWorksFor(List<TicketRule> ticketRules, Set<Integer> valuesToCheck, List<String> unmatchedRules) {
+        List<String> viableRules = new ArrayList<>();
+        for (TicketRule ticketRule :
+                ticketRules) {
+            if (unmatchedRules.contains(ticketRule.fieldName)) {
+                viableRules.add(ticketRule.fieldName);
+            }
+        }
+
+        if (viableRules.size() == 1) return viableRules.get(0);
+
+        for (Integer fieldValue :
+                valuesToCheck) {
+            for (TicketRule ticketRule :
+                    ticketRules) {
+                if (!ticketRule.followsRule(fieldValue)) {
+                    viableRules.remove(ticketRule.fieldName);
+                    if (viableRules.size() == 1) {
+                        return viableRules.get(0);
+                    }
+                }
+            }
+        }
+
+        if (viableRules.size() > 0) throw new RuntimeException("matched many rules " + viableRules.size());
+        return viableRules.get(0);
+    }
+
+
+    //TODO switch to using TicketRules instead of re-parsing the rules-by-line input again
     private List<String> discardInvalidTickets(List<String> rules, List<String> allNearbyTickets) {
         List<String> validTickets = new ArrayList<>();
 
         // gather all valid numbers from the rules
-
         Set<Integer> validNumbers = new HashSet<>();
+        List<TicketRule> ticketRules = new ArrayList<>();
         for (String ruleLine :
                 rules) {
 
@@ -180,18 +285,19 @@ public class day16Tests {
             String secondRangeString = ruleLine.substring(orIndex + 4);
 
             String[] rangeBounds = firstRangeString.split("-");
-            int lowerBound = Integer.parseInt(rangeBounds[0]);
-            int upperBound = Integer.parseInt(rangeBounds[1]);
-            for (int i = lowerBound; i <= upperBound; i++) {
+            int lowerLowBound = Integer.parseInt(rangeBounds[0]);
+            int lowerHighBound = Integer.parseInt(rangeBounds[1]);
+            for (int i = lowerLowBound; i <= lowerHighBound; i++) {
                 validNumbers.add(i);
             }
 
             rangeBounds = secondRangeString.split("-");
-            lowerBound = Integer.parseInt(rangeBounds[0]);
-            upperBound = Integer.parseInt(rangeBounds[1]);
-            for (int i = lowerBound; i <= upperBound; i++) {
+            int higherLowBound = Integer.parseInt(rangeBounds[0]);
+            int higherHighBound = Integer.parseInt(rangeBounds[1]);
+            for (int i = higherLowBound; i <= higherHighBound; i++) {
                 validNumbers.add(i);
             }
+
         }
 
         // TODO - the sample input doesn't reject any ticket, have not confirmed this logic with a test
@@ -211,5 +317,63 @@ public class day16Tests {
         return validTickets;
     }
 
+    private List<TicketRule> createTicketRules(List<String> rules) {
+        List<String> validTickets = new ArrayList<>();
 
+        // gather all valid numbers from the rules
+        Set<Integer> validNumbers = new HashSet<>();
+        List<TicketRule> ticketRules = new ArrayList<>();
+        for (String ruleLine :
+                rules) {
+
+            int colonIndex = ruleLine.indexOf(":");
+            String fieldName = ruleLine.substring(0, colonIndex);
+
+            int orIndex = ruleLine.indexOf(" or ");
+            String firstRangeString = ruleLine.substring(colonIndex + 2, orIndex);
+            String secondRangeString = ruleLine.substring(orIndex + 4);
+
+            String[] rangeBounds = firstRangeString.split("-");
+            int lowerLowBound = Integer.parseInt(rangeBounds[0]);
+            int lowerHighBound = Integer.parseInt(rangeBounds[1]);
+            for (int i = lowerLowBound; i <= lowerHighBound; i++) {
+                validNumbers.add(i);
+            }
+
+            rangeBounds = secondRangeString.split("-");
+            int higherLowBound = Integer.parseInt(rangeBounds[0]);
+            int higherHighBound = Integer.parseInt(rangeBounds[1]);
+            for (int i = higherLowBound; i <= higherHighBound; i++) {
+                validNumbers.add(i);
+            }
+
+            TicketRule tr = new TicketRule(fieldName, lowerLowBound, lowerHighBound, higherLowBound, higherHighBound);
+            ticketRules.add(tr);
+        }
+
+        return ticketRules;
+    }
+
+
+    private class TicketRule {
+        private final String fieldName;
+        private final int lowerLowBound;
+        private final int lowerHighBound;
+        private final int higherLowBound;
+        private final int higherHighBound;
+
+        public TicketRule(String fieldName, int lowerLowBound, int lowerHighBound, int higherLowBound, int higherHighBound) {
+            this.fieldName = fieldName;
+            this.lowerLowBound = lowerLowBound;
+            this.lowerHighBound = lowerHighBound;
+            this.higherLowBound = higherLowBound;
+            this.higherHighBound = higherHighBound;
+        }
+
+        public boolean followsRule(Integer fieldValue) {
+            boolean withinLower = lowerLowBound <= fieldValue && fieldValue <= lowerHighBound;
+            boolean withinHigher = higherLowBound <= fieldValue && fieldValue <= higherHighBound;
+            return withinLower || withinHigher;
+        }
+    }
 }
