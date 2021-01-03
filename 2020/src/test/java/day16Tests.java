@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -7,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day16Tests {
 
+
+    //TODO LOTS OF CLEANUP
     /*
     first pass, figure out valid numbers
     discard tickets that contain invalid numbers
@@ -64,16 +67,17 @@ public class day16Tests {
     }
 
     @Test
+    @Disabled("Sample input doesn't match the problem which has specific fields starting with 'departure'")
     public void part2_sampleInput() {
-        long actual = solvePart2(createSampleInput_Part2());
-        long expected = 1716;  // just multiplying all 3 fields in tis example
+        BigInteger actual = solvePart2(createSampleInput_Part2());
+        BigInteger expected = BigInteger.valueOf(1716);  // just multiplying all 3 fields in tis example
         assertEquals(expected, actual);
     }
 
     @Test
     public void part2_Solution() {
-        long actual = solvePart2(Utilities.fileToStringList("./data/day16-part01"));
-        assertEquals(999L, actual);
+        BigInteger actual = solvePart2(Utilities.fileToStringList("./data/day16-part01"));
+        assertEquals(new BigInteger("1940065747861"), actual);
     }
 
 
@@ -104,6 +108,7 @@ public class day16Tests {
                 for (int i = 0; i < ticketFields.length; i++) {
                     int fieldNum = Integer.parseInt(ticketFields[i]);
                     if (!validFields.containsKey(fieldNum)) {
+System.out.println("Discard because of: " + fieldNum);
                         result += fieldNum;
                     }
                 }
@@ -134,7 +139,7 @@ public class day16Tests {
     }
 
 
-    private long solvePart2(List<String> input) {
+    private BigInteger solvePart2(List<String> input) {
         List<String> rules = new ArrayList<>();
         String yourTicket = "";
         List<String> allNearbyTickets = new ArrayList<>();
@@ -189,7 +194,6 @@ System.out.println("\n\n");
 // some fields will only work for one rule
 // trace the example by hand to confirm components
 // then rewrite with some better diagostics for when things break down
-// Current impl had a cycle on Fields 16 and 18 and never halted, hence the 'breaker' flag
         List<Integer> unmatchedFields = new ArrayList<>();
         List<String> unmatchedRules = new ArrayList<>();
         for (int i = 0; i < numberOfFields; i++) {
@@ -206,11 +210,13 @@ System.out.println("\n\n");
                     Set<Integer> valuesForField = valuesByFieldPosition.get(i);
                     String ruleName = ruleThatWorksFor(ticketRules, valuesForField, unmatchedRules);
                     ruleNameToFieldPosition.put(ruleName, i);
-//TODO pretty damn weird that the rules are being assignd in reverse alphabetical order...
 System.out.println("Assigning " + ruleName + " to position " + i);
 System.out.println();
 
-                    unmatchedFields.remove(i);
+                    // WOW - new Integer(i) is what I had, IDE showed it as strike-through and I removed it so was
+                    // removing the i'th index element not the element i
+                    // Didn't read the warning closely which pointed me to Integer.valueOf(i) which is correct
+                    unmatchedFields.remove(Integer.valueOf(i));
                     unmatchedRules.remove(ruleName);
                 } catch (Exception e) {
 //                    System.out.println("more than one rule works for position " + i + " -- " + valuesByFieldPosition);
@@ -220,26 +226,30 @@ System.out.println();
             i++;
             if (i > numberOfFields) i = 0;
 
-            breaker++;
-            if (breaker > 40) {
-                System.out.println(ruleNameToFieldPosition);
-                break;
-            }
+//            breaker++;
+//            if (breaker > 400) {
+//                System.out.println(ruleNameToFieldPosition);
+//                break;
+//            }
         }
 //TODO ends here
 
+        int d0 = ruleNameToFieldPosition.get("departure date");
+        int d1 = ruleNameToFieldPosition.get("departure location");
+        int d2 = ruleNameToFieldPosition.get("departure platform");
+        int d3 = ruleNameToFieldPosition.get("departure station");
+        int d4 = ruleNameToFieldPosition.get("departure time");
+        int d5 = ruleNameToFieldPosition.get("departure track");
 
-        // current approach finds "departure" for the fields 14,15,17,19 with a cycle on 16,18...
-        // multiplied those together and submitted but the answer '341859272509' was too low
-        // The values seem to fit the rules which means the approach to find rulesToField is broken
-        BigInteger result = BigInteger.valueOf(61)
-                .multiply(BigInteger.valueOf(109))
-                .multiply(BigInteger.valueOf(73))
-                .multiply(BigInteger.valueOf(97))
-                .multiply(BigInteger.valueOf(137))
-                .multiply(BigInteger.valueOf(53));
+        String[] yourTicketFields = yourTicket.split(",");
+        BigInteger result = BigInteger.valueOf(Integer.valueOf(yourTicketFields[d0]))
+                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d1])))
+                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d2])))
+                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d3])))
+                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d4])))
+                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d5])));
 
-        return 44;
+        return result;
     }
 
     //TODO - some input may match more than one rule - in that case
@@ -261,7 +271,7 @@ System.out.println();
             for (TicketRule ticketRule :
                     ticketRules) {
                 if (!ticketRule.followsRule(fieldValue)) {
-System.out.println("value: " + fieldValue + " violates rules for " + ticketRule.fieldName);
+//System.out.println("value: " + fieldValue + " violates rules for " + ticketRule.fieldName);
                     viableRules.remove(ticketRule.fieldName);
                     if (viableRules.size() == 1) {
 System.out.println("only ticketRule left is: " + viableRules.get(0));
@@ -277,18 +287,13 @@ System.out.println("only ticketRule left is: " + viableRules.get(0));
 
 
     //TODO switch to using TicketRules instead of re-parsing the rules-by-line input again
-//TODO HERE - THIS IS NOT DISCARDING ANY TICKETS - HOW IS IT WORKING IN PART 1???
     private List<String> discardInvalidTickets(List<String> rules, List<String> allNearbyTickets) {
         List<String> validTickets = new ArrayList<>();
 
-        // gather all valid numbers from the rules
         Set<Integer> validNumbers = new HashSet<>();
-        List<TicketRule> ticketRules = new ArrayList<>();
         for (String ruleLine :
                 rules) {
-
             int colonIndex = ruleLine.indexOf(":");
-            String fieldName = ruleLine.substring(0, colonIndex);
 
             int orIndex = ruleLine.indexOf(" or ");
             String firstRangeString = ruleLine.substring(colonIndex + 2, orIndex);
@@ -307,21 +312,20 @@ System.out.println("only ticketRule left is: " + viableRules.get(0));
             for (int i = higherLowBound; i <= higherHighBound; i++) {
                 validNumbers.add(i);
             }
-
         }
 
-        // TODO - the sample input doesn't reject any ticket, have not confirmed this logic with a test
+        boolean validTicket = true;
         for (String ticket :
                 allNearbyTickets) {
-
+            validTicket = true;
             String[] ticketFields = ticket.split(",");
             for (int i = 0; i < ticketFields.length; i++) {
                 int fieldNum = Integer.parseInt(ticketFields[i]);
                 if (!validNumbers.contains(fieldNum)) {
-                    continue;
+                    validTicket = false;
                 }
             }
-            validTickets.add(ticket);
+            if (validTicket) validTickets.add(ticket);
         }
 
         return validTickets;
