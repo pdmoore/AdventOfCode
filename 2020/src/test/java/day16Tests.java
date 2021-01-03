@@ -67,7 +67,7 @@ public class day16Tests {
     }
 
     @Test
-    @Disabled("Sample input doesn't match the problem which has specific fields starting with 'departure'")
+    @Disabled("Skipping Test for part 2 sample input. Sample input doesn't match the problem which has specific fields starting with 'departure'")
     public void part2_sampleInput() {
         BigInteger actual = solvePart2(createSampleInput_Part2());
         BigInteger expected = BigInteger.valueOf(1716);  // just multiplying all 3 fields in tis example
@@ -108,7 +108,6 @@ public class day16Tests {
                 for (int i = 0; i < ticketFields.length; i++) {
                     int fieldNum = Integer.parseInt(ticketFields[i]);
                     if (!validFields.containsKey(fieldNum)) {
-System.out.println("Discard because of: " + fieldNum);
                         result += fieldNum;
                     }
                 }
@@ -138,7 +137,6 @@ System.out.println("Discard because of: " + fieldNum);
         }
     }
 
-
     private BigInteger solvePart2(List<String> input) {
         List<String> rules = new ArrayList<>();
         String yourTicket = "";
@@ -164,8 +162,6 @@ System.out.println("Discard because of: " + fieldNum);
         // discard tickets with fields that don't appear in the rules
         List<TicketRule> ticketRules = createTicketRules(rules);
         List<String> validNearbyTickets = discardInvalidTickets(rules, allNearbyTickets);
-System.out.println("All Tickets Count: " + allNearbyTickets.size());
-System.out.println("Discarded Tickets: " + (allNearbyTickets.size() - validNearbyTickets.size()));
 
         //TODO
         // - Collect all the field position values together (all items in field1, field2, etc)
@@ -184,16 +180,8 @@ System.out.println("Discarded Tickets: " + (allNearbyTickets.size() - validNearb
                 valuesForField.add(Integer.parseInt(ticketFieldValues[i]));
             }
             valuesByFieldPosition.put(i, valuesForField);
-System.out.println("Field " + i + ": " + valuesForField);
         }
-System.out.println("\n\n");
 
-//TODO - start over
-// strategy is to figure out which set of fields support which rule
-// set of fields may work for more than one rule
-// some fields will only work for one rule
-// trace the example by hand to confirm components
-// then rewrite with some better diagostics for when things break down
         List<Integer> unmatchedFields = new ArrayList<>();
         List<String> unmatchedRules = new ArrayList<>();
         for (int i = 0; i < numberOfFields; i++) {
@@ -210,8 +198,6 @@ System.out.println("\n\n");
                     Set<Integer> valuesForField = valuesByFieldPosition.get(i);
                     String ruleName = ruleThatWorksFor(ticketRules, valuesForField, unmatchedRules);
                     ruleNameToFieldPosition.put(ruleName, i);
-System.out.println("Assigning " + ruleName + " to position " + i);
-System.out.println();
 
                     // WOW - new Integer(i) is what I had, IDE showed it as strike-through and I removed it so was
                     // removing the i'th index element not the element i
@@ -219,20 +205,14 @@ System.out.println();
                     unmatchedFields.remove(Integer.valueOf(i));
                     unmatchedRules.remove(ruleName);
                 } catch (Exception e) {
-//                    System.out.println("more than one rule works for position " + i + " -- " + valuesByFieldPosition);
+                    // FieldPosition data matches more than one remaining rule. Skip it for now
+                    // and on a future pass the conflicting rule will be assigned to a different
+                    // set of FieldPosition data allowing this to be assigned
                 }
             }
 
-            i++;
-            if (i > numberOfFields) i = 0;
-
-//            breaker++;
-//            if (breaker > 400) {
-//                System.out.println(ruleNameToFieldPosition);
-//                break;
-//            }
+            if (i++ > numberOfFields) i = 0;
         }
-//TODO ends here
 
         int d0 = ruleNameToFieldPosition.get("departure date");
         int d1 = ruleNameToFieldPosition.get("departure location");
@@ -271,10 +251,8 @@ System.out.println();
             for (TicketRule ticketRule :
                     ticketRules) {
                 if (!ticketRule.followsRule(fieldValue)) {
-//System.out.println("value: " + fieldValue + " violates rules for " + ticketRule.fieldName);
                     viableRules.remove(ticketRule.fieldName);
                     if (viableRules.size() == 1) {
-System.out.println("only ticketRule left is: " + viableRules.get(0));
                         return viableRules.get(0);
                     }
                 }
