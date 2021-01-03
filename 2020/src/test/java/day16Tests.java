@@ -221,12 +221,12 @@ class day16Tests {
         int d5 = ruleNameToFieldPosition.get("departure track");
 
         String[] yourTicketFields = yourTicket.split(",");
-        BigInteger result = BigInteger.valueOf(Integer.valueOf(yourTicketFields[d0]))
-                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d1])))
-                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d2])))
-                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d3])))
-                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d4])))
-                .multiply(BigInteger.valueOf(Integer.valueOf(yourTicketFields[d5])));
+        BigInteger result = new BigInteger(yourTicketFields[d0])
+                .multiply(new BigInteger(yourTicketFields[d1]))
+                .multiply(new BigInteger(yourTicketFields[d2]))
+                .multiply(new BigInteger(yourTicketFields[d3]))
+                .multiply(new BigInteger(yourTicketFields[d4]))
+                .multiply(new BigInteger(yourTicketFields[d5]));
 
         return result;
     }
