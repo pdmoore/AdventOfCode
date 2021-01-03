@@ -6,7 +6,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class day16Tests {
+class day16Tests {
 
 
     //TODO LOTS OF CLEANUP
@@ -55,27 +55,27 @@ public class day16Tests {
     }
 
     @Test
-    public void part1_sampleInput() {
+    void part1_sampleInput() {
         int actual = solvePart1(createSampleInput_Part1());
         assertEquals(71, actual);
     }
 
     @Test
-    public void part1_Solution() {
+    void part1_Solution() {
         int actual = solvePart1(Utilities.fileToStringList("./data/day16-part01"));
         assertEquals(20231, actual);
     }
 
     @Test
     @Disabled("Skipping Test for part 2 sample input. Sample input doesn't match the problem which has specific fields starting with 'departure'")
-    public void part2_sampleInput() {
+    void part2_sampleInput() {
         BigInteger actual = solvePart2(createSampleInput_Part2());
         BigInteger expected = BigInteger.valueOf(1716);  // just multiplying all 3 fields in tis example
         assertEquals(expected, actual);
     }
 
     @Test
-    public void part2_Solution() {
+    void part2_Solution() {
         BigInteger actual = solvePart2(Utilities.fileToStringList("./data/day16-part01"));
         assertEquals(new BigInteger("1940065747861"), actual);
     }
@@ -191,7 +191,6 @@ public class day16Tests {
 
         Map<String, Integer> ruleNameToFieldPosition = new HashMap<>();
         int i = 0;
-        int breaker = 0;
         while (!unmatchedRules.isEmpty()) {
             if (unmatchedFields.contains(i)) {
                 try {
