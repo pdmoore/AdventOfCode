@@ -159,7 +159,8 @@ public class day16Tests {
         // discard tickets with fields that don't appear in the rules
         List<TicketRule> ticketRules = createTicketRules(rules);
         List<String> validNearbyTickets = discardInvalidTickets(rules, allNearbyTickets);
-
+System.out.println("All Tickets Count: " + allNearbyTickets.size());
+System.out.println("Discarded Tickets: " + (allNearbyTickets.size() - validNearbyTickets.size()));
 
         //TODO
         // - Collect all the field position values together (all items in field1, field2, etc)
@@ -171,14 +172,16 @@ public class day16Tests {
         int numberOfFields = validNearbyTickets.get(0).split(",").length;
         Map<Integer, Set<Integer>> valuesByFieldPosition = new HashMap<>();
         for (int i = 0; i < numberOfFields; i++) {
-            Set<Integer> valuesForField = new HashSet<>();
+            Set<Integer> valuesForField = new TreeSet<>();
             for (String ticket :
                     validNearbyTickets) {
                 String[] ticketFieldValues = ticket.split(",");
                 valuesForField.add(Integer.parseInt(ticketFieldValues[i]));
             }
             valuesByFieldPosition.put(i, valuesForField);
+System.out.println("Field " + i + ": " + valuesForField);
         }
+System.out.println("\n\n");
 
 //TODO - start over
 // strategy is to figure out which set of fields support which rule
@@ -203,7 +206,11 @@ public class day16Tests {
                     Set<Integer> valuesForField = valuesByFieldPosition.get(i);
                     String ruleName = ruleThatWorksFor(ticketRules, valuesForField, unmatchedRules);
                     ruleNameToFieldPosition.put(ruleName, i);
-                    unmatchedFields.remove(new Integer(i));
+//TODO pretty damn weird that the rules are being assignd in reverse alphabetical order...
+System.out.println("Assigning " + ruleName + " to position " + i);
+System.out.println();
+
+                    unmatchedFields.remove(i);
                     unmatchedRules.remove(ruleName);
                 } catch (Exception e) {
 //                    System.out.println("more than one rule works for position " + i + " -- " + valuesByFieldPosition);
@@ -254,8 +261,10 @@ public class day16Tests {
             for (TicketRule ticketRule :
                     ticketRules) {
                 if (!ticketRule.followsRule(fieldValue)) {
+System.out.println("value: " + fieldValue + " violates rules for " + ticketRule.fieldName);
                     viableRules.remove(ticketRule.fieldName);
                     if (viableRules.size() == 1) {
+System.out.println("only ticketRule left is: " + viableRules.get(0));
                         return viableRules.get(0);
                     }
                 }
@@ -268,6 +277,7 @@ public class day16Tests {
 
 
     //TODO switch to using TicketRules instead of re-parsing the rules-by-line input again
+//TODO HERE - THIS IS NOT DISCARDING ANY TICKETS - HOW IS IT WORKING IN PART 1???
     private List<String> discardInvalidTickets(List<String> rules, List<String> allNearbyTickets) {
         List<String> validTickets = new ArrayList<>();
 
