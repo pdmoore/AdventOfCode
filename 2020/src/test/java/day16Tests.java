@@ -138,38 +138,10 @@ class day16Tests {
     }
 
     private BigInteger solvePart2(List<String> input) {
-        List<String> rules = new ArrayList<>();
-        String yourTicket = "";
-        List<String> allNearbyTickets = new ArrayList<>();
+        List<TicketRule> ticketRules = createTicketRulesFrom(input);
+        List<String> validNearbyTickets = discardInvalidTickets(ticketRules, findAllNearbyTicketsFrom(input));
 
-        // Split input into three different sets of data: rules, your ticket, all nearby tickets
-        int mode = 0;
-        for (String inputLine :
-                input) {
-            if (inputLine.trim().isEmpty()) continue;
-            if (inputLine.startsWith("your ticket")) mode = 1;
-            if (inputLine.startsWith("nearby tickets")) mode = 2;
-
-            if (mode == 0) {
-                rules.add(inputLine);
-            } else if (mode == 1) {
-                if (!inputLine.startsWith("your ticket")) yourTicket = inputLine;
-            } else {
-                if (!inputLine.startsWith("nearby tickets")) allNearbyTickets.add(inputLine);
-            }
-        }
-
-        // discard tickets with fields that don't appear in the rules
-        List<TicketRule> ticketRules = createTicketRules(rules);
-        List<String> validNearbyTickets = discardInvalidTickets(rules, allNearbyTickets);
-
-        //TODO
-        // - Collect all the field position values together (all items in field1, field2, etc)
-        //   - collection with be a set of integers and the position in the ticket
-        // - Determine which rule a collection belongs to
-        //   - let's me map the field position to the rule name
-        // - finally for all the "departure" rules, use the field position to multiply the values on my your ticket
-
+        //TODO continue compose method
         int numberOfFields = validNearbyTickets.get(0).split(",").length;
         Map<Integer, Set<Integer>> valuesByFieldPosition = new HashMap<>();
         for (int i = 0; i < numberOfFields; i++) {
@@ -213,6 +185,39 @@ class day16Tests {
             if (i++ > numberOfFields) i = 0;
         }
 
+        String yourTicket = findYourTicketFrom(input);
+        return productOfDepartureFields(ruleNameToFieldPosition, yourTicket);
+    }
+
+    private List<String> findAllNearbyTicketsFrom(List<String> input) {
+        int i = 0;
+        while (!input.get(i++).startsWith("nearby tickets")) {
+        }
+
+        return input.subList(i, input.size());
+    }
+
+    private String findYourTicketFrom(List<String> input) {
+        int i = 0;
+        while (!input.get(i++).startsWith("your ticket")) {
+        }
+        return input.get(i);
+    }
+
+    private List<TicketRule> createTicketRulesFrom(List<String> input) {
+        List<String> rules = new ArrayList<>();
+
+        for (String inputLine :
+                input) {
+            if (inputLine.trim().isEmpty()) continue;
+            if (inputLine.startsWith("your ticket")) break;
+
+            rules.add(inputLine);
+        }
+        return createTicketRules(rules);
+    }
+
+    private BigInteger productOfDepartureFields(Map<String, Integer> ruleNameToFieldPosition, String yourTicket) {
         int d0 = ruleNameToFieldPosition.get("departure date");
         int d1 = ruleNameToFieldPosition.get("departure location");
         int d2 = ruleNameToFieldPosition.get("departure platform");
@@ -221,19 +226,14 @@ class day16Tests {
         int d5 = ruleNameToFieldPosition.get("departure track");
 
         String[] yourTicketFields = yourTicket.split(",");
-        BigInteger result = new BigInteger(yourTicketFields[d0])
+        return new BigInteger(yourTicketFields[d0])
                 .multiply(new BigInteger(yourTicketFields[d1]))
                 .multiply(new BigInteger(yourTicketFields[d2]))
                 .multiply(new BigInteger(yourTicketFields[d3]))
                 .multiply(new BigInteger(yourTicketFields[d4]))
                 .multiply(new BigInteger(yourTicketFields[d5]));
-
-        return result;
     }
 
-    //TODO - some input may match more than one rule - in that case
-    // pass in only the remaining valid rules
-    // do multiple passes until all the rules are uniquely assigned
     private String ruleThatWorksFor(List<TicketRule> ticketRules, Set<Integer> valuesToCheck, List<String> unmatchedRules) {
         List<String> viableRules = new ArrayList<>();
         for (TicketRule ticketRule :
@@ -262,33 +262,14 @@ class day16Tests {
         return viableRules.get(0);
     }
 
-
-    //TODO switch to using TicketRules instead of re-parsing the rules-by-line input again
-    private List<String> discardInvalidTickets(List<String> rules, List<String> allNearbyTickets) {
+    private List<String> discardInvalidTickets(List<TicketRule> ticketRules, List<String> allNearbyTickets) {
         List<String> validTickets = new ArrayList<>();
 
-        Set<Integer> validNumbers = new HashSet<>();
-        for (String ruleLine :
-                rules) {
-            int colonIndex = ruleLine.indexOf(":");
-
-            int orIndex = ruleLine.indexOf(" or ");
-            String firstRangeString = ruleLine.substring(colonIndex + 2, orIndex);
-            String secondRangeString = ruleLine.substring(orIndex + 4);
-
-            String[] rangeBounds = firstRangeString.split("-");
-            int lowerLowBound = Integer.parseInt(rangeBounds[0]);
-            int lowerHighBound = Integer.parseInt(rangeBounds[1]);
-            for (int i = lowerLowBound; i <= lowerHighBound; i++) {
-                validNumbers.add(i);
-            }
-
-            rangeBounds = secondRangeString.split("-");
-            int higherLowBound = Integer.parseInt(rangeBounds[0]);
-            int higherHighBound = Integer.parseInt(rangeBounds[1]);
-            for (int i = higherLowBound; i <= higherHighBound; i++) {
-                validNumbers.add(i);
-            }
+        Set<Integer> validFieldValues = new HashSet<>();
+        for (TicketRule tr :
+                ticketRules) {
+            validNumbersIncludeRange(validFieldValues, tr.lowerLowBound, tr.lowerHighBound);
+            validNumbersIncludeRange(validFieldValues, tr.higherLowBound, tr.higherHighBound);
         }
 
         boolean validTicket = true;
@@ -298,7 +279,7 @@ class day16Tests {
             String[] ticketFields = ticket.split(",");
             for (int i = 0; i < ticketFields.length; i++) {
                 int fieldNum = Integer.parseInt(ticketFields[i]);
-                if (!validNumbers.contains(fieldNum)) {
+                if (!validFieldValues.contains(fieldNum)) {
                     validTicket = false;
                 }
             }
@@ -307,6 +288,13 @@ class day16Tests {
 
         return validTickets;
     }
+
+    private void validNumbersIncludeRange(Set<Integer> validNumbers, int lowerBound, int higherBound) {
+        for (int i = lowerBound; i <= higherBound; i++) {
+            validNumbers.add(i);
+        }
+    }
+
 
     private List<TicketRule> createTicketRules(List<String> rules) {
         List<String> validTickets = new ArrayList<>();
@@ -324,6 +312,7 @@ class day16Tests {
             String firstRangeString = ruleLine.substring(colonIndex + 2, orIndex);
             String secondRangeString = ruleLine.substring(orIndex + 4);
 
+            //TODO - duplication?
             String[] rangeBounds = firstRangeString.split("-");
             int lowerLowBound = Integer.parseInt(rangeBounds[0]);
             int lowerHighBound = Integer.parseInt(rangeBounds[1]);
