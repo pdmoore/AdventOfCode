@@ -141,19 +141,18 @@ class day16Tests {
         List<TicketRule> ticketRules = createTicketRulesFrom(input);
         List<String> validNearbyTickets = discardInvalidTickets(ticketRules, findAllNearbyTicketsFrom(input));
 
-        //TODO continue compose method
-        int numberOfFields = validNearbyTickets.get(0).split(",").length;
-        Map<Integer, Set<Integer>> valuesByFieldPosition = new HashMap<>();
-        for (int i = 0; i < numberOfFields; i++) {
-            Set<Integer> valuesForField = new TreeSet<>();
-            for (String ticket :
-                    validNearbyTickets) {
-                String[] ticketFieldValues = ticket.split(",");
-                valuesForField.add(Integer.parseInt(ticketFieldValues[i]));
-            }
-            valuesByFieldPosition.put(i, valuesForField);
-        }
+        Map<Integer, Set<Integer>> valuesByFieldPosition = groupValuesByFieldPosition(validNearbyTickets);
 
+        Map<String, Integer> ruleNameToFieldPosition = assignFieldPositionsToRules(ticketRules, validNearbyTickets, valuesByFieldPosition);
+
+        String yourTicket = findYourTicketFrom(input);
+        return productOfDepartureFields(ruleNameToFieldPosition, yourTicket);
+    }
+
+    private Map<String, Integer> assignFieldPositionsToRules(List<TicketRule> ticketRules, List<String> validNearbyTickets, Map<Integer, Set<Integer>> valuesByFieldPosition) {
+        Map<String, Integer> ruleNameToFieldPosition = new HashMap<>();
+
+        int numberOfFields = validNearbyTickets.get(0).split(",").length;
         List<Integer> unmatchedFields = new ArrayList<>();
         List<String> unmatchedRules = new ArrayList<>();
         for (int i = 0; i < numberOfFields; i++) {
@@ -161,7 +160,6 @@ class day16Tests {
             unmatchedFields.add(i);
         }
 
-        Map<String, Integer> ruleNameToFieldPosition = new HashMap<>();
         int i = 0;
         while (!unmatchedRules.isEmpty()) {
             if (unmatchedFields.contains(i)) {
@@ -185,8 +183,22 @@ class day16Tests {
             if (i++ > numberOfFields) i = 0;
         }
 
-        String yourTicket = findYourTicketFrom(input);
-        return productOfDepartureFields(ruleNameToFieldPosition, yourTicket);
+        return ruleNameToFieldPosition;
+    }
+
+    private Map<Integer, Set<Integer>> groupValuesByFieldPosition(List<String> validNearbyTickets) {
+        Map<Integer, Set<Integer>> valuesByFieldPosition = new HashMap<>();
+        int numberOfFields = validNearbyTickets.get(0).split(",").length;
+        for (int i = 0; i < numberOfFields; i++) {
+            Set<Integer> valuesForField = new TreeSet<>();
+            for (String ticket :
+                    validNearbyTickets) {
+                String[] ticketFieldValues = ticket.split(",");
+                valuesForField.add(Integer.parseInt(ticketFieldValues[i]));
+            }
+            valuesByFieldPosition.put(i, valuesForField);
+        }
+        return valuesByFieldPosition;
     }
 
     private List<String> findAllNearbyTicketsFrom(List<String> input) {
@@ -210,7 +222,7 @@ class day16Tests {
         for (String inputLine :
                 input) {
             if (inputLine.trim().isEmpty()) continue;
-            if (inputLine.startsWith("your ticket")) break;
+            if (inputLxine.startsWith("your ticket")) break;
 
             rules.add(inputLine);
         }
