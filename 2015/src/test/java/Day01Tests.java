@@ -1,28 +1,29 @@
 package test.java;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
     @Test
     public void EqualNumberOfOpenAndClose() {
-        Assertions.assertEquals(0, something("(())"));
-        Assertions.assertEquals(0, something("()()"));
+        assertEquals(0, something("(())"));
+        assertEquals(0, something("()()"));
     }
 
     @Test
     public void MoreOpenThanClose() {
-        Assertions.assertEquals(3, something("))((((("));
-        Assertions.assertEquals(3, something("))((((("));
+        assertEquals(3, something("))((((("));
+        assertEquals(3, something("))((((("));
     }
 
     @Test
     public void MoreCloseThanOpen() {
-        Assertions.assertEquals(-1, something("())"));
-        Assertions.assertEquals(-1, something("))("));
-        Assertions.assertEquals(-3, something(")))"));
-        Assertions.assertEquals(-3, something(")())())"));
+        assertEquals(-1, something("())"));
+        assertEquals(-1, something("))("));
+        assertEquals(-3, something(")))"));
+        assertEquals(-3, something(")())())"));
     }
 
 
