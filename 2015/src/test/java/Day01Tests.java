@@ -1,17 +1,9 @@
 package test.java;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Day01Tests {
-
-    /*
-
-()) and ))( both result in floor -1 (the first basement level).
-))) and )())()) both result in floor -3.
-
-     */
 
     @Test
     public void EqualNumberOfOpenAndClose() {
@@ -29,6 +21,8 @@ public class Day01Tests {
     public void MoreCloseThanOpen() {
         Assertions.assertEquals(-1, something("())"));
         Assertions.assertEquals(-1, something("))("));
+        Assertions.assertEquals(-3, something(")))"));
+        Assertions.assertEquals(-3, something(")())())"));
     }
 
 
