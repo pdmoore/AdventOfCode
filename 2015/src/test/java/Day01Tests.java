@@ -8,8 +8,6 @@ public class Day01Tests {
 
     /*
 
-((( and (()(()( both result in floor 3.
-))((((( also results in floor 3.
 ()) and ))( both result in floor -1 (the first basement level).
 ))) and )())()) both result in floor -3.
 
@@ -24,6 +22,13 @@ public class Day01Tests {
     @Test
     public void MoreOpenThanClose() {
         Assertions.assertEquals(3, something("))((((("));
+        Assertions.assertEquals(3, something("))((((("));
+    }
+
+    @Test
+    public void MoreCloseThanOpen() {
+        Assertions.assertEquals(-1, something("())"));
+        Assertions.assertEquals(-1, something("))("));
     }
 
 
