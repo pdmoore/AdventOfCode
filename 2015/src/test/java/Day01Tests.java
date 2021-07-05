@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
+    //TODO - input from file - Utils exist in 2020, put them in root?
+    //Stream instead of for loop
+
     @Test
     public void EqualNumberOfOpenAndClose_EndsUpAtGroundFloor() {
         assertEquals(0, something("(())"));
