@@ -56,5 +56,13 @@ public class Day01Tests {
         return goingUp - goingDown;
     }
 
+    @Test
+    public void positionOfFirstCharacterToEnterBasement_ItIsVeryFirstCharacter() {
+        assertEquals(1, indexOfFirstBasementVisit(")"));
+    }
+
+    private int indexOfFirstBasementVisit(String input) {
+        return 1;
+    }
 
 }
