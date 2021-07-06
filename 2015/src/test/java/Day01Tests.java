@@ -23,35 +23,33 @@ public class Day01Tests {
     }
 
 
-    //TODO - Stream instead of for loop
-
     @Test
     public void EqualNumberOfOpenAndClose_EndsUpAtGroundFloor() {
-        assertEquals(0, something("(())"));
-        assertEquals(0, something("()()"));
+        assertEquals(0, floorNumberAfterManyUpAndDownMoves("(())"));
+        assertEquals(0, floorNumberAfterManyUpAndDownMoves("()()"));
     }
 
     @Test
     public void MoreOpenThanClose_EndsUpAboveGround() {
-        assertEquals(3, something("))((((("));
-        assertEquals(3, something("))((((("));
+        assertEquals(3, floorNumberAfterManyUpAndDownMoves("))((((("));
+        assertEquals(3, floorNumberAfterManyUpAndDownMoves("))((((("));
     }
 
     @Test
     public void MoreCloseThanOpen_EndsUpInBasement() {
-        assertEquals(-1, something("())"));
-        assertEquals(-1, something("))("));
-        assertEquals(-3, something(")))"));
-        assertEquals(-3, something(")())())"));
+        assertEquals(-1, floorNumberAfterManyUpAndDownMoves("())"));
+        assertEquals(-1, floorNumberAfterManyUpAndDownMoves("))("));
+        assertEquals(-3, floorNumberAfterManyUpAndDownMoves(")))"));
+        assertEquals(-3, floorNumberAfterManyUpAndDownMoves(")())())"));
     }
 
     @Test
     public void Day1_Part1() {
         String input = fileAsString("data/day01-part01");
-        assertEquals(232, something(input));
+        assertEquals(232, floorNumberAfterManyUpAndDownMoves(input));
     }
 
-    private int something(String input) {
+    private int floorNumberAfterManyUpAndDownMoves(String input) {
         int goingUp = (int) input.chars().filter(ch -> ch == '(').count();
         int goingDown = (int) input.chars().filter(ch -> ch == ')').count();
 
