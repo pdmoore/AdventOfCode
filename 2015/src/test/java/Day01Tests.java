@@ -52,13 +52,10 @@ public class Day01Tests {
     }
 
     private int something(String input) {
-        // it's also just the difference of count of ( and )
-        int floor = 0;
-        for (char c : input.toCharArray()) {
-            if ('(' == c) floor++;
-            else floor--;
-        }
-        return floor;
+        int goingUp = (int) input.chars().filter(ch -> ch == '(').count();
+        int goingDown = (int) input.chars().filter(ch -> ch == ')').count();
+
+        return goingUp - goingDown;
     }
 
 
