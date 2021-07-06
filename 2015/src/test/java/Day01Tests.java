@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day01Tests {
 
 // TODO - Utilities jar to be shared across all
+// Should I just use guava?  Need maven
 
     /**
      * Read contents of the supplied filename and returns as a single string.
