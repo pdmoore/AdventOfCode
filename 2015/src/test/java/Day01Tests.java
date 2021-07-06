@@ -11,8 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day01Tests {
 
 // TODO - Utilities jar to be shared across all
-    // javadoc for this one pointing out file is relative at "data\filename"
-    static String fileAsString(String filename) {
+
+    /**
+     * Read contents of the supplied filename and returns as a single string.
+     * Provide path to file for files not in same directory as source file.
+     *
+     * @param   filename  filename (with path) of file to convert to String
+     * @return            contents of file as String
+     */
+     static String fileAsString(String filename) {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(filename));
             return new String(encoded).trim();
@@ -71,7 +78,7 @@ public class Day01Tests {
 
         return goingUp - goingDown;
     }
-    
+
     private int indexOfFirstBasementVisit(String input) {
         int currentFloor = 0;
         for (int i = 0; i < input.length(); i++) {
