@@ -62,6 +62,11 @@ public class Day01Tests {
         assertEquals(5, indexOfFirstBasementVisit("()())"));
     }
 
+    @Test
+    public void Day1_Part2() {
+        String input = fileAsString("data/day01-part01");
+        assertEquals(1783, indexOfFirstBasementVisit(input));
+    }
     private int indexOfFirstBasementVisit(String input) {
         int currentFloor = 0;
         for (int i = 0; i < input.length(); i++) {
