@@ -59,10 +59,18 @@ public class Day01Tests {
     @Test
     public void positionOfFirstCharacterToEnterBasement_ItIsVeryFirstCharacter() {
         assertEquals(1, indexOfFirstBasementVisit(")"));
+        assertEquals(5, indexOfFirstBasementVisit("()())"));
     }
 
     private int indexOfFirstBasementVisit(String input) {
-        return 1;
+        int currentFloor = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '(') currentFloor++;
+            else currentFloor--;
+
+            if (currentFloor == -1) return i + 1;
+        }
+        return 0;
     }
 
 }
