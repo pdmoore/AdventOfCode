@@ -1,7 +1,9 @@
 package test.java;
 
+import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,30 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
-// TODO - Utilities jar to be shared across all
-// Should I just use guava?  Need maven
-
-    /**
-     * Read contents of the supplied filename and returns as a single string.
-     * Provide path to file for files not in same directory as source file.
-     *
-     * @param   filename  filename (with path) of file to convert to String
-     * @return            contents of file as String
-     */
-     static String fileAsString(String filename) {
-        try {
-            byte[] encoded = Files.readAllBytes(Paths.get(filename));
-            return new String(encoded).trim();
-        } catch (IOException e) {
-            System.out.println("ERROR reading " + filename);
-        }
-        return null;
-    }
-
+    //TODO - figure out why toString is deprecated here but not mentioned in docs
     private String getInputFromFile() {
-        return fileAsString("data/day01-part01");
+        String filename = "data/day01-part01";
+        try {
+            return com.google.common.io.Files.toString(new File(filename), Charsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't open input file: " + filename);
+        }
     }
-
 
     @Test
     public void EqualNumberOfOpenAndClose_EndsUpAtGroundFloor() {
