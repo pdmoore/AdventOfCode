@@ -22,6 +22,10 @@ public class Day01Tests {
         return null;
     }
 
+    private String getInputFromFile() {
+        return fileAsString("data/day01-part01");
+    }
+
 
     @Test
     public void EqualNumberOfOpenAndClose_EndsUpAtGroundFloor() {
@@ -45,15 +49,8 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part1() {
-        String input = fileAsString("data/day01-part01");
+        String input = getInputFromFile();
         assertEquals(232, floorNumberAfterManyUpAndDownMoves(input));
-    }
-
-    private int floorNumberAfterManyUpAndDownMoves(String input) {
-        int goingUp = (int) input.chars().filter(ch -> ch == '(').count();
-        int goingDown = (int) input.chars().filter(ch -> ch == ')').count();
-
-        return goingUp - goingDown;
     }
 
     @Test
@@ -64,9 +61,17 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part2() {
-        String input = fileAsString("data/day01-part01");
+        String input = getInputFromFile();
         assertEquals(1783, indexOfFirstBasementVisit(input));
     }
+
+    private int floorNumberAfterManyUpAndDownMoves(String input) {
+        int goingUp = (int) input.chars().filter(ch -> ch == '(').count();
+        int goingDown = (int) input.chars().filter(ch -> ch == ')').count();
+
+        return goingUp - goingDown;
+    }
+    
     private int indexOfFirstBasementVisit(String input) {
         int currentFloor = 0;
         for (int i = 0; i < input.length(); i++) {
