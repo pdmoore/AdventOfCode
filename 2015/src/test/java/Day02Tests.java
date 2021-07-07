@@ -19,13 +19,18 @@ A present with dimensions 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of 
 
     @Test
     public void CalculateAreaOfBox() {
-        String inputLine = "2x3x4";
-        Assertions.assertEquals(52, squareFootageOf(inputLine));
+        Assertions.assertEquals(52, squareFootageOf("2x3x4"));
+        Assertions.assertEquals(42, squareFootageOf("1x1x10"));
     }
 
     private int squareFootageOf(String inputLine) {
+        String[] measurements = inputLine.split("x");
 
+        int length = Integer.parseInt(measurements[0]);
+        int width = Integer.parseInt(measurements[1]);
+        int height = Integer.parseInt(measurements[2]);
 
-        return 0;
+        int totalArea = 2 * ((length * width) + (length * height) + (width * height));
+        return totalArea;
     }
 }
