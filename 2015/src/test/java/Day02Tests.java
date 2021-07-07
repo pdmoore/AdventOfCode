@@ -10,6 +10,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day02Tests {
 
+    private List<String> fileAsStringArray(String filename) {
+        try {
+            return Files.readLines(new File(filename), Charsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't open input file: " + filename);
+        }
+    }
+
     @Test
     public void CalculateRequiredWrappingPaper() {
         assertEquals(58, requiredWrappingPaperFor("2x3x4"));
@@ -29,14 +37,6 @@ public class Day02Tests {
             totalForAll += requiredWrappingPaperFor(input);
         }
         return totalForAll;
-    }
-
-    private List<String> fileAsStringArray(String filename) {
-        try {
-            return Files.readLines(new File(filename), Charsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't open input file: " + filename);
-        }
     }
 
     private int requiredWrappingPaperFor(String inputLine) {
