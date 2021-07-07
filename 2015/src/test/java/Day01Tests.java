@@ -1,22 +1,20 @@
 package test.java;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
-    //TODO - figure out why toString is deprecated here but not mentioned in docs
     private String getInputFromFile() {
         String filename = "data/day01-part01";
         try {
-            return com.google.common.io.Files.toString(new File(filename), Charsets.UTF_8);
+            return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {
             throw new RuntimeException("Couldn't open input file: " + filename);
         }
