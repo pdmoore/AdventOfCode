@@ -31,12 +31,9 @@ public class Day02Tests {
     }
 
     private int solvePart01(List<String> inputLines) {
-        int totalForAll = 0;
-        for (String input :
-                inputLines) {
-            totalForAll += requiredWrappingPaperFor(input);
-        }
-        return totalForAll;
+        return inputLines.stream()
+                .mapToInt(s -> requiredWrappingPaperFor(s))
+                .reduce(0, Integer::sum);
     }
 
     private int requiredWrappingPaperFor(String inputLine) {
