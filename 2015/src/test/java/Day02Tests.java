@@ -1,26 +1,42 @@
-import org.junit.jupiter.api.Assertions;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day02Tests {
 
-
-
-    /*
-A present with dimensions 2x3x4 requires 2*6 + 2*12 + 2*8 = 52 square feet of wrapping paper plus 6 square feet of slack, for a total of 58 square feet.
-A present with dimensions 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of wrapping paper plus 1 square foot of slack, for a total of 43 square feet.
-
-     - Read file as list of strings
-     - Parse a line to find length, width, height
-     - Given l,w,h calculate area
-     - Given l,w,h, find smallest area of triplet
-     - Sum area and smallest area of triplet
-     - Sum the whole dang list of things
-     */
-
     @Test
     public void CalculateRequiredWrappingPaper() {
-        Assertions.assertEquals(58, requiredWrappingPaperFor("2x3x4"));
-        Assertions.assertEquals(43, requiredWrappingPaperFor("1x1x10"));
+        assertEquals(58, requiredWrappingPaperFor("2x3x4"));
+        assertEquals(43, requiredWrappingPaperFor("1x1x10"));
+    }
+
+    @Test
+    public void day02_part01() {
+        List<String> inputLines = fileAsStringArray("data/day02-part01");
+        assertEquals(1586300, solvePart01(inputLines));
+    }
+
+    private int solvePart01(List<String> inputLines) {
+        int totalForAll = 0;
+        for (String input :
+                inputLines) {
+            totalForAll += requiredWrappingPaperFor(input);
+        }
+        return totalForAll;
+    }
+
+    private List<String> fileAsStringArray(String filename) {
+        try {
+            return Files.readLines(new File(filename), Charsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't open input file: " + filename);
+        }
     }
 
     private int requiredWrappingPaperFor(String inputLine) {
