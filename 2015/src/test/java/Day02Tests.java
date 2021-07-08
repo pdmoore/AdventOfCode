@@ -31,9 +31,21 @@ public class Day02Tests {
         assertEquals(1586300, solvePart01(inputLines));
     }
 
+    @Test
+    public void day02_part02() {
+        List<String> inputLines = fileAsStringArray("data/day02-part01");
+        assertEquals(3737498, solvePart02(inputLines));
+    }
+
     private int solvePart01(List<String> inputLines) {
         return inputLines.stream()
                 .mapToInt(s -> requiredWrappingPaperFor(s))
+                .reduce(0, Integer::sum);
+    }
+
+    private int solvePart02(List<String> inputLines) {
+        return inputLines.stream()
+                .mapToInt(s -> requiredRibbonFor(s))
                 .reduce(0, Integer::sum);
     }
 
@@ -53,20 +65,6 @@ public class Day02Tests {
 
         return totalArea + smallestArea;
     }
-
-    /*
-    The ribbon required to wrap a present is the shortest distance around its sides, or the smallest perimeter of any one face.
-    Each present also requires a bow made out of ribbon as well; the feet of ribbon required for the perfect bow is equal to
-    the cubic feet of volume of the present. Don't ask how they tie the bow, though; they'll never tell.
-
-For example:
-
-A present with dimensions 2x3x4 requires 2+2+3+3 = 10 feet of ribbon to wrap the present
-plus 2*3*4 = 24 feet of ribbon for the bow, for a total of 34 feet.
-A present with dimensions 1x1x10 requires 1+1+1+1 = 4 feet of ribbon to wrap the present
-plus 1*1*10 = 10 feet of ribbon for the bow, for a total of 14 feet.
-
-     */
 
     @Test
     public void VolumeIsProductOfAllDimensions() {
