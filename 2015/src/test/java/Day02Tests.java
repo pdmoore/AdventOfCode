@@ -88,7 +88,5 @@ public class Day02Tests {
 
         int volume = sides[0] * sides[1] * sides[2];
         return shortestAround + volume;
-
     }
-
 }
