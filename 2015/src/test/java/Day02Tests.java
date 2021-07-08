@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,24 +29,31 @@ public class Day02Tests {
     @Test
     public void day02_part01() {
         List<String> inputLines = fileAsStringArray("data/day02-part01");
-        assertEquals(1586300, solvePart01(inputLines));
+        assertEquals(1586300, mapAndReduce(inputLines, this::requiredWrappingPaperFor));
     }
 
     @Test
     public void day02_part02() {
         List<String> inputLines = fileAsStringArray("data/day02-part01");
-        assertEquals(3737498, solvePart02(inputLines));
+        assertEquals(3737498, mapAndReduce(inputLines, this::requiredRibbonFor));
     }
 
-    private int solvePart01(List<String> inputLines) {
-        return inputLines.stream()
-                .mapToInt(s -> requiredWrappingPaperFor(s))
-                .reduce(0, Integer::sum);
+    @Test
+    public void VolumeIsProductOfAllDimensions() {
+        assertEquals(24, 2 * 3 * 4);
+        assertEquals(10, 1 * 1 * 10);
     }
 
-    private int solvePart02(List<String> inputLines) {
+    @Test
+    public void CalculateRequiredRibbon() {
+        assertEquals(34, requiredRibbonFor("2x3x4"));
+        assertEquals(14, requiredRibbonFor("1x1x10"));
+    }
+
+
+    private int mapAndReduce(List<String> inputLines, ToIntFunction<String> mapping) {
         return inputLines.stream()
-                .mapToInt(s -> requiredRibbonFor(s))
+                .mapToInt(mapping)
                 .reduce(0, Integer::sum);
     }
 
@@ -66,18 +74,6 @@ public class Day02Tests {
         return totalArea + smallestArea;
     }
 
-    @Test
-    public void VolumeIsProductOfAllDimensions() {
-        assertEquals(24, calculateVolume(2, 3, 4));
-        assertEquals(10, calculateVolume(1, 1, 10));
-    }
-
-    @Test
-    public void CalculateRequiredRibbon() {
-        assertEquals(34, requiredRibbonFor("2x3x4"));
-        assertEquals(14, requiredRibbonFor("1x1x10"));
-    }
-
     private int requiredRibbonFor(String inputLine) {
         String[] measurements = inputLine.split("x");
 
@@ -90,11 +86,9 @@ public class Day02Tests {
 
         int shortestAround = 2 * (sides[0] + sides[1]);
 
-        return shortestAround + calculateVolume(sides[0], sides[1], sides[2]);
+        int volume = sides[0] * sides[1] * sides[2];
+        return shortestAround + volume;
 
     }
 
-    private int calculateVolume(int length, int width, int height) {
-        return length * width * height;
-    }
 }
