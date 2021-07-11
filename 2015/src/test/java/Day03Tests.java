@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Day03Tests {
 
 
@@ -22,7 +25,25 @@ public class Day03Tests {
     }
 
     private int deliverPresents_ReturnUniqueHouses(String s) {
-        return 0;
+        int x = 0;
+        int y = 0;
+
+        Point p = new Point(x, y);
+
+        Map<Point, Integer> houses = new HashMap<>();
+        houses.put(p, 1);
+
+        for (Character c:
+             s.toCharArray()) {
+
+            x += 1;
+            p = new Point(x, y);
+            houses.put(p, 1);
+        }
+
+
+
+        return houses.keySet().size();
     }
 
 
