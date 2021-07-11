@@ -21,9 +21,8 @@ public class Day03Tests {
     }
 
     @Test
-    @Disabled
     public void simpleExample_DuplicateHouses_AllMoves() {
-        Assertions.assertEquals(4, deliverPresents_ReturnUniqueHouses("^>v<"));
+        Assertions.assertEquals(5, deliverPresents_ReturnUniqueHouses("^>v<<"));
     }
 
     @Test
@@ -46,6 +45,8 @@ public class Day03Tests {
 
             if ('>' == c) {
                 x += 1;
+            } else if ('<' == c) {
+                x -= 1;
             } else if ('^' == c) {
                 y += 1;
             } else if ('v' == c) {
