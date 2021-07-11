@@ -9,8 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Day03Tests {
-
-
+    
     @Test
     public void simpleExample_UniqueHouses() {
         Assertions.assertEquals(2, deliverPresents_ReturnUniqueHouses(">"));
@@ -26,6 +25,8 @@ public class Day03Tests {
         Assertions.assertEquals(2, deliverPresents_ReturnUniqueHouses("^v^v^v^v^v"));
     }
 
+    // TODO duplicated from day01, need common location
+    // TODO - pass in file name
     private String getInputFromFile() {
         String filename = "data/day03-part01";
         try {
