@@ -11,8 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
-    private String getInputFromFile() {
-        String filename = "data/day01-part01";
+    private static final String PUZZLE_INPUT_FILENAME = "data/day01-part01";
+
+
+    private String getInputFromFile(String filename) {
         try {
             return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {
@@ -42,7 +44,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part1() {
-        String input = getInputFromFile();
+        String input = getInputFromFile(PUZZLE_INPUT_FILENAME);
         assertEquals(232, floorNumberAfterManyUpAndDownMoves(input));
     }
 
@@ -54,7 +56,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part2() {
-        String input = getInputFromFile();
+        String input = getInputFromFile(PUZZLE_INPUT_FILENAME);
         assertEquals(1783, indexOfFirstBasementVisit(input));
     }
 

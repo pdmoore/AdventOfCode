@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Day03Tests {
-    
+
     @Test
     public void simpleExample_UniqueHouses() {
         Assertions.assertEquals(2, deliverPresents_ReturnUniqueHouses(">"));
@@ -27,8 +27,7 @@ public class Day03Tests {
 
     // TODO duplicated from day01, need common location
     // TODO - pass in file name
-    private String getInputFromFile() {
-        String filename = "data/day03-part01";
+    private String getInputFromFile(String filename) {
         try {
             return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {
@@ -39,7 +38,7 @@ public class Day03Tests {
 
     @Test
     public void Day03_Part01() {
-        String input = getInputFromFile();
+        String input = getInputFromFile("data/day03-part01");
         Assertions.assertEquals(2572, deliverPresents_ReturnUniqueHouses(input));
     }
 
