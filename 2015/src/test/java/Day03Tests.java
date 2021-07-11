@@ -1,6 +1,10 @@
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +24,22 @@ public class Day03Tests {
     @Test
     public void example_DuplicateHouses_TwoMoves() {
         Assertions.assertEquals(2, deliverPresents_ReturnUniqueHouses("^v^v^v^v^v"));
+    }
+
+    private String getInputFromFile() {
+        String filename = "data/day03-part01";
+        try {
+            return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't open input file: " + filename);
+        }
+    }
+
+
+    @Test
+    public void Day03_Part01() {
+        String input = getInputFromFile();
+        Assertions.assertEquals(2572, deliverPresents_ReturnUniqueHouses(input));
     }
 
 
