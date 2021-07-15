@@ -43,7 +43,6 @@ This year, how many houses receive at least one present?
 
 For example:
 
-^v delivers presents to 3 houses, because Santa goes north, and then Robo-Santa goes south.
 ^>v< now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.
 ^v^v^v^v^v now delivers presents to 11 houses, with Santa going one direction and Robo-Santa going the other.
      */
@@ -53,11 +52,22 @@ For example:
         Assertions.assertEquals(3, deliverPresents_WithRoboSanta_ReturnUniqueHouses("^v"));
     }
 
+    @Test
+    public void roboSanta_largerExamples() {
+        Assertions.assertEquals(3, deliverPresents_WithRoboSanta_ReturnUniqueHouses("^>v<"));
+        Assertions.assertEquals(11, deliverPresents_WithRoboSanta_ReturnUniqueHouses("^v^v^v^v^v"));
+    }
 
     @Test
     public void Day03_Part01() {
         String input = getInputFromFile("data/day03-part01");
         Assertions.assertEquals(2572, deliverPresents_ReturnUniqueHouses(input));
+    }
+
+    @Test
+    public void Day03_Part02() {
+        String input = getInputFromFile("data/day03-part01");
+        Assertions.assertEquals(2631, deliverPresents_WithRoboSanta_ReturnUniqueHouses(input));
     }
 
 
