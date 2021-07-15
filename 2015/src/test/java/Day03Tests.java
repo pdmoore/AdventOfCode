@@ -105,14 +105,11 @@ For example:
 
     //TODO - loads of duplication
     private int deliverPresents_WithRoboSanta_ReturnUniqueHouses(String s) {
-        int santaX = 0;
-        int santaY = 0;
-        int roboX = 0;
-        int roboY = 0;
         int counter = 0;
 
-        Point currentSanta = new Point(santaX, santaY);
-        Point currentRobo = new Point(roboX, roboY);
+        
+        Point currentSanta = new Point(0, 0);
+        Point currentRobo = new Point(0, 0);
 
         Map<Point, Integer> houses = new HashMap<>();
         houses.put(currentSanta, 1);
@@ -121,36 +118,14 @@ For example:
                 s.toCharArray()) {
 
             if (counter++ % 2 == 0) {
-                if ('>' == c) {
-                    santaX += 1;
-                } else if ('<' == c) {
-                    santaX -= 1;
-                } else if ('^' == c) {
-                    santaY += 1;
-                } else if ('v' == c) {
-                    santaY -= 1;
-                }
-                currentSanta = new Point(santaX, santaY);
+                currentSanta = moveFrom(currentSanta, c);
                 houses.put(currentSanta, 1);
             } else {
-                if ('>' == c) {
-                    roboX += 1;
-                } else if ('<' == c) {
-                    roboX -= 1;
-                } else if ('^' == c) {
-                    roboY += 1;
-                } else if ('v' == c) {
-                    roboY -= 1;
-                }
-                currentRobo = new Point(roboX, roboY);
+                currentRobo = moveFrom(currentRobo, c);
                 houses.put(currentRobo, 1);
             }
-
         }
 
         return houses.keySet().size();
     }
-
-
-
 }
