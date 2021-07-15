@@ -105,9 +105,8 @@ For example:
 
     //TODO - loads of duplication
     private int deliverPresents_WithRoboSanta_ReturnUniqueHouses(String s) {
-        int counter = 0;
+        boolean isItSantasMove = true;
 
-        
         Point currentSanta = new Point(0, 0);
         Point currentRobo = new Point(0, 0);
 
@@ -117,13 +116,14 @@ For example:
         for (Character c:
                 s.toCharArray()) {
 
-            if (counter++ % 2 == 0) {
+            if (isItSantasMove) {
                 currentSanta = moveFrom(currentSanta, c);
                 houses.put(currentSanta, 1);
             } else {
                 currentRobo = moveFrom(currentRobo, c);
                 houses.put(currentRobo, 1);
             }
+            isItSantasMove = !isItSantasMove;
         }
 
         return houses.keySet().size();
