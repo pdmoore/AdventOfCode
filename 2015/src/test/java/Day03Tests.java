@@ -72,10 +72,7 @@ For example:
 
 
     private int deliverPresents_ReturnUniqueHouses(String s) {
-        int x = 0;
-        int y = 0;
-
-        Point p = new Point(x, y);
+        Point p = new Point(0, 0);
 
         Map<Point, Integer> houses = new HashMap<>();
         houses.put(p, 1);
@@ -83,20 +80,26 @@ For example:
         for (Character c:
              s.toCharArray()) {
 
-            if ('>' == c) {
-                x += 1;
-            } else if ('<' == c) {
-                x -= 1;
-            } else if ('^' == c) {
-                y += 1;
-            } else if ('v' == c) {
-                y -= 1;
-            }
-            p = new Point(x, y);
+            p = moveFrom(p, c);
             houses.put(p, 1);
         }
 
         return houses.keySet().size();
+    }
+
+    private Point moveFrom(Point currentLocation, Character c) {
+        int x = currentLocation.getX();
+        int y = currentLocation.getY();
+        if ('>' == c) {
+            x += 1;
+        } else if ('<' == c) {
+            x -= 1;
+        } else if ('^' == c) {
+            y += 1;
+        } else if ('v' == c) {
+            y -= 1;
+        }
+        return new Point(x, y);
     }
 
 
