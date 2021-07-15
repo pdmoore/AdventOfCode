@@ -19,6 +19,8 @@ public class Day03Tests {
         }
     }
 
+    //TODO - count of presents never mattered, didn't need a map, just a Set of points
+    //TODO - some duplication in part 02 where new location is calculated and a present added at that new location
 
     @Test
     public void simpleExample_UniqueHouses() {
@@ -34,18 +36,6 @@ public class Day03Tests {
     public void example_DuplicateHouses_TwoMoves() {
         Assertions.assertEquals(2, deliverPresents_ReturnUniqueHouses("^v^v^v^v^v"));
     }
-
-    /*
-    Santa and Robo-Santa start at the same location (delivering two presents to the same starting house),
-    then take turns moving based on instructions from the elf, who is eggnoggedly reading from the same script as the previous year.
-
-This year, how many houses receive at least one present?
-
-For example:
-
-^>v< now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.
-^v^v^v^v^v now delivers presents to 11 houses, with Santa going one direction and Robo-Santa going the other.
-     */
 
     @Test
     public void roboSanta_simpleTwoMoveExample() {
@@ -102,8 +92,6 @@ For example:
         return new Point(x, y);
     }
 
-
-    //TODO - loads of duplication
     private int deliverPresents_WithRoboSanta_ReturnUniqueHouses(String s) {
         boolean isItSantasMove = true;
 
