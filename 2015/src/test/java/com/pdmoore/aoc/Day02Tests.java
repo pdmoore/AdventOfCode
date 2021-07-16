@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import org.junit.jupiter.api.Test;

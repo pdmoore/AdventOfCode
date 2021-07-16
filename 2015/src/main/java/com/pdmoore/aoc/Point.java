@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import java.util.Objects;
 
 public class Point {
