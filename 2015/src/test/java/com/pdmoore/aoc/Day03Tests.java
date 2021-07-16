@@ -3,13 +3,10 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Day03Tests {
-
-    //TODO - count of presents never mattered, didn't need a map, just a Set of points
-    //TODO - some duplication in part 02 where new location is calculated and a present added at that new location
 
     @Test
     public void simpleExample_UniqueHouses() {
@@ -51,19 +48,19 @@ public class Day03Tests {
 
 
     private int deliverPresents_ReturnUniqueHouses(String s) {
-        Point p = new Point(0, 0);
+        Point currentAddress = new Point(0, 0);
 
-        Map<Point, Integer> houses = new HashMap<>();
-        houses.put(p, 1);
+        Set<Point> houseAddress = new HashSet<>();
+        houseAddress.add(currentAddress);
 
         for (Character c:
              s.toCharArray()) {
 
-            p = moveFrom(p, c);
-            houses.put(p, 1);
+            currentAddress = moveFrom(currentAddress, c);
+            houseAddress.add(currentAddress);
         }
 
-        return houses.keySet().size();
+        return houseAddress.size();
     }
 
     private Point moveFrom(Point currentLocation, Character c) {
@@ -87,22 +84,24 @@ public class Day03Tests {
         Point currentSanta = new Point(0, 0);
         Point currentRobo = new Point(0, 0);
 
-        Map<Point, Integer> houses = new HashMap<>();
-        houses.put(currentSanta, 1);
+        Set<Point> houseAddress = new HashSet<>();
+        houseAddress.add(currentSanta);
+        houseAddress.add(currentRobo);
 
         for (Character c:
                 s.toCharArray()) {
 
             if (isItSantasMove) {
                 currentSanta = moveFrom(currentSanta, c);
-                houses.put(currentSanta, 1);
+                houseAddress.add(currentSanta);
             } else {
                 currentRobo = moveFrom(currentRobo, c);
-                houses.put(currentRobo, 1);
+                houseAddress.add(currentRobo);
             }
             isItSantasMove = !isItSantasMove;
         }
 
-        return houses.keySet().size();
+//        return houses.keySet().size();
+        return houseAddress.size();
     }
 }
