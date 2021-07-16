@@ -1,24 +1,12 @@
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Day03Tests {
-
-    // TODO duplicated from day01, need common location
-    private String getInputFromFile(String filename) {
-        try {
-            return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't open input file: " + filename);
-        }
-    }
-
+    
     //TODO - count of presents never mattered, didn't need a map, just a Set of points
     //TODO - some duplication in part 02 where new location is calculated and a present added at that new location
 
@@ -50,13 +38,13 @@ public class Day03Tests {
 
     @Test
     public void Day03_Part01() {
-        String input = getInputFromFile("data/day03-part01");
+        String input = PuzzleInput.AsStringFromFile("data/day03-part01");
         Assertions.assertEquals(2572, deliverPresents_ReturnUniqueHouses(input));
     }
 
     @Test
     public void Day03_Part02() {
-        String input = getInputFromFile("data/day03-part01");
+        String input = PuzzleInput.AsStringFromFile("data/day03-part01");
         Assertions.assertEquals(2631, deliverPresents_WithRoboSanta_ReturnUniqueHouses(input));
     }
 
