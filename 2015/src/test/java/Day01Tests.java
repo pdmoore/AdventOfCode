@@ -1,26 +1,13 @@
 package test.java;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day01Tests {
 
     private static final String PUZZLE_INPUT_FILENAME = "data/day01-part01";
-
-
-    private String getInputFromFile(String filename) {
-        try {
-            return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't open input file: " + filename);
-        }
-    }
 
     @Test
     public void EqualNumberOfOpenAndClose_EndsUpAtGroundFloor() {
@@ -44,7 +31,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part1() {
-        String input = getInputFromFile(PUZZLE_INPUT_FILENAME);
+        String input = PuzzleInput.AsStringFromFile(PUZZLE_INPUT_FILENAME);
         assertEquals(232, floorNumberAfterManyUpAndDownMoves(input));
     }
 
@@ -56,7 +43,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part2() {
-        String input = getInputFromFile(PUZZLE_INPUT_FILENAME);
+        String input = PuzzleInput.AsStringFromFile(PUZZLE_INPUT_FILENAME);
         assertEquals(1783, indexOfFirstBasementVisit(input));
     }
 

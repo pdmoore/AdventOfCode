@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Day03Tests {
-    
+
     //TODO - count of presents never mattered, didn't need a map, just a Set of points
     //TODO - some duplication in part 02 where new location is calculated and a present added at that new location
 
