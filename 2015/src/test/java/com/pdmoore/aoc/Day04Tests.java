@@ -62,6 +62,17 @@ public class Day04Tests {
         Assertions.assertEquals(609043, actual);
     }
 
+    @Test
+    public void part1_solution() {
+        String secretKey = "ckczppom";
+        int startingNumber = 0;
+
+        int actual = findNumberThatHashesFiveZeros(secretKey, startingNumber);
+
+        Assertions.assertEquals(117946, actual);
+    }
+
+
     private int findNumberThatHashesFiveZeros(String secretKey, int startingNumber) {
 
         int candidate = startingNumber;
