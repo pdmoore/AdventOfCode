@@ -19,7 +19,7 @@ public class Day04Tests {
 
         byte[] thedigest = getMD5Hash(input);
 
-        String result = getStringOfHash(thedigest);
+        String result = getHexStringOfHash(thedigest);
         String expectedHashStartsWith = "000001dbbfa";
         String actualHash = result.substring(0, expectedHashStartsWith.length()).toLowerCase(Locale.ROOT);
         Assertions.assertEquals(expectedHashStartsWith, actualHash);
@@ -34,7 +34,7 @@ public class Day04Tests {
 
         byte[] thedigest = getMD5Hash(input);
 
-        String result = getStringOfHash(thedigest);
+        String result = getHexStringOfHash(thedigest);
         String expectedHashStartsWith = "000006136ef";
         String actualHash = result.substring(0, expectedHashStartsWith.length()).toLowerCase(Locale.ROOT);
         Assertions.assertEquals(expectedHashStartsWith, actualHash);
@@ -72,7 +72,7 @@ public class Day04Tests {
             try {
                 thedigest = getMD5Hash(input);
 
-                String result = getStringOfHash(thedigest);
+                String result = getHexStringOfHash(thedigest);
                 String actualStartsWith = result.substring(0, 5);
                 if (actualStartsWith.equals("00000")) {
                     return candidate;
@@ -94,7 +94,7 @@ public class Day04Tests {
         return thedigest;
     }
 
-    private String getStringOfHash(byte[] thedigest) {
+    private String getHexStringOfHash(byte[] thedigest) {
         StringBuilder sb = new StringBuilder();
         for (byte b : thedigest) {
             sb.append(String.format("%02X", b));
