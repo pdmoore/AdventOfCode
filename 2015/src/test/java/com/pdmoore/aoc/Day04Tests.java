@@ -10,6 +10,8 @@ import java.util.Locale;
 
 public class Day04Tests {
 
+    private MessageDigest _md;
+
     @Test
     public void ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenSecret() throws Exception {
         String secretKey = "abcdef";
@@ -44,7 +46,7 @@ public class Day04Tests {
 
         // This does work starting from 0, just takes a while
         int startingNumber = 600000;
-        int actual = findNumberThatHashesFiveZeros(secretKey, startingNumber);
+        int actual = findNumberThatHashesToPassedPrefix(secretKey, startingNumber, "00000");
 
         Assertions.assertEquals(609043, actual);
     }
@@ -54,13 +56,30 @@ public class Day04Tests {
         String secretKey = "ckczppom";
         int startingNumber = 0;
 
-        int actual = findNumberThatHashesFiveZeros(secretKey, startingNumber);
+        int actual = findNumberThatHashesToPassedPrefix(secretKey, startingNumber, "00000");
 
         Assertions.assertEquals(117946, actual);
     }
 
-    private int findNumberThatHashesFiveZeros(String secretKey, int startingNumber) {
+    @Test
+    public void part2_solution() {
+        // Amazingly slow, brute force. Is there a way to calculate more hashes in threads?
+        String secretKey = "ckczppom";
+        int startingNumber = 0;
+
+        int actual = findNumberThatHashesToPassedPrefix(secretKey, startingNumber, "000000");
+
+        Assertions.assertEquals(3938038, actual);
+    }
+
+    private int findNumberThatHashesToPassedPrefix(String secretKey, int startingNumber, String targetPrefix) {
         int candidate = startingNumber;
+
+        try {
+            _md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         while (candidate <= Integer.MAX_VALUE) {
             String input = secretKey + Integer.toString(candidate);
@@ -70,9 +89,11 @@ public class Day04Tests {
                 thedigest = getMD5Hash(input);
 
                 String result = getHexStringOfHash(thedigest);
-                String actualStartsWith = result.substring(0, 5);
-                if (actualStartsWith.equals("00000")) {
-                    return candidate;
+                if (result.charAt(0) == '0') {
+                    String actualStartsWith = result.substring(0, targetPrefix.length());
+                    if (actualStartsWith.equals(targetPrefix)) {
+                        return candidate;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,8 +107,8 @@ public class Day04Tests {
 
     private byte[] getMD5Hash(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] bytesOfMessage = input.getBytes("UTF-8");
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return md.digest(bytesOfMessage);
+        _md.update(bytesOfMessage);
+        return _md.digest();
     }
 
     private String getHexStringOfHash(byte[] thedigest) {
