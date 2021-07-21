@@ -90,8 +90,7 @@ public class Day04Tests {
     private byte[] getMD5Hash(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] bytesOfMessage = input.getBytes("UTF-8");
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md.digest(bytesOfMessage);
-        return thedigest;
+        return md.digest(bytesOfMessage);
     }
 
     private String getHexStringOfHash(byte[] thedigest) {
@@ -100,8 +99,7 @@ public class Day04Tests {
             sb.append(String.format("%02X", b));
         }
 
-        String result = sb.toString();
-        return result;
+        return sb.toString();
     }
 
 
