@@ -16,7 +16,6 @@ public class Day04Tests {
         String someNumber = "609043";
 
         String input = secretKey + someNumber;
-
         byte[] thedigest = getMD5Hash(input);
 
         String result = getHexStringOfHash(thedigest);
@@ -31,7 +30,6 @@ public class Day04Tests {
         String someNumber = "1048970";
 
         String input = secretKey + someNumber;
-
         byte[] thedigest = getMD5Hash(input);
 
         String result = getHexStringOfHash(thedigest);
@@ -43,9 +41,9 @@ public class Day04Tests {
     @Test
     public void part1_simpleExamples() {
         String secretKey = "abcdef";
+
         // This does work starting from 0, just takes a while
         int startingNumber = 600000;
-
         int actual = findNumberThatHashesFiveZeros(secretKey, startingNumber);
 
         Assertions.assertEquals(609043, actual);
@@ -60,7 +58,6 @@ public class Day04Tests {
 
         Assertions.assertEquals(117946, actual);
     }
-
 
     private int findNumberThatHashesFiveZeros(String secretKey, int startingNumber) {
         int candidate = startingNumber;
