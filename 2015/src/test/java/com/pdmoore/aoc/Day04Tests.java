@@ -10,31 +10,23 @@ import java.util.Locale;
 
 public class Day04Tests {
 
-    // TODO - need to loop over numbers, trying each, until 5 zeros found - then return that number
-    // TODO write a new test that takes a secret and a starting number, and returns the int that has 5 zeros
-
     @Test
-    public void ConfirmAnswerGivenSecret() throws Exception {
+    public void ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenSecret() throws Exception {
         String secretKey = "abcdef";
         String someNumber = "609043";
 
         String input = secretKey + someNumber;
 
-        // TODO - this is the logic to get the hash given a secret and number
         byte[] thedigest = getMD5Hash(input);
 
-        // TODO - this is the part that checks the result starts with 5 zeros
         String result = getStringOfHash(thedigest);
-        String actualStartsWith = result.substring(0, 5);
-        Assertions.assertEquals("00000", actualStartsWith);
-
         String expectedHashStartsWith = "000001dbbfa";
         String actualHash = result.substring(0, expectedHashStartsWith.length()).toLowerCase(Locale.ROOT);
         Assertions.assertEquals(expectedHashStartsWith, actualHash);
     }
 
     @Test
-    public void DifferentSecret_DifferentNumber() throws Exception {
+    public void  ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenDifferentSecret() throws Exception {
         String secretKey = "pqrstuv";
         String someNumber = "1048970";
 
@@ -43,9 +35,6 @@ public class Day04Tests {
         byte[] thedigest = getMD5Hash(input);
 
         String result = getStringOfHash(thedigest);
-        String actualStartsWith = result.substring(0, 5);
-        Assertions.assertEquals("00000", actualStartsWith);
-
         String expectedHashStartsWith = "000006136ef";
         String actualHash = result.substring(0, expectedHashStartsWith.length()).toLowerCase(Locale.ROOT);
         Assertions.assertEquals(expectedHashStartsWith, actualHash);
@@ -74,12 +63,10 @@ public class Day04Tests {
 
 
     private int findNumberThatHashesFiveZeros(String secretKey, int startingNumber) {
-
         int candidate = startingNumber;
 
-        while (true) {
+        while (candidate <= Integer.MAX_VALUE) {
             String input = secretKey + Integer.toString(candidate);
-
 
             byte[] thedigest = new byte[0];
             try {
@@ -94,9 +81,10 @@ public class Day04Tests {
                 e.printStackTrace();
             }
 
-
             candidate++;
         }
+
+        return -1;
     }
 
     private byte[] getMD5Hash(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
