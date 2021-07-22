@@ -1,7 +1,9 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -11,6 +13,15 @@ import java.util.Locale;
 public class Day04Tests {
 
     private MessageDigest _md;
+
+    @BeforeEach
+    public void initializeHasher() {
+        try {
+            _md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenSecret() throws Exception {
@@ -27,7 +38,7 @@ public class Day04Tests {
     }
 
     @Test
-    public void  ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenDifferentSecret() throws Exception {
+    public void ConfirmHashedAnswer_BeginsWithCorrect_Sequence_GivenDifferentSecret() throws Exception {
         String secretKey = "pqrstuv";
         String someNumber = "1048970";
 
@@ -52,6 +63,7 @@ public class Day04Tests {
     }
 
     @Test
+    @Timeout(1)
     public void part1_solution() {
         String secretKey = "ckczppom";
         int startingNumber = 0;
@@ -62,6 +74,7 @@ public class Day04Tests {
     }
 
     @Test
+    @Timeout(2)
     public void part2_solution() {
         // Amazingly slow, brute force. Is there a way to calculate more hashes in threads?
         String secretKey = "ckczppom";
@@ -75,24 +88,24 @@ public class Day04Tests {
     private int findNumberThatHashesToPassedPrefix(String secretKey, int startingNumber, String targetPrefix) {
         int candidate = startingNumber;
 
-        try {
-            _md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
+        byte[] thedigest = new byte[0];
         while (candidate <= Integer.MAX_VALUE) {
             String input = secretKey + Integer.toString(candidate);
 
-            byte[] thedigest = new byte[0];
             try {
                 thedigest = getMD5Hash(input);
 
-                String result = getHexStringOfHash(thedigest);
-                if (result.charAt(0) == '0') {
-                    String actualStartsWith = result.substring(0, targetPrefix.length());
-                    if (actualStartsWith.equals(targetPrefix)) {
-                        return candidate;
+                if (thedigest[0] == 0 && thedigest[1] == 0) {
+
+                    //TODO - still switching to string to check the prefix
+                    // 5 digit prefix is 2.5 bytes
+                    // 6 digit prefix is 3 bytes
+                    String result = getHexStringOfHash(thedigest);
+                    if (result.charAt(0) == '0') {
+                        String actualStartsWith = result.substring(0, targetPrefix.length());
+                        if (actualStartsWith.equals(targetPrefix)) {
+                            return candidate;
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -119,6 +132,4 @@ public class Day04Tests {
 
         return sb.toString();
     }
-
-
 }
