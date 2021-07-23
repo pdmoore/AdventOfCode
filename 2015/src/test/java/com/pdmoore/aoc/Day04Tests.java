@@ -19,6 +19,7 @@ public class Day04Tests {
         try {
             _md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
+            System.err.println("Could not create Message Digest");
             e.printStackTrace();
         }
     }
@@ -55,8 +56,7 @@ public class Day04Tests {
     public void part1_simpleExamples() {
         String secretKey = "abcdef";
 
-        // This does work starting from 0, just takes a while
-        int startingNumber = 600000;
+        int startingNumber = 0;
         int actual = findNumberThatHashesToPassedPrefix(secretKey, startingNumber, "00000");
 
         Assertions.assertEquals(609043, actual);
@@ -76,7 +76,6 @@ public class Day04Tests {
     @Test
     @Timeout(2)
     public void part2_solution() {
-        // Amazingly slow, brute force. Is there a way to calculate more hashes in threads?
         String secretKey = "ckczppom";
         int startingNumber = 0;
 
@@ -88,22 +87,22 @@ public class Day04Tests {
     private int findNumberThatHashesToPassedPrefix(String secretKey, int startingNumber, String targetPrefix) {
         int candidate = startingNumber;
 
-        byte[] thedigest = new byte[0];
-        while (candidate <= Integer.MAX_VALUE) {
-            String input = secretKey + Integer.toString(candidate);
+        while (true) {
+            String input = secretKey + candidate;
 
             try {
-                thedigest = getMD5Hash(input);
+                byte[] hashedResult = getMD5Hash(input);
 
-                if (thedigest[0] == 0 && thedigest[1] == 0) {
+                if (hashedResult[0] == 0 && hashedResult[1] == 0) {
 
-                    //TODO - still switching to string to check the prefix
-                    // 5 digit prefix is 2.5 bytes
-                    // 6 digit prefix is 3 bytes
-                    String result = getHexStringOfHash(thedigest);
-                    if (result.charAt(0) == '0') {
-                        String actualStartsWith = result.substring(0, targetPrefix.length());
-                        if (actualStartsWith.equals(targetPrefix)) {
+                    // TODO - should perform this check at start and then do either method in here
+                    if (targetPrefix.length() == 6) {
+                        if (hashedResult[2] == 0) {
+                            return candidate;
+                        }
+                    } else {
+                        int halfOfByte = hashedResult[2] >> 4;
+                        if (halfOfByte == 0) {
                             return candidate;
                         }
                     }
@@ -114,8 +113,6 @@ public class Day04Tests {
 
             candidate++;
         }
-
-        return -1;
     }
 
     private byte[] getMD5Hash(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -124,6 +121,7 @@ public class Day04Tests {
         return _md.digest();
     }
 
+    // TODO - this is only used by tests, not the problem
     private String getHexStringOfHash(byte[] thedigest) {
         StringBuilder sb = new StringBuilder();
         for (byte b : thedigest) {
