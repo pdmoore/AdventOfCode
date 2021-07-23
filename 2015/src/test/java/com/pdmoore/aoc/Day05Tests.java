@@ -36,7 +36,27 @@ dvszwmarrgswjxmb is naughty because it contains only one vowel.
         Assertions.assertFalse(isNice("aa"));
     }
 
+    @Test
+    public void naughtyString_NoDoubleLetter() {
+        Assertions.assertFalse(isNice("jchzalrnumimnmhp"));
+    }
+
     private boolean isNice(String input) {
+
+        return hasThreeOrMoreVowels(input) & hasDoubleLetters(input);
+    }
+
+    private boolean hasDoubleLetters(String input) {
+        char prevChar = input.charAt(0);
+        for (int i = 1; i < input.length(); i++) {
+            if (input.charAt(i) == prevChar) return true;
+            prevChar = input.charAt(i);
+        }
+        
+        return false;
+    }
+
+    private boolean hasThreeOrMoreVowels(String input) {
         long count = input.chars().filter(ch -> ch == 'a').count();
         count += input.chars().filter(ch -> ch == 'e').count();
         count += input.chars().filter(ch -> ch == 'i').count();
