@@ -3,10 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,22 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class Day05Tests {
 
 //TODO - going through each string many times, look for efficiencies
-
-    static List<String> asListOfStringsFromFile(String filename) {
-        List<String> lines = new ArrayList<>();
-        try {
-            File f = new File(filename);
-            Scanner scanner = new Scanner(f);
-
-            while (scanner.hasNext()) {
-                lines.add(scanner.nextLine());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Couldn't read puzzle input file: " + filename);
-        }
-        return lines;
-    }
-
 
     @Test
     public void niceString_Examples() {
@@ -68,7 +49,7 @@ public class Day05Tests {
 
     @Test
     public void part01() {
-        List<String> input = asListOfStringsFromFile("data/day04");
+        List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
         assertEquals(255, countNiceStrings(input));
     }
 
@@ -80,8 +61,7 @@ public class Day05Tests {
         }
         return countOfNice;
     }
-
-
+    
     private boolean isNice(String input) {
         return hasThreeOrMoreVowels(input) & hasDoubleLetters(input) & !hasTwoCharacterSequence(input);
     }
