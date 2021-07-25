@@ -1,11 +1,9 @@
 package com.pdmoore.aoc;
 
-import com.google.common.base.CharMatcher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Day05Tests {
 
@@ -14,7 +12,12 @@ public class Day05Tests {
 
 It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
 It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
+
+//TODO - check this last piece
 It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
+
+//TODO - going through each string many times, look for efficiences
+
 For example:
 
 ugknbfddgicrmopn is nice because it has at least three vowels (u...i...o...), a double letter (...dd...), and none of the disallowed substrings.
@@ -33,17 +36,30 @@ dvszwmarrgswjxmb is naughty because it contains only one vowel.
 
     @Test
     public void naughtyString_LessThanThreeVowels() {
-        Assertions.assertFalse(isNice("aa"));
+        assertFalse(isNice("aa"));
     }
 
     @Test
     public void naughtyString_NoDoubleLetter() {
-        Assertions.assertFalse(isNice("jchzalrnumimnmhp"));
+        assertFalse(isNice("jchzalrnumimnmhp"));
+    }
+
+    @Test
+    public void naughtyString_ContainsCertainTwoCharacterSequence() {
+        //ab, cd, pq, or xy
+        String aNiceString = "aieoooo";
+        assertFalse(isNice(aNiceString + "ab"));
+        assertFalse(isNice(aNiceString + "cd"));
+        assertFalse(isNice(aNiceString + "pq"));
+        assertFalse(isNice(aNiceString + "xy"));
     }
 
     private boolean isNice(String input) {
+        return hasThreeOrMoreVowels(input) & hasDoubleLetters(input) & !hasTwoCharacterSequence(input);
+    }
 
-        return hasThreeOrMoreVowels(input) & hasDoubleLetters(input);
+    private boolean hasTwoCharacterSequence(String input) {
+        return input.contains("ab") || input.contains("cd") || input.contains("pq") || input.contains("xy");
     }
 
     private boolean hasDoubleLetters(String input) {
@@ -52,7 +68,7 @@ dvszwmarrgswjxmb is naughty because it contains only one vowel.
             if (input.charAt(i) == prevChar) return true;
             prevChar = input.charAt(i);
         }
-        
+
         return false;
     }
 
