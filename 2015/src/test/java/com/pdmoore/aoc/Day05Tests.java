@@ -3,29 +3,34 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Day05Tests {
 
-    /*
-    A nice string is one with all of the following properties:
+//TODO - going through each string many times, look for efficiencies
 
-It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
-It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
+    static List<String> asListOfStringsFromFile(String filename) {
+        List<String> lines = new ArrayList<>();
+        try {
+            File f = new File(filename);
+            Scanner scanner = new Scanner(f);
 
-//TODO - check this last piece
-It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
-
-//TODO - going through each string many times, look for efficiences
-
-For example:
-
-ugknbfddgicrmopn is nice because it has at least three vowels (u...i...o...), a double letter (...dd...), and none of the disallowed substrings.
-aaa is nice because it has at least three vowels and a double letter, even though the letters used by different rules overlap.
-jchzalrnumimnmhp is naughty because it has no double letter.
-haegwjzuvuyypxyu is naughty because it contains the string xy.
-dvszwmarrgswjxmb is naughty because it contains only one vowel.
-     */
+            while (scanner.hasNext()) {
+                lines.add(scanner.nextLine());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't read puzzle input file: " + filename);
+        }
+        return lines;
+    }
 
 
     @Test
@@ -53,6 +58,29 @@ dvszwmarrgswjxmb is naughty because it contains only one vowel.
         assertFalse(isNice(aNiceString + "pq"));
         assertFalse(isNice(aNiceString + "xy"));
     }
+
+    @Test
+    public void countOfNiceStrings() {
+        List<String> input = Stream.of("naughty", "niceaaa", "nice2ooo", "nice3aieouuu", "naughty2").collect(Collectors.toList());
+        int actual = countNiceStrings(input);
+        assertEquals(3, actual);
+    }
+
+    @Test
+    public void part01() {
+        List<String> input = asListOfStringsFromFile("data/day04");
+        assertEquals(255, countNiceStrings(input));
+    }
+
+    private int countNiceStrings(List<String> input) {
+        int countOfNice = 0;
+        for (String s :
+                input) {
+            if (isNice(s)) countOfNice++;
+        }
+        return countOfNice;
+    }
+
 
     private boolean isNice(String input) {
         return hasThreeOrMoreVowels(input) & hasDoubleLetters(input) & !hasTwoCharacterSequence(input);
