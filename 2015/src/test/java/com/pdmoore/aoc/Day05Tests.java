@@ -1,6 +1,7 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,29 +16,29 @@ public class Day05Tests {
 //TODO - going through each string many times, look for efficiencies
 
     @Test
-    public void niceString_Examples() {
-        Assertions.assertTrue(isNice("aaa"));
-        Assertions.assertTrue(isNice("ugknbfddgicrmopn"));
+    public void part1_niceString_Examples() {
+        Assertions.assertTrue(part1_isNice("aaa"));
+        Assertions.assertTrue(part1_isNice("ugknbfddgicrmopn"));
     }
 
     @Test
-    public void naughtyString_LessThanThreeVowels() {
-        assertFalse(isNice("aa"));
+    public void part1_naughtyString_LessThanThreeVowels() {
+        assertFalse(part1_isNice("aa"));
     }
 
     @Test
-    public void naughtyString_NoDoubleLetter() {
-        assertFalse(isNice("jchzalrnumimnmhp"));
+    public void part1_naughtyString_NoDoubleLetter() {
+        assertFalse(part1_isNice("jchzalrnumimnmhp"));
     }
 
     @Test
-    public void naughtyString_ContainsCertainTwoCharacterSequence() {
+    public void part1_naughtyString_ContainsCertainTwoCharacterSequence() {
         //ab, cd, pq, or xy
         String aNiceString = "aieoooo";
-        assertFalse(isNice(aNiceString + "ab"));
-        assertFalse(isNice(aNiceString + "cd"));
-        assertFalse(isNice(aNiceString + "pq"));
-        assertFalse(isNice(aNiceString + "xy"));
+        assertFalse(part1_isNice(aNiceString + "ab"));
+        assertFalse(part1_isNice(aNiceString + "cd"));
+        assertFalse(part1_isNice(aNiceString + "pq"));
+        assertFalse(part1_isNice(aNiceString + "xy"));
     }
 
     @Test
@@ -54,15 +55,16 @@ public class Day05Tests {
     }
 
     private int countNiceStrings(List<String> input) {
+        //TODO - switch to stream/filter
         int countOfNice = 0;
         for (String s :
                 input) {
-            if (isNice(s)) countOfNice++;
+            if (part1_isNice(s)) countOfNice++;
         }
         return countOfNice;
     }
-    
-    private boolean isNice(String input) {
+
+    private boolean part1_isNice(String input) {
         return hasThreeOrMoreVowels(input) & hasDoubleLetters(input) & !hasTwoCharacterSequence(input);
     }
 
@@ -89,4 +91,36 @@ public class Day05Tests {
 
         return count >= 3;
     }
+
+    @Test
+    public void part2_pairs_appear_atLeastTwice() {
+        Assertions.assertTrue(part2_isNice("xyxy"));
+        Assertions.assertTrue(part2_isNice("aabcdefgaa"));
+    }
+
+    @Test
+    public void part2_pairs_doNotAppear_atLeastTwice() {
+        Assertions.assertFalse(part2_isNice("aaa"));
+    }
+
+    private boolean part2_isNice(String input) {
+        // start with first pair, then scan from first pair + 2 to end, looking for same pair
+        //TODO - only works when the very first pair is the match
+        // need to cycle through i from 0 to length - 2 (or fewer, since last pairs must be -3/-2 -1/0
+        int i = 0;
+        String currentPair = String.valueOf(input.charAt(i) + input.charAt(i + 1));
+
+        int checkFrom = i + 2;
+        while (checkFrom <= input.length() - 2) {
+            String thisPair = String.valueOf(input.charAt(checkFrom) + input.charAt(checkFrom + 1));
+            if (thisPair.equals(currentPair)) {
+                return true;
+            }
+            checkFrom++;
+        }
+
+        return false;
+    }
+
+
 }
