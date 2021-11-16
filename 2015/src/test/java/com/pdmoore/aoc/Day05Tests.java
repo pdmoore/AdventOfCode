@@ -1,7 +1,6 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -94,16 +93,35 @@ public class Day05Tests {
 
     @Test
     public void part2_pairs_appear_atLeastTwice() {
-        Assertions.assertTrue(part2_isNice("xyxy"));
-        Assertions.assertTrue(part2_isNice("aabcdefgaa"));
+        Assertions.assertTrue(part2_secondRule("xyxy"));
+        Assertions.assertTrue(part2_secondRule("aabcdefgaa"));
+        Assertions.assertTrue(part2_secondRule("aaa"));
     }
 
     @Test
     public void part2_pairs_doNotAppear_atLeastTwice() {
-        Assertions.assertFalse(part2_isNice("aaa"));
+        Assertions.assertFalse(part2_rule1("aaa"));
+    }
+
+    @Test
+    public void part2_oneLetter_repeats_withExactlyOneLetterBetween() {
+        Assertions.assertTrue(part2_secondRule("xyx"));
+        Assertions.assertTrue(part2_secondRule("abcdefeghi"));
+    }
+
+    @Test
+    public void part2_fullExamples() {
+        Assertions.assertTrue(part2_isNice("qjhvhtzxzqqjkmpb"));
+        Assertions.assertTrue(part2_isNice("xxyxx"));
+        Assertions.assertFalse(part2_isNice("uurcxstgmygtbstg"));
+        Assertions.assertFalse(part2_isNice("ieodomkazucvgmuy"));
     }
 
     private boolean part2_isNice(String input) {
+        return part2_rule1(input) && part2_secondRule(input);
+    }
+
+    private boolean part2_rule1(String input) {
         // start with first pair, then scan from first pair + 2 to end, looking for same pair
         //TODO - only works when the very first pair is the match
         // need to cycle through i from 0 to length - 2 (or fewer, since last pairs must be -3/-2 -1/0
@@ -121,6 +139,11 @@ public class Day05Tests {
 
         return false;
     }
+
+    private boolean part2_secondRule(String xyxy) {
+        return true;
+    }
+
 
 
 }
