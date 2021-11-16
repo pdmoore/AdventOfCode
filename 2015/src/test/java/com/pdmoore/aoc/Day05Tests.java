@@ -93,20 +93,20 @@ public class Day05Tests {
 
     @Test
     public void part2_pairs_appear_atLeastTwice() {
-        Assertions.assertTrue(part2_secondRule("xyxy"));
-        Assertions.assertTrue(part2_secondRule("aabcdefgaa"));
-        Assertions.assertTrue(part2_secondRule("aaa"));
+        Assertions.assertTrue(part2_firstRule("xyxy"));
+        Assertions.assertTrue(part2_firstRule("aabcdefgaa"));
     }
 
     @Test
     public void part2_pairs_doNotAppear_atLeastTwice() {
-        Assertions.assertFalse(part2_rule1("aaa"));
+        Assertions.assertFalse(part2_firstRule("aaa"));
     }
 
     @Test
     public void part2_oneLetter_repeats_withExactlyOneLetterBetween() {
         Assertions.assertTrue(part2_secondRule("xyx"));
         Assertions.assertTrue(part2_secondRule("abcdefeghi"));
+        Assertions.assertFalse(part2_secondRule("abcdefghi"));
     }
 
     @Test
@@ -118,10 +118,10 @@ public class Day05Tests {
     }
 
     private boolean part2_isNice(String input) {
-        return part2_rule1(input) && part2_secondRule(input);
+        return part2_firstRule(input) && part2_secondRule(input);
     }
 
-    private boolean part2_rule1(String input) {
+    private boolean part2_firstRule(String input) {
         // start with first pair, then scan from first pair + 2 to end, looking for same pair
         //TODO - only works when the very first pair is the match
         // need to cycle through i from 0 to length - 2 (or fewer, since last pairs must be -3/-2 -1/0
@@ -140,10 +140,15 @@ public class Day05Tests {
         return false;
     }
 
-    private boolean part2_secondRule(String xyxy) {
-        return true;
+    private boolean part2_secondRule(String input) {
+        int i = 0;
+        while (i <= input.length() - 3) {
+            if (input.charAt(i) == input.charAt(i + 2)) {
+                return true;
+            }
+            i++;
+        }
+
+        return false;
     }
-
-
-
 }
