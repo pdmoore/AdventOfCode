@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,34 +44,26 @@ public class Day05Tests {
     @Test
     public void countOfNiceStrings() {
         List<String> input = Stream.of("naughty", "niceaaa", "nice2ooo", "nice3aieouuu", "naughty2").collect(Collectors.toList());
-        int actual = countNiceStrings(input);
+        int actual = countNiceStrings(input, this::part1_isNice);
         assertEquals(3, actual);
     }
 
     @Test
     public void part01() {
         List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
-        assertEquals(255, countNiceStrings(input));
+        assertEquals(255, countNiceStrings(input, this::part1_isNice));
     }
 
     @Test
     public void part02() {
         List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
-        assertEquals(55, countNiceStrings_part2(input));
+        assertEquals(55, countNiceStrings(input, this::part2_isNice));
     }
-
-
-    private int countNiceStrings(List<String> input) {
+    
+    private int countNiceStrings(List<String> input, Predicate<String> filterBy) {
         return (int) input.
                 stream().
-                filter(this::part1_isNice).
-                count();
-    }
-
-    private int countNiceStrings_part2(List<String> input) {
-        return (int) input.
-                stream().
-                filter(this::part2_isNice).
+                filter(filterBy).
                 count();
     }
 
