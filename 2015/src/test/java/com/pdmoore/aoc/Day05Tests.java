@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Day05Tests {
 
-//TODO - going through each string many times, look for efficiencies
-
     @Test
     public void part1_niceString_Examples() {
         Assertions.assertTrue(part1_isNice("aaa"));
@@ -59,7 +57,7 @@ public class Day05Tests {
         List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
         assertEquals(55, countNiceStrings(input, this::part2_isNice));
     }
-    
+
     private int countNiceStrings(List<String> input, Predicate<String> filterBy) {
         return (int) input.
                 stream().
@@ -68,7 +66,7 @@ public class Day05Tests {
     }
 
     private boolean part1_isNice(String input) {
-        return hasThreeOrMoreVowels(input) & hasDoubleLetters(input) & !hasTwoCharacterSequence(input);
+        return !hasTwoCharacterSequence(input) & hasThreeOrMoreVowels(input) & hasDoubleLetters(input);
     }
 
     private boolean hasTwoCharacterSequence(String input) {
