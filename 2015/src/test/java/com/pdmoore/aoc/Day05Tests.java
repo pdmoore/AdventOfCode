@@ -53,12 +53,29 @@ public class Day05Tests {
         assertEquals(255, countNiceStrings(input));
     }
 
+    @Test
+    public void part02() {
+        List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
+        assertEquals(-99, countNiceStrings_part2(input));
+    }
+
+
     private int countNiceStrings(List<String> input) {
         //TODO - switch to stream/filter
         int countOfNice = 0;
         for (String s :
                 input) {
             if (part1_isNice(s)) countOfNice++;
+        }
+        return countOfNice;
+    }
+
+    private int countNiceStrings_part2(List<String> input) {
+        //TODO - switch to stream/filter
+        int countOfNice = 0;
+        for (String s :
+                input) {
+            if (part2_isNice(s)) countOfNice++;
         }
         return countOfNice;
     }
