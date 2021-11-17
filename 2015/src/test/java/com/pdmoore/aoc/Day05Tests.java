@@ -84,13 +84,17 @@ public class Day05Tests {
     }
 
     private boolean hasThreeOrMoreVowels(String input) {
-        long count = input.chars().filter(ch -> ch == 'a').count();
-        count += input.chars().filter(ch -> ch == 'e').count();
-        count += input.chars().filter(ch -> ch == 'i').count();
-        count += input.chars().filter(ch -> ch == 'o').count();
-        count += input.chars().filter(ch -> ch == 'u').count();
+        long count = getCountOfChar(input, 'a');
+        count += getCountOfChar(input, 'e');
+        count += getCountOfChar(input, 'i');
+        count += getCountOfChar(input, 'o');
+        count += getCountOfChar(input, 'u');
 
         return count >= 3;
+    }
+
+    private long getCountOfChar(String input, char target) {
+        return input.chars().filter(ch -> ch == target).count();
     }
 
     @Test
