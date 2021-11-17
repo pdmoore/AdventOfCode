@@ -95,6 +95,8 @@ public class Day05Tests {
     public void part2_pairs_appear_atLeastTwice() {
         Assertions.assertTrue(part2_firstRule("xyxy"));
         Assertions.assertTrue(part2_firstRule("aabcdefgaa"));
+        Assertions.assertTrue(part2_firstRule("zaagaa"));
+        Assertions.assertTrue(part2_firstRule("zaabcdefgaa"));
     }
 
     @Test
@@ -122,21 +124,20 @@ public class Day05Tests {
     }
 
     private boolean part2_firstRule(String input) {
-        // start with first pair, then scan from first pair + 2 to end, looking for same pair
-        //TODO - only works when the very first pair is the match
-        // need to cycle through i from 0 to length - 2 (or fewer, since last pairs must be -3/-2 -1/0
         int i = 0;
-        String currentPair = String.valueOf(input.charAt(i) + input.charAt(i + 1));
+        while (i < input.length() - 2) {
+            String currentPair = "" + input.charAt(i) + input.charAt(i + 1);
 
-        int checkFrom = i + 2;
-        while (checkFrom <= input.length() - 2) {
-            String thisPair = String.valueOf(input.charAt(checkFrom) + input.charAt(checkFrom + 1));
-            if (thisPair.equals(currentPair)) {
-                return true;
+            int checkFrom = i + 2;
+            while (checkFrom <= input.length() - 2) {
+                String thisPair = "" + input.charAt(checkFrom) + input.charAt(checkFrom + 1);
+                if (thisPair.equals(currentPair)) {
+                    return true;
+                }
+                checkFrom++;
             }
-            checkFrom++;
+            i++;
         }
-
         return false;
     }
 
@@ -151,4 +152,11 @@ public class Day05Tests {
 
         return false;
     }
+
+
+    //TODO part 2
+    // - rule 1 assumes pair is in positions [0][1] - need to write a test to show it can find others
+    // - part 2 solution -
+    //    - need test (see public void part01())
+    //    - need new method countNiceStrings_part2
 }
