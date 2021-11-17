@@ -56,28 +56,22 @@ public class Day05Tests {
     @Test
     public void part02() {
         List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
-        assertEquals(-99, countNiceStrings_part2(input));
+        assertEquals(55, countNiceStrings_part2(input));
     }
 
 
     private int countNiceStrings(List<String> input) {
-        //TODO - switch to stream/filter
-        int countOfNice = 0;
-        for (String s :
-                input) {
-            if (part1_isNice(s)) countOfNice++;
-        }
-        return countOfNice;
+        return (int) input.
+                stream().
+                filter(this::part1_isNice).
+                count();
     }
 
     private int countNiceStrings_part2(List<String> input) {
-        //TODO - switch to stream/filter
-        int countOfNice = 0;
-        for (String s :
-                input) {
-            if (part2_isNice(s)) countOfNice++;
-        }
-        return countOfNice;
+        return (int) input.
+                stream().
+                filter(this::part2_isNice).
+                count();
     }
 
     private boolean part1_isNice(String input) {
@@ -169,11 +163,4 @@ public class Day05Tests {
 
         return false;
     }
-
-
-    //TODO part 2
-    // - rule 1 assumes pair is in positions [0][1] - need to write a test to show it can find others
-    // - part 2 solution -
-    //    - need test (see public void part01())
-    //    - need new method countNiceStrings_part2
 }
