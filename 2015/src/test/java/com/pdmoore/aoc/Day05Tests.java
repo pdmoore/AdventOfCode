@@ -69,6 +69,10 @@ public class Day05Tests {
         return !hasTwoCharacterSequence(input) & hasThreeOrMoreVowels(input) & hasDoubleLetters(input);
     }
 
+    private boolean part2_isNice(String input) {
+        return letterPairAppearsTwice(input) && letterRepeatsWithOneLetterBetweeen(input);
+    }
+
     private boolean hasTwoCharacterSequence(String input) {
         return input.contains("ab") || input.contains("cd") || input.contains("pq") || input.contains("xy");
     }
@@ -99,22 +103,22 @@ public class Day05Tests {
 
     @Test
     public void part2_pairs_appear_atLeastTwice() {
-        Assertions.assertTrue(part2_firstRule("xyxy"));
-        Assertions.assertTrue(part2_firstRule("aabcdefgaa"));
-        Assertions.assertTrue(part2_firstRule("zaagaa"));
-        Assertions.assertTrue(part2_firstRule("zaabcdefgaa"));
+        Assertions.assertTrue(letterPairAppearsTwice("xyxy"));
+        Assertions.assertTrue(letterPairAppearsTwice("aabcdefgaa"));
+        Assertions.assertTrue(letterPairAppearsTwice("zaagaa"));
+        Assertions.assertTrue(letterPairAppearsTwice("zaabcdefgaa"));
     }
 
     @Test
     public void part2_pairs_doNotAppear_atLeastTwice() {
-        Assertions.assertFalse(part2_firstRule("aaa"));
+        Assertions.assertFalse(letterPairAppearsTwice("aaa"));
     }
 
     @Test
     public void part2_oneLetter_repeats_withExactlyOneLetterBetween() {
-        Assertions.assertTrue(part2_secondRule("xyx"));
-        Assertions.assertTrue(part2_secondRule("abcdefeghi"));
-        Assertions.assertFalse(part2_secondRule("abcdefghi"));
+        Assertions.assertTrue(letterRepeatsWithOneLetterBetweeen("xyx"));
+        Assertions.assertTrue(letterRepeatsWithOneLetterBetweeen("abcdefeghi"));
+        Assertions.assertFalse(letterRepeatsWithOneLetterBetweeen("abcdefghi"));
     }
 
     @Test
@@ -125,11 +129,7 @@ public class Day05Tests {
         Assertions.assertFalse(part2_isNice("ieodomkazucvgmuy"));
     }
 
-    private boolean part2_isNice(String input) {
-        return part2_firstRule(input) && part2_secondRule(input);
-    }
-
-    private boolean part2_firstRule(String input) {
+    private boolean letterPairAppearsTwice(String input) {
         int i = 0;
         while (i < input.length() - 2) {
             String currentPair = "" + input.charAt(i) + input.charAt(i + 1);
@@ -147,7 +147,7 @@ public class Day05Tests {
         return false;
     }
 
-    private boolean part2_secondRule(String input) {
+    private boolean letterRepeatsWithOneLetterBetweeen(String input) {
         int i = 0;
         while (i <= input.length() - 3) {
             if (input.charAt(i) == input.charAt(i + 2)) {
