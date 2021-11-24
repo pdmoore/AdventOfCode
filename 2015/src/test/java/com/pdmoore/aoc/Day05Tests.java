@@ -149,7 +149,6 @@ public class Day05Tests {
             }
             i++;
         }
-
         return false;
     }
 }
