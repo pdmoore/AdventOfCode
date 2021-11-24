@@ -133,14 +133,8 @@ public class Day05Tests {
         int i = 0;
         while (i < input.length() - 2) {
             String currentPair = "" + input.charAt(i) + input.charAt(i + 1);
-
-            int checkFrom = i + 2;
-            while (checkFrom <= input.length() - 2) {
-                String thisPair = "" + input.charAt(checkFrom) + input.charAt(checkFrom + 1);
-                if (thisPair.equals(currentPair)) {
-                    return true;
-                }
-                checkFrom++;
+            if (input.indexOf(currentPair, i + 2) > 0) {
+                return true;
             }
             i++;
         }
