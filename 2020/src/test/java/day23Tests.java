@@ -25,8 +25,7 @@ public class day23Tests {
         String expected = "167384529";
         assertEquals(expected, actual);
     }
-
-
+    
 
     private String solvePart1(String input, int numMoves) {
         return "NOT IMPLEMENTED";

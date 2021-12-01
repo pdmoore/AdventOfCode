@@ -10,7 +10,7 @@ public class Utilities {
         throw new IllegalStateException("Utility class should not be instantiated");
     }
 
-    public static List<BigInteger> fileToBigIntegerList(String pathAndFileName) {
+    public static List<BigInteger> asBigIntegerList(String pathAndFileName) {
         List<BigInteger> integers = new ArrayList<>();
         try {
             File f = new File(pathAndFileName);
