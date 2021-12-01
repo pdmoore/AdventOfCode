@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -107,7 +108,7 @@ public class day06Tests {
 
     @Test
     public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day06-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day06-part01");
 
         int result = part1Solution(input);
 
@@ -234,7 +235,7 @@ public class day06Tests {
 
     @Test
     public void part2_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day06-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day06-part01");
 
         int result = part2Solution(input);
 

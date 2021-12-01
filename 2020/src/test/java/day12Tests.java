@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -114,7 +115,7 @@ public class day12Tests {
 
     @Test
     public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day12-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day12-part01");
 
         Location startAt = new Location(0, 0);
 
@@ -144,7 +145,7 @@ public class day12Tests {
 
     @Test
     public void part2_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day12-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day12-part01");
 
         Location waypoint = new Location(10, 1);
         Location ship = new Location(0, 0);

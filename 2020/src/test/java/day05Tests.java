@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -61,14 +62,14 @@ public class day05Tests {
 
     @Test
     public void part1_solution() {
-        List<String> passes = Utilities.fileToStringList("./data/day05-part01");
+        List<String> passes = PuzzleInput.asListOfStringsFrom("./data/day05-part01");
         int actual = largestSeatIDOf(passes);
         assertEquals(890, actual);
     }
 
     @Test
     public void part2_solution() {
-        List<String> passes = Utilities.fileToStringList("./data/day05-part01");
+        List<String> passes = PuzzleInput.asListOfStringsFrom("./data/day05-part01");
         int result = leftoverSeats(passes);
         assertEquals(651, result);
     }

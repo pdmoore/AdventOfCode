@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +63,7 @@ class day16Tests {
 
     @Test
     void part1_Solution() {
-        int actual = solvePart1(Utilities.fileToStringList("./data/day16-part01"));
+        int actual = solvePart1(PuzzleInput.asListOfStringsFrom("./data/day16-part01"));
         assertEquals(20231, actual);
     }
 
@@ -76,7 +77,7 @@ class day16Tests {
 
     @Test
     void part2_Solution() {
-        BigInteger actual = solvePart2(Utilities.fileToStringList("./data/day16-part01"));
+        BigInteger actual = solvePart2(PuzzleInput.asListOfStringsFrom("./data/day16-part01"));
         assertEquals(new BigInteger("1940065747861"), actual);
     }
 

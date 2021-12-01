@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ L  Empty Seat
 
     @Test
     public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day11-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day11-part01");
 
         input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_1);
 
@@ -78,7 +79,7 @@ L  Empty Seat
 
     @Test
     public void part2_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day11-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day11-part01");
 
         input = occupySeats(input, VISIBLE_OCCUPIED_THRESHOLD_PART_2);
 

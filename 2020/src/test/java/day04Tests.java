@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ invalid otherwise
 
     @Test
     public void part1_solution() {
-        List<String> rawInput = Utilities.fileToStringList("./data/day04-part01");
+        List<String> rawInput = PuzzleInput.asListOfStringsFrom("./data/day04-part01");
 
         List<Passport> passports = convertInputToPassports(rawInput);
 

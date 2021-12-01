@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ public class day02Tests {
 
     @Test
     public void day02_part01() {
-        List<String> passwordLines = Utilities.fileToStringList("./data/day02-part01");
+        List<String> passwordLines = PuzzleInput.asListOfStringsFrom("./data/day02-part01");
 
         int actual = (int) passwordLines
                 .stream()
@@ -41,7 +42,7 @@ public class day02Tests {
 
     @Test
     public void day02_part02() {
-        List<String> passwordLines = Utilities.fileToStringList("./data/day02-part01");
+        List<String> passwordLines = PuzzleInput.asListOfStringsFrom("./data/day02-part01");
         
         int actual = (int) passwordLines
                 .stream()

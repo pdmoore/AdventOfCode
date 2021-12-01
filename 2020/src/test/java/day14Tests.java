@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class day14Tests {
 
     @Test
     public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day14-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day14-part01");
         long actual = part1Solve(input);
         assertEquals(10885823581193L, actual);
     }
@@ -72,7 +73,7 @@ public class day14Tests {
 
     @Test
     public void part2_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day14-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day14-part01");
         long actual = part2Solve(input);
         assertEquals(3816594901962L, actual);
     }

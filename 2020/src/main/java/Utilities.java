@@ -10,23 +10,6 @@ public class Utilities {
         throw new IllegalStateException("Utility class should not be instantiated");
     }
 
-    // File contains one integer per line
-    private static List<Integer> fileToIntegerList(String pathAndFileName) {
-        List<Integer> integers = new ArrayList<>();
-        try {
-            File f = new File(pathAndFileName);
-            Scanner scanner = new Scanner(f);
-            while (scanner.hasNext()) {
-                integers.add(scanner.nextInt());
-            }
-            scanner.close();
-        } catch (Exception err) {
-            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
-            throw new RuntimeException("error while processing " + pathAndFileName);
-        }
-        return integers;
-    }
-
     public static List<BigInteger> fileToBigIntegerList(String pathAndFileName) {
         List<BigInteger> integers = new ArrayList<>();
         try {
@@ -42,26 +25,6 @@ public class Utilities {
         }
         return integers;
     }
-
-
-    static List<String> fileToStringList(String pathAndFileName) {
-        List<String> lines = new ArrayList<>();
-        try {
-            File f = new File(pathAndFileName);
-            Scanner scanner = new Scanner(f);
-
-            while (scanner.hasNext()) {
-                lines.add(scanner.nextLine());
-            }
-            scanner.close();
-        } catch (Exception err){
-            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
-            throw new RuntimeException("error while processing " + pathAndFileName);
-        }
-        return lines;
-    }
-
-
 
     // AoC17 has
     // List<List<Integer>> readFileAsListOfListOfIntegers(String fileName)

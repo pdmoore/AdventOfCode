@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -106,7 +107,7 @@ split on comma
 
     @Test
     public void part1_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day07-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day07-part01");
 
         String target = "shiny gold";
         int actual = findBagsContaining(input, target);
@@ -137,7 +138,7 @@ split on comma
 
     @Test
     public void part2_solution() {
-        List<String> input = Utilities.fileToStringList("./data/day07-part01");
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day07-part01");
         Map<String, List<String>> bagMap = buildMap(input);
 
         String target = "shiny gold";

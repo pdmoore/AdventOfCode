@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -42,7 +43,7 @@ public class day03Tests {
 
     @Test
     public void day3_part1() {
-        List<String> slope = Utilities.fileToStringList("./data/day03-part01");
+        List<String> slope = PuzzleInput.asListOfStringsFrom("./data/day03-part01");
         int treeCount = toboggan(slope, 3, 1);
 
         assertEquals(162, treeCount);
@@ -74,7 +75,7 @@ public class day03Tests {
 
     @Test
     public void day3_part2() {
-        List<String> slope = Utilities.fileToStringList("./data/day03-part01");
+        List<String> slope = PuzzleInput.asListOfStringsFrom("./data/day03-part01");
 
         BigInteger actual1 = BigInteger.valueOf(toboggan(slope, 1, 1));
         BigInteger actual2 = BigInteger.valueOf(toboggan(slope, 3, 1));

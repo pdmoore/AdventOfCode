@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.ListIterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day22Tests {
-
 
     List<String> createSampleInput() {
         List<String> input = new ArrayList<>();
@@ -38,7 +38,7 @@ public class day22Tests {
     @Test
     public void part1_solution() {
 
-        int actual = solvePart1(Utilities.fileToStringList("./data/day22-part01"));
+        int actual = solvePart1(PuzzleInput.asListOfStringsFrom("./data/day22-part01"));
 
         assertEquals(33098, actual);
     }
