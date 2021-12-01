@@ -16,7 +16,7 @@ public class PuzzleInput {
     // Then in the dependent project
     // File | Reload all from disk
 
-    public static String AsStringFromFile(String filename) {
+    public static String AsStringFrom(String filename) {
         try {
             return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {
@@ -24,7 +24,7 @@ public class PuzzleInput {
         }
     }
 
-    public static List<String> asListOfStringsFromFile(String filename) {
+    public static List<String> asListOfStringsFrom(String filename) {
         List<String> lines = new ArrayList<>();
         try {
             File f = new File(filename);
@@ -39,7 +39,7 @@ public class PuzzleInput {
         return lines;
     }
 
-    public static List<Integer> fileToIntegerList(String pathAndFileName) {
+    public static List<Integer> asIntegerListFrom(String pathAndFileName) {
         List<Integer> integers = new ArrayList<>();
         try {
             File f = new File(pathAndFileName);

@@ -12,15 +12,15 @@ public class day01Tests {
     public void part1_example() {
         List<Integer> input = new ArrayList<>(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263));
 
-        int actual = countMeasurementsLargerThanPrevious(input);
+        int actual = countOfMeasurementsLargerThanPrevious(input);
 
         Assertions.assertEquals(7, actual);
     }
 
     @Test
     public void part1_solution() {
-        List<Integer> input = PuzzleInput.fileToIntegerList("./data/day01");
-        int actual = countMeasurementsLargerThanPrevious(input);
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01");
+        int actual = countOfMeasurementsLargerThanPrevious(input);
         Assertions.assertEquals(1754, actual);
     }
 
@@ -35,12 +35,12 @@ public class day01Tests {
 
     @Test
     public void part2_solution() {
-        List<Integer> input = PuzzleInput.fileToIntegerList("./data/day01");
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01");
         int actual = sumOf3MeasurementsLargerThanPrevious(input);
         Assertions.assertEquals(1789, actual);
     }
-    
-    private int countMeasurementsLargerThanPrevious(List<Integer> input) {
+
+    private int countOfMeasurementsLargerThanPrevious(List<Integer> input) {
         int largerThanPrevious = 0;
         for (int i = 1; i < input.size(); i++) {
             if (input.get(i) > input.get(i - 1)) largerThanPrevious++;
@@ -58,7 +58,4 @@ public class day01Tests {
         }
         return largerThanPrevious;
     }
-
-
-
 }
