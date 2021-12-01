@@ -5,6 +5,7 @@ import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -60,4 +61,32 @@ public class PuzzleInput {
         }
         return integers;
     }
+
+    public static List<BigInteger> asBigIntegerListFrom(String pathAndFileName) {
+        List<BigInteger> integers = new ArrayList<>();
+        try {
+            File f = new File(pathAndFileName);
+            Scanner scanner = new Scanner(f);
+            while (scanner.hasNext()) {
+                integers.add(scanner.nextBigInteger());
+            }
+            scanner.close();
+        } catch (Exception err) {
+            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
+            throw new RuntimeException("error while processing " + pathAndFileName);
+        }
+        return integers;
+    }
+
+
+    // AoC17 has
+    // List<List<Integer>> readFileAsListOfListOfIntegers(String fileName)
+    // AoC18 has
+    // static String fileAsString(String filename)
+    // public static char[][] convertInputToMap(List<String> inputAsStrings)
+    // AoC19 has
+    // public static String fileAsString(String filenameWithPath)
+    // public static String convertIntArrayToCommaSeparatedString(int[] ints)
+    // public static int[] convertCommaSeparatedStringToIntArray(String input)
+
 }

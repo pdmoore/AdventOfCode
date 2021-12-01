@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -58,7 +59,7 @@ for each remainder number - loop through preamble list and check for a + b, if f
 
     @Test
     public void part1_solution() {
-        List<BigInteger> input = Utilities.asBigIntegerList("./data/day09-part01");
+        List<BigInteger> input = PuzzleInput.asBigIntegerListFrom("./data/day09-part01");
 
         for (int i = 25; i < input.size(); i++) {
 
@@ -99,7 +100,7 @@ for each remainder number - loop through preamble list and check for a + b, if f
 
     @Test
     public void part2_solution() {
-        List<BigInteger> input = Utilities.asBigIntegerList("./data/day09-part01");
+        List<BigInteger> input = PuzzleInput.asBigIntegerListFrom("./data/day09-part01");
         BigInteger actual = findWeakness(input, BigInteger.valueOf(217430975));
         assertEquals(BigInteger.valueOf(28509180), actual);
     }
