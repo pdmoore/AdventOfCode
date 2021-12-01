@@ -48,13 +48,13 @@ public class Day05Tests {
 
     @Test
     public void part01() {
-        List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/day04");
         assertEquals(255, countNiceStrings(input, this::part1_isNice));
     }
 
     @Test
     public void part02() {
-        List<String> input = PuzzleInput.asListOfStringsFromFile("data/day04");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/day04");
         assertEquals(55, countNiceStrings(input, this::part2_isNice));
     }
 

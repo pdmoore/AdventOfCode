@@ -30,7 +30,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part1() {
-        String input = PuzzleInput.AsStringFromFile(PUZZLE_INPUT_FILENAME);
+        String input = PuzzleInput.AsStringFrom(PUZZLE_INPUT_FILENAME);
         assertEquals(232, floorNumberAfterManyUpAndDownMoves(input));
     }
 
@@ -42,7 +42,7 @@ public class Day01Tests {
 
     @Test
     public void Day1_Part2() {
-        String input = PuzzleInput.AsStringFromFile(PUZZLE_INPUT_FILENAME);
+        String input = PuzzleInput.AsStringFrom(PUZZLE_INPUT_FILENAME);
         assertEquals(1783, indexOfFirstBasementVisit(input));
     }
 
