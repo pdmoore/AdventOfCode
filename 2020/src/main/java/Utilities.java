@@ -11,7 +11,7 @@ public class Utilities {
     }
 
     // File contains one integer per line
-    static List<Integer> fileToIntegerList(String pathAndFileName) {
+    private static List<Integer> fileToIntegerList(String pathAndFileName) {
         List<Integer> integers = new ArrayList<>();
         try {
             File f = new File(pathAndFileName);

@@ -222,7 +222,7 @@ class day16Tests {
         for (String inputLine :
                 input) {
             if (inputLine.trim().isEmpty()) continue;
-            if (inputLxine.startsWith("your ticket")) break;
+            if (inputLine.startsWith("your ticket")) break;
 
             rules.add(inputLine);
         }

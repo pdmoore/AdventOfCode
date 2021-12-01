@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -8,55 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class day10Tests {
 
     public List<Integer> createSimpleInput() {
-        List<Integer> input = new ArrayList<>();
-        input.add(16);
-        input.add(10);
-        input.add(15);
-        input.add(5);
-        input.add(1);
-        input.add(11);
-        input.add(7);
-        input.add(19);
-        input.add(6);
-        input.add(12);
-        input.add(4);
-        return input;
+        return new ArrayList<>(Arrays.asList(16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4));
     }
 
     private List<Integer> createSecondInput() {
-        List<Integer> input = new ArrayList<>();
-        input.add(28);
-        input.add(33);
-        input.add(18);
-        input.add(42);
-        input.add(31);
-        input.add(14);
-        input.add(46);
-        input.add(20);
-        input.add(48);
-        input.add(47);
-        input.add(24);
-        input.add(23);
-        input.add(49);
-        input.add(45);
-        input.add(19);
-        input.add(38);
-        input.add(39);
-        input.add(11);
-        input.add(1);
-        input.add(32);
-        input.add(25);
-        input.add(35);
-        input.add(8);
-        input.add(17);
-        input.add(7);
-        input.add(9);
-        input.add(4);
-        input.add(2);
-        input.add(34);
-        input.add(10);
-        input.add(3);
-        return input;
+        return new ArrayList<>(Arrays.asList(28, 33, 18, 42, 31, 14, 46, 20, 48, 47,
+                24, 23, 49, 45, 19, 38, 39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3));
     }
 
     @Test
@@ -65,7 +23,6 @@ public class day10Tests {
 
         assertEquals(7 * 5, result);
     }
-
 
     @Test
     public void part1_secondExample() {
@@ -76,7 +33,7 @@ public class day10Tests {
 
     @Test
     public void part1_solution() {
-        List<Integer> input = Utilities.fileToIntegerList("./data/day10-part01");
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day10-part01");
         int result = solvePart1(input);
 
         assertEquals(2760, result);
@@ -264,7 +221,7 @@ public class day10Tests {
 
     @Test
     public void part2_solution() {
-        List<Integer> input = Utilities.fileToIntegerList("./data/day10-part01");
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day10-part01");
         long result = solvePart2WithoutRecursion(input);
         long expected = 13816758796288L;
         assertEquals(expected, result);

@@ -11,6 +11,12 @@ import java.util.Scanner;
 
 public class PuzzleInput {
 
+    // To use in a new project
+    // File | Project Structure
+    // Project Settings | Libraries
+    // + | Java
+    // Navigate to PuzzleInput project's \out directory and drill down to the jar file
+
     // After adding a new method
     // Build | Build Artifacts -- PuzzleInput:jar - BuildAction - Rebuild
     // Then in the dependent project

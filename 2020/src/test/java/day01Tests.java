@@ -1,3 +1,4 @@
+import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -58,7 +59,7 @@ public class day01Tests {
 
     @Test
     public void part1_solution() {
-        List<Integer> input = Utilities.fileToIntegerList("./data/day01-part01");
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01-part01");
 
         int actual = solveForTwoEntries(input);
 
@@ -67,7 +68,7 @@ public class day01Tests {
 
     @Test
     public void part2_solution() {
-        List<Integer> input = Utilities.fileToIntegerList("./data/day01-part01");
+        List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01-part01");
 
         int actual = solveForThreeEntries(input);
 
