@@ -10,7 +10,7 @@ import java.util.List;
 public class day01Tests {
 
     @Test
-    public void part1_example() {
+    void part1_example() {
         List<Integer> input = new ArrayList<>(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263));
 
         int actual = countOfMeasurementsLargerThanPrevious(input);
@@ -19,14 +19,14 @@ public class day01Tests {
     }
 
     @Test
-    public void part1_solution() {
+    void part1_solution() {
         List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01");
         int actual = countOfMeasurementsLargerThanPrevious(input);
         Assertions.assertEquals(1754, actual);
     }
 
     @Test
-    public void part2_example() {
+    void part2_example() {
         List<Integer> input = new ArrayList<>(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263));
 
         int actual = sumOf3MeasurementsLargerThanPrevious(input);
@@ -35,7 +35,7 @@ public class day01Tests {
     }
 
     @Test
-    public void part2_solution() {
+    void part2_solution() {
         List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day01");
         int actual = sumOf3MeasurementsLargerThanPrevious(input);
         Assertions.assertEquals(1789, actual);
