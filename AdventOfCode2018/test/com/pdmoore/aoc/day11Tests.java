@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -60,6 +61,7 @@ public class day11Tests {
     }
 
     @Test
+    @Disabled("2021-12 test takes much too long to be part of unit test suite")
     public void day11_solution2() {
         // Solution is painfully slow....
         int[][] fuelCells = new int[301][301];

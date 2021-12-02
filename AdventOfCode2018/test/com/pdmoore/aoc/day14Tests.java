@@ -141,6 +141,7 @@ public class day14Tests {
     }
 
     @Test
+    @Disabled("2021-12 test takes much too long to be part of unit test suite")
     public void solution2() {
         List<Integer> recipeScores = new ArrayList<>();
         recipeScores.add(3);
