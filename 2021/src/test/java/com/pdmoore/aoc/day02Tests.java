@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,27 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day02Tests {
 
-
-    //         List<Integer> input = PuzzleInput.asIntegerListFrom("./data/day02");
-/*
-forward X increases the horizontal position by X units.
-down X increases the depth by X units.
-up X decreases the depth by X units.
-
-forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2
-
-After following these instructions, you would have a horizontal position of 15 and a depth of 10. (Multiplying these together produces 150.)
-
- */
-
-    @Test
-    void day2_part1_example() {
-
+    private List<String> createSampleInput() {
         List<String> input = new ArrayList<>();
         input.add("forward 5");
         input.add("down 5");
@@ -38,8 +17,14 @@ After following these instructions, you would have a horizontal position of 15 a
         input.add("up 3");
         input.add("down 8");
         input.add("forward 2");
+        return input;
+    }
 
-        int actual = processInput(input);
+    @Test
+    void day2_part1_example() {
+        List<String> input = createSampleInput();
+
+        int actual = part1_processInput(input);
 
         assertEquals(150, actual);
     }
@@ -48,12 +33,57 @@ After following these instructions, you would have a horizontal position of 15 a
     void day2_part1_solution() {
         List<String> input = PuzzleInput.asListOfStringsFrom("./data/day02");
 
-        int actual = processInput(input);
+        int actual = part1_processInput(input);
 
         assertEquals(1727835, actual);
     }
 
-    private int processInput(List<String> input) {
+    @Test
+    void day2_part2_example() {
+        List<String> input = createSampleInput();
+
+        int actual = part2_processInput(input);
+
+        assertEquals(900, actual);
+    }
+
+    @Test
+    void day2_part2_solution() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day02");
+
+        int actual = part2_processInput(input);
+
+        assertEquals(1544000595, actual);
+    }
+
+    private int part2_processInput(List<String> input) {
+        int horizontal = 0;
+        int depth = 0;
+        int aim = 0;
+
+        for (String command :
+                input) {
+            String[] tokens = command.split(" ");
+            int magnitude = Integer.parseInt(tokens[1]);
+            switch (tokens[0]) {
+                case "forward":
+                    horizontal += magnitude;
+                    depth += aim * magnitude;
+                    break;
+                case "down":
+                    aim += magnitude;
+                    break;
+                case "up":
+                    aim -= magnitude;
+                    break;
+            }
+        }
+
+        return horizontal * depth;
+    }
+
+
+    private int part1_processInput(List<String> input) {
         int horizontal = 0;
         int depth = 0;
 
@@ -62,9 +92,15 @@ After following these instructions, you would have a horizontal position of 15 a
             String[] tokens = command.split(" ");
             int magnitude = Integer.parseInt(tokens[1]);
             switch (tokens[0]) {
-                case "forward": horizontal += magnitude; break;
-                case "down": depth += magnitude; break;
-                case "up": depth -= magnitude; break;
+                case "forward":
+                    horizontal += magnitude;
+                    break;
+                case "down":
+                    depth += magnitude;
+                    break;
+                case "up":
+                    depth -= magnitude;
+                    break;
             }
         }
 
