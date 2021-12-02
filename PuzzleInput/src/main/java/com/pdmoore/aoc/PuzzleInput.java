@@ -25,7 +25,7 @@ public class PuzzleInput {
     // Then in the dependent project
     // File | Reload all from disk
 
-    public static String AsStringFrom(String filename) {
+    public static String asStringFrom(String filename) {
         try {
             return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {

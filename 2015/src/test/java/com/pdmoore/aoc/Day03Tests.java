@@ -36,13 +36,13 @@ public class Day03Tests {
 
     @Test
     public void Day03_Part01() {
-        String input = PuzzleInput.AsStringFrom("data/day03-part01");
+        String input = PuzzleInput.asStringFrom("data/day03-part01");
         Assertions.assertEquals(2572, deliverPresents_ReturnUniqueHouses(input));
     }
 
     @Test
     public void Day03_Part02() {
-        String input = PuzzleInput.AsStringFrom("data/day03-part01");
+        String input = PuzzleInput.asStringFrom("data/day03-part01");
         Assertions.assertEquals(2631, deliverPresents_WithRoboSanta_ReturnUniqueHouses(input));
     }
 
