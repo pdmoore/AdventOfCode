@@ -18,7 +18,7 @@ public class day13Tests {
     @Test
     public void buildMap_example() {
         String filename = "data/aoc18.13a.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] actual = utilities.convertInputToMap(inputAsStrings);
 
         char[][] expected = {
@@ -36,7 +36,7 @@ public class day13Tests {
     @Test
     public void BuildCartList_FromInitialMap() {
         String filename = "data/aoc18.13a.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] map = utilities.convertInputToMap(inputAsStrings);
 
         List<day13.Cart> actual = day13.extractCartsFromMap(map);
@@ -58,7 +58,7 @@ public class day13Tests {
     @Test
     public void RemoveCartsFromMap() {
         String filename = "data/aoc18.13a.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] map = utilities.convertInputToMap(inputAsStrings);
 
         List<day13.Cart> actual = day13.extractCartsFromMap(map);
@@ -132,7 +132,7 @@ public class day13Tests {
         day13.removeCollidingCarts = false;
 
         String filename = "data/aoc18.13a.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] map = utilities.convertInputToMap(inputAsStrings);
 
         List<day13.Cart> carts = day13.extractCartsFromMap(map);
@@ -184,7 +184,7 @@ public class day13Tests {
     @Disabled
     public void day13_solution1() {
         String filename = "data/aoc18.13.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] map = utilities.convertInputToMap(inputAsStrings);
 
         List<day13.Cart> carts = day13.extractCartsFromMap(map);
@@ -203,7 +203,7 @@ public class day13Tests {
     @Disabled("2021-12 test is failing; unsure what the expected message intends")
     public void day13_example2_removeCarts() {
         String filename = "data/aoc18.13.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] map = utilities.convertInputToMap(inputAsStrings);
 
         List<day13.Cart> carts = day13.extractCartsFromMap(map);

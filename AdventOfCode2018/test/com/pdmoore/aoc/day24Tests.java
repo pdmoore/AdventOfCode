@@ -101,7 +101,7 @@ public class day24Tests {
 
     @Test
     public void parseInput_TwoArmies() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24.txt");
 
         day24.Simulator actual = day24.parseInput(input);
 
@@ -110,7 +110,7 @@ public class day24Tests {
 
     @Test
     public void parseInput_Sample() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24a.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24a.txt");
 
         day24.Simulator actual = day24.parseInput(input);
         String[] actualTokens = actual.toString().split("\\n");
@@ -128,7 +128,7 @@ public class day24Tests {
 
     @Test
     public void targetSelection_Sample_firstRound() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24a.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24a.txt");
 
         day24.Simulator actual = day24.parseInput(input);
 
@@ -148,7 +148,7 @@ public class day24Tests {
 
     @Test
     public void targetSelection_Sample_TieBreaker() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24a.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24a.txt");
 
         day24.Simulator actual = day24.parseInput(input);
 
@@ -183,7 +183,7 @@ public class day24Tests {
 
     @Test
     public void attacking_Sample_firstRound() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24a.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24a.txt");
         day24.Simulator actual = day24.parseInput(input);
         actual.targetSelection();
 
@@ -201,7 +201,7 @@ public class day24Tests {
 
     @Test
     public void battle_Sample_toFinish() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24a.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24a.txt");
         day24.Simulator actual = day24.parseInput(input);
 
         actual.battle();
@@ -214,7 +214,7 @@ public class day24Tests {
 //    @Disabled("Infection wins but result is too high")
     @Disabled("2021-12 noticed this test was failing")
     public void battle_solution1() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.24.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.24.txt");
         day24.Simulator actual = day24.parseInput(input);
 
         actual.battle();

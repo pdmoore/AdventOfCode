@@ -38,7 +38,7 @@ public class day12 {
     }
 
     public static HashMap<String, String> parseRulesFromFile(String filename) {
-        List<String> fileContentsAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> fileContentsAsStrings = PuzzleInput.asListOfStringsFrom(filename);
 
         List<String> justRulesFromFile = fileContentsAsStrings.subList(2, fileContentsAsStrings.size());
         return parseRules(justRulesFromFile);
@@ -64,7 +64,7 @@ public class day12 {
 
     private static int calcGenerations(String filename, int reps) {
         // read file as list of strings
-        List<String> fileContentsAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> fileContentsAsStrings = PuzzleInput.asListOfStringsFrom(filename);
 
         // parse initial state
         String prefix = "........................";

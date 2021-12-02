@@ -89,7 +89,7 @@ public class day18 {
     }
 
     public static int solution1(String filename, int reps) {
-        List<String> fileContentsAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> fileContentsAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] currentMap = utilities.convertInputToMap(fileContentsAsStrings);
 
         char[][] nextMap = new char[currentMap.length][currentMap[0].length];
@@ -107,7 +107,7 @@ public class day18 {
     }
 
     public static int solution2(String filename, int reps) {
-        List<String> fileContentsAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> fileContentsAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] currentMap = utilities.convertInputToMap(fileContentsAsStrings);
 
         System.out.println("step  - trees   lumber   result   ");

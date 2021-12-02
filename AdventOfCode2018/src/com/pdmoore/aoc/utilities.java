@@ -9,22 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class utilities {
-    static List<String> getFileContentsAsStrings(String filename) {
-//        List<String> lines = new ArrayList<>();
-//        try {
-//            File f = new File(filename);
-//            Scanner scanner = new Scanner(f);
-//
-//            while (scanner.hasNext()) {
-//                lines.add(scanner.nextLine());
-//            }
-//        } catch(Exception err){
-//            err.printStackTrace();
-//        }
-//        return lines;
 
-        return PuzzleInput.asListOfStringsFrom(filename);
-    }
 
     static String fileAsString(String filename) {
         try {
@@ -34,6 +19,9 @@ public class utilities {
             System.out.println("ERROR reading " + filename);
         }
         return null;
+
+        // Compare above to PuzzleInput, and move this over - what's the encoded byte/ReadAllBytes mean?
+//        return PuzzleInput.AsStringFrom(filename);
     }
 
     public static char[][] convertInputToMap(List<String> inputAsStrings) {

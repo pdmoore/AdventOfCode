@@ -13,7 +13,7 @@ public class day22Tests {
     @Test
     public void calculateRiskLevel() {
         String filename = "data/aoc18.22a.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] caveSystem = utilities.convertInputToMap(inputAsStrings);
 
         Point target = new Point(10, 10);
@@ -30,7 +30,7 @@ public class day22Tests {
         day22.Region[][] regions = new day22.Region[target.x + 1][target.y + 1];
 
         String filename = "data/aoc18.22b.txt";
-        List<String> inputAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> inputAsStrings = PuzzleInput.asListOfStringsFrom(filename);
         char[][] expected = utilities.convertInputToMap(inputAsStrings);
 
         char[][] actual = day22.solution1_caveSystem(regions, depth, target);

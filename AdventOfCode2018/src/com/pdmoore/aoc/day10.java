@@ -28,7 +28,7 @@ public class day10 {
     }
 
     public static Board createBoard(String filename) {
-        List<String> fileContentsAsStrings = utilities.getFileContentsAsStrings(filename);
+        List<String> fileContentsAsStrings = PuzzleInput.asListOfStringsFrom(filename);
 
         List<PointOfLight> pointsOfLight = createPoints(fileContentsAsStrings);
 

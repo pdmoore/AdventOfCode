@@ -12,7 +12,7 @@ public class day6Tests {
 
     @Test
     public void solution1() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.6.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.6.txt");
         assertEquals(5941, day6.solution1(input));
     }
 
@@ -56,7 +56,7 @@ public class day6Tests {
 
     @Test
     public void solution2() {
-        List<String> input = utilities.getFileContentsAsStrings("data/aoc18.6.txt");
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/aoc18.6.txt");
         int maxDistance = 10000;
         assertEquals(40244, day6.solution2(input, maxDistance));
     }

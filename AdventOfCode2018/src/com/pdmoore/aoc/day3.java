@@ -5,7 +5,7 @@ import java.util.List;
 
 public class day3 {
     public static int solution_1(String filename) {
-        List<String> claims = utilities.getFileContentsAsStrings(filename);
+        List<String> claims = PuzzleInput.asListOfStringsFrom(filename);
 
         return solution_1(claims);
     }

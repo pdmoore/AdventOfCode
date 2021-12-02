@@ -4,7 +4,7 @@ import java.util.*;
 
 public class day7 {
     public static String solution1(String filename) {
-        List<String> inputLines = utilities.getFileContentsAsStrings(filename);
+        List<String> inputLines = PuzzleInput.asListOfStringsFrom(filename);
 
         Map<String, List<String>> rules = parseInput(inputLines);
 
@@ -12,7 +12,7 @@ public class day7 {
     }
 
     public static int solution2(String filename, int workerCount, int stepCost) {
-        List<String> inputLines = utilities.getFileContentsAsStrings(filename);
+        List<String> inputLines = PuzzleInput.asListOfStringsFrom(filename);
 
         Map<String, List<String>> rules = parseInput(inputLines);
 

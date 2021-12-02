@@ -1,12 +1,11 @@
 package com.pdmoore.aoc;
 
 import java.util.*;
-import java.util.spi.LocaleServiceProvider;
 
 public class day4 {
 
     public static int solution_1(String filename) {
-        List<String> guardActivities = utilities.getFileContentsAsStrings(filename);
+        List<String> guardActivities = PuzzleInput.asListOfStringsFrom(filename);
         Collections.sort(guardActivities);
 
         HashMap<Integer, GuardLog> guardLogsById = new HashMap<>();
@@ -19,7 +18,7 @@ public class day4 {
     }
 
     public static int solution_2(String filename) {
-        List<String> guardActivities = utilities.getFileContentsAsStrings(filename);
+        List<String> guardActivities = PuzzleInput.asListOfStringsFrom(filename);
         Collections.sort(guardActivities);
 
         HashMap<Integer, GuardLog> guardLogsById = new HashMap<>();
