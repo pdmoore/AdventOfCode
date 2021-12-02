@@ -27,6 +27,7 @@ public class PuzzleInput {
 
     public static String asStringFrom(String filename) {
         try {
+            // Consider adding a trim() to the end - noticed a difference in 2018's impl compared to this
             return Files.asCharSource(new File(filename), Charsets.UTF_8).read();
         } catch (IOException e) {
             throw new RuntimeException("Couldn't open puzzle input file: " + filename);

@@ -8,14 +8,12 @@ public class day8 {
     private static int sumOfMetadata;
 
     public static int solution1(String inputFile) {
-        String input = utilities.fileAsString(inputFile);
-
+        String input = PuzzleInput.asStringFrom(inputFile).trim();
         return sumMetadata(input);
     }
 
     public static int solution2(String inputFile) {
-        String input = utilities.fileAsString(inputFile);
-
+        String input = PuzzleInput.asStringFrom(inputFile).trim();
         return valueOfNode(input);
     }
 

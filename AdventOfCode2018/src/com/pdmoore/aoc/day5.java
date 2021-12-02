@@ -4,7 +4,6 @@ public class day5 {
 
     public static int solution_1(String filename) {
         String input = utilities.fileAsString(filename);
-
         String result = reduceAlgorithmByReplaceFirst(input);
         return result.length();
     }
