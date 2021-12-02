@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import java.util.*;
 
 public class AdventOfCode2017 {
