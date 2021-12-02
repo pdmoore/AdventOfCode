@@ -499,7 +499,7 @@ public class AdventOfCode2017Test {
 //    @Disabled
     public void day7_2_createTree() throws IOException {
         List<String> allLines = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader("data/day7_sample`.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("data/day7_sample.txt"));
 
         String line;
         while ((line = br.readLine()) != null) {
