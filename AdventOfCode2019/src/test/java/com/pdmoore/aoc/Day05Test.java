@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import org.junit.Ignore;
 import org.junit.Test;
 

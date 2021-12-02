@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 public class IntCodeComputer {
     static final int OPCODE_ADD = 1;
     static final int OPCODE_MULTIPLY = 2;

@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import org.junit.Assert;
 import org.junit.Test;
 
