@@ -3,7 +3,9 @@ package com.pdmoore.aoc;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -78,9 +80,26 @@ public class PuzzleInput {
         return integers;
     }
 
+    public static List<List<Integer>> asListOfListOfIntegers(String pathAndFileName) {
+        List<List<Integer>> allLines = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(pathAndFileName));
+            String line;
+            while ((line = br.readLine()) != null) {
+                List<Integer> lineOfIntegers = new ArrayList<>();
+                Scanner s = new Scanner(line);
+                while (s.hasNextInt()) {
+                    lineOfIntegers.add(s.nextInt());
+                }
+                allLines.add(lineOfIntegers);
+            }
+        } catch (IOException e) {
+            System.out.println("File not found in this directory " + System.getProperty("user.dir"));
+            throw new RuntimeException("error while processing " + pathAndFileName);
+        }
+        return allLines;
+    }
 
-    // AoC17 has
-    // List<List<Integer>> readFileAsListOfListOfIntegers(String fileName)
     // AoC18 has
     // static String fileAsString(String filename)
     // public static char[][] convertInputToMap(List<String> inputAsStrings)

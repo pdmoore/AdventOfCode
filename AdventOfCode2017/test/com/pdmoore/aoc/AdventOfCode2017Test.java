@@ -1,11 +1,8 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.awt.event.AdjustmentEvent;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -13,23 +10,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AdventOfCode2017Test {
-
-    private List<List<Integer>> readFileAsListOfListOfIntegers(String fileName) throws IOException {
-        List<List<Integer>> allLines = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String line;
-        while ((line = br.readLine()) != null) {
-            List<Integer> lineOfIntegers = new ArrayList<>();
-            Scanner s = new Scanner(line);
-            while (s.hasNextInt()) {
-                lineOfIntegers.add(s.nextInt());
-            }
-            allLines.add(lineOfIntegers);
-        }
-        return allLines;
-    }
-
-
+    
     @Test
     public void NoDigitsMatch_Sum0() {
         String input = "1234";
@@ -110,7 +91,7 @@ public class AdventOfCode2017Test {
 
     @Test
     public void day2_checksum_puzzle() throws Exception {
-        List<List<Integer>> allLines = readFileAsListOfListOfIntegers("data/day2.txt");
+        List<List<Integer>> allLines = PuzzleInput.asListOfListOfIntegers("data/day2.txt");
         assertEquals(16, allLines.size());
         assertEquals(53460, AdventOfCode2017.checksum(allLines), "checksum is sum of all single line checksums");
     }
@@ -127,7 +108,7 @@ public class AdventOfCode2017Test {
 
     @Test
     public void day2_2_checksum_puzzle() throws Exception {
-        List<List<Integer>> allLines = readFileAsListOfListOfIntegers("data/day2.txt");
+        List<List<Integer>> allLines = PuzzleInput.asListOfListOfIntegers("data/day2.txt");
         assertEquals(16, allLines.size());
         assertEquals(282, AdventOfCode2017.checksum2(allLines), "checksum is sum of all single line checksums");
     }
