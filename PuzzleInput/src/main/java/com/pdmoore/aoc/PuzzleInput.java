@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -102,11 +103,22 @@ public class PuzzleInput {
     }
 
     // AoC18 has
-    // static String fileAsString(String filename)
     // public static char[][] convertInputToMap(List<String> inputAsStrings)
     // AoC19 has
     // public static String fileAsString(String filenameWithPath)
     // public static String convertIntArrayToCommaSeparatedString(int[] ints)
     // public static int[] convertCommaSeparatedStringToIntArray(String input)
+
+    // from aoc18 - this version does an explicit trim of the file contents
+    // added a note to asStringFrom to consider
+//    static String fileAsString(String filename) {
+//        try {
+//            byte[] encoded = java.nio.file.Files.readAllBytes(Paths.get(filename));
+//            return new String(encoded).trim();
+//        } catch (IOException e) {
+//            System.out.println("ERROR reading " + filename);
+//        }
+//        return null;
+//    }
 
 }

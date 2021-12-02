@@ -3,14 +3,13 @@ package com.pdmoore.aoc;
 public class day5 {
 
     public static int solution_1(String filename) {
-        String input = utilities.fileAsString(filename);
+        String input = PuzzleInput.asStringFrom(filename).trim();
         String result = reduceAlgorithmByReplaceFirst(input);
         return result.length();
     }
 
     public static int solution_2(String filename) {
-        String input = utilities.fileAsString(filename);
-
+        String input = PuzzleInput.asStringFrom(filename).trim();
         return findSmallestReduction(input);
     }
 

@@ -7,20 +7,6 @@ import java.util.List;
 
 public class utilities {
 
-
-    static String fileAsString(String filename) {
-        try {
-            byte[] encoded = Files.readAllBytes(Paths.get(filename));
-            return new String(encoded).trim();
-        } catch (IOException e) {
-            System.out.println("ERROR reading " + filename);
-        }
-        return null;
-
-        // Compare above to PuzzleInput, and move this over - what's the encoded byte/ReadAllBytes mean?
-//        return PuzzleInput.AsStringFrom(filename);
-    }
-
     public static char[][] convertInputToMap(List<String> inputAsStrings) {
         int rowCount = inputAsStrings.size();
         int colCount = inputAsStrings.get(0).length();
