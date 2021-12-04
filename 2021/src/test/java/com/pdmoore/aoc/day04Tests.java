@@ -121,7 +121,64 @@ public class day04Tests {
         Assertions.fail("no winning board encountered");
     }
 
+    @Test
+    void day04_part2_example() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04_example");
 
+        Day04Part1 actual = processInput(input);
+
+        String[] numbersToCall = actual.numbersToCall.split(",");
+        int boardsInPlay = actual.boards.size();
+
+        for (String stringyNumber :
+                numbersToCall) {
+            int numberCalled = Integer.parseInt(stringyNumber);
+            for (Board board :
+                    actual.boards) {
+                if (board.boardActive) {
+                    board.callNumber(numberCalled);
+                    if (board.wins()) {
+                        boardsInPlay--;
+                        if (boardsInPlay == 0) {
+                            assertEquals(1924, board.score());
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        Assertions.fail("no winning board encountered");
+    }
+
+    @Test
+    void day04_part2() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04");
+
+        Day04Part1 actual = processInput(input);
+
+        String[] numbersToCall = actual.numbersToCall.split(",");
+
+        int boardsInPlay = actual.boards.size();
+
+        for (String stringyNumber :
+                numbersToCall) {
+            int numberCalled = Integer.parseInt(stringyNumber);
+            for (Board board :
+                    actual.boards) {
+                if (board.boardActive) {
+                    board.callNumber(numberCalled);
+                    if (board.wins()) {
+                        boardsInPlay--;
+                        if (boardsInPlay == 0) {
+                            assertEquals(5586, board.score());
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        Assertions.fail("no winning board encountered");
+    }
 
 
     private Day04Part1 processInput(List<String> input) {
@@ -147,6 +204,7 @@ public class day04Tests {
     private class Board {
         Integer[][] grid = new Integer[5][5];
         private int _numberJustCalled = 0;
+        boolean boardActive = true;
 
         public void addLine(int row, String s) {
             int column = 0;
@@ -157,6 +215,8 @@ public class day04Tests {
         }
 
         public void callNumber(int calledNumber) {
+            if (!boardActive) return;
+
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     if (grid[i][j] == calledNumber) {
@@ -169,7 +229,11 @@ public class day04Tests {
         }
 
         public boolean wins() {
-            return (completeRow() || completeColumn());
+            boolean isWinner = completeRow() || completeColumn();
+            if (isWinner) {
+                boardActive = false;
+            }
+            return isWinner;
         }
 
         private boolean completeRow() {
