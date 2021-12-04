@@ -10,22 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class day04Tests {
-
-
+    
     // DIAGONALS DON'T COUNT
-    // VALUE OF WINNING BOARD
-    // CALC OF LAST CALLED TIMES WINNING
-
-    // grab input as list of strings
-    // read line - that's the list of integers that will be called
-    // skip line
-    // repeat - read a board
-
-    // loop through numbers
-    // apply number to each board
-    // if bingo, sum the uncalled numbers
-    // return sum * called number
-
 
     @Test
     void day04_part1_processInput_CreateDataStructures() {
