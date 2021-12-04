@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class day04Tests {
 
 
-    //TODO check for a column win
     // DIAGONALS DON'T COUNT
     // VALUE OF WINNING BOARD
     // CALC OF LAST CALLED TIMES WINNING
@@ -73,6 +73,57 @@ public class day04Tests {
         assertTrue(board.wins());
     }
 
+    @Test
+    void day04_part01_Win_score() {
+        Board board = new Board();
+        board.addLine(0, "14 21 17 24  4");
+        board.addLine(1, "10 16 15  9 19");
+        board.addLine(2, "18  8 23 26 20");
+        board.addLine(3, "22 11 13  6  5");
+        board.addLine(4, " 2  0 12  3  7");
+
+        board.callNumber(7);
+        board.callNumber(4);
+        board.callNumber(9);
+        board.callNumber(5);
+        board.callNumber(11);
+        board.callNumber(17);
+        board.callNumber(23);
+        board.callNumber(2);
+        board.callNumber(0);
+        board.callNumber(14);
+        board.callNumber(21);
+        board.callNumber(24);
+
+        assertEquals(4512, board.score());
+    }
+
+    @Test
+    void day04_part1() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04");
+
+        Day04Part1 actual = processInput(input);
+
+        String[] numbersToCall = actual.numbersToCall.split(",");
+
+        for (String stringyNumber :
+                numbersToCall) {
+            int numberCalled = Integer.parseInt(stringyNumber);
+            for (Board board :
+                    actual.boards) {
+                board.callNumber(numberCalled);
+                if (board.wins()) {
+                    assertEquals(35711, board.score());
+                    return;   // stop calling numbers
+                }
+            }
+        }
+        Assertions.fail("no winning board encountered");
+    }
+
+
+
+
     private Day04Part1 processInput(List<String> input) {
         Day04Part1 actual = new Day04Part1();
         actual.numbersToCall = input.get(0);
@@ -95,6 +146,7 @@ public class day04Tests {
 
     private class Board {
         Integer[][] grid = new Integer[5][5];
+        private int _numberJustCalled = 0;
 
         public void addLine(int row, String s) {
             int column = 0;
@@ -109,6 +161,7 @@ public class day04Tests {
                 for (int j = 0; j < 5; j++) {
                     if (grid[i][j] == calledNumber) {
                         grid[i][j] = -1;
+                        _numberJustCalled = calledNumber;
                         return;
                     }
                 }
@@ -141,6 +194,22 @@ public class day04Tests {
                     return true;
             }
             return false;
+        }
+
+        public int score() {
+            return sumOfUnmarkedNumbers() * _numberJustCalled;
+        }
+
+        private int sumOfUnmarkedNumbers() {
+            int sum = 0;
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (grid[i][j] != -1) {
+                        sum += grid[i][j];
+                    }
+                }
+            }
+            return sum;
         }
     }
 
