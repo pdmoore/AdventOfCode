@@ -34,60 +34,39 @@ public class day05Tests {
     }
 
     private class Day05DataStructure {
-
         Map<Point, Integer> pointCount = new HashMap<Point, Integer>();
-
 
         public Day05DataStructure(List<String> input) {
             for (String inputLine :
                     input) {
-                // if point is in map of <Point, int> add <Point, 0>
                 String[] tokens = inputLine.split(" -> ");
                 Point startAt = createPointFrom(tokens[0]);
                 Point endAt   = createPointFrom(tokens[1]);
 
                 if (startAt.y == endAt.y) {
-                    if (startAt.x <= endAt.x) {
-                        for (int i = startAt.x; i <= endAt.x; i++) {
-                            Point thisPoint = new Point(i, startAt.y);
-                            if (!pointCount.containsKey(thisPoint)) {
-                                pointCount.put(thisPoint, 1);
-                            } else {
-                                int currentCount = pointCount.get(thisPoint);
-                                pointCount.put(thisPoint, currentCount + 1);
-                            }
-                        }
-                    } else {
-                        for (int i = endAt.x; i <= startAt.x; i++) {
-                            Point thisPoint = new Point(i, startAt.y);
-                            if (!pointCount.containsKey(thisPoint)) {
-                                pointCount.put(thisPoint, 1);
-                            } else {
-                                int currentCount = pointCount.get(thisPoint);
-                                pointCount.put(thisPoint, currentCount + 1);
-                            }
+                    int lower = Math.min(startAt.x, endAt.x);
+                    int upper = Math.max(startAt.x, endAt.x);
+
+                    for (int i = lower; i <= upper; i++) {
+                        Point thisPoint = new Point(i, startAt.y);
+                        if (!pointCount.containsKey(thisPoint)) {
+                            pointCount.put(thisPoint, 1);
+                        } else {
+                            int currentCount = pointCount.get(thisPoint);
+                            pointCount.put(thisPoint, currentCount + 1);
                         }
                     }
                 } else if (startAt.x == endAt.x) {
-                    if (startAt.y < endAt.y) {
-                        for (int i = startAt.y; i <= endAt.y; i++) {
-                            Point thisPoint = new Point(startAt.x, i);
-                            if (!pointCount.containsKey(thisPoint)) {
-                                pointCount.put(thisPoint, 1);
-                            } else {
-                                int currentCount = pointCount.get(thisPoint);
-                                pointCount.put(thisPoint, currentCount + 1);
-                            }
-                        }
-                    } else {
-                        for (int i = endAt.y; i <= startAt.y; i++) {
-                            Point thisPoint = new Point(startAt.x, i);
-                            if (!pointCount.containsKey(thisPoint)) {
-                                pointCount.put(thisPoint, 1);
-                            } else {
-                                int currentCount = pointCount.get(thisPoint);
-                                pointCount.put(thisPoint, currentCount + 1);
-                            }
+                    int lower = Math.min(startAt.y, endAt.y);
+                    int upper = Math.max(startAt.y, endAt.y);
+
+                    for (int i = lower; i <= upper; i++) {
+                        Point thisPoint = new Point(startAt.x, i);
+                        if (!pointCount.containsKey(thisPoint)) {
+                            pointCount.put(thisPoint, 1);
+                        } else {
+                            int currentCount = pointCount.get(thisPoint);
+                            pointCount.put(thisPoint, currentCount + 1);
                         }
                     }
                 }
