@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class day04Tests {
-    
+
     // DIAGONALS DON'T COUNT
 
     @Test
