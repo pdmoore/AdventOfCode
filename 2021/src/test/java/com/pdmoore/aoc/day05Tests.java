@@ -103,15 +103,11 @@ public class day05Tests {
                         }
                     }
                 } else if (handleDiagonals) {
-                    System.out.println("Diagonal from " + startAt + " to " + endAt);
-
+                    //TODO - is there a way to collapse diagonal logic similar to horizontal/vertical min/max?
                     if (startAt.x < endAt.x) {
 
                         if (startAt.y < endAt.y) {
-                            // 498, 588 -- 503, 593
-                            System.out.println("1a Diagonal");
                             int currentY = startAt.y;
-
                             for (int i = startAt.x; i <= endAt.x; i++) {
                                 Point thisPoint = new Point(i, currentY);
                                 if (!pointCount.containsKey(thisPoint)) {
@@ -123,8 +119,6 @@ public class day05Tests {
                                 currentY++;
                             }
                         } else {
-                            // 627, 659 -- 763, 523
-                            System.out.println("Diagonal 1b");
                             int currentY = startAt.y;
                             for (int i = startAt.x; i <= endAt.x; i++) {
                                 Point thisPoint = new Point(i, currentY);
@@ -139,10 +133,7 @@ public class day05Tests {
                         }
                     } else {
 
-                        // guaranteed that start.x > end.x
                         if (startAt.y < endAt.y) {
-                            // 861, 137 -- 102, 896
-                            System.out.println("Diagonal 2a");
                             int currentY = startAt.y;
                             for (int i = startAt.x; i >= endAt.x; i--) {
                                 Point thisPoint = new Point(i, currentY);
@@ -155,9 +146,6 @@ public class day05Tests {
                                 currentY++;
                             }
                         } else {
-                            //629, 581   to 123, 75
-                            System.out.println("Diagonal 2b");
-
                             int currentY = startAt.y;
 
                             for (int i = startAt.x; i >= endAt.x; i--) {
