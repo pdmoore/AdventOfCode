@@ -3,7 +3,6 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,17 @@ public class day05Tests {
         int actual = dataStructure.overlapsOfTwoOrMore();
 
         assertEquals(5, actual);
+    }
+
+    @Test
+    void day05_part1_solution() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day05");
+
+        Day05DataStructure dataStructure = new Day05DataStructure(input);
+
+        int actual = dataStructure.overlapsOfTwoOrMore();
+
+        assertEquals(4873, actual);
     }
 
     private class Day05DataStructure {
