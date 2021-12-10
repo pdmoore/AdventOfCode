@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +14,14 @@ public class day06Tests {
 
     @Test
     void day06_part1_example_populate() {
-        List<Integer> lanternFish = new ArrayList<>();
-        lanternFish = populate(example_input);
+        List<BigInteger> lanternFish = populate(example_input);
 
         assertEquals(5, lanternFish.size());
     }
 
     @Test
     void day06_part1_example_tick18() {
-        List<Integer> lanternFish = new ArrayList<>();
-        lanternFish = populate(example_input);
+        List<BigInteger> lanternFish = populate(example_input);
 
         lanternFish = tickMany(lanternFish, 18);
 
@@ -31,28 +30,46 @@ public class day06Tests {
 
     @Test
     void day06_part1_example_tick80() {
-        List<Integer> lanternFish = new ArrayList<>();
-        lanternFish = populate(example_input);
+        List<BigInteger> lanternFish = populate(example_input);
 
         lanternFish = tickMany(lanternFish, 80);
 
         assertEquals(5934, lanternFish.size());
     }
 
-    private List<Integer> tickMany(List<Integer> lanternFish, int ticks) {
+    @Test
+    void day06_part1_tick80() {
+        List<BigInteger> lanternFish = populate(PuzzleInput.asStringFrom("data/day06"));
+
+        lanternFish = tickMany(lanternFish, 80);
+
+        assertEquals(386755, lanternFish.size());
+    }
+
+    @Test
+    void day06_part1_tick256() {
+        List<BigInteger> lanternFish = populate(PuzzleInput.asStringFrom("data/day06"));
+
+        lanternFish = tickMany(lanternFish, 256);
+
+        assertEquals(26984457539, lanternFish.size());
+    }
+
+
+    private List<Integer> tickMany(List<BigInteger> lanternFish, int ticks) {
         for (int i = 0; i < ticks; i++) {
             lanternFish = tick(lanternFish);
         }
         return lanternFish;
     }
 
-    private List<Integer> tick(List<Integer> lanternFish) {
-        List<Integer> nextFishes = new ArrayList<>();
+    private List<BigInteger> tick(List<BigInteger> lanternFish) {
+        List<BigInteger> nextFishes = new ArrayList<>();
         int newFishCount = 0;
-        for (Integer fish :
+        for (BigInteger fish :
                 lanternFish) {
-            Integer nextFish = fish - 1;
-            if (nextFish >= 0) {
+            BigInteger nextFish = fish.subtract(new BigInteger(1));
+            if (nextFish.compareTo(BigInteger.ZERO) > 0) {
                 nextFishes.add(nextFish);
             } else {
                 nextFishes.add(6);
@@ -64,17 +81,16 @@ public class day06Tests {
             nextFishes.add(8);
         }
 
-System.out.println(nextFishes);
         return nextFishes;
     }
 
 
-    private List<Integer> populate(String input) {
+    private List<BigInteger> populate(String input) {
         String[] numbersAsString = input.split(",");
-        List<Integer> numbers = new ArrayList<>();
+        List<BigInteger> numbers = new ArrayList<>();
         for (String numberString :
                 numbersAsString) {
-            numbers.add(Integer.parseInt(numberString));
+            numbers.add(new BigInteger(numberString));
         }
         return numbers;
     }
