@@ -2,9 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,17 +25,48 @@ public class day07Tests {
     @Test
     void day06_part01_example() {
         int[] horizontalPositions = processInput(example_input);
-        int actual = cheapestAlignmentOf(horizontalPositions);
+        int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
         assertEquals(37, actual);
     }
 
-    private int cheapestAlignmentOf(int[] integers) {
+    @Test
+    void day06_part01_solution() {
+        int[] horizontalPositions = processInput(PuzzleInput.asStringFrom("data/day07"));
+        int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
+
+        assertEquals(364898, actual);
+    }
+
+    private int cheapestAlignmentByCheckingAll(int[] integers) {
+        int cheapest = Integer.MAX_VALUE;
+        List<Integer> seenIntegers = new ArrayList<>();
+
+        for (int position :
+                integers) {
+            if (!seenIntegers.contains(position)) {
+                seenIntegers.add(position);
+
+                int alignmentValue = alignmentComparedTo(integers, position);
+                if (alignmentValue <= cheapest) {
+                    cheapest = alignmentValue;
+                }
+            }
+        }
+
+        return cheapest;
+    }
+
+    private int cheapestAlignmentViaMode(int[] integers) {
         int mode = findModeOf(integers);
 
+        return alignmentComparedTo(integers, mode);
+    }
+
+    private int alignmentComparedTo(int[] integers, int basePosition) {
         int sum = 0;
         for (int position :
                 integers) {
-            int difference = Math.abs(mode - position);
+            int difference = Math.abs(basePosition - position);
             sum += difference;
         }
         return sum;
