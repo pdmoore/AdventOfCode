@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,6 +102,14 @@ public class PuzzleInput {
         }
         return allLines;
     }
+
+    static public int[] csvStringAsIntArray(String input) {
+        return Arrays.stream(input.
+                        split(",")).
+                        mapToInt(Integer::parseInt).
+                        toArray();
+    }
+
 
     // AoC18 has
     // public static char[][] convertInputToMap(List<String> inputAsStrings)

@@ -12,14 +12,14 @@ public class day07Tests {
 
     @Test
     void day06_part01_example() {
-        int[] horizontalPositions = processInput(example_input);
+        int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(example_input);
         int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
         assertEquals(37, actual);
     }
 
     @Test
     void day06_part01_solution() {
-        int[] horizontalPositions = processInput(PuzzleInput.asStringFrom("data/day07"));
+        int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(PuzzleInput.asStringFrom("data/day07"));
         int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
 
         assertEquals(364898, actual);
@@ -38,14 +38,14 @@ public class day07Tests {
 
     @Test
     void day06_part02_example() {
-        int[] horizontalPositions = processInput(example_input);
+        int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(example_input);
         int actual = cheapestAlignmentByCheckingAll_part2(horizontalPositions);
         assertEquals(168, actual);
     }
 
     @Test
     void day06_part02_solution() {
-        int[] horizontalPositions = processInput(PuzzleInput.asStringFrom("data/day07"));
+        int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(PuzzleInput.asStringFrom("data/day07"));
         int actual = cheapestAlignmentByCheckingAll_part2(horizontalPositions);
 
         assertEquals(104149091, actual);
@@ -119,13 +119,5 @@ public class day07Tests {
             sum += difference;
         }
         return sum;
-    }
-
-    // TODO
-    // MOVE TO PUZZLIEINPUT
-    private int[] processInput(String input) {
-        return Arrays.stream(
-                input.split(",")).
-                mapToInt(Integer::parseInt).toArray();
     }
 }
