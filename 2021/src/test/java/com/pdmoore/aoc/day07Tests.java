@@ -11,14 +11,14 @@ public class day07Tests {
     final String example_input = "16,1,2,0,4,2,7,1,2,14";
 
     @Test
-    void day06_part01_example() {
+    void day07_part01_example() {
         int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(example_input);
         int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
         assertEquals(37, actual);
     }
 
     @Test
-    void day06_part01_solution() {
+    void day07_part01_solution() {
         int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(PuzzleInput.asStringFrom("data/day07"));
         int actual = cheapestAlignmentByCheckingAll(horizontalPositions);
 
@@ -26,7 +26,7 @@ public class day07Tests {
     }
 
     @Test
-    void day06_part2_increasingFuelRateCalculation() {
+    void day07_part2_increasingFuelRateCalculation() {
         assertEquals(1, calculateFuelFor(4, 5));
         assertEquals(3, calculateFuelFor(3, 5));
         assertEquals(6, calculateFuelFor(2, 5));
@@ -37,14 +37,14 @@ public class day07Tests {
     }
 
     @Test
-    void day06_part02_example() {
+    void day07_part02_example() {
         int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(example_input);
         int actual = cheapestAlignmentByCheckingAll_part2(horizontalPositions);
         assertEquals(168, actual);
     }
 
     @Test
-    void day06_part02_solution() {
+    void day07_part02_solution() {
         int[] horizontalPositions = PuzzleInput.csvStringAsIntArray(PuzzleInput.asStringFrom("data/day07"));
         int actual = cheapestAlignmentByCheckingAll_part2(horizontalPositions);
 
