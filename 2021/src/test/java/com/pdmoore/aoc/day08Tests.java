@@ -18,6 +18,15 @@ public class day08Tests {
         assertEquals(26, actual);
     }
 
+    @Test
+    void day08_part1_solution() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08");
+
+        int actual = countUniqueSegments(input);
+
+        assertEquals(504, actual);
+    }
+
     private int countUniqueSegments(List<String> input) {
         int uniqueSegmentCount = 0;
 
