@@ -36,6 +36,15 @@ public class day08Tests {
         assertEquals(61229, actual);
     }
 
+    @Test
+    void day08_part2_solution() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08");
+
+        int actual = sumOfSegments(input);
+
+        assertEquals(1073431, actual);
+    }
+
     private int countUniqueSegments(List<String> input) {
         int uniqueSegmentCount = 0;
 
@@ -56,22 +65,42 @@ public class day08Tests {
     }
 
     private int sumOfSegments(List<String> input) {
-        return 0;
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            sum += solveSingleLine(inputLine);
+        }
+
+        return sum;
     }
 
 
+    // TODO test the other single line examples
     @Test
-    void day08_part2_singleLineSolved() {
-        String input = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf";
-
-        int actual = solveSingleLine(input);
-
+    void day08_part2_example_singleLineSolved() {
+        String inputLine = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf";
+        int actual = solveSingleLine(inputLine);
         int expected = 5353;
         assertEquals(expected, actual);
     }
 
-    private int solveSingleLine(String input) {
-        String[] splitLine = input.split(Pattern.quote("|"));
+    @Test
+    void day08_part2_example_singleLineSolved_RemainingExamples() {
+        int actual = solveSingleLine("be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb |\n" +
+                "fdgacbe cefdb cefbgd gcbe");
+        assertEquals(8394, actual);
+
+        actual = solveSingleLine("edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec |\n" +
+                "fcgedb cgb dgebacf gc");
+        assertEquals(9781, actual);
+
+        actual = solveSingleLine("fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef |\n" +
+                "cg cg fdcagb cbg");
+        assertEquals(1197, actual);
+    }
+
+    private int solveSingleLine(String inputLine) {
+        String[] splitLine = inputLine.split(Pattern.quote("|"));
         String leftHandSide = splitLine[0];
         String rightHandSide = splitLine[1].trim();
 
@@ -81,8 +110,8 @@ public class day08Tests {
         return result;
     }
 
-    private int calculateSumOf(String input, Map<String, Integer> mapping) {
-        String[] numbers = input.split(" ");
+    private int calculateSumOf(String inputLine, Map<String, Integer> mapping) {
+        String[] numbers = inputLine.split(" ");
 
         StringBuffer sb = new StringBuffer();
 
@@ -103,7 +132,6 @@ public class day08Tests {
     }
 
     private Map<String, Integer> magicFormulaAlgorithm(String leftHandSide) {
-//        acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab
         String[] signalWires = leftHandSide.split(" ");
         Map<String, Integer> solved = new HashMap<>();
 
@@ -117,18 +145,28 @@ public class day08Tests {
             String sorted = sortChars(codedNumber);
 
             switch (sorted.length()) {
-                case 2: solved.put(sorted, 1); segment_1 = sorted;
+                case 2:
+                    solved.put(sorted, 1);
+                    segment_1 = sorted;
                     break;
-                case 3: solved.put(sorted, 7); break;
-                case 4: solved.put(sorted, 4); segment_4 = sorted;
+                case 3:
+                    solved.put(sorted, 7);
                     break;
-                case 7: solved.put(sorted, 8); break;
-                case 5: segmentLength5.add(sorted); break;
-                case 6: segmentLength6.add(sorted); break;
+                case 4:
+                    solved.put(sorted, 4);
+                    segment_4 = sorted;
+                    break;
+                case 7:
+                    solved.put(sorted, 8);
+                    break;
+                case 5:
+                    segmentLength5.add(sorted);
+                    break;
+                case 6:
+                    segmentLength6.add(sorted);
+                    break;
             }
         }
-
-        //TODO - figure out how to interpolate 5 segments (2/3/5)
 
         // Length 6 - 0/6/9
         // 0 does not have one of segment 4's four characters
@@ -145,21 +183,35 @@ public class day08Tests {
             }
         }
 
-
-        solved.put(sortChars("bcdef"), 2);
-        solved.put(sortChars("abcdf"), 3);
-        solved.put(sortChars("bcdef"), 5);
+        // 3 has both of segment 1's two characters
+        // 5 is missing ONE of segment_4
+        // 2 is missing TWO of segment_4
+        for (String length5 :
+                segmentLength5) {
+            if (!checkForMissingSegment(length5, segment_1)) {
+                solved.put(length5, 3);
+            } else if (1 == numMissingSegments(length5, segment_4)) {
+                solved.put(length5, 5);
+            } else {
+                solved.put(length5, 2);
+            }
+        }
 
         return solved;
     }
 
-    private boolean checkForMissingSegment(String inQuestion, String compareAgainst) {
+    private int numMissingSegments(String inQuestion, String compareAgainst) {
+        int numMissing = 0;
         for (char c : compareAgainst.toCharArray()) {
             if (!inQuestion.contains(Character.toString(c))) {
-                return true;
+                numMissing++;
             }
         }
-        return false;
+        return numMissing;
+    }
+
+    private boolean checkForMissingSegment(String inQuestion, String compareAgainst) {
+        return numMissingSegments(inQuestion, compareAgainst) > 0;
     }
 
 }
