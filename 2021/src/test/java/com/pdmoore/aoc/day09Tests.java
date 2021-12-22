@@ -18,6 +18,13 @@ public class day09Tests {
     }
 
     private int sumRiskLevel(List<String> input) {
+        // convert String list to int[][]
+        // Collect list of coords (point?) of every low point
+        //   where low point is the current x,y value less than all non-diag neighbors
+        // Iterate the list of coords
+        //  get the value at x,y
+        //  add 1 to tht value
+        // sum the iteration
         return 0;
     }
 }
