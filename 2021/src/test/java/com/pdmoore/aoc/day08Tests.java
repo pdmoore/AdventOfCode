@@ -74,14 +74,13 @@ public class day08Tests {
         return sum;
     }
 
-
-    // TODO test the other single line examples
     @Test
     void day08_part2_example_singleLineSolved() {
         String inputLine = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf";
+        
         int actual = solveSingleLine(inputLine);
-        int expected = 5353;
-        assertEquals(expected, actual);
+        
+        assertEquals(5353, actual);
     }
 
     @Test
@@ -104,10 +103,9 @@ public class day08Tests {
         String leftHandSide = splitLine[0];
         String rightHandSide = splitLine[1].trim();
 
-        Map<String, Integer> uniqueSignalPatterns = magicFormulaAlgorithm(leftHandSide);
+        Map<String, Integer> uniqueSignalPatterns = assignLedDigitToPatterns(leftHandSide);
 
-        int result = calculateSumOf(rightHandSide, uniqueSignalPatterns);
-        return result;
+        return calculateSumOf(rightHandSide, uniqueSignalPatterns);
     }
 
     private int calculateSumOf(String inputLine, Map<String, Integer> mapping) {
@@ -131,12 +129,12 @@ public class day08Tests {
         return new String(tempArray);
     }
 
-    private Map<String, Integer> magicFormulaAlgorithm(String leftHandSide) {
+    private Map<String, Integer> assignLedDigitToPatterns(String leftHandSide) {
         String[] signalWires = leftHandSide.split(" ");
         Map<String, Integer> solved = new HashMap<>();
 
-        List<String> segmentLength5 = new ArrayList<>();
-        List<String> segmentLength6 = new ArrayList<>();
+        List<String> segmentsWithLength5 = new ArrayList<>();
+        List<String> segmentsWithLength6 = new ArrayList<>();
         String segment_1 = "";
         String segment_4 = "";
 
@@ -160,10 +158,10 @@ public class day08Tests {
                     solved.put(sorted, 8);
                     break;
                 case 5:
-                    segmentLength5.add(sorted);
+                    segmentsWithLength5.add(sorted);
                     break;
                 case 6:
-                    segmentLength6.add(sorted);
+                    segmentsWithLength6.add(sorted);
                     break;
             }
         }
@@ -173,7 +171,7 @@ public class day08Tests {
         // 6 does not have one of segment 1's two characters
         // 9 is the else case
         for (String length6 :
-                segmentLength6) {
+                segmentsWithLength6) {
             if (checkForMissingSegment(length6, segment_1)) {
                 solved.put(length6, 6);
             } else if (checkForMissingSegment(length6, segment_4)) {
@@ -183,11 +181,12 @@ public class day08Tests {
             }
         }
 
+        // Length 5 - 2/3/5
         // 3 has both of segment 1's two characters
         // 5 is missing ONE of segment_4
         // 2 is missing TWO of segment_4
         for (String length5 :
-                segmentLength5) {
+                segmentsWithLength5) {
             if (!checkForMissingSegment(length5, segment_1)) {
                 solved.put(length5, 3);
             } else if (1 == numMissingSegments(length5, segment_4)) {
