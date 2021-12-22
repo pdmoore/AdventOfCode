@@ -2,10 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,14 +75,9 @@ public class day08Tests {
         String leftHandSide = splitLine[0];
         String rightHandSide = splitLine[1].trim();
 
-        // figure out mapping from left
-        // Will need a map of integer to segments that comprise that integer for this line
         Map<String, Integer> uniqueSignalPatterns = magicFormulaAlgorithm(leftHandSide);
 
-        // apply mapping to right
-        // right should be sorted - order doesn't matter
         int result = calculateSumOf(rightHandSide, uniqueSignalPatterns);
-
         return result;
     }
 
@@ -110,25 +102,64 @@ public class day08Tests {
         return new String(tempArray);
     }
 
-    private Map<String, Integer> magicFormulaAlgorithm(String input) {
+    private Map<String, Integer> magicFormulaAlgorithm(String leftHandSide) {
+//        acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab
+        String[] signalWires = leftHandSide.split(" ");
+        Map<String, Integer> solved = new HashMap<>();
 
-        //TODO
-        // easy to put 1/4/7/8 in the map
-        //TODO - figure out how to interpolate 6 segments (0/6/9)
+        List<String> segmentLength5 = new ArrayList<>();
+        List<String> segmentLength6 = new ArrayList<>();
+        String segment_1 = "";
+        String segment_4 = "";
+
+        for (String codedNumber :
+                signalWires) {
+            String sorted = sortChars(codedNumber);
+
+            switch (sorted.length()) {
+                case 2: solved.put(sorted, 1); segment_1 = sorted;
+                    break;
+                case 3: solved.put(sorted, 7); break;
+                case 4: solved.put(sorted, 4); segment_4 = sorted;
+                    break;
+                case 7: solved.put(sorted, 8); break;
+                case 5: segmentLength5.add(sorted); break;
+                case 6: segmentLength6.add(sorted); break;
+            }
+        }
+
         //TODO - figure out how to interpolate 5 segments (2/3/5)
 
-        // Probably sort the strings....
-        Map<String, Integer> solved = new HashMap<>();
-        solved.put(sortChars("ab"), 1);
-        solved.put(sortChars("cdfbe"), 2);
-        solved.put(sortChars("fbcad"), 3);
-        solved.put(sortChars("eafb"), 4);
-        solved.put(sortChars("cdfbe"), 5);
-        solved.put(sortChars("cdfgeb"), 6);
-        solved.put(sortChars("dab"), 7);
-        solved.put(sortChars("acedgfb"), 8);
-        solved.put(sortChars("cefabd"), 9);
+        // Length 6 - 0/6/9
+        // 0 does not have one of segment 4's four characters
+        // 6 does not have one of segment 1's two characters
+        // 9 is the else case
+        for (String length6 :
+                segmentLength6) {
+            if (checkForMissingSegment(length6, segment_1)) {
+                solved.put(length6, 6);
+            } else if (checkForMissingSegment(length6, segment_4)) {
+                solved.put(length6, 0);
+            } else {
+                solved.put(length6, 9);
+            }
+        }
+
+
+        solved.put(sortChars("bcdef"), 2);
+        solved.put(sortChars("abcdf"), 3);
+        solved.put(sortChars("bcdef"), 5);
+
         return solved;
+    }
+
+    private boolean checkForMissingSegment(String inQuestion, String compareAgainst) {
+        for (char c : compareAgainst.toCharArray()) {
+            if (!inQuestion.contains(Character.toString(c))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
