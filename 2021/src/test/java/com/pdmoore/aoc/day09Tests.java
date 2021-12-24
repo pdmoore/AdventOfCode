@@ -17,14 +17,73 @@ public class day09Tests {
         assertEquals(15, actual);
     }
 
+    @Test
+    void day09_part1_solution() {
+        List<String> input = PuzzleInput.asListOfStringsFrom("data/day09");
+
+        int actual = sumRiskLevel(input);
+
+        //1846 is TOO HIGH
+        assertEquals(99, actual);
+    }
+
     private int sumRiskLevel(List<String> input) {
-        // convert String list to int[][]
-        // Collect list of coords (point?) of every low point
-        //   where low point is the current x,y value less than all non-diag neighbors
-        // Iterate the list of coords
-        //  get the value at x,y
-        //  add 1 to tht value
-        // sum the iteration
-        return 0;
+        int[][] locations = as2dIntArray(input);
+
+        int riskLevel = identifyLowPointsAndScore(locations);
+
+        return riskLevel;
+    }
+
+    private int identifyLowPointsAndScore(int[][] locations) {
+        int riskLevel = 0;
+
+        for (int x = 0; x < locations.length; x++) {
+            for (int y = 0; y < locations[0].length; y++) {
+                if (isLowPoint(locations, x, y)) {
+                    riskLevel += locations[x][y] + 1;
+                }
+            }
+        }
+
+        return riskLevel;
+    }
+
+    private boolean isLowPoint(int[][] locations, int x, int y) {
+        int checkValue = locations[x][y];
+
+        // check Left
+        if (y > 0 && locations[x][y - 1] <= checkValue) {
+            return false;
+        }
+        // check Right
+        if (y < locations[0].length - 1 && locations[x][y + 1] <= checkValue) {
+            return false;
+        }
+        // check Below
+        if (x > 0 && locations[x - 1][y] <= checkValue) {
+            return false;
+        }
+        // check Above
+        if (x < locations.length - 1 && locations[x + 1][y] <= checkValue) {
+            return false;
+        }
+
+        return true;
+    }
+
+    //TODO - combine with caller to make a PuzzleInput method that just takes the file name
+    private int[][] as2dIntArray(List<String> input) {
+        int rowCount = input.size();
+        int colCount = input.get(0).length();
+        int[][] locations = new int[rowCount][colCount];
+        for (int x = 0; x < input.size(); x++) {
+            String thisLine = input.get(x);
+            for (int y = 0; y < input.get(x).length(); y++) {
+                char c = thisLine.charAt(y);
+                locations[x][y] = Integer.parseInt(String.valueOf(c));
+            }
+        }
+        return locations;
     }
 }
