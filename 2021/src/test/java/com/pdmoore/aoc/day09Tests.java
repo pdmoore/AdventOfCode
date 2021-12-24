@@ -50,13 +50,10 @@ public class day09Tests {
 
     private int sumRiskLevel(List<String> input) {
         int[][] locations = as2dIntArray(input);
-
-        int riskLevel = identifyLowPointsAndScore(locations);
-
-        return riskLevel;
+        return sumRiskLevel(locations);
     }
 
-    private int identifyLowPointsAndScore(int[][] locations) {
+    private int sumRiskLevel(int[][] locations) {
         int riskLevel = 0;
 
         for (int x = 0; x < locations.length; x++) {
@@ -158,10 +155,10 @@ public class day09Tests {
             size += 1;
 
             if (y > 0) {
-                size += calcBasinSize(x, y-1, 0, visited);
+                size += calcBasinSize(x, y - 1, 0, visited);
             }
             if (y < _locations[0].length - 1) {
-                size += calcBasinSize(x, y+1, 0, visited);
+                size += calcBasinSize(x, y + 1, 0, visited);
             }
             if (x > 0) {
                 size += calcBasinSize(x - 1, y, 0, visited);
