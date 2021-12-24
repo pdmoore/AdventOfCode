@@ -31,8 +31,9 @@ public class day09Tests {
     @Test
     void day09_part2_example() {
         List<String> input = PuzzleInput.asListOfStringsFrom("data/day09_example");
-
-        LavaTube sut = new LavaTube(input);
+        int[][] ints = as2dIntArray(input);
+        
+        LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1134, actual);
@@ -41,8 +42,9 @@ public class day09Tests {
     @Test
     void day09_part2_solution() {
         List<String> input = PuzzleInput.asListOfStringsFrom("data/day09");
+        int[][] ints = as2dIntArray(input);
 
-        LavaTube sut = new LavaTube(input);
+        LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1023660, actual);
@@ -108,8 +110,8 @@ public class day09Tests {
     private class LavaTube {
         private final int[][] _locations;
 
-        public LavaTube(List<String> input) {
-            _locations = as2dIntArray(input);
+        public LavaTube(int[][] locations) {
+            _locations = locations;
         }
 
         public int threeLargestBasinsMultiplied() {
