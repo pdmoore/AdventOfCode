@@ -30,19 +30,18 @@ public class day09Tests {
 
     @Test
     void day09_part2_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day09_example");
-        int[][] ints = as2dIntArray(input);
-        
+        int[][] ints = as2dIntArray("data/day09_example");
+
         LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1134, actual);
     }
 
+
     @Test
     void day09_part2_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day09");
-        int[][] ints = as2dIntArray(input);
+        int[][] ints = as2dIntArray("data/day09");
 
         LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
@@ -106,6 +105,12 @@ public class day09Tests {
         }
         return locations;
     }
+
+    private int[][] as2dIntArray(String filename) {
+        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
+        return as2dIntArray(input);
+    }
+
 
     private class LavaTube {
         private final int[][] _locations;
