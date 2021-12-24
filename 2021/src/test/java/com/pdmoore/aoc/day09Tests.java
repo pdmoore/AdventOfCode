@@ -23,8 +23,7 @@ public class day09Tests {
 
         int actual = sumRiskLevel(input);
 
-        //1846 is TOO HIGH
-        assertEquals(99, actual);
+        assertEquals(516, actual);
     }
 
     private int sumRiskLevel(List<String> input) {
