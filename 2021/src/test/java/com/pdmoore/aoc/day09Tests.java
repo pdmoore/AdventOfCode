@@ -85,7 +85,7 @@ public class day09Tests {
 
         return true;
     }
-    
+
     private class LavaTube {
         private final int[][] _locations;
 

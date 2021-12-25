@@ -36,7 +36,7 @@ public class PuzzleInput {
     }
 
     // Name doesn't match others - should be asStringListFrom (or change others to match this)
-    public static List<String> asListOfStringsFrom(String filename) {
+    public static List<String> asStringListFrom(String filename) {
         List<String> lines = new ArrayList<>();
         try {
             File f = new File(filename);
@@ -112,7 +112,7 @@ public class PuzzleInput {
 
     // File is strings of single digit numbers
     static public int[][] as2dIntArray(String filename) {
-        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
+        List<String> input = PuzzleInput.asStringListFrom(filename);
 
         int rowCount = input.size();
         int colCount = input.get(0).length();
