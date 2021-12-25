@@ -12,7 +12,7 @@ public class day09Tests {
 
     @Test
     void day09_part1_example() {
-        int[][] input = as2dIntArray("data/day09_example");
+        int[][] input = PuzzleInput.as2dIntArray("data/day09_example");
 
         int actual = sumRiskLevel(input);
 
@@ -21,7 +21,7 @@ public class day09Tests {
 
     @Test
     void day09_part1_solution() {
-        int[][] input = as2dIntArray("data/day09");
+        int[][] input = PuzzleInput.as2dIntArray("data/day09");
 
         int actual = sumRiskLevel(input);
 
@@ -30,7 +30,7 @@ public class day09Tests {
 
     @Test
     void day09_part2_example() {
-        int[][] ints = as2dIntArray("data/day09_example");
+        int[][] ints = PuzzleInput.as2dIntArray("data/day09_example");
 
         LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
@@ -41,7 +41,7 @@ public class day09Tests {
 
     @Test
     void day09_part2_solution() {
-        int[][] ints = as2dIntArray("data/day09");
+        int[][] ints = PuzzleInput.as2dIntArray("data/day09");
 
         LavaTube sut = new LavaTube(ints);
         int actual = sut.threeLargestBasinsMultiplied();
@@ -49,11 +49,6 @@ public class day09Tests {
         assertEquals(1023660, actual);
     }
 
-//    private int sumRiskLevel(List<String> input) {
-//        int[][] locations = as2dIntArray(input);
-//        return sumRiskLevel(locations);
-//    }
-//
     private int sumRiskLevel(int[][] locations) {
         int riskLevel = 0;
 
@@ -90,24 +85,7 @@ public class day09Tests {
 
         return true;
     }
-
-     private int[][] as2dIntArray(String filename) {
-        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
-
-        int rowCount = input.size();
-        int colCount = input.get(0).length();
-        int[][] locations = new int[rowCount][colCount];
-        for (int x = 0; x < input.size(); x++) {
-            String thisLine = input.get(x);
-            for (int y = 0; y < input.get(x).length(); y++) {
-                char c = thisLine.charAt(y);
-                locations[x][y] = Integer.parseInt(String.valueOf(c));
-            }
-        }
-        return locations;
-    }
-
-
+    
     private class LavaTube {
         private final int[][] _locations;
 

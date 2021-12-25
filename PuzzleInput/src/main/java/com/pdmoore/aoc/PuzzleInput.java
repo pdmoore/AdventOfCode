@@ -110,6 +110,23 @@ public class PuzzleInput {
                         toArray();
     }
 
+    // File is strings of single digit numbers
+    static public int[][] as2dIntArray(String filename) {
+        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
+
+        int rowCount = input.size();
+        int colCount = input.get(0).length();
+        int[][] locations = new int[rowCount][colCount];
+        for (int x = 0; x < input.size(); x++) {
+            String thisLine = input.get(x);
+            for (int y = 0; y < input.get(x).length(); y++) {
+                char c = thisLine.charAt(y);
+                locations[x][y] = Integer.parseInt(String.valueOf(c));
+            }
+        }
+        return locations;
+    }
+
 
     // AoC18 has
     // public static char[][] convertInputToMap(List<String> inputAsStrings)
