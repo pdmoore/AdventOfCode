@@ -10,9 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day10Tests {
 
-    static final BigDecimal BD_2 = BigDecimal.valueOf(2);
-    static final BigDecimal BD_3 = BigDecimal.valueOf(3);
-    static final BigDecimal BD_4 = BigDecimal.valueOf(4);
     static final BigDecimal BD_5 = BigDecimal.valueOf(5);
 
     private static final Map<Character, Character> _braces;
@@ -29,9 +26,9 @@ public class day10Tests {
     static {
         Map<Character, BigDecimal> aMap = new HashMap<>();
         aMap.put(')', BigDecimal.ONE);
-        aMap.put(']', BD_2);
-        aMap.put('}', BD_3);
-        aMap.put('>', BD_4);
+        aMap.put(']', BigDecimal.valueOf(2));
+        aMap.put('}', BigDecimal.valueOf(3));
+        aMap.put('>', BigDecimal.valueOf(4));
         _incompletePoints = Collections.unmodifiableMap(aMap);
     }
 
