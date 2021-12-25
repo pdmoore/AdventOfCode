@@ -97,13 +97,7 @@ public class day10Tests {
         StringBuilder completionString = new StringBuilder();
         Iterator<Character> c = stack.iterator();
         while (c.hasNext()) {
-
-            switch (c.next()) {
-                case '[': completionString.append("]"); break;
-                case '(': completionString.append(")"); break;
-                case '{': completionString.append("}"); break;
-                case '<': completionString.append(">"); break;
-            }
+            completionString.append(_braces.get(c.next()));
         }
 
         return calculateScoreOfCompletionString(completionString.reverse().toString());
