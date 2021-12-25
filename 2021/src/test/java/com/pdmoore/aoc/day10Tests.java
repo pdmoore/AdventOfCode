@@ -25,6 +25,16 @@ public class day10Tests {
         _braces = Collections.unmodifiableMap(aMap);
     }
 
+    private static final Map<Character, BigDecimal> _incompletePoints;
+    static {
+        Map<Character, BigDecimal> aMap = new HashMap<>();
+        aMap.put(')', BigDecimal.ONE);
+        aMap.put(']', BD_2);
+        aMap.put('}', BD_3);
+        aMap.put('>', BD_4);
+        _incompletePoints = Collections.unmodifiableMap(aMap);
+    }
+
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day10_example");
@@ -110,12 +120,7 @@ public class day10Tests {
         for (Character c :
                 chars) {
             score = score.multiply(BD_5);
-            switch (c) {
-                case ')': score = score.add(BigDecimal.ONE); break;
-                case ']': score = score.add(BD_2); break;
-                case '}': score = score.add(BD_3); break;
-                case '>': score = score.add(BD_4); break;
-            }
+            score = score.add(_incompletePoints.get(c));
         }
 
         return score;
