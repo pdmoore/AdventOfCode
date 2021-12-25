@@ -66,7 +66,6 @@ public class day09Tests {
                 for (int y = 0; y < _locations[0].length; y++) {
                     if (isLowPoint(x, y)) {
 
-                        Point starting = new Point(x, y);
                         List<Point> visited = new ArrayList<>();
                         int size = calcBasinSize(x, y, 0, visited);
 
