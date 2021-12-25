@@ -13,13 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class day10Tests {
 
     @Test
-    @Disabled
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day10_example");
 
         int actual = calcSyntaxErrorScore(input);
 
         assertEquals(26397, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day10");
+
+        int actual = calcSyntaxErrorScore(input);
+
+        assertEquals(369105, actual);
     }
 
     @Test
@@ -60,8 +68,20 @@ public class day10Tests {
         return null;
     }
 
-
     private int calcSyntaxErrorScore(List<String> input) {
-        return 0;
+        int score = 0;
+        for (String inputLine :
+                input) {
+            String isCorrupt = corruptedCharacterOf(inputLine);
+            if (isCorrupt != null) {
+                switch (isCorrupt) {
+                    case ")": score += 3; break;
+                    case "]": score += 57; break;
+                    case "}": score += 1197; break;
+                    case ">": score += 25137; break;
+                }
+            }
+        }
+        return score;
     }
 }
