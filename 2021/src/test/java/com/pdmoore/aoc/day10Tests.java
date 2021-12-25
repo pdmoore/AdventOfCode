@@ -83,14 +83,11 @@ public class day10Tests {
     }
 
     private BigDecimal calculateIncompleteScoreOf(String input) {
-
         Stack<Character> stack = new Stack();
-
-        List<Character> openers = Arrays.asList('[', '(', '{', '<');
 
         for (Character c :
                 input.toCharArray()) {
-            if (openers.contains(c)) {
+            if (_braces.keySet().contains(c)) {
                 stack.push(c);
             } else {
                 stack.pop();
@@ -100,6 +97,7 @@ public class day10Tests {
         StringBuilder completionString = new StringBuilder();
         Iterator<Character> c = stack.iterator();
         while (c.hasNext()) {
+
             switch (c.next()) {
                 case '[': completionString.append("]"); break;
                 case '(': completionString.append(")"); break;
