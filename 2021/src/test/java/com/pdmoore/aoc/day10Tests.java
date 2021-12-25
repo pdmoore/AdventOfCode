@@ -10,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day10Tests {
 
+    BigDecimal BD_2 = BigDecimal.valueOf(2);
+    BigDecimal BD_3 = BigDecimal.valueOf(3);
+    BigDecimal BD_4 = BigDecimal.valueOf(4);
+    BigDecimal BD_5 = BigDecimal.valueOf(5);
+
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day10_example");
@@ -56,14 +61,15 @@ public class day10Tests {
 
         assertEquals(BigDecimal.valueOf(288957), actual);
     }
-    
+
     @Test
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day10");
 
         BigDecimal actual = findMiddleIncompleteScore(input);
 
-        assertEquals(BigDecimal.valueOf(3999363569), actual);
+        BigDecimal expected = new BigDecimal("3999363569");
+        assertEquals(expected, actual);
     }
 
     private BigDecimal calculateIncompleteScoreOf(String input) {
@@ -103,10 +109,6 @@ public class day10Tests {
 
     private BigDecimal calculateScoreOfCompletionString(String input) {
         BigDecimal score = BigDecimal.ZERO;
-        BigDecimal BD_2 = BigDecimal.valueOf(2);
-        BigDecimal BD_3 = BigDecimal.valueOf(3);
-        BigDecimal BD_4 = BigDecimal.valueOf(4);
-        BigDecimal BD_5 = BigDecimal.valueOf(5);
 
         char[] chars = input.toCharArray();
         for (Character c :
