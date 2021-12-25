@@ -12,7 +12,7 @@ public class day09Tests {
 
     @Test
     void day09_part1_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day09_example");
+        int[][] input = as2dIntArray("data/day09_example");
 
         int actual = sumRiskLevel(input);
 
@@ -21,7 +21,7 @@ public class day09Tests {
 
     @Test
     void day09_part1_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day09");
+        int[][] input = as2dIntArray("data/day09");
 
         int actual = sumRiskLevel(input);
 
@@ -49,11 +49,11 @@ public class day09Tests {
         assertEquals(1023660, actual);
     }
 
-    private int sumRiskLevel(List<String> input) {
-        int[][] locations = as2dIntArray(input);
-        return sumRiskLevel(locations);
-    }
-
+//    private int sumRiskLevel(List<String> input) {
+//        int[][] locations = as2dIntArray(input);
+//        return sumRiskLevel(locations);
+//    }
+//
     private int sumRiskLevel(int[][] locations) {
         int riskLevel = 0;
 
@@ -91,8 +91,9 @@ public class day09Tests {
         return true;
     }
 
-    //TODO - combine with caller to make a PuzzleInput method that just takes the file name
-    private int[][] as2dIntArray(List<String> input) {
+     private int[][] as2dIntArray(String filename) {
+        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
+
         int rowCount = input.size();
         int colCount = input.get(0).length();
         int[][] locations = new int[rowCount][colCount];
@@ -104,11 +105,6 @@ public class day09Tests {
             }
         }
         return locations;
-    }
-
-    private int[][] as2dIntArray(String filename) {
-        List<String> input = PuzzleInput.asListOfStringsFrom(filename);
-        return as2dIntArray(input);
     }
 
 
