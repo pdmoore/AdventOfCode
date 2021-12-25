@@ -14,7 +14,8 @@ public class day09Tests {
     void day09_part1_example() {
         int[][] input = PuzzleInput.as2dIntArray("data/day09_example");
 
-        int actual = sumRiskLevel(input);
+        LavaTube sut = new LavaTube(input);
+        int actual = sut.riskLevel();
 
         assertEquals(15, actual);
     }
@@ -23,16 +24,17 @@ public class day09Tests {
     void day09_part1_solution() {
         int[][] input = PuzzleInput.as2dIntArray("data/day09");
 
-        int actual = sumRiskLevel(input);
+        LavaTube sut = new LavaTube(input);
+        int actual = sut.riskLevel();
 
         assertEquals(516, actual);
     }
 
     @Test
     void day09_part2_example() {
-        int[][] ints = PuzzleInput.as2dIntArray("data/day09_example");
+        int[][] input = PuzzleInput.as2dIntArray("data/day09_example");
 
-        LavaTube sut = new LavaTube(ints);
+        LavaTube sut = new LavaTube(input);
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1134, actual);
@@ -47,20 +49,6 @@ public class day09Tests {
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1023660, actual);
-    }
-
-    private int sumRiskLevel(int[][] locations) {
-        int riskLevel = 0;
-
-        for (int x = 0; x < locations.length; x++) {
-            for (int y = 0; y < locations[0].length; y++) {
-                if (isLowPoint(locations, x, y)) {
-                    riskLevel += locations[x][y] + 1;
-                }
-            }
-        }
-
-        return riskLevel;
     }
 
     private boolean isLowPoint(int[][] locations, int x, int y) {
@@ -148,6 +136,20 @@ public class day09Tests {
                 size += calcBasinSize(x + 1, y, 0, visited);
             }
             return size;
+        }
+
+        public int riskLevel() {
+            int riskLevel = 0;
+
+            for (int x = 0; x < _locations.length; x++) {
+                for (int y = 0; y < _locations[0].length; y++) {
+                    if (isLowPoint(_locations, x, y)) {
+                        riskLevel += _locations[x][y] + 1;
+                    }
+                }
+            }
+
+            return riskLevel;
         }
     }
 }
