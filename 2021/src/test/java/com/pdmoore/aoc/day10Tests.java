@@ -10,10 +10,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day10Tests {
 
-    BigDecimal BD_2 = BigDecimal.valueOf(2);
-    BigDecimal BD_3 = BigDecimal.valueOf(3);
-    BigDecimal BD_4 = BigDecimal.valueOf(4);
-    BigDecimal BD_5 = BigDecimal.valueOf(5);
+    static final BigDecimal BD_2 = BigDecimal.valueOf(2);
+    static final BigDecimal BD_3 = BigDecimal.valueOf(3);
+    static final BigDecimal BD_4 = BigDecimal.valueOf(4);
+    static final BigDecimal BD_5 = BigDecimal.valueOf(5);
+
+    private static final Map<Character, Character> _braces;
+    static {
+        Map<Character, Character> aMap = new HashMap<>();
+        aMap.put('(', ')');
+        aMap.put('[', ']');
+        aMap.put('{', '}');
+        aMap.put('<', '>');
+        _braces = Collections.unmodifiableMap(aMap);
+    }
 
     @Test
     void part1_example() {
@@ -83,13 +93,7 @@ public class day10Tests {
             if (openers.contains(c)) {
                 stack.push(c);
             } else {
-                Character popped = stack.pop();
-                switch (c) {
-                    case ']':
-                    case ')':
-                    case '}':
-                    case '>':
-                }
+                stack.pop();
             }
         }
 
