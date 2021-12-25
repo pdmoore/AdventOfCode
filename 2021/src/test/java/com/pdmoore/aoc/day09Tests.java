@@ -15,7 +15,7 @@ public class day09Tests {
         int[][] input = PuzzleInput.as2dIntArray("data/day09_example");
 
         LavaTube sut = new LavaTube(input);
-        int actual = sut.riskLevel();
+        int actual = sut.calcRiskLevel();
 
         assertEquals(15, actual);
     }
@@ -25,7 +25,7 @@ public class day09Tests {
         int[][] input = PuzzleInput.as2dIntArray("data/day09");
 
         LavaTube sut = new LavaTube(input);
-        int actual = sut.riskLevel();
+        int actual = sut.calcRiskLevel();
 
         assertEquals(516, actual);
     }
@@ -88,22 +88,22 @@ public class day09Tests {
         }
 
         private boolean isLowPoint(int x, int y) {
-            int checkValue = _locations[x][y];
+            int valueHere = _locations[x][y];
 
             // check Left
-            if (y > 0 && _locations[x][y - 1] <= checkValue) {
+            if (y > 0 && _locations[x][y - 1] <= valueHere) {
                 return false;
             }
             // check Right
-            if (y < _locations[0].length - 1 && _locations[x][y + 1] <= checkValue) {
+            if (y < _locations[0].length - 1 && _locations[x][y + 1] <= valueHere) {
                 return false;
             }
             // check Below
-            if (x > 0 && _locations[x - 1][y] <= checkValue) {
+            if (x > 0 && _locations[x - 1][y] <= valueHere) {
                 return false;
             }
             // check Above
-            if (x < _locations.length - 1 && _locations[x + 1][y] <= checkValue) {
+            if (x < _locations.length - 1 && _locations[x + 1][y] <= valueHere) {
                 return false;
             }
 
@@ -111,20 +111,18 @@ public class day09Tests {
         }
 
         private int calcBasinSize(int x, int y, int size, List<Point> visited) {
-            if (x < 0 || x >= _locations.length ||
-                    y < 0 || y >= _locations[0].length) {
+            if (isPointOutsideGrid(x, y) ||
+                    isPointOutsideBasin(x, y)) {
                 return 0;
             }
 
             Point here = new Point(x, y);
             if (visited.contains(here)) {
                 return 0;
-            }
-            if (_locations[x][y] == 9) {
-                return 0;
+            } else {
+                visited.add(here);
             }
 
-            visited.add(here);
             size += 1;
             size += calcBasinSize(x, y - 1, 0, visited);
             size += calcBasinSize(x, y + 1, 0, visited);
@@ -133,7 +131,16 @@ public class day09Tests {
             return size;
         }
 
-        public int riskLevel() {
+        private boolean isPointOutsideBasin(int x, int y) {
+            return _locations[x][y] == 9;
+        }
+
+        private boolean isPointOutsideGrid(int x, int y) {
+            return x < 0 || x >= _locations.length ||
+                    y < 0 || y >= _locations[0].length;
+        }
+
+        public int calcRiskLevel() {
             int riskLevel = 0;
 
             for (int x = 0; x < _locations.length; x++) {
