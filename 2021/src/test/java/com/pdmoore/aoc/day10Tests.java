@@ -32,6 +32,16 @@ public class day10Tests {
         _incompletePoints = Collections.unmodifiableMap(aMap);
     }
 
+    private static final Map<String, Integer> _corruptPoints;
+    static {
+        Map<String, Integer> aMap = new HashMap<>();
+        aMap.put(")", 3);
+        aMap.put("]", 57);
+        aMap.put("}", 1197);
+        aMap.put("  >", 25137);
+        _corruptPoints = Collections.unmodifiableMap(aMap);
+    }
+
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day10_example");
@@ -173,12 +183,13 @@ public class day10Tests {
                 input) {
             String isCorrupt = corruptedCharacterOf(inputLine);
             if (isCorrupt != null) {
-                switch (isCorrupt) {
-                    case ")": score += 3; break;
-                    case "]": score += 57; break;
-                    case "}": score += 1197; break;
-                    case ">": score += 25137; break;
-                }
+                score += _corruptPoints.get(isCorrupt);
+//                switch (isCorrupt) {
+//                    case ")": score += 3; break;
+//                    case "]": score += 57; break;
+//                    case "}": score += 1197; break;
+//                    case ">": score += 25137; break;
+//                }
             }
         }
         return score;
