@@ -1,12 +1,10 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.math.BigDecimal;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,6 +37,107 @@ public class day10Tests {
         Assertions.assertEquals("]", corruptedCharacterOf("[{[{({}]{}}([{[{{{}}([]"));
         Assertions.assertEquals(")", corruptedCharacterOf("[<(<(<(<{}))><([]([]()"));
         Assertions.assertEquals(">", corruptedCharacterOf("<{([([[(<>()){}]>(<<{{"));
+    }
+
+    @Test
+    void part2_incompleteScoreCalculator() {
+        String input = "[({(<(())[]>[[{[]{<()<>>";
+
+        BigDecimal actual = calculateIncompleteScoreOf(input);
+
+        assertEquals(BigDecimal.valueOf(288957), actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day10_example");
+
+        BigDecimal actual = findMiddleIncompleteScore(input);
+
+        assertEquals(BigDecimal.valueOf(288957), actual);
+    }
+    
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day10");
+
+        BigDecimal actual = findMiddleIncompleteScore(input);
+
+        assertEquals(BigDecimal.valueOf(3999363569), actual);
+    }
+
+    private BigDecimal calculateIncompleteScoreOf(String input) {
+
+        Stack<Character> stack = new Stack();
+
+        List<Character> openers = Arrays.asList('[', '(', '{', '<');
+
+        for (Character c :
+                input.toCharArray()) {
+            if (openers.contains(c)) {
+                stack.push(c);
+            } else {
+                Character popped = stack.pop();
+                switch (c) {
+                    case ']':
+                    case ')':
+                    case '}':
+                    case '>':
+                }
+            }
+        }
+
+        StringBuilder completionString = new StringBuilder();
+        Iterator<Character> c = stack.iterator();
+        while (c.hasNext()) {
+            switch (c.next()) {
+                case '[': completionString.append("]"); break;
+                case '(': completionString.append(")"); break;
+                case '{': completionString.append("}"); break;
+                case '<': completionString.append(">"); break;
+            }
+        }
+
+        return calculateScoreOfCompletionString(completionString.reverse().toString());
+    }
+
+    private BigDecimal calculateScoreOfCompletionString(String input) {
+        BigDecimal score = BigDecimal.ZERO;
+        BigDecimal BD_2 = BigDecimal.valueOf(2);
+        BigDecimal BD_3 = BigDecimal.valueOf(3);
+        BigDecimal BD_4 = BigDecimal.valueOf(4);
+        BigDecimal BD_5 = BigDecimal.valueOf(5);
+
+        char[] chars = input.toCharArray();
+        for (Character c :
+                chars) {
+            score = score.multiply(BD_5);
+            switch (c) {
+                case ')': score = score.add(BigDecimal.ONE); break;
+                case ']': score = score.add(BD_2); break;
+                case '}': score = score.add(BD_3); break;
+                case '>': score = score.add(BD_4); break;
+            }
+        }
+
+        return score;
+    }
+
+
+    private BigDecimal findMiddleIncompleteScore(List<String> input) {
+        List<BigDecimal> incompleteScores = new ArrayList<>();
+
+        for (String inputLine :
+                input) {
+            if (corruptedCharacterOf(inputLine) == null) {
+                BigDecimal score = calculateIncompleteScoreOf(inputLine);
+                incompleteScores.add(score);
+            }
+        }
+
+        Collections.sort(incompleteScores);
+        int middleIndex = incompleteScores.size() / 2;
+        return incompleteScores.get(middleIndex);
     }
 
     private String corruptedCharacterOf(String input) {
