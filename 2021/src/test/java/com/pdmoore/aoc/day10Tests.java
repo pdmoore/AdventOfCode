@@ -154,6 +154,7 @@ public class day10Tests {
         return incompleteScores.get(middleIndex);
     }
 
+    //TODO - return Character, not string - fix map key on _corruptPoints
     private String corruptedCharacterOf(String input) {
         Stack<Character> openCharacters = new Stack();
 
