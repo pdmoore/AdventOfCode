@@ -39,8 +39,7 @@ public class day09Tests {
 
         assertEquals(1134, actual);
     }
-
-
+    
     @Test
     void day09_part2_solution() {
         int[][] ints = PuzzleInput.as2dIntArray("data/day09");
@@ -49,29 +48,6 @@ public class day09Tests {
         int actual = sut.threeLargestBasinsMultiplied();
 
         assertEquals(1023660, actual);
-    }
-
-    private boolean isLowPoint(int[][] locations, int x, int y) {
-        int checkValue = locations[x][y];
-
-        // check Left
-        if (y > 0 && locations[x][y - 1] <= checkValue) {
-            return false;
-        }
-        // check Right
-        if (y < locations[0].length - 1 && locations[x][y + 1] <= checkValue) {
-            return false;
-        }
-        // check Below
-        if (x > 0 && locations[x - 1][y] <= checkValue) {
-            return false;
-        }
-        // check Above
-        if (x < locations.length - 1 && locations[x + 1][y] <= checkValue) {
-            return false;
-        }
-
-        return true;
     }
 
     private class LavaTube {
@@ -88,7 +64,7 @@ public class day09Tests {
 
             for (int x = 0; x < _locations.length; x++) {
                 for (int y = 0; y < _locations[0].length; y++) {
-                    if (isLowPoint(_locations, x, y)) {
+                    if (isLowPoint(x, y)) {
 
                         Point starting = new Point(x, y);
                         List<Point> visited = new ArrayList<>();
@@ -109,6 +85,29 @@ public class day09Tests {
             }
 
             return firstLargestBasin * secondLargestBasin * thirdLargestBasin;
+        }
+
+        private boolean isLowPoint(int x, int y) {
+            int checkValue = _locations[x][y];
+
+            // check Left
+            if (y > 0 && _locations[x][y - 1] <= checkValue) {
+                return false;
+            }
+            // check Right
+            if (y < _locations[0].length - 1 && _locations[x][y + 1] <= checkValue) {
+                return false;
+            }
+            // check Below
+            if (x > 0 && _locations[x - 1][y] <= checkValue) {
+                return false;
+            }
+            // check Above
+            if (x < _locations.length - 1 && _locations[x + 1][y] <= checkValue) {
+                return false;
+            }
+
+            return true;
         }
 
         private int calcBasinSize(int x, int y, int size, List<Point> visited) {
@@ -143,7 +142,7 @@ public class day09Tests {
 
             for (int x = 0; x < _locations.length; x++) {
                 for (int y = 0; y < _locations[0].length; y++) {
-                    if (isLowPoint(_locations, x, y)) {
+                    if (isLowPoint(x, y)) {
                         riskLevel += _locations[x][y] + 1;
                     }
                 }
