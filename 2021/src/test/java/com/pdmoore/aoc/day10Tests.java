@@ -183,13 +183,13 @@ public class day10Tests {
                 input) {
             String isCorrupt = corruptedCharacterOf(inputLine);
             if (isCorrupt != null) {
-                score += _corruptPoints.get(isCorrupt);
-//                switch (isCorrupt) {
-//                    case ")": score += 3; break;
-//                    case "]": score += 57; break;
-//                    case "}": score += 1197; break;
-//                    case ">": score += 25137; break;
-//                }
+//                score += _corruptPoints.get(isCorrupt);
+                switch (isCorrupt) {
+                    case ")": score += 3; break;
+                    case "]": score += 57; break;
+                    case "}": score += 1197; break;
+                    case ">": score += 25137; break;
+                }
             }
         }
         return score;
