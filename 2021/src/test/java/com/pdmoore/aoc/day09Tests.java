@@ -39,7 +39,7 @@ public class day09Tests {
 
         assertEquals(1134, actual);
     }
-    
+
     @Test
     void day09_part2_solution() {
         int[][] ints = PuzzleInput.as2dIntArray("data/day09");
@@ -111,6 +111,11 @@ public class day09Tests {
         }
 
         private int calcBasinSize(int x, int y, int size, List<Point> visited) {
+            if (x < 0 || x >= _locations.length ||
+                    y < 0 || y >= _locations[0].length) {
+                return 0;
+            }
+
             Point here = new Point(x, y);
             if (visited.contains(here)) {
                 return 0;
@@ -121,19 +126,10 @@ public class day09Tests {
 
             visited.add(here);
             size += 1;
-
-            if (y > 0) {
-                size += calcBasinSize(x, y - 1, 0, visited);
-            }
-            if (y < _locations[0].length - 1) {
-                size += calcBasinSize(x, y + 1, 0, visited);
-            }
-            if (x > 0) {
-                size += calcBasinSize(x - 1, y, 0, visited);
-            }
-            if (x < _locations.length - 1) {
-                size += calcBasinSize(x + 1, y, 0, visited);
-            }
+            size += calcBasinSize(x, y - 1, 0, visited);
+            size += calcBasinSize(x, y + 1, 0, visited);
+            size += calcBasinSize(x - 1, y, 0, visited);
+            size += calcBasinSize(x + 1, y, 0, visited);
             return size;
         }
 
