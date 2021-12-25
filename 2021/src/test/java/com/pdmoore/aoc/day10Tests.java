@@ -13,6 +13,7 @@ public class day10Tests {
     static final BigDecimal BD_5 = BigDecimal.valueOf(5);
 
     private static final Map<Character, Character> _braces;
+
     static {
         Map<Character, Character> aMap = new HashMap<>();
         aMap.put('(', ')');
@@ -23,6 +24,7 @@ public class day10Tests {
     }
 
     private static final Map<Character, BigDecimal> _incompletePoints;
+
     static {
         Map<Character, BigDecimal> aMap = new HashMap<>();
         aMap.put(')', BigDecimal.ONE);
@@ -33,8 +35,10 @@ public class day10Tests {
     }
 
     private static final Map<String, Integer> _corruptPoints;
+
     static {
         Map<String, Integer> aMap = new HashMap<>();
+        aMap.put(null, 0);
         aMap.put(")", 3);
         aMap.put("]", 57);
         aMap.put("}", 1197);
@@ -163,13 +167,17 @@ public class day10Tests {
                 Character popped = openCharacters.pop();
                 switch (c) {
                     case ']':
-                        if (popped != '[') return c.toString(); break;
+                        if (popped != '[') return c.toString();
+                        break;
                     case ')':
-                        if (popped != '(') return c.toString(); break;
+                        if (popped != '(') return c.toString();
+                        break;
                     case '}':
-                        if (popped != '{') return c.toString(); break;
+                        if (popped != '{') return c.toString();
+                        break;
                     case '>':
-                        if (popped != '<') return c.toString(); break;
+                        if (popped != '<') return c.toString();
+                        break;
                 }
             }
         }
@@ -182,9 +190,7 @@ public class day10Tests {
         for (String inputLine :
                 input) {
             String isCorrupt = corruptedCharacterOf(inputLine);
-            if (isCorrupt != null) {
-                score += _corruptPoints.get(isCorrupt);
-            }
+            score += _corruptPoints.get(isCorrupt);
         }
         return score;
     }
