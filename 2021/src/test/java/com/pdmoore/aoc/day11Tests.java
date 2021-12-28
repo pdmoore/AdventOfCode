@@ -39,7 +39,6 @@ public class day11Tests {
         Assertions.assertEquals(1702, actual);
     }
 
-
     @Test
     void day11_part1_oneStep() {
         int[][] input = PuzzleInput.as2dIntArray("data/day11_smallExample");
@@ -54,16 +53,38 @@ public class day11Tests {
         Assertions.assertEquals("34543", sut.getRow(4));
     }
 
+    @Test
+    void day11_part2_example() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day11_example");
+        Cavern sut = new Cavern(input);
+
+        int actual = sut.stepUntilAllFlash();
+
+        Assertions.assertEquals(195, actual);
+    }
+
+    @Test
+    void day11_part2_solution() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day11");
+        Cavern sut = new Cavern(input);
+
+        int actual = sut.stepUntilAllFlash();
+
+        Assertions.assertEquals(251, actual);
+    }
+
 
     private class Cavern {
         private final int _cavernSize;
         int[][] _currentState;
         private int _totalFlashes;
+        private boolean _haltOnAllFlash;
 
         public Cavern(int[][] input) {
             _currentState = input;
             _totalFlashes = 0;
             _cavernSize = input.length;
+            _haltOnAllFlash = false;
         }
 
         public int countFlashes(int stepCount) {
@@ -138,6 +159,10 @@ public class day11Tests {
                 nextState[p.x][p.y] = 0;
             }
 
+            if (flashedThisStep.size() == (_cavernSize * _cavernSize)) {
+                _haltOnAllFlash = false;
+            }
+
             _totalFlashes += flashedThisStep.size();
             _currentState = nextState;
         }
@@ -190,5 +215,14 @@ public class day11Tests {
         }
 
 
+        public int stepUntilAllFlash() {
+            _haltOnAllFlash = true;
+            int i = 1;
+            while (_haltOnAllFlash) {
+                takeStep();
+                i++;
+            }
+            return i - 1;
+        }
     }
 }
