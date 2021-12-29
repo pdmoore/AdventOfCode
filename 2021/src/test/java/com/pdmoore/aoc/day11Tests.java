@@ -94,14 +94,6 @@ public class day11Tests {
             _haltWhenAllFlash = false;
         }
 
-        public int flashCountAfterNsteps(int stepCount) {
-            for (int i = 1; i <= stepCount; i++) {
-                takeStep();
-            }
-
-            return _totalFlashes;
-        }
-
         public void takeSteps(int stepCount) {
             for (int i = 1; i <= stepCount; i++) {
                 takeStep();
