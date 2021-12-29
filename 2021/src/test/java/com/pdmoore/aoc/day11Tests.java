@@ -193,14 +193,14 @@ public class day11Tests {
             boolean canAdjustRight = p.y + 1 < _cavernSize;
             boolean canAdjustDown = p.x + 1 < _cavernSize;
 
-            if (canAdjustUp && canAdjustLeft) {
-                nextState[p.x - 1][p.y - 1]++;
-            }
             if (canAdjustUp) {
                 nextState[p.x - 1][p.y]++;
-            }
-            if (canAdjustUp && canAdjustRight) {
-                nextState[p.x - 1][p.y + 1]++;
+                if (canAdjustLeft) {
+                    nextState[p.x - 1][p.y - 1]++;
+                }
+                if (canAdjustRight) {
+                    nextState[p.x - 1][p.y + 1]++;
+                }
             }
             if (canAdjustLeft) {
                 nextState[p.x][p.y - 1]++;
@@ -208,14 +208,15 @@ public class day11Tests {
             if (canAdjustRight) {
                 nextState[p.x][p.y + 1]++;
             }
-            if (canAdjustDown && canAdjustLeft) {
-                nextState[p.x + 1][p.y - 1]++;
-            }
+
             if (canAdjustDown) {
                 nextState[p.x + 1][p.y]++;
-            }
-            if (canAdjustDown && canAdjustRight) {
-                nextState[p.x + 1][p.y + 1]++;
+                if (canAdjustLeft) {
+                    nextState[p.x + 1][p.y - 1]++;
+                }
+                if (canAdjustRight) {
+                    nextState[p.x + 1][p.y + 1]++;
+                }
             }
         }
 
