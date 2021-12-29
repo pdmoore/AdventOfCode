@@ -186,6 +186,7 @@ public class day11Tests {
             return nextState;
         }
 
+        // TODO - performs an action on all 8 neighbors of a cell/Point in a 2d grid
         private void flashNeighbors(int[][] nextState, Point p) {
             boolean canAdjustUp = p.x - 1 >= 0;
             boolean canAdjustLeft = p.y - 1 >= 0;
