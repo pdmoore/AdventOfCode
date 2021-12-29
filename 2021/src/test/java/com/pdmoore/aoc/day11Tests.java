@@ -101,21 +101,17 @@ public class day11Tests {
         }
 
         public void takeStep() {
-            int[][] nextState = new int[_cavernSize][_cavernSize];
+            int[][] nextState = IncreaseEnergyLevel();
 
-            // First, the energy level of each octopus increases by 1.
-            IncreaseEnergyLevel(nextState);
+            List<Point> octopiThatFlashed = FlashOctopuses(nextState);
 
-            List<Point> flashedThisStep = FlashOctopuses(nextState);
+            setFlashedThisStepToZero(nextState, octopiThatFlashed);
 
-            // Finally, any octopus that flashed during this step has its energy level set to 0, as it used all of its energy to flash.
-            setFlashedThisStepToZero(nextState, flashedThisStep);
-
-            if (didEveryOctopusFlash(flashedThisStep.size())) {
+            if (didEveryOctopusFlash(octopiThatFlashed.size())) {
                 _haltWhenAllFlash = false;
             }
 
-            _totalFlashes += flashedThisStep.size();
+            _totalFlashes += octopiThatFlashed.size();
             _currentState = nextState;
         }
 
@@ -124,6 +120,7 @@ public class day11Tests {
         }
 
         private void setFlashedThisStepToZero(int[][] nextState, List<Point> flashedThisStep) {
+            // Finally, any octopus that flashed during this step has its energy level set to 0, as it used all of its energy to flash.
             for (Point p :
                     flashedThisStep) {
                 nextState[p.x][p.y] = 0;
@@ -178,12 +175,16 @@ public class day11Tests {
             return flashedThisStep;
         }
 
-        private void IncreaseEnergyLevel(int[][] nextState) {
+        private int[][] IncreaseEnergyLevel() {
+            int[][] nextState = new int[_cavernSize][_cavernSize];
+
+            // First, the energy level of each octopus increases by 1.
             for (int x = 0; x < _cavernSize; x++) {
                 for (int y = 0; y < _cavernSize; y++) {
                     nextState[x][y] = _currentState[x][y] + 1;
                 }
             }
+            return nextState;
         }
 
         private void flashNeighbors(int[][] nextState, Point p) {
