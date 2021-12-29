@@ -15,7 +15,8 @@ public class day11Tests {
         int[][] input = PuzzleInput.as2dIntArray("data/day11_example");
         Cavern sut = new Cavern(input);
 
-        int actual = sut.countFlashes(10);
+        sut.takeSteps(10);
+        int actual = sut.totalFlashes();
 
         assertEquals(204, actual);
     }
@@ -25,7 +26,8 @@ public class day11Tests {
         int[][] input = PuzzleInput.as2dIntArray("data/day11_example");
         Cavern sut = new Cavern(input);
 
-        int actual = sut.countFlashes(100);
+        sut.takeSteps(100);
+        int actual = sut.totalFlashes();
 
         assertEquals(1656, actual);
     }
@@ -35,7 +37,8 @@ public class day11Tests {
         int[][] input = PuzzleInput.as2dIntArray("data/day11");
         Cavern sut = new Cavern(input);
 
-        int actual = sut.countFlashes(100);
+        sut.takeSteps(100);
+        int actual = sut.totalFlashes();
 
         assertEquals(1702, actual);
     }
@@ -82,22 +85,27 @@ public class day11Tests {
         private final int _cavernSize;
         int[][] _currentState;
         private int _totalFlashes;
-        private boolean _haltOnAllFlash;
+        private boolean _haltWhenAllFlash;
 
         public Cavern(int[][] input) {
             _currentState = input;
             _totalFlashes = 0;
             _cavernSize = input.length;
-            _haltOnAllFlash = false;
+            _haltWhenAllFlash = false;
         }
 
-        public int countFlashes(int stepCount) {
+        public int flashCountAfterNsteps(int stepCount) {
             for (int i = 1; i <= stepCount; i++) {
                 takeStep();
-//                dumpState();
             }
 
             return _totalFlashes;
+        }
+
+        public void takeSteps(int stepCount) {
+            for (int i = 1; i <= stepCount; i++) {
+                takeStep();
+            }
         }
 
         public void takeStep() {
@@ -164,7 +172,7 @@ public class day11Tests {
             }
 
             if (flashedThisStep.size() == (_cavernSize * _cavernSize)) {
-                _haltOnAllFlash = false;
+                _haltWhenAllFlash = false;
             }
 
             _totalFlashes += flashedThisStep.size();
@@ -220,9 +228,9 @@ public class day11Tests {
 
 
         public int stepUntilAllFlash() {
-            _haltOnAllFlash = true;
+            _haltWhenAllFlash = true;
             int i = 1;
-            while (_haltOnAllFlash) {
+            while (_haltWhenAllFlash) {
                 takeStep();
                 i++;
             }
@@ -236,6 +244,10 @@ public class day11Tests {
                 sb.append("\n");
             }
             return sb.toString();
+        }
+
+        public int totalFlashes() {
+            return _totalFlashes;
         }
     }
 }
