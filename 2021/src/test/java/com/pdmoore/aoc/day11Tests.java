@@ -1,11 +1,12 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day11Tests {
 
@@ -16,7 +17,7 @@ public class day11Tests {
 
         int actual = sut.countFlashes(10);
 
-        Assertions.assertEquals(204, actual);
+        assertEquals(204, actual);
     }
 
     @Test
@@ -26,7 +27,7 @@ public class day11Tests {
 
         int actual = sut.countFlashes(100);
 
-        Assertions.assertEquals(1656, actual);
+        assertEquals(1656, actual);
     }
 
     @Test
@@ -36,7 +37,7 @@ public class day11Tests {
 
         int actual = sut.countFlashes(100);
 
-        Assertions.assertEquals(1702, actual);
+        assertEquals(1702, actual);
     }
 
     @Test
@@ -46,13 +47,14 @@ public class day11Tests {
 
         sut.takeStep();
 
-        String expected = "34543\n" +
-                          "40004\n" +
+        String expected =
+                "34543\n" +
+                "40004\n" +
                 "50005\n" +
                 "40004\n" +
                 "34543\n";
 
-        Assertions.assertEquals(expected, sut.currentState());
+        assertEquals(expected, sut.currentState());
     }
 
     @Test
@@ -62,7 +64,7 @@ public class day11Tests {
 
         int actual = sut.stepUntilAllFlash();
 
-        Assertions.assertEquals(195, actual);
+        assertEquals(195, actual);
     }
 
     @Test
@@ -72,7 +74,7 @@ public class day11Tests {
 
         int actual = sut.stepUntilAllFlash();
 
-        Assertions.assertEquals(251, actual);
+        assertEquals(251, actual);
     }
 
 
