@@ -135,7 +135,6 @@ public class day11Tests {
             This process continues as long as new octopuses keep having their energy level increased beyond 9.
             (An octopus can only flash at most once per step.)
              */
-
             List<Point> flashedThisStep = new ArrayList<>();
             List<Point> flashedJustNow = new ArrayList<>();
 
@@ -220,22 +219,13 @@ public class day11Tests {
             }
         }
 
-        public void dumpState() {
-            for (int i = 0; i < _cavernSize; i++) {
-                System.out.println(getRow(i));
-            }
-            System.out.println("total flashes: " + _totalFlashes);
-            System.out.println();
-        }
-
-        public String getRow(int row) {
+        private String getRow(int row) {
             StringBuilder sb = new StringBuilder();
             for (int y = 0; y < _cavernSize; y++) {
                 sb.append(_currentState[row][y]);
             }
             return sb.toString();
         }
-
 
         public int stepUntilAllFlash() {
             _haltWhenAllFlash = true;
@@ -258,6 +248,15 @@ public class day11Tests {
 
         public int totalFlashes() {
             return _totalFlashes;
+        }
+
+        //TODO - useful as a debugging/visual check of an int[][] array
+        // where to put it?
+        public void dumpState() {
+            for (int i = 0; i < _cavernSize; i++) {
+                System.out.println(getRow(i));
+            }
+            System.out.println();
         }
     }
 }
