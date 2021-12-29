@@ -46,11 +46,13 @@ public class day11Tests {
 
         sut.takeStep();
 
-        Assertions.assertEquals("34543", sut.getRow(0));
-        Assertions.assertEquals("40004", sut.getRow(1));
-        Assertions.assertEquals("50005", sut.getRow(2));
-        Assertions.assertEquals("40004", sut.getRow(3));
-        Assertions.assertEquals("34543", sut.getRow(4));
+        String expected = "34543\n" +
+                          "40004\n" +
+                "50005\n" +
+                "40004\n" +
+                "34543\n";
+
+        Assertions.assertEquals(expected, sut.currentState());
     }
 
     @Test
@@ -223,6 +225,15 @@ public class day11Tests {
                 i++;
             }
             return i - 1;
+        }
+
+        public String currentState() {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < _cavernSize; i++) {
+                sb.append(getRow(i));
+                sb.append("\n");
+            }
+            return sb.toString();
         }
     }
 }
