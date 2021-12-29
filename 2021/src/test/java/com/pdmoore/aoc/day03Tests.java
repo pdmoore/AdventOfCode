@@ -55,7 +55,7 @@ public class day03Tests {
 
     @Test
     void day3_part1_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day03");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day03");
 
         int actual = calculatePowerConsumption(input);
 
@@ -64,7 +64,7 @@ public class day03Tests {
 
     @Test
     void day3_part2_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day03");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day03");
 
         int actual = calculateLifeSupportRating(input);
 

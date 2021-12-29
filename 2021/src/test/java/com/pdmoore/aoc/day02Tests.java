@@ -31,7 +31,7 @@ public class day02Tests {
 
     @Test
     void day2_part1_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day02");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day02");
 
         int actual = part1_processInput(input);
 
@@ -49,7 +49,7 @@ public class day02Tests {
 
     @Test
     void day2_part2_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day02");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day02");
 
         int actual = part2_processInput(input);
 

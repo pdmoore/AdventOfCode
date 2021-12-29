@@ -13,7 +13,7 @@ public class day05Tests {
 
     @Test
     void day05_part1_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day05_example");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05_example");
 
         Day05DataStructure dataStructure = new Day05DataStructure(input);
 
@@ -24,7 +24,7 @@ public class day05Tests {
 
     @Test
     void day05_part1_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day05");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05");
 
         Day05DataStructure dataStructure = new Day05DataStructure(input);
 
@@ -35,7 +35,7 @@ public class day05Tests {
 
     @Test
     void day05_part2_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day05_example");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05_example");
         Day05DataStructure dataStructure = new Day05DataStructure(input, true);
 
         int actual = dataStructure.overlapsOfTwoOrMore();
@@ -45,7 +45,7 @@ public class day05Tests {
 
     @Test
     void day05_part2_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day05");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05");
 
         Day05DataStructure dataStructure = new Day05DataStructure(input, true);
 

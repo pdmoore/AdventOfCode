@@ -11,7 +11,7 @@ public class day08Tests {
 
     @Test
     void day08_part1_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08_example");
+        List<String> input = PuzzleInput.asStringListFrom("data/day08_example");
 
         int actual = countUniqueSegments(input);
 
@@ -20,7 +20,7 @@ public class day08Tests {
 
     @Test
     void day08_part1_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08");
+        List<String> input = PuzzleInput.asStringListFrom("data/day08");
 
         int actual = countUniqueSegments(input);
 
@@ -29,7 +29,7 @@ public class day08Tests {
 
     @Test
     void day08_part2_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08_example");
+        List<String> input = PuzzleInput.asStringListFrom("data/day08_example");
 
         int actual = sumOfSegments(input);
 
@@ -38,7 +38,7 @@ public class day08Tests {
 
     @Test
     void day08_part2_solution() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("data/day08");
+        List<String> input = PuzzleInput.asStringListFrom("data/day08");
 
         int actual = sumOfSegments(input);
 

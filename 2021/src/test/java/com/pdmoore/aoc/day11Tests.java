@@ -188,33 +188,34 @@ public class day11Tests {
         }
 
         private void flashNeighbors(int[][] nextState, Point p) {
-            if ((p.x - 1 >= 0) && (p.y - 1 >= 0)) {  // 1
+            boolean canAdjustUp = p.x - 1 >= 0;
+            boolean canAdjustLeft = p.y - 1 >= 0;
+            boolean canAdjustRight = p.y + 1 < _cavernSize;
+            boolean canAdjustDown = p.x + 1 < _cavernSize;
+
+            if (canAdjustUp && canAdjustLeft) {
                 nextState[p.x - 1][p.y - 1]++;
             }
-            if (p.x - 1 >= 0) {  // 2
+            if (canAdjustUp) {
                 nextState[p.x - 1][p.y]++;
             }
-            if ((p.x - 1 >= 0) && (p.y + 1 < _cavernSize)) { // 3
+            if (canAdjustUp && canAdjustRight) {
                 nextState[p.x - 1][p.y + 1]++;
             }
-            if (p.y - 1 >= 0) {  // 4
+            if (canAdjustLeft) {
                 nextState[p.x][p.y - 1]++;
             }
-            if (p.y + 1 < _cavernSize) {  // 6
+            if (canAdjustRight) {
                 nextState[p.x][p.y + 1]++;
             }
-            if ((p.x + 1 < _cavernSize) && (p.y - 1 >= 0)) {  // 7
+            if (canAdjustDown && canAdjustLeft) {
                 nextState[p.x + 1][p.y - 1]++;
             }
-            if (p.x + 1 < _cavernSize) {  // 8
+            if (canAdjustDown) {
                 nextState[p.x + 1][p.y]++;
             }
-            if ((p.x + 1 < _cavernSize) && (p.y + 1 < _cavernSize)) {  // 9
+            if (canAdjustDown && canAdjustRight) {
                 nextState[p.x + 1][p.y + 1]++;
-            }
-            int foo = 5;
-            if (foo > 5) {
-                System.out.println("breakpoint");
             }
         }
 

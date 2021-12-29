@@ -15,7 +15,7 @@ public class day04Tests {
 
     @Test
     void day04_part1_processInput_CreateDataStructures() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04_example");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04_example");
 
         Day04Part1 actual = processInput(input);
 
@@ -86,7 +86,7 @@ public class day04Tests {
 
     @Test
     void day04_part1() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04");
 
         Day04Part1 actual = processInput(input);
 
@@ -109,7 +109,7 @@ public class day04Tests {
 
     @Test
     void day04_part2_example() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04_example");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04_example");
 
         Day04Part1 actual = processInput(input);
 
@@ -138,7 +138,7 @@ public class day04Tests {
 
     @Test
     void day04_part2() {
-        List<String> input = PuzzleInput.asListOfStringsFrom("./data/day04");
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04");
 
         Day04Part1 actual = processInput(input);
 
