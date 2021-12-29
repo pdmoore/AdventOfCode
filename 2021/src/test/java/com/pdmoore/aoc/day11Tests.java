@@ -52,10 +52,10 @@ public class day11Tests {
 
         String expected =
                 "34543\n" +
-                "40004\n" +
-                "50005\n" +
-                "40004\n" +
-                "34543\n";
+                        "40004\n" +
+                        "50005\n" +
+                        "40004\n" +
+                        "34543\n";
 
         assertEquals(expected, sut.currentState());
     }
@@ -104,13 +104,40 @@ public class day11Tests {
             int[][] nextState = new int[_cavernSize][_cavernSize];
 
             // First, the energy level of each octopus increases by 1.
-            for (int x = 0; x < _cavernSize; x++) {
-                for (int y = 0; y < _cavernSize; y++) {
-                    int currentValue = _currentState[x][y];
-                    currentValue++;
-                    nextState[x][y] = currentValue;
-                }
+            IncreaseEnergyLevel(nextState);
+
+            List<Point> flashedThisStep = FlashOctopuses(nextState);
+
+            // Finally, any octopus that flashed during this step has its energy level set to 0, as it used all of its energy to flash.
+            setFlashedThisStepToZero(nextState, flashedThisStep);
+
+            if (didEveryOctopusFlash(flashedThisStep.size())) {
+                _haltWhenAllFlash = false;
             }
+
+            _totalFlashes += flashedThisStep.size();
+            _currentState = nextState;
+        }
+
+        private boolean didEveryOctopusFlash(int flashedCount) {
+            return flashedCount == (_cavernSize * _cavernSize);
+        }
+
+        private void setFlashedThisStepToZero(int[][] nextState, List<Point> flashedThisStep) {
+            for (Point p :
+                    flashedThisStep) {
+                nextState[p.x][p.y] = 0;
+            }
+        }
+
+        private List<Point> FlashOctopuses(int[][] nextState) {
+            /*
+            Then, any octopus with an energy level greater than 9 flashes.
+            This increases the energy level of all adjacent octopuses by 1, including octopuses that are diagonally adjacent.
+            If this causes an octopus to have an energy level greater than 9, it also flashes.
+            This process continues as long as new octopuses keep having their energy level increased beyond 9.
+            (An octopus can only flash at most once per step.)
+             */
 
             List<Point> flashedThisStep = new ArrayList<>();
             List<Point> flashedJustNow = new ArrayList<>();
@@ -148,27 +175,15 @@ public class day11Tests {
                 }
 
             } while (!flashedJustNow.isEmpty());
+            return flashedThisStep;
+        }
 
-            /*
-            Then, any octopus with an energy level greater than 9 flashes.
-            This increases the energy level of all adjacent octopuses by 1, including octopuses that are diagonally adjacent.
-            If this causes an octopus to have an energy level greater than 9, it also flashes.
-            This process continues as long as new octopuses keep having their energy level increased beyond 9.
-            (An octopus can only flash at most once per step.)
-             */
-
-            // Finally, any octopus that flashed during this step has its energy level set to 0, as it used all of its energy to flash.
-            for (Point p :
-                    flashedThisStep) {
-                nextState[p.x][p.y] = 0;
+        private void IncreaseEnergyLevel(int[][] nextState) {
+            for (int x = 0; x < _cavernSize; x++) {
+                for (int y = 0; y < _cavernSize; y++) {
+                    nextState[x][y] = _currentState[x][y] + 1;
+                }
             }
-
-            if (flashedThisStep.size() == (_cavernSize * _cavernSize)) {
-                _haltWhenAllFlash = false;
-            }
-
-            _totalFlashes += flashedThisStep.size();
-            _currentState = nextState;
         }
 
         private void flashNeighbors(int[][] nextState, Point p) {
