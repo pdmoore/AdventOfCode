@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -100,8 +99,11 @@ public class day12Tests {
             for (String connection :
                     startConnections) {
                 String pathSteps = "start,";
+
                 List<String> smallCavesVisited = new ArrayList<>();
-                recurse(pathSteps, smallCavesVisited, connection);
+                Map<String, Integer> smallCavesVisitedByCount = new HashMap<>();
+
+                recurse(pathSteps, smallCavesVisitedByCount, connection);
             }
 
             // small caves, lowercase, can only be visited once
@@ -122,24 +124,30 @@ public class day12Tests {
 
         }
 
-        private void recurse(String pathSteps, List<String> smallCavesVisited, String connection) {
+        private void recurse(String pathSteps, Map<String, Integer> smallCavesVisited, String connection) {
             if (connection.equals("end")) {
                 pathSteps = pathSteps.concat("end");
                 _paths.add(pathSteps);
                 return;
             }
-            if (smallCavesVisited.contains(connection)) {
+            if (smallCavesVisited.containsKey(connection) &&
+                smallCavesVisited.get(connection) == 1) {
+//TODO change this to 2 for part 2
                 return;
             }
 
-            List<String> newSmallCavesVisited = new ArrayList<>();
-            newSmallCavesVisited.addAll(smallCavesVisited);
-
+            Map<String, Integer> newSmallCavesVisited = new HashMap<>();
+            newSmallCavesVisited.putAll(smallCavesVisited);
+            
             pathSteps = pathSteps.concat(connection);
             pathSteps = pathSteps.concat(",");
 
             if (connection.equals(connection.toLowerCase())) {
-                newSmallCavesVisited.add(connection);
+                if (newSmallCavesVisited.containsKey(connection)) {
+                    newSmallCavesVisited.put(connection, 2);
+                } else {
+                    newSmallCavesVisited.put(connection, 1);
+                }
             }
 
             Set<String> connections = _caveMap.get(connection);
