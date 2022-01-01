@@ -12,7 +12,9 @@ public class day12Tests {
     void day1_part1_smallExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_smallExample");
 
-        int actual = findDistinctPaths(input);
+        Cave cave = new Cave(input);
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(10, actual);
     }
@@ -21,7 +23,9 @@ public class day12Tests {
     void day1_part1_slightlyLargerExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_slightlyLargerExample");
 
-        int actual = findDistinctPaths(input);
+        Cave cave = new Cave(input);
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(19, actual);
     }
@@ -30,7 +34,9 @@ public class day12Tests {
     void day1_part1_lastExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_lastExample");
 
-        int actual = findDistinctPaths(input);
+        Cave cave = new Cave(input);
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(226, actual);
     }
@@ -39,7 +45,9 @@ public class day12Tests {
     void day1_part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12");
 
-        int actual = findDistinctPaths(input);
+        Cave cave = new Cave(input);
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(5178, actual);
     }
@@ -48,7 +56,10 @@ public class day12Tests {
     void day1_part2_smallExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_smallExample");
 
-        int actual = findDistinctPaths_part2(input);
+        Cave cave = new Cave(input);
+        cave.allowSmallCaveVisitTwice();
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(36, actual);
     }
@@ -57,7 +68,10 @@ public class day12Tests {
     void day1_part2_slightlyLargerExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_slightlyLargerExample");
 
-        int actual = findDistinctPaths_part2(input);
+        Cave cave = new Cave(input);
+        cave.allowSmallCaveVisitTwice();
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(103, actual);
     }
@@ -66,7 +80,10 @@ public class day12Tests {
     void day1_part2_lastExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12_lastExample");
 
-        int actual = findDistinctPaths_part2(input);
+        Cave cave = new Cave(input);
+        cave.allowSmallCaveVisitTwice();
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(3509, actual);
     }
@@ -75,30 +92,18 @@ public class day12Tests {
     void day1_part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day12");
 
-        int actual = findDistinctPaths_part2(input);
+        Cave cave = new Cave(input);
+        cave.allowSmallCaveVisitTwice();
+        cave.findPathsToEnd();
+        int actual = cave._paths.size();
 
         assertEquals(130094, actual);
-    }
-
-    private int findDistinctPaths(List<String> input) {
-        Cave cave = new Cave(input);
-
-        cave.findPathsToEnd(false);
-
-        return cave._paths.size();
-    }
-
-    private int findDistinctPaths_part2(List<String> input) {
-        Cave cave = new Cave(input);
-
-        cave.findPathsToEnd(true);
-
-        return cave._paths.size();
     }
 
     private class Cave {
         private final Map<String, Set> _caveMap;
         private final List<String> _paths;
+        private boolean _allowSingleSmallCaveToBeVisitedTwice;
 
         public Cave(List<String> input) {
             _caveMap = new HashMap<>();
@@ -134,9 +139,14 @@ public class day12Tests {
             }
 
             _paths = new ArrayList<>();
+            _allowSingleSmallCaveToBeVisitedTwice = false;
         }
 
-        public void findPathsToEnd(boolean AllowSecondSmallCaveVisit) {
+        public void allowSmallCaveVisitTwice() {
+            _allowSingleSmallCaveToBeVisitedTwice = true;
+        }
+
+        public void findPathsToEnd() {
             // path must go start--end
             Set<String> startConnections = _caveMap.get("start");
             for (String connection :
@@ -146,7 +156,7 @@ public class day12Tests {
                 List<String> smallCavesVisited = new ArrayList<>();
                 Map<String, Integer> smallCavesVisitedByCount = new HashMap<>();
 
-                recurse(pathSteps, smallCavesVisitedByCount, connection, AllowSecondSmallCaveVisit);
+                recurse(pathSteps, smallCavesVisitedByCount, connection, _allowSingleSmallCaveToBeVisitedTwice);
             }
 
             // small caves, lowercase, can only be visited once
@@ -181,7 +191,7 @@ public class day12Tests {
 
             Map<String, Integer> newSmallCavesVisited = new HashMap<>();
             newSmallCavesVisited.putAll(smallCavesVisited);
-            
+
             pathSteps = pathSteps.concat(connection);
             pathSteps = pathSteps.concat(",");
 
