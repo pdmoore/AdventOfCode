@@ -48,26 +48,8 @@ public class day12Tests {
     private int findDistinctPaths(List<String> input) {
 
         Cave cave = new Cave(input);
-        // class can contain list of Paths
-        // class can be queried for number of Paths
 
-        // class can be told to find paths (could happen on ctor)
         cave.findPathsToEnd();
-
-        // Parse input
-        // for each line, split on the '-'
-        // create a Map entry for each side, maybe two entries since connections can go both ways
-        // or is a list of connections per node?
-        // Map<String, Set>
-
-                /*
-        start, [A, b]
-        A, [b, c, end]   // include start?
-        b, [A, d, end]   // include start?
-        c, [A]
-        d, [b]
-         */
-
 
         return cave._paths.size();
     }
@@ -141,9 +123,6 @@ public class day12Tests {
         }
 
         private void recurse(String pathSteps, List<String> smallCavesVisited, String connection) {
-
-            // Small Caves visited is remembering caves visited from other paths, need to only pay attention to current path
-
             if (connection.equals("end")) {
                 pathSteps = pathSteps.concat("end");
                 _paths.add(pathSteps);
