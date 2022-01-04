@@ -18,7 +18,7 @@ public class day13Tests {
         Set<Point> dotLocations = buildSet(getDotsFrom(input));
         List<String> foldInstructions = getFoldsFrom(input);
 
-        Set<Point> locationsAfterFold = processFold_2(dotLocations, foldInstructions.get(0));
+        Set<Point> locationsAfterFold = processFold(dotLocations, foldInstructions.get(0));
         int actual = locationsAfterFold.size();
 
         assertEquals(17, actual);
@@ -30,14 +30,26 @@ public class day13Tests {
         Set<Point> dotLocations = buildSet(getDotsFrom(input));
         List<String> foldInstructions = getFoldsFrom(input);
 
-        Set<Point> locationsAfterFold = processFold_2(dotLocations, foldInstructions.get(0));
-        locationsAfterFold = processFold_2(locationsAfterFold, foldInstructions.get(1));
+        Set<Point> locationsAfterFold = processFold(dotLocations, foldInstructions.get(0));
+        locationsAfterFold = processFold(locationsAfterFold, foldInstructions.get(1));
         int actual = locationsAfterFold.size();
 
         assertEquals(16, actual);
     }
 
-    private Set<Point> processFold_2(Set<Point> dotLocations, String foldInstruction) {
+    @Test
+    void day13_part1_solution_FirstFoldOnly() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13");
+        Set<Point> dotLocations = buildSet(getDotsFrom(input));
+        List<String> foldInstructions = getFoldsFrom(input);
+
+        Set<Point> points = processFold(dotLocations, foldInstructions.get(0));
+        int actual = points.size();
+
+        assertEquals(716, actual);
+    }
+
+    private Set<Point> processFold(Set<Point> dotLocations, String foldInstruction) {
         Character axis = foldInstruction.charAt(11);
         int foldValue = Integer.parseInt(foldInstruction.split("=")[1]);
 
@@ -74,18 +86,6 @@ public class day13Tests {
         return newLocations;
     }
 
-    @Test
-    void day13_part1_solution_FirstFoldOnly() {
-        List<String> input = PuzzleInput.asStringListFrom("data/day13");
-        Set<Point> dotLocations = buildSet(getDotsFrom(input));
-        List<String> foldInstructions = getFoldsFrom(input);
-
-        Set<Point> points = processFold_2(dotLocations, foldInstructions.get(0));
-        int actual = points.size();
-
-        assertEquals(716, actual);
-    }
-
     private Set<Point> buildSet(List<String> locationsAsStrings) {
         Set<Point> dotLocations = new HashSet<>();
         for (String location :
@@ -120,40 +120,4 @@ public class day13Tests {
         }
         return foldInstructions;
     }
-
-    private int processFold(Set<Point> dotLocations, String foldInstruction) {
-        Character axis = foldInstruction.charAt(11);
-        int foldValue = Integer.parseInt(foldInstruction.split("=")[1]);
-
-        Set<Point> newLocations = new HashSet<>();
-
-        if (axis.equals('x')) {
-            for (Point p:
-                    dotLocations) {
-                if (p.x < foldValue) {
-                    newLocations.add(p);
-                } else {
-                    int distance = foldValue - p.x;
-                    int newX = foldValue - distance + 1;
-
-                    Point folded = new Point(newX, p.y);
-                    newLocations.add(folded);
-                }
-            }
-        } else {
-            for (Point p:
-                 dotLocations) {
-                if (p.y < foldValue) {
-                    newLocations.add(p);
-                } else {
-                    int newY = p.y - foldValue + 1;
-                    Point folded = new Point(p.x, newY);
-                    newLocations.add(folded);
-                }
-            }
-        }
-
-        return newLocations.size();
-    }
-
 }
