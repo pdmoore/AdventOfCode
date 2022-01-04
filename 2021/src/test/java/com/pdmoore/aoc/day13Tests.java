@@ -23,6 +23,18 @@ public class day13Tests {
         assertEquals(17, actual);
     }
 
+    @Test
+    void day13_part1_solution_FirstFoldOnly() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13");
+        Set<Point> dotLocations = buildSet(getDotsFrom(input));
+        List<String> foldInstructions = getFoldsFrom(input);
+
+        int actual = processFold(dotLocations, foldInstructions.get(0));
+
+        // 859 - too high
+        assertEquals(-1, actual);
+    }
+
     private Set<Point> buildSet(List<String> locationsAsStrings) {
         Set<Point> dotLocations = new HashSet<>();
         for (String location :
@@ -67,7 +79,16 @@ public class day13Tests {
         Set<Point> newLocations = new HashSet<>();
 
         if (axis.equals('x')) {
-            throw new UnsupportedOperationException("TODO - handle x axis");
+            for (Point p:
+                    dotLocations) {
+                if (p.x < foldValue) {
+                    newLocations.add(p);
+                } else {
+                    int newX = p.x - foldValue + 1;
+                    Point folded = new Point(newX, p.y);
+                    newLocations.add(folded);
+                }
+            }
         } else {
             for (Point p:
                  dotLocations) {
@@ -79,7 +100,6 @@ public class day13Tests {
                     newLocations.add(folded);
                 }
             }
-
         }
 
         // determine x or y
