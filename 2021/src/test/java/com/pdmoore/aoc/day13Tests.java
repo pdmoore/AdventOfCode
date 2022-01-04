@@ -138,16 +138,18 @@ public class day13Tests {
 
 
     private void displayResult(Set<Point> points) {
-        char[][] display = new char[50][10];
+        // TODO - another method that would be helpful in the Display jar
+        // could determine max x and y values here
+        char[][] display = new char[6][40];
         for (int i = 0; i < display.length; i++) {
             Arrays.fill(display[i], '_');
         }
         for (Point p :
                 points) {
-            display[p.x][p.y] = '#';
+            display[p.y][p.x] = '#';
         }
 
-        int actual = points.size();
+        int setBreakpointHereInspectDisplay = points.size();
     }
 
 
