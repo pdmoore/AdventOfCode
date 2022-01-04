@@ -3,10 +3,8 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,6 +45,23 @@ public class day13Tests {
         int actual = points.size();
 
         assertEquals(716, actual);
+    }
+
+    @Test
+    void day13_part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13");
+        Set<Point> points = buildSet(getDotsFrom(input));
+        List<String> foldInstructions = getFoldsFrom(input);
+
+        for (String fold:
+                foldInstructions) {
+            points = processFold(points, fold);
+        }
+
+        displayResult(points);
+        // Set a breakpoint and view the display variable
+        // it reads vertical, not horizontal, and characters are mirrored
+        //not sure if I feel like solving, or testing, for that
     }
 
     private Set<Point> processFold(Set<Point> dotLocations, String foldInstruction) {
@@ -120,4 +135,20 @@ public class day13Tests {
         }
         return foldInstructions;
     }
+
+
+    private void displayResult(Set<Point> points) {
+        char[][] display = new char[50][10];
+        for (int i = 0; i < display.length; i++) {
+            Arrays.fill(display[i], '_');
+        }
+        for (Point p :
+                points) {
+            display[p.x][p.y] = '#';
+        }
+
+        int actual = points.size();
+    }
+
+
 }
