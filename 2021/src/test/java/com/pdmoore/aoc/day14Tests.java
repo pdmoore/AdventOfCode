@@ -54,10 +54,8 @@ public class day14Tests {
     }
 
     private String solvePart1(List<String> input) {
-        // get starting string
         String startingPolymer = input.get(0);
 
-        // build map of transformations
         Map<String, Character> transforms = new HashMap<>();
         for (int i = 2; i < input.size(); i++) {
             String mapping = input.get(i);
@@ -66,7 +64,6 @@ public class day14Tests {
             transforms.put(key, value);
         }
 
-        // transform 10 times
         String polymer = startingPolymer;
         for (int i = 1; i <= 10; i++) {
             polymer = applyTransformations(transforms, polymer);
@@ -76,16 +73,15 @@ public class day14Tests {
     }
 
     private String applyTransformations(Map<String, Character> transforms, String polymer) {
-        //TODO StringBuilder
-        String result = String.valueOf(polymer.charAt(0));
-
+        StringBuilder result = new StringBuilder();
+        result.append(polymer.charAt(0));
         for (int i = 0; i < polymer.length() - 1; i++) {
             String key = polymer.substring(i, i+2);
-            result += transforms.get(key);
-            result += polymer.charAt(i+1);
+            result.append(transforms.get(key));
+            result.append(polymer.charAt(i+1));
         }
 
-        return result;
+        return result.toString();
     }
 
     private int countOfLeastCommmon(Map<Character, Integer> map) {
