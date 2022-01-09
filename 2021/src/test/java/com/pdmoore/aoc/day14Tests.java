@@ -7,32 +7,38 @@ import org.junit.jupiter.api.Timeout;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day14Tests {
 
+    private char veryFirstChar;
+    private static Map<String, String[]> insertions = new HashMap<>();
+
     @Test
     void day14_part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
-        List<Character> transformed = solve(input);
-        Map<Character, BigInteger> occurrences = countOccurrences(transformed);
-        BigInteger actual = countOfMostCommon(occurrences).subtract(countOfLeastCommmon(occurrences));
+        Map<String, BigInteger> polymerMap = processInput(input);
+        polymerMap = solve_new(polymerMap, 10);
+
+        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        BigInteger actual = calcMaxMinusMin(characterCount);
 
         BigInteger expected = new BigInteger("1588");
         assertEquals(expected, actual);
     }
 
     @Test
-    @Timeout(value = 150, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
     void day14_part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
-        List<Character> transformed = solve(input);
-        Map<Character, BigInteger> occurrences = countOccurrences(transformed);
-        BigInteger actual = countOfMostCommon(occurrences).subtract(countOfLeastCommmon(occurrences));
+        Map<String, BigInteger> polymerMap = processInput(input);
+        polymerMap = solve_new(polymerMap, 10);
+
+        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        BigInteger actual = calcMaxMinusMin(characterCount);
 
         BigInteger expected = new BigInteger("2988");
         assertEquals(expected, actual);
@@ -48,8 +54,107 @@ public class day14Tests {
         BigInteger actual = countOfMostCommon(occurrences).subtract(countOfLeastCommmon(occurrences));
 
         BigInteger expected = new BigInteger("2188189693529");
-
         assertEquals(expected, actual);
+
+        /////
+//        Map<String, BigInteger> polymerMap = processInput(input);
+//        polymerMap = solve_new(polymerMap, 40);
+//
+//        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+//        BigInteger actual = calcMaxMinusMin(characterCount);
+//
+//        BigInteger expected = new BigInteger("2188189693529");
+//        assertEquals(expected, actual);
+
+
+    }
+
+
+
+    private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
+        BigInteger max = BigInteger.ZERO;
+        BigInteger min = new BigInteger("9999999");
+
+        for (Character c : characterCount.keySet()) {
+            if (characterCount.get(c).compareTo(max) > 0) {
+                max = characterCount.get(c);
+            } else if (characterCount.get(c).compareTo(min) < 0) {
+                min = characterCount.get(c);
+            }
+        }
+
+        return max.subtract(min);
+    }
+
+    private Map<Character, BigInteger> countResultingCharacters(Map<String, BigInteger> polymerMap) {
+        Map<Character, BigInteger> charMap = new HashMap<>();
+        BigInteger firstN = charMap.getOrDefault(veryFirstChar, BigInteger.ZERO);
+        charMap.put(veryFirstChar, firstN.add(BigInteger.ONE));
+        for (String key : polymerMap.keySet()) {
+            char c = key.charAt(1);
+            BigInteger n = polymerMap.get(key);
+
+            BigInteger charN = charMap.getOrDefault(c, BigInteger.ZERO);
+            charMap.put(c, charN.add(n));
+        }
+        return charMap;
+    }
+
+
+    private Map<String, BigInteger> solve_new(Map<String, BigInteger> polymerMap, int steps) {
+        for (int i = 0; i < steps; i++) {
+            polymerMap = transform(polymerMap);
+        }
+        return polymerMap;
+    }
+
+    private Map<String, BigInteger> transform(Map<String, BigInteger> polymerMap) {
+        Map<String, BigInteger> transformedMap = new HashMap<>();
+
+        for (String key : polymerMap.keySet()) {
+            BigInteger countKey = polymerMap.get(key);
+
+            if (insertions.containsKey(key)) {
+                String mapsTo_1 = insertions.get(key)[0];
+                String mapsTo_2 = insertions.get(key)[1];
+                BigInteger count1 = transformedMap.getOrDefault(mapsTo_1, BigInteger.ZERO);
+                BigInteger count2 = transformedMap.getOrDefault(mapsTo_2, BigInteger.ZERO);
+                transformedMap.put(mapsTo_1, count1.add(countKey));
+                transformedMap.put(mapsTo_2, count2.add(countKey));
+            } else {
+                transformedMap.put(key, countKey);
+            }
+        }
+
+        return transformedMap;
+    }
+
+    private Map<String, BigInteger> processInput(List<String> input) {
+
+        String startTemplate = input.get(0);
+        veryFirstChar = startTemplate.charAt(0);
+        for (int i = 2; i < input.size(); i++) {
+            createInsertions(input.get(i).split(" -> "));
+        }
+
+        return createInitialMapping(startTemplate);
+    }
+
+    private Map<String, BigInteger> createInitialMapping(String line) {
+        Map<String, BigInteger> map = new HashMap<>();
+        for (int i = 0; i < line.length() - 1; i++) {
+            String s = line.substring(i, i + 2);
+            BigInteger n = map.getOrDefault(s, BigInteger.ZERO);
+            map.put(s, n.add(BigInteger.ONE));
+        }
+        return map;
+    }
+
+    private void createInsertions(String[] mappingLine) {
+        String lhs = mappingLine[0];
+        String rhs = mappingLine[1];
+        String[] replace = {lhs.charAt(0) + rhs, rhs + lhs.charAt(1)};
+        insertions.put(lhs, replace);
     }
 
     private void applyTransformations_Node(Map<String, Character> transforms, Node head) {
@@ -64,36 +169,11 @@ public class day14Tests {
         }
     }
 
-
-    private LinkedList<Character> applyTransformations(Map<String, Character> transforms, LinkedList<Character> polymer) {
-        LinkedList<Character> result = new LinkedList<>();
-
-        result.add(polymer.get(0));
-
-        for (int i = 0; i < polymer.size() - 1; i++) {
-            String key = "" + polymer.get(i) + polymer.get(i+1);
-            result.add(transforms.get(key));
-            result.add(polymer.get(i+1));
-        }
-
-        return result;
-
-//        int i = 0;
-//        while (i < polymer.size() - 1) {
-//            String key = "" + polymer.get(i) + polymer.get(i+1);
-//            polymer.add(i + 1, transforms.get(key));
-//            i += 2;
-//        }
-//
-//        return polymer;
-
-    }
-
     private Map<Character, BigInteger> countOccurrences(List<Character> part2_solution) {
         Map<Character, BigInteger> result = new HashMap<>();
 
-        for (Character c:
-             part2_solution) {
+        for (Character c :
+                part2_solution) {
             if (!result.containsKey(c)) {
                 result.put(c, countOf(c, part2_solution));
             }
@@ -129,10 +209,6 @@ public class day14Tests {
             pairInsertions.put(key, value);
         }
 
-        //TODO - create LL at once, not convert
-        List<Character> polymer = polymerTemplate.chars().mapToObj(c -> (char)c).collect(Collectors.toList());
-        LinkedList<Character> polymer2 = new LinkedList<>(polymer);
-
         Node head = new Node(polymerTemplate.charAt(0));
         Node current = head;
         for (int i = 1; i < polymerTemplate.length(); i++) {
@@ -142,9 +218,10 @@ public class day14Tests {
         }
 
         for (int i = 1; i <= steps; i++) {
-//            polymer2 = applyTransformations(pairInsertions, polymer2);
+            System.out.println("Step " + i);
             applyTransformations_Node(pairInsertions, head);
         }
+
         List<Character> result = new ArrayList<>();
         current = head;
         while (current != null) {
@@ -164,7 +241,6 @@ public class day14Tests {
         }
     }
 
-
     private BigInteger countOfLeastCommmon(Map<Character, BigInteger> map) {
         Map.Entry<Character, BigInteger> minEntry =
                 Collections.min(map.entrySet(), (Map.Entry<Character, BigInteger> e1, Map.Entry<Character, BigInteger> e2) -> e1.getValue()
@@ -175,7 +251,7 @@ public class day14Tests {
     private BigInteger countOfMostCommon(Map<Character, BigInteger> map) {
         Map.Entry<Character, BigInteger> maxEntry =
                 Collections.max(map.entrySet(), (Map.Entry<Character, BigInteger> e1, Map.Entry<Character, BigInteger> e2) -> e1.getValue()
-                .compareTo(e2.getValue()));
+                        .compareTo(e2.getValue()));
         return maxEntry.getValue();
     }
 }
