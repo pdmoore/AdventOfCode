@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -45,35 +44,36 @@ public class day14Tests {
     }
 
     @Test
-    @Disabled
     void day14_part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
-        List<Character> part2_solution = solve(input, 40);
-        Map<Character, BigInteger> occurrences = countOccurrences(part2_solution);
-        BigInteger actual = countOfMostCommon(occurrences).subtract(countOfLeastCommmon(occurrences));
+        Map<String, BigInteger> polymerMap = processInput(input);
+        polymerMap = solve_new(polymerMap, 40);
+
+        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        BigInteger actual = calcMaxMinusMin(characterCount);
 
         BigInteger expected = new BigInteger("2188189693529");
         assertEquals(expected, actual);
-
-        /////
-//        Map<String, BigInteger> polymerMap = processInput(input);
-//        polymerMap = solve_new(polymerMap, 40);
-//
-//        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
-//        BigInteger actual = calcMaxMinusMin(characterCount);
-//
-//        BigInteger expected = new BigInteger("2188189693529");
-//        assertEquals(expected, actual);
-
-
     }
 
+    @Test
+    void day14_part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
+        Map<String, BigInteger> polymerMap = processInput(input);
+        polymerMap = solve_new(polymerMap, 40);
+
+        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        BigInteger actual = calcMaxMinusMin(characterCount);
+
+        BigInteger expected = new BigInteger("3572761917024");
+        assertEquals(expected, actual);
+    }
 
     private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
         BigInteger max = BigInteger.ZERO;
-        BigInteger min = new BigInteger("9999999");
+        BigInteger min = new BigInteger("999999999999999");
 
         for (Character c : characterCount.keySet()) {
             if (characterCount.get(c).compareTo(max) > 0) {
