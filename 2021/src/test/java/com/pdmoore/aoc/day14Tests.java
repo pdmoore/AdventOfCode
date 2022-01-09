@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day14Tests {
 
-    private char veryFirstChar;
-    private static Map<String, String[]> insertions = new HashMap<>();
+    private char firstCharacterInPolymer;
+    private static Map<String, String[]> pairToPairMappings = new HashMap<>();
 
     @Test
     void day14_part1_example() {
@@ -88,8 +88,8 @@ public class day14Tests {
 
     private Map<Character, BigInteger> countResultingCharacters(Map<String, BigInteger> polymerMap) {
         Map<Character, BigInteger> charMap = new HashMap<>();
-        BigInteger firstN = charMap.getOrDefault(veryFirstChar, BigInteger.ZERO);
-        charMap.put(veryFirstChar, firstN.add(BigInteger.ONE));
+        BigInteger countOfFirstCharacter = charMap.getOrDefault(firstCharacterInPolymer, BigInteger.ZERO);
+        charMap.put(firstCharacterInPolymer, countOfFirstCharacter.add(BigInteger.ONE));
         for (String key : polymerMap.keySet()) {
             char c = key.charAt(1);
             BigInteger n = polymerMap.get(key);
@@ -99,8 +99,7 @@ public class day14Tests {
         }
         return charMap;
     }
-
-
+    
     private Map<String, BigInteger> solve_new(Map<String, BigInteger> polymerMap, int steps) {
         for (int i = 0; i < steps; i++) {
             polymerMap = transform(polymerMap);
@@ -114,9 +113,9 @@ public class day14Tests {
         for (String key : polymerMap.keySet()) {
             BigInteger countKey = polymerMap.get(key);
 
-            if (insertions.containsKey(key)) {
-                String mapsTo_1 = insertions.get(key)[0];
-                String mapsTo_2 = insertions.get(key)[1];
+            if (pairToPairMappings.containsKey(key)) {
+                String mapsTo_1 = pairToPairMappings.get(key)[0];
+                String mapsTo_2 = pairToPairMappings.get(key)[1];
                 BigInteger count1 = transformedMap.getOrDefault(mapsTo_1, BigInteger.ZERO);
                 BigInteger count2 = transformedMap.getOrDefault(mapsTo_2, BigInteger.ZERO);
                 transformedMap.put(mapsTo_1, count1.add(countKey));
@@ -132,15 +131,15 @@ public class day14Tests {
     private Map<String, BigInteger> processInput(List<String> input) {
 
         String startTemplate = input.get(0);
-        veryFirstChar = startTemplate.charAt(0);
+        firstCharacterInPolymer = startTemplate.charAt(0);
         for (int i = 2; i < input.size(); i++) {
             createInsertions(input.get(i).split(" -> "));
         }
 
-        return createInitialMapping(startTemplate);
+        return createFirstMappingWithCount(startTemplate);
     }
 
-    private Map<String, BigInteger> createInitialMapping(String line) {
+    private Map<String, BigInteger> createFirstMappingWithCount(String line) {
         Map<String, BigInteger> map = new HashMap<>();
         for (int i = 0; i < line.length() - 1; i++) {
             String s = line.substring(i, i + 2);
@@ -154,104 +153,6 @@ public class day14Tests {
         String lhs = mappingLine[0];
         String rhs = mappingLine[1];
         String[] replace = {lhs.charAt(0) + rhs, rhs + lhs.charAt(1)};
-        insertions.put(lhs, replace);
-    }
-
-    private void applyTransformations_Node(Map<String, Character> transforms, Node head) {
-        Node current = head;
-
-        while (current.next != null) {
-            String key = "" + current.c + current.next.c;
-            Node insert = new Node(transforms.get(key));
-            insert.next = current.next;
-            current.next = insert;
-            current = insert.next;
-        }
-    }
-
-    private Map<Character, BigInteger> countOccurrences(List<Character> part2_solution) {
-        Map<Character, BigInteger> result = new HashMap<>();
-
-        for (Character c :
-                part2_solution) {
-            if (!result.containsKey(c)) {
-                result.put(c, countOf(c, part2_solution));
-            }
-        }
-
-        return result;
-    }
-
-    private BigInteger countOf(Character key, List<Character> polymer) {
-        BigInteger count = BigInteger.ZERO;
-
-        for (Character c :
-                polymer) {
-            if (key.equals(c))
-                count = count.add(BigInteger.ONE);
-        }
-
-        return count;
-    }
-
-    private List<Character> solve(List<String> input) {
-        return solve(input, 10);
-    }
-
-    private List<Character> solve(List<String> input, int steps) {
-        String polymerTemplate = input.get(0);
-
-        Map<String, Character> pairInsertions = new HashMap<>();
-        for (int i = 2; i < input.size(); i++) {
-            String mapping = input.get(i);
-            String key = mapping.substring(0, 2);
-            Character value = mapping.charAt(6);
-            pairInsertions.put(key, value);
-        }
-
-        Node head = new Node(polymerTemplate.charAt(0));
-        Node current = head;
-        for (int i = 1; i < polymerTemplate.length(); i++) {
-            Node next = new Node(polymerTemplate.charAt(i));
-            current.next = next;
-            current = next;
-        }
-
-        for (int i = 1; i <= steps; i++) {
-            System.out.println("Step " + i);
-            applyTransformations_Node(pairInsertions, head);
-        }
-
-        List<Character> result = new ArrayList<>();
-        current = head;
-        while (current != null) {
-            result.add(current.c);
-            current = current.next;
-        }
-
-        return result;
-    }
-
-    class Node {
-        Character c;
-        Node next;
-
-        public Node(char c) {
-            this.c = c;
-        }
-    }
-
-    private BigInteger countOfLeastCommmon(Map<Character, BigInteger> map) {
-        Map.Entry<Character, BigInteger> minEntry =
-                Collections.min(map.entrySet(), (Map.Entry<Character, BigInteger> e1, Map.Entry<Character, BigInteger> e2) -> e1.getValue()
-                        .compareTo(e2.getValue()));
-        return minEntry.getValue();
-    }
-
-    private BigInteger countOfMostCommon(Map<Character, BigInteger> map) {
-        Map.Entry<Character, BigInteger> maxEntry =
-                Collections.max(map.entrySet(), (Map.Entry<Character, BigInteger> e1, Map.Entry<Character, BigInteger> e2) -> e1.getValue()
-                        .compareTo(e2.getValue()));
-        return maxEntry.getValue();
+        pairToPairMappings.put(lhs, replace);
     }
 }
