@@ -19,6 +19,9 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
         Map<String, BigInteger> polymerMap = processInput(input);
+//TODO - rather than global variables,
+// pass in the polymerMap and stepCOunt, get the answer out
+
         polymerMap = solve_new(polymerMap, 10);
 
         Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
@@ -72,17 +75,8 @@ public class day14Tests {
     }
 
     private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
-        BigInteger max = BigInteger.ZERO;
-        BigInteger min = new BigInteger("999999999999999");
-
-        for (Character c : characterCount.keySet()) {
-            if (characterCount.get(c).compareTo(max) > 0) {
-                max = characterCount.get(c);
-            } else if (characterCount.get(c).compareTo(min) < 0) {
-                min = characterCount.get(c);
-            }
-        }
-
+        BigInteger max = characterCount.values().stream().max(BigInteger::compareTo).get();
+        BigInteger min = characterCount.values().stream().min(BigInteger::compareTo).get();
         return max.subtract(min);
     }
 
@@ -99,7 +93,7 @@ public class day14Tests {
         }
         return charMap;
     }
-    
+
     private Map<String, BigInteger> solve_new(Map<String, BigInteger> polymerMap, int steps) {
         for (int i = 0; i < steps; i++) {
             polymerMap = transform(polymerMap);
