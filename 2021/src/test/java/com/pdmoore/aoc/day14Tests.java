@@ -19,13 +19,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
         Map<String, BigInteger> polymerMap = processInput(input);
-//TODO - rather than global variables,
-// pass in the polymerMap and stepCOunt, get the answer out
-
-        polymerMap = solve_new(polymerMap, 10);
-
-        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
-        BigInteger actual = calcMaxMinusMin(characterCount);
+        BigInteger actual = solve_everything(polymerMap, 10);
 
         BigInteger expected = new BigInteger("1588");
         assertEquals(expected, actual);
@@ -37,10 +31,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        polymerMap = solve_new(polymerMap, 10);
-
-        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
-        BigInteger actual = calcMaxMinusMin(characterCount);
+        BigInteger actual = solve_everything(polymerMap, 10);
 
         BigInteger expected = new BigInteger("2988");
         assertEquals(expected, actual);
@@ -51,10 +42,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        polymerMap = solve_new(polymerMap, 40);
-
-        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
-        BigInteger actual = calcMaxMinusMin(characterCount);
+        BigInteger actual = solve_everything(polymerMap, 40);
 
         BigInteger expected = new BigInteger("2188189693529");
         assertEquals(expected, actual);
@@ -65,13 +53,18 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        polymerMap = solve_new(polymerMap, 40);
-
-        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
-        BigInteger actual = calcMaxMinusMin(characterCount);
+        BigInteger actual = solve_everything(polymerMap, 40);
 
         BigInteger expected = new BigInteger("3572761917024");
         assertEquals(expected, actual);
+    }
+
+    private BigInteger solve_everything(Map<String, BigInteger> polymerMap, int stepCount) {
+//TODO - rather than global variables,
+        polymerMap = solve_new(polymerMap, stepCount);
+
+        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        return calcMaxMinusMin(characterCount);
     }
 
     private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
