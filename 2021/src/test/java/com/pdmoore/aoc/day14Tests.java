@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day14Tests {
 
-    private char firstCharacterInPolymer;
     private static Map<String, String[]> pairToPairMappings = new HashMap<>();
 
     @Test
     void day14_part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
+        Character veryFirstCharacter = input.get(0).charAt(0);
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve_everything(polymerMap, 10);
+        BigInteger actual = solve(veryFirstCharacter, polymerMap, 10);
 
         BigInteger expected = new BigInteger("1588");
         assertEquals(expected, actual);
@@ -29,9 +29,10 @@ public class day14Tests {
     @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
     void day14_part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
+        Character veryFirstCharacter = input.get(0).charAt(0);
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve_everything(polymerMap, 10);
+        BigInteger actual = solve(veryFirstCharacter, polymerMap, 10);
 
         BigInteger expected = new BigInteger("2988");
         assertEquals(expected, actual);
@@ -40,9 +41,10 @@ public class day14Tests {
     @Test
     void day14_part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
+        Character veryFirstCharacter = input.get(0).charAt(0);
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve_everything(polymerMap, 40);
+        BigInteger actual = solve(veryFirstCharacter, polymerMap, 40);
 
         BigInteger expected = new BigInteger("2188189693529");
         assertEquals(expected, actual);
@@ -51,19 +53,22 @@ public class day14Tests {
     @Test
     void day14_part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
+        Character veryFirstCharacter = input.get(0).charAt(0);
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve_everything(polymerMap, 40);
+        BigInteger actual = solve(veryFirstCharacter, polymerMap, 40);
 
         BigInteger expected = new BigInteger("3572761917024");
         assertEquals(expected, actual);
     }
 
-    private BigInteger solve_everything(Map<String, BigInteger> polymerMap, int stepCount) {
+    private BigInteger solve(Character veryFirstCharacter, Map<String, BigInteger> polymerMap, int stepCount) {
 //TODO - rather than global variables,
-        polymerMap = solve_new(polymerMap, stepCount);
+        for (int i = 0; i < stepCount; i++) {
+            polymerMap = transform(polymerMap);
+        }
 
-        Map<Character, BigInteger> characterCount = countResultingCharacters(polymerMap);
+        Map<Character, BigInteger> characterCount = countCharactersInPolymer(polymerMap, veryFirstCharacter);
         return calcMaxMinusMin(characterCount);
     }
 
@@ -73,7 +78,7 @@ public class day14Tests {
         return max.subtract(min);
     }
 
-    private Map<Character, BigInteger> countResultingCharacters(Map<String, BigInteger> polymerMap) {
+    private Map<Character, BigInteger> countCharactersInPolymer(Map<String, BigInteger> polymerMap, Character firstCharacterInPolymer) {
         Map<Character, BigInteger> charMap = new HashMap<>();
         BigInteger countOfFirstCharacter = charMap.getOrDefault(firstCharacterInPolymer, BigInteger.ZERO);
         charMap.put(firstCharacterInPolymer, countOfFirstCharacter.add(BigInteger.ONE));
@@ -85,13 +90,6 @@ public class day14Tests {
             charMap.put(c, charN.add(n));
         }
         return charMap;
-    }
-
-    private Map<String, BigInteger> solve_new(Map<String, BigInteger> polymerMap, int steps) {
-        for (int i = 0; i < steps; i++) {
-            polymerMap = transform(polymerMap);
-        }
-        return polymerMap;
     }
 
     private Map<String, BigInteger> transform(Map<String, BigInteger> polymerMap) {
@@ -116,9 +114,7 @@ public class day14Tests {
     }
 
     private Map<String, BigInteger> processInput(List<String> input) {
-
         String startTemplate = input.get(0);
-        firstCharacterInPolymer = startTemplate.charAt(0);
         for (int i = 2; i < input.size(); i++) {
             createInsertions(input.get(i).split(" -> "));
         }
