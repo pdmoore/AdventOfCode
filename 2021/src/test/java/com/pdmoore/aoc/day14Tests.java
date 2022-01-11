@@ -53,22 +53,26 @@ public class day14Tests {
     }
 
     private BigInteger solve(List<String> input, int stepCount) {
-        Character veryFirstCharacter = input.get(0).charAt(0);
+        Map<String, String[]> pairToPairMappings = buildPairToPairMappings(input);
 
-        Map<String, String[]> pairToPairMappings = new HashMap<>();
-        String startTemplate = input.get(0);
-        for (int i1 = 2; i1 < input.size(); i1++) {
-            createInsertions(input.get(i1).split(" -> "), pairToPairMappings);
-        }
-
-        Map<String, BigInteger> polymerPairCountMap = createFirstMappingWithCount(startTemplate);
+        String polymerTemplate = input.get(0);
+        Map<String, BigInteger> polymerPairCountMap = buildFirstMappingWithCount(polymerTemplate);
 
         for (int i = 0; i < stepCount; i++) {
             polymerPairCountMap = transform(polymerPairCountMap, pairToPairMappings);
         }
 
+        Character veryFirstCharacter = input.get(0).charAt(0);
         Map<Character, BigInteger> characterCount = countCharactersInPolymer(polymerPairCountMap, veryFirstCharacter);
         return calcMaxMinusMin(characterCount);
+    }
+
+    private Map<String, String[]> buildPairToPairMappings(List<String> input) {
+        Map<String, String[]> pairToPairMappings = new HashMap<>();
+        for (int i = 2; i < input.size(); i++) {
+            createInsertions(input.get(i).split(" -> "), pairToPairMappings);
+        }
+        return pairToPairMappings;
     }
 
     private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
@@ -95,24 +99,21 @@ public class day14Tests {
         Map<String, BigInteger> transformedMap = new HashMap<>();
 
         for (String key : polymerMap.keySet()) {
-            BigInteger countKey = polymerMap.get(key);
+            BigInteger keyCount = polymerMap.get(key);
 
-            if (pairToPairMappings.containsKey(key)) {
-                String mapsTo_1 = pairToPairMappings.get(key)[0];
-                String mapsTo_2 = pairToPairMappings.get(key)[1];
-                BigInteger count1 = transformedMap.getOrDefault(mapsTo_1, BigInteger.ZERO);
-                BigInteger count2 = transformedMap.getOrDefault(mapsTo_2, BigInteger.ZERO);
-                transformedMap.put(mapsTo_1, count1.add(countKey));
-                transformedMap.put(mapsTo_2, count2.add(countKey));
-            } else {
-                transformedMap.put(key, countKey);
-            }
+            String lhsAndInsertion = pairToPairMappings.get(key)[0];
+            BigInteger lhsCount = transformedMap.getOrDefault(lhsAndInsertion, BigInteger.ZERO);
+            transformedMap.put(lhsAndInsertion, lhsCount.add(keyCount));
+
+            String insertionAndRhs = pairToPairMappings.get(key)[1];
+            BigInteger rhsCount = transformedMap.getOrDefault(insertionAndRhs, BigInteger.ZERO);
+            transformedMap.put(insertionAndRhs, rhsCount.add(keyCount));
         }
 
         return transformedMap;
     }
 
-    private Map<String, BigInteger> createFirstMappingWithCount(String line) {
+    private Map<String, BigInteger> buildFirstMappingWithCount(String line) {
         Map<String, BigInteger> map = new HashMap<>();
         for (int i = 0; i < line.length() - 1; i++) {
             String s = line.substring(i, i + 2);
