@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day14Tests {
 
-    private static Map<String, String[]> pairToPairMappings = new HashMap<>();
-
     @Test
     void day14_part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
@@ -57,13 +55,19 @@ public class day14Tests {
     private BigInteger solve(List<String> input, int stepCount) {
         Character veryFirstCharacter = input.get(0).charAt(0);
 
-        Map<String, BigInteger> polymerMap = processInput(input);
-
-        for (int i = 0; i < stepCount; i++) {
-            polymerMap = transform(polymerMap);
+        Map<String, String[]> pairToPairMappings = new HashMap<>();
+        String startTemplate = input.get(0);
+        for (int i1 = 2; i1 < input.size(); i1++) {
+            createInsertions(input.get(i1).split(" -> "), pairToPairMappings);
         }
 
-        Map<Character, BigInteger> characterCount = countCharactersInPolymer(polymerMap, veryFirstCharacter);
+        Map<String, BigInteger> polymerPairCountMap = createFirstMappingWithCount(startTemplate);
+
+        for (int i = 0; i < stepCount; i++) {
+            polymerPairCountMap = transform(polymerPairCountMap, pairToPairMappings);
+        }
+
+        Map<Character, BigInteger> characterCount = countCharactersInPolymer(polymerPairCountMap, veryFirstCharacter);
         return calcMaxMinusMin(characterCount);
     }
 
@@ -87,7 +91,7 @@ public class day14Tests {
         return charMap;
     }
 
-    private Map<String, BigInteger> transform(Map<String, BigInteger> polymerMap) {
+    private Map<String, BigInteger> transform(Map<String, BigInteger> polymerMap, Map<String, String[]> pairToPairMappings) {
         Map<String, BigInteger> transformedMap = new HashMap<>();
 
         for (String key : polymerMap.keySet()) {
@@ -108,15 +112,6 @@ public class day14Tests {
         return transformedMap;
     }
 
-    private Map<String, BigInteger> processInput(List<String> input) {
-        String startTemplate = input.get(0);
-        for (int i = 2; i < input.size(); i++) {
-            createInsertions(input.get(i).split(" -> "));
-        }
-
-        return createFirstMappingWithCount(startTemplate);
-    }
-
     private Map<String, BigInteger> createFirstMappingWithCount(String line) {
         Map<String, BigInteger> map = new HashMap<>();
         for (int i = 0; i < line.length() - 1; i++) {
@@ -127,7 +122,7 @@ public class day14Tests {
         return map;
     }
 
-    private void createInsertions(String[] mappingLine) {
+    private void createInsertions(String[] mappingLine, Map<String, String[]> pairToPairMappings) {
         String lhs = mappingLine[0];
         String rhs = mappingLine[1];
         String[] replace = {lhs.charAt(0) + rhs, rhs + lhs.charAt(1)};
