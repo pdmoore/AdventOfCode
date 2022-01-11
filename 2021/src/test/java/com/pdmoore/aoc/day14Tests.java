@@ -59,7 +59,7 @@ public class day14Tests {
         Map<String, BigInteger> polymerPairCountMap = buildFirstMappingWithCount(polymerTemplate);
 
         for (int i = 0; i < stepCount; i++) {
-            polymerPairCountMap = transform(polymerPairCountMap, pairToPairMappings);
+            polymerPairCountMap = expandPolymerPairs(polymerPairCountMap, pairToPairMappings);
         }
 
         Character veryFirstCharacter = input.get(0).charAt(0);
@@ -95,19 +95,19 @@ public class day14Tests {
         return charMap;
     }
 
-    private Map<String, BigInteger> transform(Map<String, BigInteger> polymerMap, Map<String, String[]> pairToPairMappings) {
+    private Map<String, BigInteger> expandPolymerPairs(Map<String, BigInteger> polymerMap, Map<String, String[]> pairToPairMappings) {
         Map<String, BigInteger> transformedMap = new HashMap<>();
 
         for (String key : polymerMap.keySet()) {
-            BigInteger keyCount = polymerMap.get(key);
+            BigInteger currentKeyCount = polymerMap.get(key);
 
             String lhsAndInsertion = pairToPairMappings.get(key)[0];
             BigInteger lhsCount = transformedMap.getOrDefault(lhsAndInsertion, BigInteger.ZERO);
-            transformedMap.put(lhsAndInsertion, lhsCount.add(keyCount));
+            transformedMap.put(lhsAndInsertion, lhsCount.add(currentKeyCount));
 
             String insertionAndRhs = pairToPairMappings.get(key)[1];
             BigInteger rhsCount = transformedMap.getOrDefault(insertionAndRhs, BigInteger.ZERO);
-            transformedMap.put(insertionAndRhs, rhsCount.add(keyCount));
+            transformedMap.put(insertionAndRhs, rhsCount.add(currentKeyCount));
         }
 
         return transformedMap;
