@@ -18,8 +18,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
         Character veryFirstCharacter = input.get(0).charAt(0);
 
-        Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve(veryFirstCharacter, polymerMap, 10);
+        BigInteger actual = solve2(veryFirstCharacter, input, 10);
 
         BigInteger expected = new BigInteger("1588");
         assertEquals(expected, actual);
@@ -31,8 +30,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
         Character veryFirstCharacter = input.get(0).charAt(0);
 
-        Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve(veryFirstCharacter, polymerMap, 10);
+        BigInteger actual = solve2(veryFirstCharacter, input, 10);
 
         BigInteger expected = new BigInteger("2988");
         assertEquals(expected, actual);
@@ -43,8 +41,7 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
         Character veryFirstCharacter = input.get(0).charAt(0);
 
-        Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve(veryFirstCharacter, polymerMap, 40);
+        BigInteger actual = solve2(veryFirstCharacter, input, 40);
 
         BigInteger expected = new BigInteger("2188189693529");
         assertEquals(expected, actual);
@@ -55,11 +52,15 @@ public class day14Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
         Character veryFirstCharacter = input.get(0).charAt(0);
 
-        Map<String, BigInteger> polymerMap = processInput(input);
-        BigInteger actual = solve(veryFirstCharacter, polymerMap, 40);
+        BigInteger actual = solve2(veryFirstCharacter, input, 40);
 
         BigInteger expected = new BigInteger("3572761917024");
         assertEquals(expected, actual);
+    }
+
+    private BigInteger solve2(Character veryFirstCharacter, List<String> input, int stepCount) {
+        Map<String, BigInteger> polymerMap = processInput(input);
+        return solve(veryFirstCharacter, polymerMap, stepCount);
     }
 
     private BigInteger solve(Character veryFirstCharacter, Map<String, BigInteger> polymerMap, int stepCount) {
