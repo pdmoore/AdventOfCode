@@ -17,7 +17,7 @@ public class day14Tests {
     void day14_part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
-        BigInteger actual = solve2(input, 10);
+        BigInteger actual = solve(input, 10);
 
         BigInteger expected = new BigInteger("1588");
         assertEquals(expected, actual);
@@ -28,7 +28,7 @@ public class day14Tests {
     void day14_part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
-        BigInteger actual = solve2(input, 10);
+        BigInteger actual = solve(input, 10);
 
         BigInteger expected = new BigInteger("2988");
         assertEquals(expected, actual);
@@ -38,7 +38,7 @@ public class day14Tests {
     void day14_part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example");
 
-        BigInteger actual = solve2(input, 40);
+        BigInteger actual = solve(input, 40);
 
         BigInteger expected = new BigInteger("2188189693529");
         assertEquals(expected, actual);
@@ -48,21 +48,17 @@ public class day14Tests {
     void day14_part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14");
 
-        BigInteger actual = solve2(input, 40);
+        BigInteger actual = solve(input, 40);
 
         BigInteger expected = new BigInteger("3572761917024");
         assertEquals(expected, actual);
     }
 
-    private BigInteger solve2(List<String> input, int stepCount) {
+    private BigInteger solve(List<String> input, int stepCount) {
         Character veryFirstCharacter = input.get(0).charAt(0);
 
         Map<String, BigInteger> polymerMap = processInput(input);
-        return solve(veryFirstCharacter, polymerMap, stepCount);
-    }
 
-    private BigInteger solve(Character veryFirstCharacter, Map<String, BigInteger> polymerMap, int stepCount) {
-//TODO - rather than global variables,
         for (int i = 0; i < stepCount; i++) {
             polymerMap = transform(polymerMap);
         }
