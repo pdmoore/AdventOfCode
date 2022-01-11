@@ -52,6 +52,7 @@ public class day14Tests {
         assertEquals(expected, actual);
     }
 
+
     private BigInteger solve(List<String> input, int stepCount) {
         Map<String, String[]> pairToPairMappings = buildPairToPairMappings(input);
 
@@ -70,9 +71,26 @@ public class day14Tests {
     private Map<String, String[]> buildPairToPairMappings(List<String> input) {
         Map<String, String[]> pairToPairMappings = new HashMap<>();
         for (int i = 2; i < input.size(); i++) {
-            createInsertions(input.get(i).split(" -> "), pairToPairMappings);
+            addPairToPairMappingForThisLine(input.get(i).split(" -> "), pairToPairMappings);
         }
         return pairToPairMappings;
+    }
+
+    private void addPairToPairMappingForThisLine(String[] mappingLine, Map<String, String[]> pairToPairMappings) {
+        String lhs = mappingLine[0];
+        String rhs = mappingLine[1];
+        String[] replace = {lhs.charAt(0) + rhs, rhs + lhs.charAt(1)};
+        pairToPairMappings.put(lhs, replace);
+    }
+
+    private Map<String, BigInteger> buildFirstMappingWithCount(String line) {
+        Map<String, BigInteger> map = new HashMap<>();
+        for (int i = 0; i < line.length() - 1; i++) {
+            String s = line.substring(i, i + 2);
+            BigInteger n = map.getOrDefault(s, BigInteger.ZERO);
+            map.put(s, n.add(BigInteger.ONE));
+        }
+        return map;
     }
 
     private BigInteger calcMaxMinusMin(Map<Character, BigInteger> characterCount) {
@@ -111,22 +129,5 @@ public class day14Tests {
         }
 
         return transformedMap;
-    }
-
-    private Map<String, BigInteger> buildFirstMappingWithCount(String line) {
-        Map<String, BigInteger> map = new HashMap<>();
-        for (int i = 0; i < line.length() - 1; i++) {
-            String s = line.substring(i, i + 2);
-            BigInteger n = map.getOrDefault(s, BigInteger.ZERO);
-            map.put(s, n.add(BigInteger.ONE));
-        }
-        return map;
-    }
-
-    private void createInsertions(String[] mappingLine, Map<String, String[]> pairToPairMappings) {
-        String lhs = mappingLine[0];
-        String rhs = mappingLine[1];
-        String[] replace = {lhs.charAt(0) + rhs, rhs + lhs.charAt(1)};
-        pairToPairMappings.put(lhs, replace);
     }
 }
