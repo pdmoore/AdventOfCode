@@ -71,27 +71,27 @@ public class day15Tests {
         private List<Node> gatherUnvisitedNeighbors(Node current) {
             List<Node> neighbors = new LinkedList<>();
 
-            if((current.x-1 > 0 && current.x-1 < cavernMap.length) && cavernMap[current.x-1][current.y] != 0) {
-                int newX = current.x - 1;
-                int newY = current.y;
+            int newX = current.x - 1;
+            int newY = current.y;
+            if((newX > 0 && newX < cavernMap.length) && cavernMap[newX][newY] != 0) {
                 neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
             }
 
-            if((current.x+1 > 0 && current.x+1 < cavernMap.length) && cavernMap[current.x+1][current.y] != 0) {
-                int newX = current.x + 1;
-                int newY = current.y;
+            newX = current.x + 1;
+            newY = current.y;
+            if((newX > 0 && newX < cavernMap.length) && cavernMap[newX][newY] != 0) {
                 neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
             }
 
-            if((current.y-1 > 0 && current.y-1 < cavernMap.length) && cavernMap[current.x][current.y-1] != 0) {
-                int newX = current.x;
-                int newY = current.y - 1;
+            newX = current.x;
+            newY = current.y - 1;
+            if((newY > 0 && newY < cavernMap.length) && cavernMap[newX][newY] != 0) {
                 neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
             }
 
-            if((current.y+1 > 0 && current.y+1 < cavernMap.length) && cavernMap[current.x][current.y+1] != 0) {
-                int newX = current.x;
-                int newY = current.y + 1;
+            newX = current.x;
+            newY = current.y + 1;
+            if((newY > 0 && newY < cavernMap.length) && cavernMap[newX][newY] != 0) {
                 neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
             }
 
