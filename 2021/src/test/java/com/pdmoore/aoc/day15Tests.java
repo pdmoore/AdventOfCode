@@ -55,7 +55,11 @@ public class day15Tests {
                     cavernMap[popped.x][popped.y] = 0;
 
                     List<Node> neighbors = gatherUnvisitedNeighbors(popped);
-                    pq.addAll(neighbors);
+                    for (Node n :
+                            neighbors) {
+                        if (!pq.contains(n)) pq.add(n);
+                    }
+//                    pq.addAll(neighbors);
                 }
             }
 
@@ -111,6 +115,13 @@ public class day15Tests {
             @Override
             public int compareTo(Object o) {
                 return this.totalRiskFromStart - ((Node) o).totalRiskFromStart;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                return this.x == ((Node) o).x &&
+                        this.y == ((Node) o).y;
+
             }
         }
     }
