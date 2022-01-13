@@ -65,7 +65,7 @@ public class day15Tests {
                 }
             }
 
-            return -1;  // this should be an exception - bottom right was never found
+            throw new RuntimeException("Could not find a path to bottom right");
         }
 
         private List<Node> gatherUnvisitedNeighbors(Node current) {
