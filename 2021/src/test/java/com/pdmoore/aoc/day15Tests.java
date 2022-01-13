@@ -56,7 +56,7 @@ public class day15Tests {
                 Node popped = pq.poll();
 
                 if (popped.isBottomRight()) {
-                    return popped.distanceFromStart;
+                    return popped.totalRiskFromStart;
                 } else {
                     cavernMap[popped.x][popped.y] = 0;
 
@@ -74,25 +74,25 @@ public class day15Tests {
             int newX = current.x - 1;
             int newY = current.y;
             if((newX > 0 && newX < cavernMap.length) && cavernMap[newX][newY] != 0) {
-                neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
+                neighbors.add(new Node(newX, newY, current.totalRiskFromStart + cavernMap[newX][newY]));
             }
 
             newX = current.x + 1;
             newY = current.y;
             if((newX > 0 && newX < cavernMap.length) && cavernMap[newX][newY] != 0) {
-                neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
+                neighbors.add(new Node(newX, newY, current.totalRiskFromStart + cavernMap[newX][newY]));
             }
 
             newX = current.x;
             newY = current.y - 1;
             if((newY > 0 && newY < cavernMap.length) && cavernMap[newX][newY] != 0) {
-                neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
+                neighbors.add(new Node(newX, newY, current.totalRiskFromStart + cavernMap[newX][newY]));
             }
 
             newX = current.x;
             newY = current.y + 1;
             if((newY > 0 && newY < cavernMap.length) && cavernMap[newX][newY] != 0) {
-                neighbors.add(new Node(newX, newY, current.distanceFromStart + cavernMap[newX][newY]));
+                neighbors.add(new Node(newX, newY, current.totalRiskFromStart + cavernMap[newX][newY]));
             }
 
             return neighbors;
@@ -102,12 +102,12 @@ public class day15Tests {
         class Node implements Comparable {
             int x;
             int y;
-            int distanceFromStart;
+            int totalRiskFromStart;
 
-            Node(int x, int y, int distanceFromStart) {
+            Node(int x, int y, int totalRiskFromStart) {
                 this.x = x;
                 this.y = y;
-                this.distanceFromStart = distanceFromStart;
+                this.totalRiskFromStart = totalRiskFromStart;
             }
 
             public boolean isBottomRight() {
@@ -116,7 +116,7 @@ public class day15Tests {
 
             @Override
             public int compareTo(Object o) {
-                return this.distanceFromStart - ((Node) o).distanceFromStart;
+                return this.totalRiskFromStart - ((Node) o).totalRiskFromStart;
             }
         }
     }
