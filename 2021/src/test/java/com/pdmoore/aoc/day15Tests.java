@@ -1,10 +1,12 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,6 +23,7 @@ public class day15Tests {
     }
 
     @Test
+    @Timeout(value = 8, unit = TimeUnit.SECONDS)
     void day15_part1() {
         int[][] input = PuzzleInput.as2dIntArray("data/day15");
 
@@ -113,8 +116,7 @@ public class day15Tests {
 
             @Override
             public int compareTo(Object o) {
-                Integer thisDistance = Integer.valueOf(distanceFromStart);
-                return thisDistance.compareTo(((Node) o).distanceFromStart);
+                return this.distanceFromStart - ((Node) o).distanceFromStart;
             }
         }
     }
