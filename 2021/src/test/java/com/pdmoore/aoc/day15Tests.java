@@ -30,20 +30,14 @@ public class day15Tests {
         CavernMap sut = new CavernMap(input);
         int actual = sut.findLowestRiskPath();
 
-        // Current impl takes 10 seconds
         assertEquals(441, actual);
     }
 
     private class CavernMap {
         private final int[][] cavernMap;
-        private final Point starting;
-        private final Point ending;
-        private int lowestRiskTotal;
 
         public CavernMap(int[][] input) {
             this.cavernMap = input;
-            starting = new Point(0, 0);
-            ending = new Point(cavernMap.length - 1, cavernMap.length - 1);
         }
 
         public int findLowestRiskPath() {
