@@ -45,6 +45,21 @@ public class day15Tests {
     }
 
     @Test
+    void day15_part2_expansion() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day15");
+        int[][] fiveTimes = expandInput(input);
+
+        assertEquals(3, fiveTimes[99][99]);
+        assertEquals(4, fiveTimes[99][199]);
+        assertEquals(5, fiveTimes[99][299]);
+        assertEquals(6, fiveTimes[99][399]);
+        assertEquals(7, fiveTimes[99][499]);
+
+        assertEquals(2, fiveTimes[499][499]);
+    }
+
+    @Test
+    @Timeout(value = 500, unit = TimeUnit.MILLISECONDS)
     void day15_part2() {
         int[][] input = PuzzleInput.as2dIntArray("data/day15");
         int[][] fiveTimes = expandInput(input);
@@ -52,8 +67,7 @@ public class day15Tests {
         CavernMap sut = new CavernMap(fiveTimes);
         int actual = sut.findLowestRiskPath();
 
-        // gives 2045 - too low
-        assertEquals(-99, actual);
+        assertEquals(2849, actual);
     }
 
     private class CavernMap {
@@ -78,12 +92,13 @@ public class day15Tests {
                     cavernMap[popped.x][popped.y] = 0;
 
                     List<Node> neighbors = gatherUnvisitedNeighbors(popped);
+                    
                     // Works for part 1, well under a second
                     for (Node n :
                             neighbors) {
                         if (!pq.contains(n)) pq.add(n);
                     }
-                    // Following works, takes around 8 seconds for part1
+                    // Following works for part 1, takes around 8 seconds for part1
 //                    pq.addAll(neighbors);
                 }
             }
@@ -170,13 +185,12 @@ public class day15Tests {
             for (int x = 0; x < input.length; x++) {
                 for (int y = 0; y < input.length; y++) {
                     int newX = x;
-                    int newY = y + input.length + (across * 10);
+                    int newY = y + input.length + (across * input.length);
 
                     expanded[newX][newY] = Math.max(1, ((expanded[newX][newY - input.length]) + 1) % 10);
                 }
             }
         }
-
 
         // down the columns, and across the rows, copy from the one immediately above
         // do this 4 times
@@ -196,7 +210,6 @@ public class day15Tests {
                 }
             }
         }
-
 
         return expanded;
     }
