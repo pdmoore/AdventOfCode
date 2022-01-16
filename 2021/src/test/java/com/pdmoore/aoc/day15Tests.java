@@ -72,8 +72,10 @@ public class day15Tests {
 
     //TODO - future me --
     // Current impl expands the initial input map into a bigger 5x sized array.
-    // Could dyanimcally calculate the nighbor value based on the offset from the
+    // Could dynamically calculate the neighbor value based on the offset from the
     // current location and the initial input value
+    // Try to do for one of the directions (up/down/left/right) and incrementally remove need
+    // for the expansion
 
     private class CavernMap {
         private final int[][] cavernMap;
