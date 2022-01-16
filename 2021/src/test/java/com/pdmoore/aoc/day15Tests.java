@@ -70,6 +70,11 @@ public class day15Tests {
         assertEquals(2849, actual);
     }
 
+    //TODO - future me --
+    // Current impl expands the initial input map into a bigger 5x sized array.
+    // Could dyanimcally calculate the nighbor value based on the offset from the
+    // current location and the initial input value
+
     private class CavernMap {
         private final int[][] cavernMap;
 
@@ -78,9 +83,8 @@ public class day15Tests {
         }
 
         public int findLowestRiskPath() {
-            Node startingPoint = new Node(0, 0, 0);
-
             PriorityQueue<Node> pq = new PriorityQueue<>();
+            Node startingPoint = new Node(0, 0, 0);
             pq.add(startingPoint);
 
             while (!pq.isEmpty()) {
@@ -92,13 +96,12 @@ public class day15Tests {
                     cavernMap[popped.x][popped.y] = 0;
 
                     List<Node> neighbors = gatherUnvisitedNeighbors(popped);
-                    
-                    // Works for part 1, well under a second
+
                     for (Node n :
                             neighbors) {
                         if (!pq.contains(n)) pq.add(n);
                     }
-                    // Following works for part 1, takes around 8 seconds for part1
+                    // Following works for part 1, takes around 8 seconds
 //                    pq.addAll(neighbors);
                 }
             }
@@ -186,17 +189,14 @@ public class day15Tests {
                 for (int y = 0; y < input.length; y++) {
                     int newX = x;
                     int newY = y + input.length + (across * input.length);
-
                     expanded[newX][newY] = Math.max(1, ((expanded[newX][newY - input.length]) + 1) % 10);
                 }
             }
         }
 
         // down the columns, and across the rows, copy from the one immediately above
-        // do this 4 times
         int downOffset = input.length;
-        for (int down = 1; down < 5; down++) {
-
+        for (int down = 1; down <= 4; down++) {
             downOffset = down * input.length;
 
             for (int across = 0; across <= 4; across++) {
@@ -204,7 +204,6 @@ public class day15Tests {
                     for (int y = 0; y < input.length; y++) {
                         int newX = x + downOffset;
                         int newY = y + (across * input.length);
-
                         expanded[newX][newY] = Math.max(1, ((expanded[newX - input.length][newY]) + 1) % 10);
                     }
                 }
