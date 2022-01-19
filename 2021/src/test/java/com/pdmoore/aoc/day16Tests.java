@@ -225,10 +225,10 @@ VVVTTTAAAAABBBBBCCCCC
 
                 int version = Integer.parseInt(binaryString.substring(index, index + 3), 2);
                 int typeID = Integer.parseInt(binaryString.substring(index + 3, index + 6), 2);
+                index += 6;
 
                 if (typeID == 4) {
                     //Literal value
-                    index += 6;
 
                     StringBuilder literalString = new StringBuilder();
                     boolean leadCharacterIsOne;
@@ -236,11 +236,8 @@ VVVTTTAAAAABBBBBCCCCC
                         String group = binaryString.substring(index, index + 5);
                         literalString.append(group, 1, 5);
                         leadCharacterIsOne = group.charAt(0) == '1';
-//                        if (!leadCharacterIsOne) {
                         index += 5;
-//                        }
                     } while (leadCharacterIsOne);
-//                    index += 5;
 
                     int literalValue = Integer.parseInt(literalString.toString(), 2);
 
@@ -256,22 +253,22 @@ VVVTTTAAAAABBBBBCCCCC
 
                     // Operator packet
                     // contains hierarchy of sub-packets
-                    String lengthTypeId = binaryString.substring(6, 7);   // really want a single 0 or 1
+                    String lengthTypeId = binaryString.substring(index, index + 1);   // really want a single 0 or 1
+                    index += 1;
 
                     if (lengthTypeId.equals("0")) {
                         // next 15 bits represent the total length in bits of the sub-packets contained by this packet
                         // sub-packets appear after the 15 bits
-                        String substring = binaryString.substring(7, 22);
+                        String substring = binaryString.substring(index, index + 15);
                         int length = Integer.parseInt(substring, 2);
+                        index += 15;
 
-                        String nextPackets = binaryString.substring(22, 22 + length);
-                        // assuming it's always 2 packets - create a method that takes this as input and returns 2 packets
-                        // except it could be another operator packet
-                        // 110 100 01010
-                        // 010 100 10001 00100
+                        String nextPackets = binaryString.substring(index, index + length);
+                        index += length;
+
                         Message operands = new Message(nextPackets, true);
                         packets.addAll(operands.packets);
-                        index += (22 + length);
+
                     } else if (lengthTypeId.equals("1")) {
                         // next 11 bits represent the number of sub-packets immediately contained in this packet
                         // sub-packets appear after the 11 bits
