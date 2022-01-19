@@ -65,6 +65,15 @@ VVVTTTAAAAABBBBBCCCCC
         assertEquals(2021, actual.literalValue);
     }
 
+    @Test
+    void part1_sumVersions_SingleLiteral() {
+        String input = "D2FE28";
+
+        Message actual = new Message(input);
+
+        assertEquals(6, actual.sumOfVersions());
+    }
+
     //TODO - parse some of the operator examples
     @Test
     void part1_decode_operator_LengthType0() {
@@ -86,7 +95,7 @@ VVVTTTAAAAABBBBBCCCCC
 
         Message actual = new Message(input);
 
-        assertEquals(27, actual.packets.size());
+        assertEquals(3, actual.packets.size());
     }
 
     @Test
@@ -203,29 +212,43 @@ VVVTTTAAAAABBBBBCCCCC
         private void decodePackets() {
             int index = 0;
 
-            int version = Integer.parseInt(binaryString.substring(0, 3), 2);
-            int typeID = Integer.parseInt(binaryString.substring(3, 6), 2);
+            while (index < binaryString.length()) {
 
-            if (typeID == 4) {
-                //Literal value
-                int pos = 6;
+                int version = Integer.parseInt(binaryString.substring(index, index + 3), 2);
+                int typeID = Integer.parseInt(binaryString.substring(index + 3, index + 6), 2);
 
-                StringBuilder literalString = new StringBuilder();
-                boolean leadCharacterIsOne;
-                do {
-                    String group = binaryString.substring(pos, pos + 5);
-                    literalString.append(group.substring(1, 5));
-                    leadCharacterIsOne = group.charAt(0) == '1';
-                    pos += 5;
-                } while (leadCharacterIsOne);
+                if (typeID == 4) {
+                    //Literal value
+                    index += 6;
 
-                int literalValue = Integer.parseInt(literalString.toString(), 2);
+                    StringBuilder literalString = new StringBuilder();
+                    boolean leadCharacterIsOne;
+                    do {
+                        String group = binaryString.substring(index, index + 5);
+                        literalString.append(group, 1, 5);
+                        leadCharacterIsOne = group.charAt(0) == '1';
+                        index += 5;
+                    } while (leadCharacterIsOne);
+                    index += 5;
 
-                Packet p = new Packet(version, typeID, literalValue);
-                packets.add(p);
+                    int literalValue = Integer.parseInt(literalString.toString(), 2);
+
+                    Packet p = new Packet(version, typeID, literalValue);
+                    packets.add(p);
+                } else {
+
+                }
             }
 
+        }
 
+        public int sumOfVersions() {
+            int sum = 0;
+            for (Packet p:
+                 packets) {
+                sum += p.version;
+            }
+            return sum;
         }
     }
 }
