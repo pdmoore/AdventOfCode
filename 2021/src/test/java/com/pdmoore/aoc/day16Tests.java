@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -243,12 +244,9 @@ VVVTTTAAAAABBBBBCCCCC
         }
 
         public int sumOfVersions() {
-            int sum = 0;
-            for (Packet p:
-                 packets) {
-                sum += p.version;
-            }
-            return sum;
+            return packets.stream()
+                    .map(p -> p.version)
+                    .collect(Collectors.summingInt(Integer::intValue));
         }
     }
 }
