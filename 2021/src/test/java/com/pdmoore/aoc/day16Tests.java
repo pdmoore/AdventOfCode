@@ -170,7 +170,6 @@ VVVTTTAAAAABBBBBCCCCC
         }
     }
 
-    //total length
     public Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
         Operator outp = new Operator();
         outp.version = version;
@@ -187,6 +186,8 @@ VVVTTTAAAAABBBBBCCCCC
         }
 
         outp.packets = packetlist.toArray(new Packet[0]);
+        outp.packetList = new ArrayList<>();
+        outp.packetList.addAll(packetlist);
         outp.len = 7 + 15 + packetslen;
 
         return outp;
@@ -202,9 +203,13 @@ VVVTTTAAAAABBBBBCCCCC
         int packetcount = Integer.parseInt(bin.substring(7, 7 + 11), 2);
         int packetcursor = 0;
         outp.packets = new Packet[packetcount];
+        outp.packetList = new ArrayList<>();
         for (int i = 0; i < packetcount; i++) {
-            outp.packets[i] = PacketDecoder(bin.substring(packetcursor + 7 + 11));
-            packetcursor += outp.packets[i].len;
+            Packet packet = PacketDecoder(bin.substring(packetcursor + 7 + 11));
+            outp.packets[i] = packet;
+            outp.packetList.add(packet);
+//            packetcursor += outp.packets[i].len;
+            packetcursor += packet.len;
         }
 
         outp.len = 7 + 11 + packetcursor;
@@ -214,14 +219,14 @@ VVVTTTAAAAABBBBBCCCCC
 
     class Operator extends Packet {
         Packet[] packets;
+        List<Packet> packetList;
 
         @Override
         public int sumOfVersions() {
-            int sum = 0;
-            for (Packet packet : packets) {
-                sum += packet.sumOfVersions();
-            }
-            return sum + version;
+            int subPacketSum = packetList.stream()
+                    .map(p -> p.sumOfVersions())
+                    .collect(Collectors.summingInt(Integer::intValue));
+            return subPacketSum + version;
         }
     }
 
@@ -241,13 +246,6 @@ VVVTTTAAAAABBBBBCCCCC
 
             outermostPacket = PacketDecoder(binaryString);
         }
-
-        public int sumOfVersions() {
-            return packets.stream()
-                    .map(p -> p.version)
-                    .collect(Collectors.summingInt(Integer::intValue));
-        }
-
     }
 
 }
