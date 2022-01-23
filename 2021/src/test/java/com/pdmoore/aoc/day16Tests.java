@@ -104,11 +104,10 @@ VVVTTTAAAAABBBBBCCCCC
 
 
     @Test
-    @Disabled
     void part1_versionSums_examples() {
         assertEquals(16, new Message("8A004A801A8002F478").sumOfVersions());
-//        assertEquals(23, new Message("C0015000016115A2E0802F182340").sumOfVersions());
-//        assertEquals(31, new Message("A0016C880162017C3686B18A3D4780").sumOfVersions());
+        assertEquals(23, new Message("C0015000016115A2E0802F182340").sumOfVersions());
+        assertEquals(31, new Message("A0016C880162017C3686B18A3D4780").sumOfVersions());
     }
 
     private class Packet {
@@ -157,7 +156,7 @@ VVVTTTAAAAABBBBBCCCCC
             packets = new ArrayList<>();
             this.packetLimit = numPackets;
             this.binaryString = binaryString;
-            
+
             decodePackets();
         }
 
