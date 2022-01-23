@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -106,7 +105,6 @@ VVVTTTAAAAABBBBBCCCCC
         assertEquals(31, new Message("A0016C880162017C3686B18A3D4780").outermostPacket.sumOfVersions());
     }
 
-
     @Test
     void part1_solution() {
         String input = PuzzleInput.asStringFrom("data/day16");
@@ -137,17 +135,16 @@ VVVTTTAAAAABBBBBCCCCC
         }
     }
 
-    Literal LiteralDecoder(int version, String bin) {
-        Literal result = new Literal();
-        result.version = version;
+    Literal LiteralDecoder(int version, String binaryString) {
+        Literal result = new Literal(version);
 
         StringBuilder builder = new StringBuilder();
         int i = 6;
-        while (bin.charAt(i) == '1') {
-            builder.append(bin.substring(i + 1, i + 5));
+        while (binaryString.charAt(i) == '1') {
+            builder.append(binaryString.substring(i + 1, i + 5));
             i += 5;
         }
-        builder.append(bin.substring(i + 1, i + 5));
+        builder.append(binaryString.substring(i + 1, i + 5));
         result.value = Long.parseLong(builder.toString(), 2);
 
         result.len = 6 + i - 1;
@@ -158,21 +155,23 @@ VVVTTTAAAAABBBBBCCCCC
     class Literal extends Packet {
         long value;
 
-        public Literal() {
+        public Literal(int version) {
             this.typeID = 4;
+            this.version = version;
         }
     }
 
-    Operator OperatorDecoder(int version, int typeID, String binaryString) {
-        if (binaryString.charAt(6) == '0') {
-            return fifteenBit(version, typeID, binaryString);
+    Operator OperatorDecoder(int version, int operatorID, String binaryString) {
+        char lengthTypeID = binaryString.charAt(6);
+        if (lengthTypeID == '0') {
+            return packetsByTotalLengthInBits(version, operatorID, binaryString);
         } else {
-            return elevenBit(version, typeID, binaryString);
+            return packetsByNumberOfPackets(version, operatorID, binaryString);
         }
     }
 
     //total length
-    public Operator fifteenBit(int version, int typeID, String bin) {
+    public Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
         Operator outp = new Operator();
         outp.version = version;
         outp.typeID = typeID;
@@ -194,7 +193,7 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     //number of sub-packets
-    public Operator elevenBit(int version, int typeID, String bin) {
+    public Operator packetsByNumberOfPackets(int version, int typeID, String bin) {
         Operator outp = new Operator();
         outp.version = version;
         outp.typeID = typeID;
@@ -214,9 +213,7 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     class Operator extends Packet {
-//        int typeID;
         Packet[] packets;
-
 
         @Override
         public int sumOfVersions() {
@@ -228,17 +225,13 @@ VVVTTTAAAAABBBBBCCCCC
         }
     }
 
-
     private class Message {
-//        private int packetLimit;
         private String binaryString;
         public List<Packet> packets;
-//        private int subPacketsLength;
         Packet outermostPacket;
 
         public Message(String input) {
             packets = new ArrayList<>();
-//            packetLimit = Integer.MAX_VALUE;
             binaryString = new BigInteger(input, 16).toString(2);
 
             int fourBits = binaryString.length() % 4;
@@ -246,116 +239,13 @@ VVVTTTAAAAABBBBBCCCCC
                 binaryString = "0" + binaryString;
             }
 
-//            decodePackets();
             outermostPacket = PacketDecoder(binaryString);
         }
-
-//        public Message(String binaryString, boolean b) {
-//            packets = new ArrayList<>();
-//            packetLimit = Integer.MAX_VALUE;
-//
-//            this.binaryString = binaryString;
-//
-//            decodePackets();
-//        }
-
-//        public Message(String binaryString, int numPackets) {
-//            packets = new ArrayList<>();
-//            this.packetLimit = numPackets;
-//            this.binaryString = binaryString;
-//
-//            decodePackets();
-//        }
 
         public int sumOfVersions() {
             return packets.stream()
                     .map(p -> p.version)
                     .collect(Collectors.summingInt(Integer::intValue));
-        }
-
-        private void decodePackets() {
-//            int index = 0;
-//
-//            while (index < binaryString.length()) {
-//
-//                int version = Integer.parseInt(binaryString.substring(index, index + 3), 2);
-//                int typeID = Integer.parseInt(binaryString.substring(index + 3, index + 6), 2);
-//                index += 6;
-//
-//                if (typeID == 4) {
-//                    //Literal value
-//
-//                    StringBuilder literalString = new StringBuilder();
-//                    boolean leadCharacterIsOne;
-//                    do {
-//                        String group = binaryString.substring(index, index + 5);
-//                        literalString.append(group, 1, 5);
-//                        leadCharacterIsOne = group.charAt(0) == '1';
-//                        index += 5;
-//                    } while (leadCharacterIsOne);
-//
-//                    int literalValue = Integer.parseInt(literalString.toString(), 2);
-//
-//                    Packet p = new Packet(version, typeID, literalValue);
-//                    packets.add(p);
-//                } else {
-//
-//                    // Operator packet
-//                    // contains hierarchy of sub-packets
-//                    String lengthTypeId = binaryString.substring(index, index + 1);   // really want a single 0 or 1
-//                    index += 1;
-//
-//                    //TODO bring down the Operator logic and then should be set up to already loop through
-//                    // the next operands
-//                    // TODO add the operand, maybe new ctor to specify type 0 or 1
-//                    Packet p = new Packet(version, typeID, 99);
-//                    p.lengthTypeId = Integer.parseInt(lengthTypeId);
-//                    packets.add(p);
-//
-//                    if (lengthTypeId.equals("0")) {
-//                        // next 15 bits represent the total length in bits of the sub-packets contained by this packet
-//                        // sub-packets appear after the 15 bits
-//                        String substring = binaryString.substring(index, index + 15);
-//                        int length = Integer.parseInt(substring, 2);
-//                        index += 15;
-//
-//                        String nextPackets = binaryString.substring(index, index + length);
-//                        index += length;
-//
-//                        Message operands = new Message(nextPackets, true);
-//                        packets.addAll(operands.packets);
-//
-//                    } else if (lengthTypeId.equals("1")) {
-//                        // next 11 bits represent the number of sub-packets immediately contained in this packet
-//                        // sub-packets appear after the 11 bits
-//                        String substring = binaryString.substring(index, index + 11);
-//                        int numPackets = Integer.parseInt(substring, 2);
-//                        index += 11;
-//
-//                        //TODO - Crap - how to know how many bits to jump ahead???
-//                        // well, if they are literal, it's 11 times the # of packets
-//                        // but you know the real data will be packets inside packets....
-//                        String remainderOfThisMessage = binaryString.substring(index);
-//
-//                        Message subPackets = new Message(remainderOfThisMessage, numPackets);
-//                        packets.addAll(subPackets.packets);
-//                        index += subPackets.subPacketsLength;
-//                    } else {
-//                        throw new UnsupportedOperationException("unknown length type ID " + lengthTypeId);
-//                    }
-//                }
-//
-//                // TODO check for any extra zeros at tend
-//                // for now just bailing if there aren't enough bits for version & typeID & more
-//                if (index >= binaryString.length() - 7) {
-//                    index = binaryString.length();
-//                }
-//
-//                if (packets.size() >= packetLimit) {
-//                    subPacketsLength = index;
-//                    return;
-//                }
-//            }
         }
 
     }
