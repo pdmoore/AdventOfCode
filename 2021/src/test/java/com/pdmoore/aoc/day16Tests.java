@@ -231,13 +231,10 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     private class Message {
-        private String binaryString;
-        public List<Packet> packets;
         Packet outermostPacket;
 
         public Message(String input) {
-            packets = new ArrayList<>();
-            binaryString = new BigInteger(input, 16).toString(2);
+            String binaryString = new BigInteger(input, 16).toString(2);
 
             int fourBits = binaryString.length() % 4;
             for (int i = 0; i < fourBits; i++) {
