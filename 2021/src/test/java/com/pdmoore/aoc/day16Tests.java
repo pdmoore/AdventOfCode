@@ -126,8 +126,10 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     private class Message {
+        private int packetLimit;
         private String binaryString;
         public List<Packet> packets;
+        private int subPacketsLength;
 
         public Message(String input) {
             packets = new ArrayList<>();
@@ -145,6 +147,16 @@ VVVTTTAAAAABBBBBCCCCC
             packets = new ArrayList<>();
 
             this.binaryString = binaryString;
+
+            decodePackets();
+        }
+
+        public Message(String binaryString, int numPackets) {
+            packets = new ArrayList<>();
+
+            this.binaryString = binaryString;
+
+            this.packetLimit = numPackets;
 
             decodePackets();
         }
@@ -217,7 +229,11 @@ VVVTTTAAAAABBBBBCCCCC
                         //TODO - Crap - how to know how many bits to jump ahead???
                         // well, if they are literal, it's 11 times the # of packets
                         // but you know the real data will be packets inside packets....
-                        index = binaryString.length();
+                        String remainderOfThisMessage = binaryString.substring(index);
+
+                        Message subPackets = new Message(remainderOfThisMessage, numPackets);
+                        packets.addAll(subPackets.packets);
+                        index += subPackets.subPacketsLength;
                     } else {
                         throw new UnsupportedOperationException("unknown length type ID " + lengthTypeId);
                     }
@@ -227,6 +243,11 @@ VVVTTTAAAAABBBBBCCCCC
                 // for now just bailing if there aren't enough bits for version & typeID & more
                 if (index >= binaryString.length() - 7) {
                     index = binaryString.length();
+                }
+
+                if (packets.size() >= packetLimit) {
+                    subPacketsLength = index;
+                    return;
                 }
             }
         }
