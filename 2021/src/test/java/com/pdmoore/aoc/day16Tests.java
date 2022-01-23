@@ -133,6 +133,7 @@ VVVTTTAAAAABBBBBCCCCC
 
         public Message(String input) {
             packets = new ArrayList<>();
+            packetLimit = Integer.MAX_VALUE;
             binaryString = new BigInteger(input, 16).toString(2);
 
             int fourBits = binaryString.length() % 4;
@@ -145,6 +146,7 @@ VVVTTTAAAAABBBBBCCCCC
 
         public Message(String binaryString, boolean b) {
             packets = new ArrayList<>();
+            packetLimit = Integer.MAX_VALUE;
 
             this.binaryString = binaryString;
 
@@ -153,11 +155,9 @@ VVVTTTAAAAABBBBBCCCCC
 
         public Message(String binaryString, int numPackets) {
             packets = new ArrayList<>();
-
-            this.binaryString = binaryString;
-
             this.packetLimit = numPackets;
-
+            this.binaryString = binaryString;
+            
             decodePackets();
         }
 
