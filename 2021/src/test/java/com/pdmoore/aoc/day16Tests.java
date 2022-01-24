@@ -114,6 +114,16 @@ public class day16Tests {
 
         assertEquals(7, actual);
     }
+
+    @Test
+    void part2_maximum() {
+        String input = "CE00C43D881120";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(9, actual);
+    }
 }
 
 class Message {
@@ -237,7 +247,8 @@ class Operator extends Packet {
         int value = switch (typeID) {
             case 0 -> sumOfOperands();
             case 1 -> productOfOperands();
-            case 2 -> minimumOfOperads();
+            case 2 -> minimumOfOperands();
+            case 3 -> maximumOfOperands();
             default -> throw new UnsupportedOperationException("unknown typeID: " + typeID);
         };
 
@@ -256,10 +267,16 @@ class Operator extends Packet {
                 .reduce(1, (a, b) -> a * b);
     }
 
-    private int minimumOfOperads() {
+    private int minimumOfOperands() {
         return packetList.stream()
                 .map(p -> p.value())
                 .min(Integer::compare).get();
+    }
+
+    private int maximumOfOperands() {
+        return packetList.stream()
+                .map(p -> p.value())
+                .max(Integer::compare).get();
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
