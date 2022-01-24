@@ -134,6 +134,16 @@ public class day16Tests {
 
         assertEquals(0, actual);
     }
+
+    @Test
+    void part2_lessThan() {
+        String input = "D8005AC2A8F0";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(1, actual);
+    }
 }
 
 class Message {
@@ -260,6 +270,7 @@ class Operator extends Packet {
             case 2 -> minimumOfOperands();
             case 3 -> maximumOfOperands();
             case 5 -> greaterThan();
+            case 6 -> lessThan();
             default -> throw new UnsupportedOperationException("unknown typeID: " + typeID);
         };
 
@@ -296,7 +307,14 @@ class Operator extends Packet {
         }
         return 0;
     }
-    
+
+    private int lessThan() {
+        if (packetList.get(0).value() < packetList.get(1).value()) {
+            return 1;
+        }
+        return 0;
+    }
+
     static Operator decode(int version, int operatorID, String binaryString) {
         char lengthTypeID = binaryString.charAt(6);
         Operator operatorPacket = new Operator(version, operatorID, lengthTypeID);
