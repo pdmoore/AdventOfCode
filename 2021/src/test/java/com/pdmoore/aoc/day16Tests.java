@@ -104,6 +104,16 @@ public class day16Tests {
 
         assertEquals(54, actual);
     }
+
+    @Test
+    void part2_minimum() {
+        String input = "880086C3E88112";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(7, actual);
+    }
 }
 
 class Message {
@@ -227,6 +237,7 @@ class Operator extends Packet {
         int value = switch (typeID) {
             case 0 -> sumOfOperands();
             case 1 -> productOfOperands();
+            case 2 -> minimumOfOperads();
             default -> throw new UnsupportedOperationException("unknown typeID: " + typeID);
         };
 
@@ -247,6 +258,12 @@ class Operator extends Packet {
         return valueSumOfPackets;
     }
 
+    private int minimumOfOperads() {
+        int minimumOfPackets = packetList.stream()
+                .map(p -> p.value())
+                .min(Integer::compare).get();
+        return minimumOfPackets;
+    }
 
     static Operator decode(int version, int operatorID, String binaryString) {
         char lengthTypeID = binaryString.charAt(6);
