@@ -124,6 +124,25 @@ VVVTTTAAAAABBBBBCCCCC
         }
     }
 
+    private class Message {
+        Packet outermostPacket;
+
+        public Message(String hexString) {
+            String binaryString = convertToPaddedBinaryString(hexString);
+            outermostPacket = PacketDecoder(binaryString);
+        }
+
+        private String convertToPaddedBinaryString(String hexString) {
+            String binaryString = new BigInteger(hexString, 16).toString(2);
+
+            int fourBits = binaryString.length() % 4;
+            for (int i = 0; i < fourBits; i++) {
+                binaryString = "0" + binaryString;
+            }
+            return binaryString;
+        }
+    }
+
     class Packet {
         public int version;
         public int typeID;
@@ -131,6 +150,32 @@ VVVTTTAAAAABBBBBCCCCC
 
         public int sumOfVersions() {
             return version;
+        }
+    }
+
+    class Literal extends Packet {
+        long value;
+
+        public Literal(int version) {
+            this.typeID = 4;
+            this.version = version;
+        }
+    }
+
+    class Operator extends Packet {
+        List<Packet> packetList;
+        public int lengthTypeId;
+
+        public Operator() {
+            this.packetList = new ArrayList<>();
+        }
+
+        @Override
+        public int sumOfVersions() {
+            int subPacketSum = packetList.stream()
+                    .map(p -> p.sumOfVersions())
+                    .collect(Collectors.summingInt(Integer::intValue));
+            return subPacketSum + this.version;
         }
     }
 
@@ -149,15 +194,6 @@ VVVTTTAAAAABBBBBCCCCC
         result.packetLength = 6 + i - 1;
 
         return result;
-    }
-
-    class Literal extends Packet {
-        long value;
-
-        public Literal(int version) {
-            this.typeID = 4;
-            this.version = version;
-        }
     }
 
     Operator OperatorDecoder(int version, int operatorID, String binaryString) {
@@ -207,42 +243,6 @@ VVVTTTAAAAABBBBBCCCCC
         operatorPacket.packetLength = 7 + 11 + parseIndex;
 
         return operatorPacket;
-    }
-
-    class Operator extends Packet {
-        List<Packet> packetList;
-        public int lengthTypeId;
-
-        public Operator() {
-            this.packetList = new ArrayList<>();
-        }
-
-        @Override
-        public int sumOfVersions() {
-            int subPacketSum = packetList.stream()
-                    .map(p -> p.sumOfVersions())
-                    .collect(Collectors.summingInt(Integer::intValue));
-            return subPacketSum + version;
-        }
-    }
-
-    private class Message {
-        Packet outermostPacket;
-
-        public Message(String hexString) {
-            String binaryString = convertToPaddedBinaryString(hexString);
-            outermostPacket = PacketDecoder(binaryString);
-        }
-
-        private String convertToPaddedBinaryString(String hexString) {
-            String binaryString = new BigInteger(hexString, 16).toString(2);
-
-            int fourBits = binaryString.length() % 4;
-            for (int i = 0; i < fourBits; i++) {
-                binaryString = "0" + binaryString;
-            }
-            return binaryString;
-        }
     }
 
 }
