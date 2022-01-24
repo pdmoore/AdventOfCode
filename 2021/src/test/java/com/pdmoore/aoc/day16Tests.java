@@ -81,7 +81,7 @@ VVVTTTAAAAABBBBBCCCCC
 
         assertEquals(1, actual.version);
         assertEquals(6, actual.typeID);
-        assertEquals(0, actual.lengthTypeId);
+        assertEquals(0, ((Operator)actual).lengthTypeId);
     }
 
     @Test
@@ -93,7 +93,7 @@ VVVTTTAAAAABBBBBCCCCC
 
         assertEquals(7, actual.version);
         assertEquals(3, actual.typeID);
-        assertEquals(1, actual.lengthTypeId);
+        assertEquals(1, ((Operator)actual).lengthTypeId);
 
         assertEquals(14, actual.sumOfVersions());
     }
@@ -127,7 +127,6 @@ VVVTTTAAAAABBBBBCCCCC
     class Packet {
         public int version;
         public int typeID;
-        public int lengthTypeId;
         int packetLength;
 
         public int sumOfVersions() {
@@ -212,6 +211,7 @@ VVVTTTAAAAABBBBBCCCCC
 
     class Operator extends Packet {
         List<Packet> packetList;
+        public int lengthTypeId;
 
         public Operator() {
             this.packetList = new ArrayList<>();
