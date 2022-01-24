@@ -183,13 +183,13 @@ class Operator extends Packet {
         }
     }
 
-    public static Operator packetsByTotalLengthInBits(Operator operatorPacket, String bin) {
+    public static Operator packetsByTotalLengthInBits(Operator operatorPacket, String binaryString) {
         List<Packet> subPacketlist = new ArrayList<>();
 
-        int packetsTotalLength = Integer.parseInt(bin.substring(7, 7 + 15), 2);
+        int packetsTotalLength = Integer.parseInt(binaryString.substring(7, 7 + 15), 2);
         int parseIndex = 0;
         while (parseIndex < packetsTotalLength) {
-            Packet p = Packet.decode(bin.substring(parseIndex + 7 + 15));
+            Packet p = Packet.decode(binaryString.substring(parseIndex + 7 + 15));
             parseIndex += p.packetLength;
             subPacketlist.add(p);
         }
@@ -213,5 +213,4 @@ class Operator extends Packet {
 
         return operatorPacket;
     }
-
 }
