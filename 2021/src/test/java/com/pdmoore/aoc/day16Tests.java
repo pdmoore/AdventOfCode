@@ -185,7 +185,6 @@ VVVTTTAAAAABBBBBCCCCC
             packetlist.add(p);
         }
 
-        outp.packets = packetlist.toArray(new Packet[0]);
         outp.packetList = new ArrayList<>();
         outp.packetList.addAll(packetlist);
         outp.len = 7 + 15 + packetslen;
@@ -202,13 +201,10 @@ VVVTTTAAAAABBBBBCCCCC
 
         int packetcount = Integer.parseInt(bin.substring(7, 7 + 11), 2);
         int packetcursor = 0;
-        outp.packets = new Packet[packetcount];
         outp.packetList = new ArrayList<>();
         for (int i = 0; i < packetcount; i++) {
             Packet packet = PacketDecoder(bin.substring(packetcursor + 7 + 11));
-            outp.packets[i] = packet;
             outp.packetList.add(packet);
-//            packetcursor += outp.packets[i].len;
             packetcursor += packet.len;
         }
 
@@ -218,7 +214,6 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     class Operator extends Packet {
-        Packet[] packets;
         List<Packet> packetList;
 
         @Override
@@ -233,15 +228,19 @@ VVVTTTAAAAABBBBBCCCCC
     private class Message {
         Packet outermostPacket;
 
-        public Message(String input) {
-            String binaryString = new BigInteger(input, 16).toString(2);
+        public Message(String hexString) {
+            String binaryString = convertToPaddedBinaryString(hexString);
+            outermostPacket = PacketDecoder(binaryString);
+        }
+
+        private String convertToPaddedBinaryString(String hexString) {
+            String binaryString = new BigInteger(hexString, 16).toString(2);
 
             int fourBits = binaryString.length() % 4;
             for (int i = 0; i < fourBits; i++) {
                 binaryString = "0" + binaryString;
             }
-
-            outermostPacket = PacketDecoder(binaryString);
+            return binaryString;
         }
     }
 
