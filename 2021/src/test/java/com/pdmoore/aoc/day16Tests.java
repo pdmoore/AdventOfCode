@@ -245,24 +245,21 @@ class Operator extends Packet {
     }
 
     private int sumOfOperands() {
-        int valueSumOfPackets = packetList.stream()
+        return packetList.stream()
                 .map(p -> p.value())
                 .collect(Collectors.summingInt(Integer::intValue));
-        return valueSumOfPackets;
     }
 
     private int productOfOperands() {
-        int valueSumOfPackets = packetList.stream()
+        return packetList.stream()
                 .map(p -> p.value())
                 .reduce(1, (a, b) -> a * b);
-        return valueSumOfPackets;
     }
 
     private int minimumOfOperads() {
-        int minimumOfPackets = packetList.stream()
+        return packetList.stream()
                 .map(p -> p.value())
                 .min(Integer::compare).get();
-        return minimumOfPackets;
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
