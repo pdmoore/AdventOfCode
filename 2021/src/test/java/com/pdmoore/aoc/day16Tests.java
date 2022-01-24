@@ -11,34 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day16Tests {
 
-    // string - single packet, contains other packets
-
-    // might be extra 0's at the end, ignore
-
-    // standard header
-    // 3 bits - version
-    // 3 bits - packet TYPE ID
-    // TYPE ID = 4, literal value
-    //              pad with leading zeros until length is four bit multiple
-    //              broken into four bit group, preceded by 1 or 0 (to terminate)
-    //              so five bits total
-    /*
-    D2FE28
-110100101111111000101000
-VVVTTTAAAAABBBBBCCCCC
-     */
-
-    // Given a very long Hex string
-    // Convert it to a very, very long binary string
-    // Pass the binary string to new Class
-    // new class walks through string
-    // starting at beginning
-    // strip off a packet
-    // add packet to list
-    // bump index to end of current packet
-    // repeat until end of string
-
-
     @Test
     void part1_decode_literal_via_Message() {
         String input = "D2FE28";
@@ -114,22 +86,12 @@ VVVTTTAAAAABBBBBCCCCC
         assertEquals(920, actual.outermostPacket.sumOfVersions());
     }
 
-    public Packet PacketDecoder(String binaryString) {
-        int version = Integer.parseInt(binaryString.substring(0, 3), 2);
-        int typeID = Integer.parseInt(binaryString.substring(3, 6), 2);
-        if (typeID == 4) {
-            return LiteralDecoder(version, binaryString);
-        } else {
-            return OperatorDecoder(version, typeID, binaryString);
-        }
-    }
-
     private class Message {
         Packet outermostPacket;
 
         public Message(String hexString) {
             String binaryString = convertToPaddedBinaryString(hexString);
-            outermostPacket = PacketDecoder(binaryString);
+            outermostPacket = Packet.decode(binaryString);
         }
 
         private String convertToPaddedBinaryString(String hexString) {
@@ -142,44 +104,37 @@ VVVTTTAAAAABBBBBCCCCC
             return binaryString;
         }
     }
+}
 
-    class Packet {
-        public int version;
-        public int typeID;
-        int packetLength;
+class Packet {
+    public int version;
+    public int typeID;
+    int packetLength;
 
-        public int sumOfVersions() {
-            return version;
-        }
+    public int sumOfVersions() {
+        return version;
     }
 
-    class Literal extends Packet {
-        long value;
-
-        public Literal(int version) {
-            this.typeID = 4;
-            this.version = version;
+    public static Packet decode(String binaryString) {
+        int version = Integer.parseInt(binaryString.substring(0, 3), 2);
+        int typeID = Integer.parseInt(binaryString.substring(3, 6), 2);
+        if (typeID == 4) {
+            return Literal.decode(version, binaryString);
+        } else {
+            return Operator.decode(version, typeID, binaryString);
         }
     }
+}
 
-    class Operator extends Packet {
-        List<Packet> packetList;
-        public int lengthTypeId;
+class Literal extends Packet {
+    long value;
 
-        public Operator() {
-            this.packetList = new ArrayList<>();
-        }
-
-        @Override
-        public int sumOfVersions() {
-            int subPacketSum = packetList.stream()
-                    .map(p -> p.sumOfVersions())
-                    .collect(Collectors.summingInt(Integer::intValue));
-            return subPacketSum + this.version;
-        }
+    public Literal(int version) {
+        this.typeID = 4;
+        this.version = version;
     }
 
-    Literal LiteralDecoder(int version, String binaryString) {
+    static Literal decode(int version, String binaryString) {
         Literal result = new Literal(version);
 
         StringBuilder builder = new StringBuilder();
@@ -195,8 +150,25 @@ VVVTTTAAAAABBBBBCCCCC
 
         return result;
     }
+}
 
-    Operator OperatorDecoder(int version, int operatorID, String binaryString) {
+class Operator extends Packet {
+    List<Packet> packetList;
+    public int lengthTypeId;
+
+    public Operator() {
+        this.packetList = new ArrayList<>();
+    }
+
+    @Override
+    public int sumOfVersions() {
+        int subPacketSum = packetList.stream()
+                .map(p -> p.sumOfVersions())
+                .collect(Collectors.summingInt(Integer::intValue));
+        return subPacketSum + this.version;
+    }
+
+    static Operator decode(int version, int operatorID, String binaryString) {
         char lengthTypeID = binaryString.charAt(6);
         if (lengthTypeID == '0') {
             return packetsByTotalLengthInBits(version, operatorID, binaryString);
@@ -205,7 +177,8 @@ VVVTTTAAAAABBBBBCCCCC
         }
     }
 
-    public Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
+
+    public static Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
         Operator operatorPacket = new Operator();
         operatorPacket.version = version;
         operatorPacket.typeID = typeID;
@@ -215,7 +188,7 @@ VVVTTTAAAAABBBBBCCCCC
         int packetsTotalLength = Integer.parseInt(bin.substring(7, 7 + 15), 2);
         int parseIndex = 0;
         while (parseIndex < packetsTotalLength) {
-            Packet p = PacketDecoder(bin.substring(parseIndex + 7 + 15));
+            Packet p = Packet.decode(bin.substring(parseIndex + 7 + 15));
             parseIndex += p.packetLength;
             subPacketlist.add(p);
         }
@@ -226,7 +199,8 @@ VVVTTTAAAAABBBBBCCCCC
         return operatorPacket;
     }
 
-    public Operator packetsByNumberOfPackets(int version, int typeID, String binaryString) {
+
+    public static Operator packetsByNumberOfPackets(int version, int typeID, String binaryString) {
         Operator operatorPacket = new Operator();
         operatorPacket.version = version;
         operatorPacket.typeID = typeID;
@@ -235,7 +209,7 @@ VVVTTTAAAAABBBBBCCCCC
         int packetCount = Integer.parseInt(binaryString.substring(7, 7 + 11), 2);
         int parseIndex = 0;
         for (int i = 0; i < packetCount; i++) {
-            Packet packet = PacketDecoder(binaryString.substring(parseIndex + 7 + 11));
+            Packet packet = Packet.decode(binaryString.substring(parseIndex + 7 + 11));
             operatorPacket.packetList.add(packet);
             parseIndex += packet.packetLength;
         }
@@ -246,3 +220,5 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
 }
+
+
