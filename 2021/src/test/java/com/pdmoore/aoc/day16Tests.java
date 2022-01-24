@@ -185,7 +185,6 @@ VVVTTTAAAAABBBBBCCCCC
             packetlist.add(p);
         }
 
-        outp.packetList = new ArrayList<>();
         outp.packetList.addAll(packetlist);
         outp.len = 7 + 15 + packetslen;
 
@@ -201,7 +200,6 @@ VVVTTTAAAAABBBBBCCCCC
 
         int packetcount = Integer.parseInt(bin.substring(7, 7 + 11), 2);
         int packetcursor = 0;
-        outp.packetList = new ArrayList<>();
         for (int i = 0; i < packetcount; i++) {
             Packet packet = PacketDecoder(bin.substring(packetcursor + 7 + 11));
             outp.packetList.add(packet);
@@ -215,6 +213,10 @@ VVVTTTAAAAABBBBBCCCCC
 
     class Operator extends Packet {
         List<Packet> packetList;
+
+        public Operator() {
+            this.packetList = new ArrayList<>();
+        }
 
         @Override
         public int sumOfVersions() {
