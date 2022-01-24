@@ -128,7 +128,7 @@ VVVTTTAAAAABBBBBCCCCC
         public int version;
         public int typeID;
         public int lengthTypeId;
-        int len;
+        int packetLength;
 
         public int sumOfVersions() {
             return version;
@@ -147,7 +147,7 @@ VVVTTTAAAAABBBBBCCCCC
         builder.append(binaryString.substring(i + 1, i + 5));
         result.value = Long.parseLong(builder.toString(), 2);
 
-        result.len = 6 + i - 1;
+        result.packetLength = 6 + i - 1;
 
         return result;
     }
@@ -171,44 +171,43 @@ VVVTTTAAAAABBBBBCCCCC
     }
 
     public Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
-        Operator outp = new Operator();
-        outp.version = version;
-        outp.typeID = typeID;
-        outp.lengthTypeId = 0;
-        List<Packet> packetlist = new ArrayList<>();
+        Operator operatorPacket = new Operator();
+        operatorPacket.version = version;
+        operatorPacket.typeID = typeID;
+        operatorPacket.lengthTypeId = 0;
+        List<Packet> subPacketlist = new ArrayList<>();
 
-        int packetslen = Integer.parseInt(bin.substring(7, 7 + 15), 2);
-        int packetcursor = 0;
-        while (packetcursor < packetslen) {
-            Packet p = PacketDecoder(bin.substring(packetcursor + 7 + 15));
-            packetcursor += p.len;
-            packetlist.add(p);
+        int packetsTotalLength = Integer.parseInt(bin.substring(7, 7 + 15), 2);
+        int parseIndex = 0;
+        while (parseIndex < packetsTotalLength) {
+            Packet p = PacketDecoder(bin.substring(parseIndex + 7 + 15));
+            parseIndex += p.packetLength;
+            subPacketlist.add(p);
         }
 
-        outp.packetList.addAll(packetlist);
-        outp.len = 7 + 15 + packetslen;
+        operatorPacket.packetList.addAll(subPacketlist);
+        operatorPacket.packetLength = 7 + 15 + packetsTotalLength;
 
-        return outp;
+        return operatorPacket;
     }
 
-    //number of sub-packets
-    public Operator packetsByNumberOfPackets(int version, int typeID, String bin) {
-        Operator outp = new Operator();
-        outp.version = version;
-        outp.typeID = typeID;
-        outp.lengthTypeId = 1;
+    public Operator packetsByNumberOfPackets(int version, int typeID, String binaryString) {
+        Operator operatorPacket = new Operator();
+        operatorPacket.version = version;
+        operatorPacket.typeID = typeID;
+        operatorPacket.lengthTypeId = 1;
 
-        int packetcount = Integer.parseInt(bin.substring(7, 7 + 11), 2);
-        int packetcursor = 0;
-        for (int i = 0; i < packetcount; i++) {
-            Packet packet = PacketDecoder(bin.substring(packetcursor + 7 + 11));
-            outp.packetList.add(packet);
-            packetcursor += packet.len;
+        int packetCount = Integer.parseInt(binaryString.substring(7, 7 + 11), 2);
+        int parseIndex = 0;
+        for (int i = 0; i < packetCount; i++) {
+            Packet packet = PacketDecoder(binaryString.substring(parseIndex + 7 + 11));
+            operatorPacket.packetList.add(packet);
+            parseIndex += packet.packetLength;
         }
 
-        outp.len = 7 + 11 + packetcursor;
+        operatorPacket.packetLength = 7 + 11 + parseIndex;
 
-        return outp;
+        return operatorPacket;
     }
 
     class Operator extends Packet {
