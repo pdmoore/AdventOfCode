@@ -86,11 +86,20 @@ public class day16Tests {
     }
 
     @Test
+    void part2_solution() {
+        String input = PuzzleInput.asStringFrom("data/day16");
+
+        Message actual = new Message(input);
+
+        assertEquals(10185143721112L, actual.outermostPacket.value());
+    }
+
+    @Test
     void part2_sum() {
         String input = "C200B40A82";
 
         Message message = new Message(input);
-        int actual = message.outermostPacket.value();
+        long actual = message.outermostPacket.value();
 
         assertEquals(3, actual);
     }
@@ -100,7 +109,7 @@ public class day16Tests {
         String input = "04005AC33890";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(54, actual);
     }
@@ -110,7 +119,7 @@ public class day16Tests {
         String input = "880086C3E88112";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(7, actual);
     }
@@ -120,7 +129,7 @@ public class day16Tests {
         String input = "CE00C43D881120";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(9, actual);
     }
@@ -130,7 +139,7 @@ public class day16Tests {
         String input = "F600BC2D8F";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(0, actual);
     }
@@ -140,7 +149,7 @@ public class day16Tests {
         String input = "D8005AC2A8F0";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(1, actual);
     }
@@ -150,7 +159,7 @@ public class day16Tests {
         String input = "9C005AC2F8F0";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(0, actual);
     }
@@ -160,7 +169,7 @@ public class day16Tests {
         String input = "9C0141080250320F1802104A08";
 
         Message m = new Message(input);
-        int actual = m.outermostPacket.value();
+        long actual = m.outermostPacket.value();
 
         assertEquals(1, actual);
     }
@@ -225,7 +234,7 @@ class Packet {
         }
     }
 
-    public int value() {
+    public long value() {
         return 0;
     }
 }
@@ -255,9 +264,8 @@ class Literal extends Packet {
         return result;
     }
 
-    public int value() {
-        //TODO casting long to int - convert all value to return long instead
-        return (int) value;
+    public long value() {
+        return value;
     }
 }
 
@@ -282,9 +290,9 @@ class Operator extends Packet {
     }
 
     @Override
-    public int value() {
+    public long value() {
 
-        int value = switch (typeID) {
+        long value = switch (typeID) {
             case 0 -> sumOfOperands();
             case 1 -> productOfOperands();
             case 2 -> minimumOfOperands();
@@ -298,28 +306,28 @@ class Operator extends Packet {
         return value;
     }
 
-    private int sumOfOperands() {
+    private long sumOfOperands() {
         return packetList.stream()
                 .map(p -> p.value())
-                .collect(Collectors.summingInt(Integer::intValue));
+                .collect(Collectors.summingLong(Long::longValue));
     }
 
-    private int productOfOperands() {
+    private long productOfOperands() {
         return packetList.stream()
                 .map(p -> p.value())
-                .reduce(1, (a, b) -> a * b);
+                .reduce(1L, (a, b) -> a * b);
     }
 
-    private int minimumOfOperands() {
+    private long minimumOfOperands() {
         return packetList.stream()
                 .map(p -> p.value())
-                .min(Integer::compare).get();
+                .min(Long::compare).get();
     }
 
-    private int maximumOfOperands() {
+    private long maximumOfOperands() {
         return packetList.stream()
                 .map(p -> p.value())
-                .max(Integer::compare).get();
+                .max(Long::compare).get();
     }
 
     private int greaterThan() {
