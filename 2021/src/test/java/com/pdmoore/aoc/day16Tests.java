@@ -144,6 +144,16 @@ public class day16Tests {
 
         assertEquals(1, actual);
     }
+
+    @Test
+    void part2_equalTo() {
+        String input = "9C005AC2F8F0";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(0, actual);
+    }
 }
 
 class Message {
@@ -271,6 +281,7 @@ class Operator extends Packet {
             case 3 -> maximumOfOperands();
             case 5 -> greaterThan();
             case 6 -> lessThan();
+            case 7 -> equalTo();
             default -> throw new UnsupportedOperationException("unknown typeID: " + typeID);
         };
 
@@ -310,6 +321,13 @@ class Operator extends Packet {
 
     private int lessThan() {
         if (packetList.get(0).value() < packetList.get(1).value()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private int equalTo() {
+        if (packetList.get(0).value() == packetList.get(1).value()) {
             return 1;
         }
         return 0;
