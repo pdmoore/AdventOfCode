@@ -85,24 +85,24 @@ public class day16Tests {
 
         assertEquals(920, actual.outermostPacket.sumOfVersions());
     }
+}
 
-    private class Message {
-        Packet outermostPacket;
+class Message {
+    Packet outermostPacket;
 
-        public Message(String hexString) {
-            String binaryString = convertToPaddedBinaryString(hexString);
-            outermostPacket = Packet.decode(binaryString);
+    public Message(String hexString) {
+        String binaryString = convertToPaddedBinaryString(hexString);
+        outermostPacket = Packet.decode(binaryString);
+    }
+
+    private String convertToPaddedBinaryString(String hexString) {
+        String binaryString = new BigInteger(hexString, 16).toString(2);
+
+        int fourBits = binaryString.length() % 4;
+        for (int i = 0; i < fourBits; i++) {
+            binaryString = "0" + binaryString;
         }
-
-        private String convertToPaddedBinaryString(String hexString) {
-            String binaryString = new BigInteger(hexString, 16).toString(2);
-
-            int fourBits = binaryString.length() % 4;
-            for (int i = 0; i < fourBits; i++) {
-                binaryString = "0" + binaryString;
-            }
-            return binaryString;
-        }
+        return binaryString;
     }
 }
 
