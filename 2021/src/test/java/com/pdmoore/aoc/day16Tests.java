@@ -157,19 +157,19 @@ class Operator extends Packet {
     public int lengthTypeId;
 
     public Operator(int version, int operatorID, char lengthTypeID) {
-        this.packetList = new ArrayList<>();
-
         this.version = version;
         this.typeID = operatorID;
         this.lengthTypeId = Character.getNumericValue(lengthTypeID);
+
+        this.packetList = new ArrayList<>();
     }
 
     @Override
     public int sumOfVersions() {
-        int subPacketSum = packetList.stream()
+        int packetListSum = packetList.stream()
                 .map(p -> p.sumOfVersions())
                 .collect(Collectors.summingInt(Integer::intValue));
-        return subPacketSum + this.version;
+        return packetListSum + this.version;
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
