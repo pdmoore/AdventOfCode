@@ -90,8 +90,8 @@ public class day16Tests {
 class Message {
     Packet outermostPacket;
 
-    public Message(String hexString) {
-        String binaryString = convertToPaddedBinaryString(hexString);
+    public Message(String hexValues) {
+        String binaryString = convertToPaddedBinaryString(hexValues);
         outermostPacket = Packet.decode(binaryString);
     }
 
@@ -107,8 +107,8 @@ class Message {
 }
 
 class Packet {
-    public int version;
-    public int typeID;
+    int version;
+    int typeID;
     int packetLength;
 
     public int sumOfVersions() {
