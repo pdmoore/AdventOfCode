@@ -169,20 +169,22 @@ class Operator extends Packet {
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
+        Operator operatorPacket = new Operator();
+        operatorPacket.version = version;
+        operatorPacket.typeID = operatorID;
+
         char lengthTypeID = binaryString.charAt(6);
+
         if (lengthTypeID == '0') {
-            return packetsByTotalLengthInBits(version, operatorID, binaryString);
+            operatorPacket.lengthTypeId = 0;
+            return packetsByTotalLengthInBits(operatorPacket, binaryString);
         } else {
-            return packetsByNumberOfPackets(version, operatorID, binaryString);
+            operatorPacket.lengthTypeId = 1;
+            return packetsByNumberOfPackets(operatorPacket, binaryString);
         }
     }
 
-
-    public static Operator packetsByTotalLengthInBits(int version, int typeID, String bin) {
-        Operator operatorPacket = new Operator();
-        operatorPacket.version = version;
-        operatorPacket.typeID = typeID;
-        operatorPacket.lengthTypeId = 0;
+    public static Operator packetsByTotalLengthInBits(Operator operatorPacket, String bin) {
         List<Packet> subPacketlist = new ArrayList<>();
 
         int packetsTotalLength = Integer.parseInt(bin.substring(7, 7 + 15), 2);
@@ -199,13 +201,7 @@ class Operator extends Packet {
         return operatorPacket;
     }
 
-
-    public static Operator packetsByNumberOfPackets(int version, int typeID, String binaryString) {
-        Operator operatorPacket = new Operator();
-        operatorPacket.version = version;
-        operatorPacket.typeID = typeID;
-        operatorPacket.lengthTypeId = 1;
-
+    public static Operator packetsByNumberOfPackets(Operator operatorPacket, String binaryString) {
         int packetCount = Integer.parseInt(binaryString.substring(7, 7 + 11), 2);
         int parseIndex = 0;
         for (int i = 0; i < packetCount; i++) {
@@ -220,5 +216,3 @@ class Operator extends Packet {
     }
 
 }
-
-
