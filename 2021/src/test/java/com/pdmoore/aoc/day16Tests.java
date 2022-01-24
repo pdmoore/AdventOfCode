@@ -331,24 +331,15 @@ class Operator extends Packet {
     }
 
     private int greaterThan() {
-        if (packetList.get(0).value() > packetList.get(1).value()) {
-            return 1;
-        }
-        return 0;
+        return (packetList.get(0).value() > packetList.get(1).value()) ? 1 : 0;
     }
 
     private int lessThan() {
-        if (packetList.get(0).value() < packetList.get(1).value()) {
-            return 1;
-        }
-        return 0;
+        return (packetList.get(0).value() < packetList.get(1).value()) ? 1 : 0;
     }
 
     private int equalTo() {
-        if (packetList.get(0).value() == packetList.get(1).value()) {
-            return 1;
-        }
-        return 0;
+        return (packetList.get(0).value() == packetList.get(1).value()) ? 1 : 0;
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
