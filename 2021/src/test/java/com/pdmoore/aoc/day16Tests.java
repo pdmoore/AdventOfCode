@@ -174,12 +174,11 @@ class Operator extends Packet {
         operatorPacket.typeID = operatorID;
 
         char lengthTypeID = binaryString.charAt(6);
+        operatorPacket.lengthTypeId = Character.getNumericValue(lengthTypeID);
 
-        if (lengthTypeID == '0') {
-            operatorPacket.lengthTypeId = 0;
+        if (operatorPacket.lengthTypeId == 0) {
             return packetsByTotalLengthInBits(operatorPacket, binaryString);
         } else {
-            operatorPacket.lengthTypeId = 1;
             return packetsByNumberOfPackets(operatorPacket, binaryString);
         }
     }
