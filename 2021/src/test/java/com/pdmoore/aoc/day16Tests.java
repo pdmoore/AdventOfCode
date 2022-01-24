@@ -2,7 +2,6 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class day16Tests {
 
         assertEquals(6, actual.version);
         assertEquals(4, actual.typeID);
-        assertEquals(2021, ((Literal)actual).value);
+        assertEquals(2021, ((Literal) actual).value);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class day16Tests {
 
         assertEquals(1, actual.version);
         assertEquals(6, actual.typeID);
-        assertEquals(0, ((Operator)actual).lengthTypeId);
+        assertEquals(0, ((Operator) actual).lengthTypeId);
     }
 
     @Test
@@ -65,7 +64,7 @@ public class day16Tests {
 
         assertEquals(7, actual.version);
         assertEquals(3, actual.typeID);
-        assertEquals(1, ((Operator)actual).lengthTypeId);
+        assertEquals(1, ((Operator) actual).lengthTypeId);
 
         assertEquals(14, actual.sumOfVersions());
     }
@@ -95,6 +94,16 @@ public class day16Tests {
 
         assertEquals(3, actual);
     }
+
+    @Test
+    void part2_product() {
+        String input = "04005AC33890";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(54, actual);
+    }
 }
 
 class Message {
@@ -106,13 +115,34 @@ class Message {
     }
 
     private String convertToPaddedBinaryString(String hexString) {
-        String binaryString = new BigInteger(hexString, 16).toString(2);
-
-        int fourBits = binaryString.length() % 4;
-        for (int i = 0; i < fourBits; i++) {
-            binaryString = "0" + binaryString;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hexString.length(); i++)
+        {
+            sb.append(hexToBinaryDigits(hexString.charAt(i)));
         }
-        return binaryString;
+        return sb.toString();
+    }
+
+    private static String hexToBinaryDigits(char hexChar) {
+        return switch (hexChar) {
+            case '0' -> "0000";
+            case '1' -> "0001";
+            case '2' -> "0010";
+            case '3' -> "0011";
+            case '4' -> "0100";
+            case '5' -> "0101";
+            case '6' -> "0110";
+            case '7' -> "0111";
+            case '8' -> "1000";
+            case '9' -> "1001";
+            case 'A' -> "1010";
+            case 'B' -> "1011";
+            case 'C' -> "1100";
+            case 'D' -> "1101";
+            case 'E' -> "1110";
+            case 'F' -> "1111";
+            default -> throw new IllegalArgumentException("Bad Hex Character: " + hexChar);
+        };
     }
 }
 
@@ -194,11 +224,27 @@ class Operator extends Packet {
     @Override
     public int value() {
 
+        int value = switch (typeID) {
+            case 0 -> sumOfOperands();
+            case 1 -> productOfOperands();
+            default -> throw new UnsupportedOperationException("unknown typeID: " + typeID);
+        };
+
+        return value;
+    }
+
+    private int sumOfOperands() {
         int valueSumOfPackets = packetList.stream()
                 .map(p -> p.value())
                 .collect(Collectors.summingInt(Integer::intValue));
         return valueSumOfPackets;
+    }
 
+    private int productOfOperands() {
+        int valueSumOfPackets = packetList.stream()
+                .map(p -> p.value())
+                .reduce(1, (a, b) -> a * b);
+        return valueSumOfPackets;
     }
 
 
