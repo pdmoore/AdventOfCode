@@ -146,13 +146,23 @@ public class day16Tests {
     }
 
     @Test
-    void part2_equalTo() {
+    void part2_equalTo_NotEqual() {
         String input = "9C005AC2F8F0";
 
         Message m = new Message(input);
         int actual = m.outermostPacket.value();
 
         assertEquals(0, actual);
+    }
+
+    @Test
+    void part2_equalTo_Equal() {
+        String input = "9C0141080250320F1802104A08";
+
+        Message m = new Message(input);
+        int actual = m.outermostPacket.value();
+
+        assertEquals(1, actual);
     }
 }
 
