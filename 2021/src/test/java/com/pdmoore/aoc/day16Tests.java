@@ -85,6 +85,16 @@ public class day16Tests {
 
         assertEquals(920, actual.outermostPacket.sumOfVersions());
     }
+
+    @Test
+    void part2_sum() {
+        String input = "C200B40A82";
+
+        Message message = new Message(input);
+        int actual = message.outermostPacket.value();
+
+        assertEquals(3, actual);
+    }
 }
 
 class Message {
@@ -124,6 +134,10 @@ class Packet {
             return Operator.decode(version, typeID, binaryString);
         }
     }
+
+    public int value() {
+        return 0;
+    }
 }
 
 class Literal extends Packet {
@@ -150,6 +164,11 @@ class Literal extends Packet {
 
         return result;
     }
+
+    public int value() {
+        //TODO casting long to int - convert all value to return long instead
+        return (int) value;
+    }
 }
 
 class Operator extends Packet {
@@ -171,6 +190,17 @@ class Operator extends Packet {
                 .collect(Collectors.summingInt(Integer::intValue));
         return packetListSum + this.version;
     }
+
+    @Override
+    public int value() {
+
+        int valueSumOfPackets = packetList.stream()
+                .map(p -> p.value())
+                .collect(Collectors.summingInt(Integer::intValue));
+        return valueSumOfPackets;
+
+    }
+
 
     static Operator decode(int version, int operatorID, String binaryString) {
         char lengthTypeID = binaryString.charAt(6);
