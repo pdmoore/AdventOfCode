@@ -156,8 +156,12 @@ class Operator extends Packet {
     List<Packet> packetList;
     public int lengthTypeId;
 
-    public Operator() {
+    public Operator(int version, int operatorID, char lengthTypeID) {
         this.packetList = new ArrayList<>();
+
+        this.version = version;
+        this.typeID = operatorID;
+        this.lengthTypeId = Character.getNumericValue(lengthTypeID);
     }
 
     @Override
@@ -169,12 +173,8 @@ class Operator extends Packet {
     }
 
     static Operator decode(int version, int operatorID, String binaryString) {
-        Operator operatorPacket = new Operator();
-        operatorPacket.version = version;
-        operatorPacket.typeID = operatorID;
-
         char lengthTypeID = binaryString.charAt(6);
-        operatorPacket.lengthTypeId = Character.getNumericValue(lengthTypeID);
+        Operator operatorPacket = new Operator(version, operatorID, lengthTypeID);
 
         if (operatorPacket.lengthTypeId == 0) {
             return packetsByTotalLengthInBits(operatorPacket, binaryString);
