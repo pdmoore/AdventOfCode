@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class day16Tests {
+class day16Tests {
 
     static String[] binaryDigits = new String[]{
             "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
@@ -187,15 +187,12 @@ class Message {
         outermostPacket = Packet.decode(binaryString);
     }
 
+    // Might be a candidate for utility method - bring binaryDigits array along
     private String convertToPaddedBinaryString(String hexString) {
         return hexString
-                .codePoints()
+                .chars()
                 .mapToObj(c -> day16Tests.binaryDigits[Integer.parseInt(String.valueOf((char) c), 16)])
                 .collect(Collectors.joining());
-    }
-
-    private static String hexToBinaryDigits(char hexChar) {
-        return day16Tests.binaryDigits[Integer.parseInt(Character.toString(hexChar), 16)];
     }
 }
 
@@ -219,7 +216,7 @@ class Packet {
     }
 
     public long value() {
-        return 0;
+        throw new UnsupportedOperationException("Should not be requesting value of the abstract Packet");
     }
 }
 
@@ -263,6 +260,17 @@ class Operator extends Packet {
         this.lengthTypeId = Character.getNumericValue(lengthTypeID);
 
         this.packetList = new ArrayList<>();
+    }
+
+    static Operator decode(int version, int operatorID, String binaryString) {
+        char lengthTypeID = binaryString.charAt(6);
+        Operator operatorPacket = new Operator(version, operatorID, lengthTypeID);
+
+        if (operatorPacket.lengthTypeId == 0) {
+            return packetsByTotalLengthInBits(operatorPacket, binaryString);
+        } else {
+            return packetsByNumberOfPackets(operatorPacket, binaryString);
+        }
     }
 
     @Override
@@ -324,17 +332,6 @@ class Operator extends Packet {
 
     private int equalTo() {
         return (packetList.get(0).value() == packetList.get(1).value()) ? 1 : 0;
-    }
-
-    static Operator decode(int version, int operatorID, String binaryString) {
-        char lengthTypeID = binaryString.charAt(6);
-        Operator operatorPacket = new Operator(version, operatorID, lengthTypeID);
-
-        if (operatorPacket.lengthTypeId == 0) {
-            return packetsByTotalLengthInBits(operatorPacket, binaryString);
-        } else {
-            return packetsByNumberOfPackets(operatorPacket, binaryString);
-        }
     }
 
     public static Operator packetsByTotalLengthInBits(Operator operatorPacket, String binaryString) {
