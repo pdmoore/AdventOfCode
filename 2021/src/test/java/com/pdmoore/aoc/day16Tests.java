@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day16Tests {
 
+    static String[] binaryDigits = new String[] {
+            "0000","0001","0010","0011","0100","0101","0110","0111",
+            "1000","1001","1010","1011","1100","1101","1110","1111"};
+
     @Test
     void part1_decode_literal_via_Message() {
         String input = "D2FE28";
@@ -193,25 +197,7 @@ class Message {
     }
 
     private static String hexToBinaryDigits(char hexChar) {
-        return switch (hexChar) {
-            case '0' -> "0000";
-            case '1' -> "0001";
-            case '2' -> "0010";
-            case '3' -> "0011";
-            case '4' -> "0100";
-            case '5' -> "0101";
-            case '6' -> "0110";
-            case '7' -> "0111";
-            case '8' -> "1000";
-            case '9' -> "1001";
-            case 'A' -> "1010";
-            case 'B' -> "1011";
-            case 'C' -> "1100";
-            case 'D' -> "1101";
-            case 'E' -> "1110";
-            case 'F' -> "1111";
-            default -> throw new IllegalArgumentException("Bad Hex Character: " + hexChar);
-        };
+        return day16Tests.binaryDigits[Integer.parseInt(Character.toString(hexChar), 16)];
     }
 }
 
