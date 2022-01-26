@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day16Tests {
 
-    static String[] binaryDigits = new String[] {
-            "0000","0001","0010","0011","0100","0101","0110","0111",
-            "1000","1001","1010","1011","1100","1101","1110","1111"};
+    static String[] binaryDigits = new String[]{
+            "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
+            "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"};
 
     @Test
     void part1_decode_literal_via_Message() {
@@ -188,12 +188,10 @@ class Message {
     }
 
     private String convertToPaddedBinaryString(String hexString) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < hexString.length(); i++)
-        {
-            sb.append(hexToBinaryDigits(hexString.charAt(i)));
-        }
-        return sb.toString();
+        return hexString
+                .codePoints()
+                .mapToObj(c -> day16Tests.binaryDigits[Integer.parseInt(String.valueOf((char) c), 16)])
+                .collect(Collectors.joining());
     }
 
     private static String hexToBinaryDigits(char hexChar) {
