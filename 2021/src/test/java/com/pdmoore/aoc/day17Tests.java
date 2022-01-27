@@ -4,12 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class day17Tests {
 
     @ParameterizedTest
-    @ValueSource(strings = {"7,2", "6,3", "9,0"})
+    @ValueSource(strings = {"7,2", "6,3", "9,0", "6,9"})
     void part1_fallsWithinTarget_2ndExample(String startingVelocityPair) {
         String[] split = startingVelocityPair.split(",");
         int x = Integer.parseInt(split[0]);
@@ -22,6 +23,14 @@ public class day17Tests {
         assertTrue(p.eventuallyHitsTargetArea());
     }
 
+    @Test
+    void part1_fallsOutsideTarget() {
+        TargetArea t = new TargetArea(20, 30, -10, -5);
+
+        Probe p = new Probe(17, -4, t);
+
+        assertFalse(p.eventuallyHitsTargetArea());
+    }
 
 
     private class TargetArea {
@@ -80,7 +89,7 @@ public class day17Tests {
 //                System.out.println(currentX + ", " + currentY);
             }
 
-            return true;
+            return targetArea.contains(currentX, currentY);
         }
     }
 }
