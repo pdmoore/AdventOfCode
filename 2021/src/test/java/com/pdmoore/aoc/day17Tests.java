@@ -1,11 +1,11 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class day17Tests {
 
@@ -32,6 +32,35 @@ public class day17Tests {
         assertFalse(p.eventuallyHitsTargetArea());
     }
 
+    @Test
+    void part1_captureHighestPoint() {
+        TargetArea t = new TargetArea(20, 30, -10, -5);
+
+        Probe p = new Probe(6, 9, t);
+        p.launchProbe();
+
+        assertEquals(45, p.maximumY);
+    }
+
+    @Test
+    @Disabled
+    void part1_example_HighestProbe() {
+        TargetArea t = new TargetArea(20, 30, -10, -5);
+
+        int actual = findHighestProbe(t);
+
+        assertEquals(45, actual);
+    }
+
+    private int findHighestProbe(TargetArea t) {
+
+        //x from 0 to t.x2
+        //y from t.y1 to abs(t.y2)
+
+
+        return 0;
+    }
+
 
     private class TargetArea {
         private final int x1;
@@ -54,6 +83,7 @@ public class day17Tests {
     private class Probe {
         private final int initialX;
         private final int initialY;
+        public int maximumY;
         private int currentX;
         private int currentY;
         private int velocityX;
@@ -71,6 +101,7 @@ public class day17Tests {
 
             this.currentX = 0;
             this.currentY = 0;
+            this.maximumY = Integer.MIN_VALUE;
         }
 
         public boolean eventuallyHitsTargetArea() {
@@ -79,6 +110,8 @@ public class day17Tests {
             currentY += velocityY;
 
             while (!targetArea.contains(currentX, currentY) && (count <=1000)) {
+                if (maximumY < currentY) maximumY = currentY;
+
                 if (velocityX > 0) velocityX -= 1;
                 else if (velocityX <0) velocityX += 1;
                 velocityY -= 1;
@@ -90,6 +123,10 @@ public class day17Tests {
             }
 
             return targetArea.contains(currentX, currentY);
+        }
+
+        public void launchProbe() {
+            eventuallyHitsTargetArea();
         }
     }
 }
