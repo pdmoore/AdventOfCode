@@ -43,7 +43,6 @@ public class day17Tests {
     }
 
     @Test
-    @Disabled
     void part1_example_HighestProbe() {
         TargetArea t = new TargetArea(20, 30, -10, -5);
 
@@ -56,9 +55,22 @@ public class day17Tests {
 
         //x from 0 to t.x2
         //y from t.y1 to abs(t.y2)
+        int highestHeight = Integer.MIN_VALUE;
+        int lowx = 0;
+        int highx = t.x2;
+        int lowy = t.y1;
+//        int highy = Math.abs(t.y2);
+        int highy = 100;
+        for (int x = lowx; x <= highx; x++) {
+            for (int y = lowy; y <= highy; y++) {
+                Probe p = new Probe(x, y, t);
+                if (p.eventuallyHitsTargetArea()) {
+                    if (p.maximumY > highestHeight) highestHeight = p.maximumY;
+                }
+            }
+        }
 
-
-        return 0;
+        return highestHeight;
     }
 
 
