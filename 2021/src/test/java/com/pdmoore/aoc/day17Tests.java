@@ -115,8 +115,6 @@ public class day17Tests {
     }
 
     private class Probe {
-        private final int initialX;
-        private final int initialY;
         public int maximumY;
         private int currentX;
         private int currentY;
@@ -125,9 +123,6 @@ public class day17Tests {
         private final TargetArea targetArea;
 
         public Probe(int x, int y, TargetArea t) {
-            this.initialX = x;
-            this.initialY = y;
-
             this.velocityX = x;
             this.velocityY = y;
 
@@ -155,7 +150,6 @@ public class day17Tests {
                 currentX += velocityX;
                 currentY += velocityY;
                 count += 1;
-//                System.out.println(currentX + ", " + currentY);
             }
 
             return targetArea.contains(currentX, currentY);
