@@ -56,7 +56,7 @@ public class day17Tests {
     }
 
     @Test
-    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
     void part1_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
@@ -66,6 +66,7 @@ public class day17Tests {
     }
 
     @Test
+    @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
     void part2_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
@@ -110,6 +111,10 @@ public class day17Tests {
         public boolean contains(int x, int y) {
             return ((x >= x1 && x <= x2) && (y >= y1 && y <= y2));
         }
+
+        public boolean above(int x, int y) {
+            return y >= this.y1;
+        }
     }
 
     private class Probe {
@@ -132,13 +137,12 @@ public class day17Tests {
         }
 
         public boolean eventuallyHitsTargetArea() {
-            int count = 0;
             currentX += velocityX;
             currentY += velocityY;
 
             //TODO - instead of count, figure out once the point is moving away from the target area and stop
             // could just be once the current falls below bottom of target area
-            while (!targetArea.contains(currentX, currentY) && (count <= 400)) {
+            while (!targetArea.contains(currentX, currentY) && targetArea.above(currentX, currentY)) {
                 if (maximumY < currentY) maximumY = currentY;
 
                 if (velocityX > 0) velocityX -= 1;
@@ -147,7 +151,6 @@ public class day17Tests {
 
                 currentX += velocityX;
                 currentY += velocityY;
-                count += 1;
             }
 
             return targetArea.contains(currentX, currentY);
