@@ -75,8 +75,6 @@ public class day17Tests {
     }
 
     private int findHighestProbe(TargetArea t) {
-
-        //TODO - there's got to be a better way to guess the bounds
         int highestHeight = Integer.MIN_VALUE;
         int lowx = 0;
         int highx = t.x2;
