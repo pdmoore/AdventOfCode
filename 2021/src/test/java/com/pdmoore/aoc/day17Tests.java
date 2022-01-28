@@ -81,7 +81,7 @@ public class day17Tests {
         int lowx = 0;
         int highx = 1000;
         int lowy = t.y1;
-        int highy = 1000;
+        int highy = Math.abs(t.y2) * 2;
         for (int x = lowx; x <= highx; x++) {
             for (int y = lowy; y <= highy; y++) {
                 Probe p = new Probe(x, y, t);
