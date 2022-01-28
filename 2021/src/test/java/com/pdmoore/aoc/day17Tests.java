@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class day17Tests {
 
+    private int eventuallyWithin;
+
     @ParameterizedTest
     @ValueSource(strings = {"7,2", "6,3", "9,0", "6,9"})
     void part1_fallsWithinTarget_2ndExample(String startingVelocityPair) {
@@ -57,8 +59,16 @@ public class day17Tests {
 
         int actual = findHighestProbe(t);
 
-        // 3003 too low, but right answer for someone else
-        assertEquals(-99, actual);
+        assertEquals(12246, actual);
+    }
+
+    @Test
+    void part2_solution() {
+        TargetArea t = new TargetArea(88, 125, -157, -103);
+
+        int actual = findHighestProbe(t);
+
+        assertEquals(3528, eventuallyWithin);
     }
 
     private int findHighestProbe(TargetArea t) {
@@ -73,6 +83,7 @@ public class day17Tests {
             for (int y = lowy; y <= highy; y++) {
                 Probe p = new Probe(x, y, t);
                 if (p.eventuallyHitsTargetArea()) {
+                    eventuallyWithin++;
                     if (p.maximumY > highestHeight) highestHeight = p.maximumY;
                 }
             }
