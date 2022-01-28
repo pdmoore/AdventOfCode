@@ -1,9 +1,11 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,6 +56,7 @@ public class day17Tests {
     }
 
     @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
     void part1_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
@@ -66,7 +69,7 @@ public class day17Tests {
     void part2_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
-        int actual = findHighestProbe(t);
+        findHighestProbe(t);
 
         assertEquals(3528, eventuallyWithin);
     }
@@ -141,7 +144,8 @@ public class day17Tests {
             currentY += velocityY;
 
             //TODO - instead of count, figure out once the point is moving away from the target area and stop
-            while (!targetArea.contains(currentX, currentY) && (count <=1000)) {
+            // could just be once the current falls below bottom of target area
+            while (!targetArea.contains(currentX, currentY) && (count <= 400)) {
                 if (maximumY < currentY) maximumY = currentY;
 
                 if (velocityX > 0) velocityX -= 1;
