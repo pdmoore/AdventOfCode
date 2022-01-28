@@ -79,7 +79,7 @@ public class day17Tests {
         //TODO - there's got to be a better way to guess the bounds
         int highestHeight = Integer.MIN_VALUE;
         int lowx = 0;
-        int highx = 1000;
+        int highx = t.x2;
         int lowy = t.y1;
         int highy = Math.abs(t.y2) * 2;
         for (int x = lowx; x <= highx; x++) {
