@@ -137,21 +137,22 @@ public class day17Tests {
         }
 
         public boolean eventuallyHitsTargetArea() {
-            currentX += velocityX;
-            currentY += velocityY;
+            do {
+                currentX += velocityX;
+                currentY += velocityY;
 
-            while (!targetArea.contains(currentX, currentY) && targetArea.above(currentX, currentY)) {
+                if (targetArea.contains(currentX, currentY)) {
+                    return true;
+                }
+
                 if (maximumY < currentY) maximumY = currentY;
 
                 if (velocityX > 0) velocityX -= 1;
-                else if (velocityX <0) velocityX += 1;
+                else if (velocityX < 0) velocityX += 1;
                 velocityY -= 1;
+            } while (targetArea.above(currentX, currentY));
 
-                currentX += velocityX;
-                currentY += velocityY;
-            }
-
-            return targetArea.contains(currentX, currentY);
+            return false;
         }
 
         public void launchProbe() {
