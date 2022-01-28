@@ -51,16 +51,24 @@ public class day17Tests {
         assertEquals(45, actual);
     }
 
+    @Test
+    void part1_solution() {
+        TargetArea t = new TargetArea(88, 125, -157, -103);
+
+        int actual = findHighestProbe(t);
+
+        // 3003 too low, but right answer for someone else
+        assertEquals(-99, actual);
+    }
+
     private int findHighestProbe(TargetArea t) {
 
-        //x from 0 to t.x2
-        //y from t.y1 to abs(t.y2)
+        //TODO - there's got to be a better way to guess the bounds
         int highestHeight = Integer.MIN_VALUE;
         int lowx = 0;
-        int highx = t.x2;
+        int highx = 1000;
         int lowy = t.y1;
-//        int highy = Math.abs(t.y2);
-        int highy = 100;
+        int highy = 1000;
         for (int x = lowx; x <= highx; x++) {
             for (int y = lowy; y <= highy; y++) {
                 Probe p = new Probe(x, y, t);
@@ -121,6 +129,7 @@ public class day17Tests {
             currentX += velocityX;
             currentY += velocityY;
 
+            //TODO - instead of count, figure out once the point is moving away from the target area and stop
             while (!targetArea.contains(currentX, currentY) && (count <=1000)) {
                 if (maximumY < currentY) maximumY = currentY;
 
