@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class day17Tests {
 
-    private int eventuallyWithin;
+    private int probesHittingTargetArea;
+    private int highestHeight = Integer.MIN_VALUE;
 
     @ParameterizedTest
     @ValueSource(strings = {"7,2", "6,3", "9,0", "6,9"})
@@ -50,9 +51,9 @@ public class day17Tests {
     void part1_example_HighestProbe() {
         TargetArea t = new TargetArea(20, 30, -10, -5);
 
-        int actual = findHighestProbe(t);
+        launchAllProbes(t);
 
-        assertEquals(45, actual);
+        assertEquals(45, highestHeight);
     }
 
     @Test
@@ -60,9 +61,9 @@ public class day17Tests {
     void part1_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
-        int actual = findHighestProbe(t);
+        launchAllProbes(t);
 
-        assertEquals(12246, actual);
+        assertEquals(12246, highestHeight);
     }
 
     @Test
@@ -70,13 +71,12 @@ public class day17Tests {
     void part2_solution() {
         TargetArea t = new TargetArea(88, 125, -157, -103);
 
-        findHighestProbe(t);
+        launchAllProbes(t);
 
-        assertEquals(3528, eventuallyWithin);
+        assertEquals(3528, probesHittingTargetArea);
     }
 
-    private int findHighestProbe(TargetArea t) {
-        int highestHeight = Integer.MIN_VALUE;
+    private void launchAllProbes(TargetArea t) {
         int lowx = 0;
         int highx = t.x2;
         int lowy = t.y1;
@@ -85,13 +85,13 @@ public class day17Tests {
             for (int y = lowy; y <= highy; y++) {
                 Probe p = new Probe(x, y, t);
                 if (p.eventuallyHitsTargetArea()) {
-                    eventuallyWithin++;
-                    if (p.highestYPosition > highestHeight) highestHeight = p.highestYPosition;
+                    probesHittingTargetArea++;
+                    if (p.highestYPosition > highestHeight) {
+                        highestHeight = p.highestYPosition;
+                    }
                 }
             }
         }
-
-        return highestHeight;
     }
 
 
