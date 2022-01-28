@@ -43,7 +43,7 @@ public class day17Tests {
         Probe p = new Probe(6, 9, t);
         p.launchProbe();
 
-        assertEquals(45, p.maximumY);
+        assertEquals(45, p.highestYPosition);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class day17Tests {
                 Probe p = new Probe(x, y, t);
                 if (p.eventuallyHitsTargetArea()) {
                     eventuallyWithin++;
-                    if (p.maximumY > highestHeight) highestHeight = p.maximumY;
+                    if (p.highestYPosition > highestHeight) highestHeight = p.highestYPosition;
                 }
             }
         }
@@ -118,7 +118,7 @@ public class day17Tests {
     }
 
     private class Probe {
-        public int maximumY;
+        public int highestYPosition;
         private int currentX;
         private int currentY;
         private int velocityX;
@@ -133,7 +133,7 @@ public class day17Tests {
 
             this.currentX = 0;
             this.currentY = 0;
-            this.maximumY = Integer.MIN_VALUE;
+            this.highestYPosition = Integer.MIN_VALUE;
         }
 
         public boolean eventuallyHitsTargetArea() {
@@ -145,7 +145,9 @@ public class day17Tests {
                     return true;
                 }
 
-                if (maximumY < currentY) maximumY = currentY;
+                if (highestYPosition < currentY) {
+                    highestYPosition = currentY;
+                }
 
                 if (velocityX > 0) velocityX -= 1;
                 else if (velocityX < 0) velocityX += 1;
