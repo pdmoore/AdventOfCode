@@ -140,8 +140,6 @@ public class day17Tests {
             currentX += velocityX;
             currentY += velocityY;
 
-            //TODO - instead of count, figure out once the point is moving away from the target area and stop
-            // could just be once the current falls below bottom of target area
             while (!targetArea.contains(currentX, currentY) && targetArea.above(currentX, currentY)) {
                 if (maximumY < currentY) maximumY = currentY;
 
