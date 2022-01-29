@@ -20,19 +20,27 @@ public class day18Tests {
     }
 
     @Test
-    void splitting() {
+    void breakApart() {
         String[] expected = {"[1,2]", "[[3,4],5]"};
-        String[] actual = split("[[1,2],[[3,4],5]]");
+        String[] actual = breakApart("[[1,2],[[3,4],5]]");
         assertEquals(expected[0], actual[0]);
         assertEquals(expected[1], actual[1]);
 
         String[] expected2 = {"[3,4]", "5"};
-        actual = split("[[3,4],5]");
+        actual = breakApart("[[3,4],5]");
         assertEquals(expected2[0], actual[0]);
         assertEquals(expected2[1], actual[1]);
     }
 
-    private String[] split(String input) {
+    // TODO - add number to number
+    // TODO - reduce a number
+    // TODO - reduce via explode
+    // TODO - reduce via split
+    // TODO - part1 example
+    // TODO - part 1 solution
+
+
+    private String[] breakApart(String input) {
         String[] result = new String[2];
 
         int index = 1;
@@ -54,13 +62,13 @@ public class day18Tests {
             index++;
         }
     }
-    
+
     private int magnitudeOf(String input) {
         if (input.length() == 1) {
             return Integer.parseInt(input);
         }
 
-        String[] split = split(input);
+        String[] split = breakApart(input);
         return (3 * magnitudeOf(split[0])) + (2 * magnitudeOf(split[1]));
     }
 }
