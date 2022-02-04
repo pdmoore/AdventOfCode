@@ -37,7 +37,6 @@ public class day18Tests {
     }
 
     @Test
-    @Disabled
     void singleExplode_noRegularNumberLeft_OnlyRight() {
         String resultOfAddition = "[[[[[9,8],1],2],3],4]";
 
@@ -167,9 +166,10 @@ public class day18Tests {
                 String thisPair = input.substring(i + 1, closingBracketIndex);
                 String[] pairValues = thisPair.split(",");
                 if (regularNumberToLeft == -1) {
-                    throw new UnsupportedOperationException("Handle case when there is no regular number to the left");
+                    result.append(input.substring(0, i));
+//                    throw new UnsupportedOperationException("Handle case when there is no regular number to the left");
                 } else {
-                    result.append(input.substring(0,regularNumberToLeft));
+                    result.append(input.substring(0, regularNumberToLeft));
 
                     // MAY NOT WORK IF regNumLeft index points to something > 10
                     int valueToLeft = Integer.parseInt("" + input.charAt(regularNumberToLeft));
@@ -182,8 +182,24 @@ public class day18Tests {
                 result.append("0"); // replaces the exloded pair - DO I NEED , or ]???
 
                 // HANDLE RIGHT SIDE STUFF
+                int digitToRightIndex = closingBracketIndex + 1;
+                while (digitToRightIndex < input.length() &&
+                        !Character.isDigit(input.charAt(digitToRightIndex))) {
+                    digitToRightIndex++;
+                }
+                if (digitToRightIndex < input.length()) {
+                    // MAY NOT WORK IF digitToRight is > 10
+                    int valueToRight = Integer.parseInt("" + input.charAt(digitToRightIndex));
+                    int rightElement = Integer.parseInt(pairValues[1]);
+                    int newRightValue = rightElement + valueToRight;
+                    result.append(",");
+                    result.append(newRightValue);
+                    result.append(input.substring(closingBracketIndex + 1 + 2));
+                } else {
 
-                result.append(input.substring(closingBracketIndex + 1));
+                    result.append(input.substring(closingBracketIndex + 1));
+                }
+
 
                 return result.toString();
             }
