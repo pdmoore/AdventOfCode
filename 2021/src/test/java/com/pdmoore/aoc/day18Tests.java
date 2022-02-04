@@ -181,9 +181,17 @@ public class day18Tests {
                 int closingBracketIndex = input.indexOf(']', i);
                 String thisPair = input.substring(i + 1, closingBracketIndex);
                 String[] pairValues = thisPair.split(",");
-                if (regularNumberToLeft == -1) {
+
+                boolean hasRegularNumberToLeft = regularNumberToLeft != -1;
+                int digitToRightIndex = closingBracketIndex + 1;
+                while (digitToRightIndex < input.length() &&
+                        !Character.isDigit(input.charAt(digitToRightIndex))) {
+                    digitToRightIndex++;
+                }
+                boolean hasRegularNumberToRight = digitToRightIndex < input.length();
+
+                if (!hasRegularNumberToLeft) {
                     result.append(input.substring(0, i));
-//                    throw new UnsupportedOperationException("Handle case when there is no regular number to the left");
                 } else {
                     result.append(input.substring(0, regularNumberToLeft));
 
@@ -198,12 +206,7 @@ public class day18Tests {
                 result.append("0"); // replaces the exloded pair - DO I NEED , or ]???
 
                 // HANDLE RIGHT SIDE STUFF
-                int digitToRightIndex = closingBracketIndex + 1;
-                while (digitToRightIndex < input.length() &&
-                        !Character.isDigit(input.charAt(digitToRightIndex))) {
-                    digitToRightIndex++;
-                }
-                if (digitToRightIndex < input.length()) {
+                if (hasRegularNumberToRight) {
                     // MAY NOT WORK IF digitToRight is > 10
                     int valueToRight = Integer.parseInt("" + input.charAt(digitToRightIndex));
                     int rightElement = Integer.parseInt(pairValues[1]);
