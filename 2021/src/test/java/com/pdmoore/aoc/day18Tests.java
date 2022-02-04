@@ -58,6 +58,22 @@ public class day18Tests {
 
     @Test
     @Disabled
+    void singleExplode_RegularNumberLeft_AndRight() {
+        String resultOfAddition = "[[6,[5,[4,[3,2]]]],1]";
+
+        String actual = reduce(resultOfAddition);
+
+        // TODO - FAILING
+        // Current logic is handles either LEFT or RIGHT case
+        // Maybe RIGHT logic needs to know if Left logic happened and not add the magic 2
+        // on line 212
+
+        String expected = "[[6,[5,[7,0]]],3]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Disabled
     void part1_example_addition_and_reduction() {
         List<String> input = Arrays.asList("[[[[4,3],4],4],[7,[[8,4],9]]]", "[1,1]");
 
@@ -196,7 +212,6 @@ public class day18Tests {
                     result.append(newRightValue);
                     result.append(input.substring(closingBracketIndex + 1 + 2));
                 } else {
-
                     result.append(input.substring(closingBracketIndex + 1));
                 }
 
