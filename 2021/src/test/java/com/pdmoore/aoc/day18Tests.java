@@ -3,7 +3,6 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,12 +37,23 @@ public class day18Tests {
     }
 
     @Test
-    void singleExplode() {
+    @Disabled
+    void singleExplode_noRegularNumberLeft_OnlyRight() {
         String resultOfAddition = "[[[[[9,8],1],2],3],4]";
 
         String actual = reduce(resultOfAddition);
 
         String expected = "[[[[0,9],2],3],4]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singleExplode_RegularNumberLeft_NotRight() {
+        String resultOfAddition = "[7,[6,[5,[4,[3,2]]]]]";
+
+        String actual = reduce(resultOfAddition);
+
+        String expected = "[7,[6,[5,[7,0]]]]";
         assertEquals(expected, actual);
     }
 
@@ -141,16 +151,44 @@ public class day18Tests {
             else if (input.charAt(i) == ']') leftBracketCount--;
             else if (Character.isDigit(input.charAt(i))) regularNumberToLeft = i;
 
-            if (leftBracketCount == 4) {
+            if (leftBracketCount == 5) {
+                StringBuilder result = new StringBuilder();
                 //TODO - Here's where I left off. I've detected a pair that needs exploded.
                 // read through below and implement
                 //ACTION!
                 // find values inside this pair [leftElement, rightElement]
                 // check if regularNumberToLeft is > -1 and add leftElement to it and replace in position
                 // look for a regular number to the right of this pair
-                // if there is one, add rightELement to it and replace in position
+                // if there is one, add rightElement to it and replace in position
                 // return the resulting string
+                //[7,[6,[5,[7,0]]]]
+                //         i
+                int closingBracketIndex = input.indexOf(']', i);
+                String thisPair = input.substring(i + 1, closingBracketIndex);
+                String[] pairValues = thisPair.split(",");
+                if (regularNumberToLeft == -1) {
+                    throw new UnsupportedOperationException("Handle case when there is no regular number to the left");
+                } else {
+                    result.append(input.substring(0,regularNumberToLeft));
+
+                    // MAY NOT WORK IF regNumLeft index points to something > 10
+                    int valueToLeft = Integer.parseInt("" + input.charAt(regularNumberToLeft));
+                    int leftElement = Integer.parseInt(pairValues[0]);
+                    int newLeftValue = valueToLeft + leftElement;
+                    result.append(newLeftValue);
+                    result.append(",");
+                }
+
+                result.append("0"); // replaces the exloded pair - DO I NEED , or ]???
+
+                // HANDLE RIGHT SIDE STUFF
+
+                result.append(input.substring(closingBracketIndex + 1));
+
+                return result.toString();
             }
+
+            i++;
         }
 
         return input;
