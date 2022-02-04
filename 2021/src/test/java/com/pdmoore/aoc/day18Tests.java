@@ -150,6 +150,26 @@ public class day18Tests {
     }
 
     private String attemptExplode(String input) {
+        if (!hasFourNestedPairs(input)) {
+            return input;
+        }
+
+        // guaranteed this magicX is index of fifth '['
+        int openOfFifthPair = locateStartOfFifthNestedPair(input);
+        int closeOfFifthPair = input.indexOf(']', openOfFifthPair);
+
+        String thisPair = input.substring(openOfFifthPair + 1, closeOfFifthPair);
+        String[] pairValues = thisPair.split(",");
+        int leftElement = Integer.parseInt(pairValues[0]);
+        int rightElement = Integer.parseInt(pairValues[1]);
+
+        int leftBracketCount = 0;
+        int i = 0;
+
+        int numberValueToLeft = getAnyNumberToLeft(input);
+        int numberValueToRight = getAnyNumberToRight(input);
+
+
         // if any pair is nested inside four pairs, the leftmost such pair explodes
 
         // the pairs left value is added to the first regular number to the left of the exploding pair (if any)
@@ -158,13 +178,11 @@ public class day18Tests {
 
         // running count of left brackets - when it hits 4, then action
         String exploded = input;
-        int leftBracketCount = 0;
-        int i = 0;
-        int regularNumberToLeft = -1;
+        int regularNumberToLeft_obs = -1;
         while (i < input.length()) {
             if (input.charAt(i) == '[') leftBracketCount++;
             else if (input.charAt(i) == ']') leftBracketCount--;
-            else if (Character.isDigit(input.charAt(i))) regularNumberToLeft = i;
+            else if (Character.isDigit(input.charAt(i))) regularNumberToLeft_obs = i;
 
             if (leftBracketCount == 5) {
                 StringBuilder result = new StringBuilder();
@@ -178,12 +196,9 @@ public class day18Tests {
                 // return the resulting string
                 //[7,[6,[5,[7,0]]]]
                 //         i
-                int closingBracketIndex = input.indexOf(']', i);
-                String thisPair = input.substring(i + 1, closingBracketIndex);
-                String[] pairValues = thisPair.split(",");
 
-                boolean hasRegularNumberToLeft = regularNumberToLeft != -1;
-                int digitToRightIndex = closingBracketIndex + 1;
+                boolean hasRegularNumberToLeft = regularNumberToLeft_obs != -1;
+                int digitToRightIndex = closeOfFifthPair + 1;
                 while (digitToRightIndex < input.length() &&
                         !Character.isDigit(input.charAt(digitToRightIndex))) {
                     digitToRightIndex++;
@@ -193,12 +208,9 @@ public class day18Tests {
                 if (!hasRegularNumberToLeft) {
                     result.append(input.substring(0, i));
                 } else {
-                    result.append(input.substring(0, regularNumberToLeft));
+                    result.append(input.substring(0, regularNumberToLeft_obs));
 
-                    // MAY NOT WORK IF regNumLeft index points to something > 10
-                    int valueToLeft = Integer.parseInt("" + input.charAt(regularNumberToLeft));
-                    int leftElement = Integer.parseInt(pairValues[0]);
-                    int newLeftValue = valueToLeft + leftElement;
+                    int newLeftValue = numberValueToLeft + leftElement;
                     result.append(newLeftValue);
                     result.append(",");
                 }
@@ -208,16 +220,21 @@ public class day18Tests {
                 // HANDLE RIGHT SIDE STUFF
                 if (hasRegularNumberToRight) {
                     // MAY NOT WORK IF digitToRight is > 10
-                    int valueToRight = Integer.parseInt("" + input.charAt(digitToRightIndex));
-                    int rightElement = Integer.parseInt(pairValues[1]);
-                    int newRightValue = rightElement + valueToRight;
+//                    int valueToRight = Integer.parseInt("" + input.charAt(digitToRightIndex));
+                    int newRightValue = rightElement + numberValueToRight;
+
+                    // TODO - probably need to copy input to digitToRightIndex to result, then replace the thing
+
                     result.append(",");
                     result.append(newRightValue);
-                    result.append(input.substring(closingBracketIndex + 1 + 2));
+                    if (hasRegularNumberToLeft) {
+                        result.append(input.substring(closeOfFifthPair + 1));
+                    } else {
+                        result.append(input.substring(closeOfFifthPair + 1 + 2));
+                    }
                 } else {
-                    result.append(input.substring(closingBracketIndex + 1));
+                    result.append(input.substring(closeOfFifthPair + 1));
                 }
-
 
                 return result.toString();
             }
@@ -226,6 +243,68 @@ public class day18Tests {
         }
 
         return input;
+    }
+
+    private int getAnyNumberToRight(String input) {
+        int openOfFifthPair = locateStartOfFifthNestedPair(input);
+        int closeOfFifthPair = input.indexOf(']', openOfFifthPair);
+
+        int digitToRightIndex = closeOfFifthPair + 1;
+        while (digitToRightIndex < input.length() &&
+                !Character.isDigit(input.charAt(digitToRightIndex))) {
+            digitToRightIndex++;
+        }
+
+        if (digitToRightIndex >= input.length()) {
+            return -1;
+        }
+
+        return Integer.parseInt(String.valueOf(input.charAt(digitToRightIndex)));
+
+    }
+
+    private int getAnyNumberToLeft(String input) {
+        int i = 0;
+        int leftBracketCount = 0;
+        int regularNumberToLeft = -1;
+        while (i < input.length()) {
+            if (input.charAt(i) == '[') leftBracketCount++;
+            else if (input.charAt(i) == ']') leftBracketCount--;
+            else if (Character.isDigit(input.charAt(i))) regularNumberToLeft = i;
+
+            if (leftBracketCount == 5) {
+                //TODO - handle numbers > 10
+                if (regularNumberToLeft != -1) {
+                    return Integer.parseInt(String.valueOf(input.charAt(regularNumberToLeft)));
+                }
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    private int locateStartOfFifthNestedPair(String input) {
+        int leftBracketCount = 0;
+        int i = 0;
+        while (i < input.length()) {
+            if (input.charAt(i) == '[') leftBracketCount++;
+            else if (input.charAt(i) == ']') leftBracketCount--;
+
+            if (leftBracketCount == 5) {
+                return i;
+            }
+            i++;
+        }
+        throw new IllegalArgumentException("required to have nested inside four pairs");
+    }
+
+    private boolean hasFourNestedPairs(String input) {
+        try {
+            locateStartOfFifthNestedPair(input);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     private String attemptSplit(String input) {
