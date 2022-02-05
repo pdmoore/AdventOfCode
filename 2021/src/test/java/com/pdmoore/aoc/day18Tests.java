@@ -57,7 +57,6 @@ public class day18Tests {
     }
 
     @Test
-    @Disabled
     void singleExplode_RegularNumberLeft_AndRight() {
         String resultOfAddition = "[[6,[5,[4,[3,2]]]],1]";
 
@@ -136,7 +135,7 @@ public class day18Tests {
             String beforeActions = result;
 
             // check entire string for explode action
-            result = attemptExplode(result);
+            result = attemptExplode_2(result);
 
             if (beforeActions.equals(result)) {
                 result = attemptSplit(result);
@@ -147,6 +146,64 @@ public class day18Tests {
             }
         }
 
+    }
+
+    private String attemptExplode_2(String input) {
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+        int openBrackCount = 0;
+        int indexOfLeftRegularNumber = 0;
+
+        // just copy and transform as I go
+        while (i < input.length()) {
+            if (input.charAt(i) == '[') openBrackCount++;
+            else if (input.charAt(i) == ']') openBrackCount--;
+            else if (Character.isDigit(input.charAt(i))) indexOfLeftRegularNumber = i;
+
+            if (openBrackCount == 5) {
+
+                int closeOfFifthPair = input.indexOf(']', i);
+
+                String explodingPair = input.substring(i + 1, closeOfFifthPair);
+                String[] pairValues = explodingPair.split(",");
+                int leftElement = Integer.parseInt(pairValues[0]);
+                int rightElement = Integer.parseInt(pairValues[1]);
+
+                if (indexOfLeftRegularNumber > 0) {
+                    String leftPortion = input.substring(0, indexOfLeftRegularNumber);
+                    result = new StringBuilder();
+                    result.append(leftPortion);
+
+                    int leftRegularNumber = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
+                    result.append(leftRegularNumber + leftElement);
+                    result.append(",");
+                }
+
+                result.append("0");
+
+                int j = closeOfFifthPair + 1;
+                while (j < input.length()) {
+                    if (Character.isDigit(input.charAt(j))) {
+                        int rightRegularNumber = Integer.parseInt(String.valueOf(input.charAt(j)));
+                        result.append(rightRegularNumber + rightElement);
+                        result.append(input.substring(j + 1));
+                        return result.toString();
+
+                    } else {
+                        result.append(input.charAt(j));
+                    }
+                    j++;
+                }
+
+                return result.toString();
+            } else {
+                result.append(input.charAt(i));
+            }
+
+            i++;
+        }
+
+        return result.toString();
     }
 
     private String attemptExplode(String input) {
@@ -166,9 +223,11 @@ public class day18Tests {
         int leftBracketCount = 0;
         int i = 0;
 
-        int numberValueToLeft = getAnyNumberToLeft(input);
+        int indexOfLeftRegularNumber = getAnyNumberToLeft(input);
         int numberValueToRight = getAnyNumberToRight(input);
 
+        //TODO - continue with building the exploded string based on the above
+        // working to remove the while loop below
 
         // if any pair is nested inside four pairs, the leftmost such pair explodes
 
@@ -177,7 +236,6 @@ public class day18Tests {
         // then the entire exploding pair is replaced with regular number 0
 
         // running count of left brackets - when it hits 4, then action
-        String exploded = input;
         int regularNumberToLeft_obs = -1;
         while (i < input.length()) {
             if (input.charAt(i) == '[') leftBracketCount++;
@@ -186,8 +244,6 @@ public class day18Tests {
 
             if (leftBracketCount == 5) {
                 StringBuilder result = new StringBuilder();
-                //TODO - Here's where I left off. I've detected a pair that needs exploded.
-                // read through below and implement
                 //ACTION!
                 // find values inside this pair [leftElement, rightElement]
                 // check if regularNumberToLeft is > -1 and add leftElement to it and replace in position
@@ -208,9 +264,10 @@ public class day18Tests {
                 if (!hasRegularNumberToLeft) {
                     result.append(input.substring(0, i));
                 } else {
-                    result.append(input.substring(0, regularNumberToLeft_obs));
+                    result.append(input.substring(0, indexOfLeftRegularNumber));
 
-                    int newLeftValue = numberValueToLeft + leftElement;
+                    int regularNumberToLeftValue = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
+                    int newLeftValue = regularNumberToLeftValue + leftElement;
                     result.append(newLeftValue);
                     result.append(",");
                 }
@@ -275,7 +332,7 @@ public class day18Tests {
             if (leftBracketCount == 5) {
                 //TODO - handle numbers > 10
                 if (regularNumberToLeft != -1) {
-                    return Integer.parseInt(String.valueOf(input.charAt(regularNumberToLeft)));
+                    return regularNumberToLeft;
                 }
             }
             i++;
