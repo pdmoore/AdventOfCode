@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +50,7 @@ public class day18Tests {
     void singleExplode_RegularNumberLeft_NotRight() {
         String resultOfAddition = "[7,[6,[5,[4,[3,2]]]]]";
 
-        String actual = reduce(resultOfAddition);
+        String actual = attemptExplode_2(resultOfAddition);
 
         String expected = "[7,[6,[5,[7,0]]]]";
         assertEquals(expected, actual);
@@ -61,37 +60,125 @@ public class day18Tests {
     void singleExplode_RegularNumberLeft_AndRight() {
         String resultOfAddition = "[[6,[5,[4,[3,2]]]],1]";
 
-        String actual = reduce(resultOfAddition);
+        String actual = attemptExplode_2(resultOfAddition);
 
         String expected = "[[6,[5,[7,0]]],3]";
         assertEquals(expected, actual);
     }
 
     @Test
-    void continueWithTheseExamples() {
-        /*
-        [[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]] becomes [[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]
-        (the pair [3,2] is unaffected because the pair [7,3] is further to the left; [3,2] would explode on the next action).
-        [[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]] becomes [[3,[2,[8,0]]],[9,[5,[7,0]]]].
-         */
-        Assertions.fail("Keep at it");
+    void singleExplode_DoNotExplodePairOnTheRight() {
+        String resultOfAddition = "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]";
+
+        String actual = attemptExplode_2(resultOfAddition);
+
+        String expected = "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]";
+        assertEquals(expected, actual);
     }
 
     @Test
-    @Disabled
+    void singleExplode_ExplodePairOnFarRight() {
+        String resultOfAddition = "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]";
+
+        String actual = attemptExplode_2(resultOfAddition);
+
+        String expected = "[[3,[2,[8,0]]],[9,[5,[7,0]]]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void explode_regularNumberLargerThan10() {
+        String input = "[[[[0,7],4],[7,[[8,4],9]]],[1,1]]";
+
+        String actual = attemptExplode_2(input);
+
+        String expected = "[[[[0,7],4],[15,[0,13]]],[1,1]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void part1_split() {
+        String input = "[[[[0,7],4],[15,[0,13]]],[1,1]]";
+
+        String actual = attemptSplit(input);
+
+        String expected = "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void part1_add_justTwo() {
+        List<String> input = Arrays.asList("[1,2]", "[[3,4],5]");
+
+        String actual = add(input);
+
+        String expected = "[[1,2],[[3,4],5]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void part1_example_addition_and_reduction() {
         List<String> input = Arrays.asList("[[[[4,3],4],4],[7,[[8,4],9]]]", "[1,1]");
 
         String actual = addAndReduce(input);
 
-        String expected = "[[[[0,7],4],[7,8],[6,0]]],[8,1]]";
+        String expected = "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]";
         assertEquals(expected, actual);
     }
 
-    private String addAndReduce(List<String> input) {
-        // Add first to second, AND Reduce that result,  then third, etc to end of input
+    @Test
+    @Disabled
+    void part1_addAndReduce() {
+        List<String> input = Arrays.asList("[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]", "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]");
 
-        return "not implemented yet";
+        String actual = addAndReduce(input);
+
+        String expected = "[[[[4,0],[5,4]],[[7,7],[6,0]]],[[8,[7,7]],[[7,9],[5,0]]]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void part1_SlightlyLargerExample() {
+        /*
+[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
+[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
+[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]
+[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]
+[7,[5,[[3,8],[1,4]]]]
+[[2,[2,2]],[8,[8,1]]]
+[2,9]
+[1,[[[9,3],9],[[9,0],[0,7]]]]
+[[[5,[7,4]],7],1]
+[[[[4,2],2],6],[8,7]]
+
+final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
+         */
+    }
+
+    private String addAndReduce(List<String> input) {
+        String lhs = input.get(0);
+        String rhs = input.get(1);
+
+        String added = add(lhs, rhs);
+
+        return reduce(added);
+    }
+
+    private String add(List<String> input) {
+        String lhs = input.get(0);
+        String rhs = input.get(1);
+        return add(lhs, rhs);
+    }
+
+    private String add(String lhs, String rhs) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append(lhs);
+        sb.append(",");
+        sb.append(rhs);
+        sb.append("]");
+
+        return sb.toString();
     }
 
     // TODO - add number to number
@@ -136,11 +223,9 @@ public class day18Tests {
 
     private String reduce(String input) {
         String result = input;
-
         while (true) {
             String beforeActions = result;
 
-            // check entire string for explode action
             result = attemptExplode_2(result);
 
             if (beforeActions.equals(result)) {
@@ -151,7 +236,6 @@ public class day18Tests {
                 return result;
             }
         }
-
     }
 
     private String attemptExplode_2(String input) {
@@ -177,12 +261,19 @@ public class day18Tests {
 
                 if (indexOfLeftRegularNumber > 0) {
                     String leftPortion = input.substring(0, indexOfLeftRegularNumber);
+
+                    String remainder = "";
+                    if (result.length() > indexOfLeftRegularNumber) {
+                        remainder = result.substring(indexOfLeftRegularNumber + 2);
+                    }
+
                     result = new StringBuilder();
                     result.append(leftPortion);
 
                     int leftRegularNumber = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
                     result.append(leftRegularNumber + leftElement);
                     result.append(",");
+                    result.append(remainder);
                 }
 
                 result.append("0");
@@ -217,6 +308,33 @@ public class day18Tests {
         // regular number is replaced with pair
         // left element is regular number divided by two, rounded down
         // right element is regular number divided by two, rounded up
-        return input;
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+
+        while (i < input.length()) {
+            // Might need to check for (i +1) < input.length when nothing needs split
+            if (Character.isDigit(input.charAt(i)) &&
+                    Character.isDigit(input.charAt(i + 1))) {
+
+                int splitThis = Integer.parseInt(input.substring(i, i + 2));
+                int newLeft = Math.floorDiv(splitThis, 2);
+                int newRight = (int)Math.ceil((double)splitThis / 2);
+                result.append("[");
+                result.append(newLeft);
+                result.append(",");
+                result.append(newRight);
+                result.append("]");
+
+                result.append(input.substring(i + 2));
+
+                return result.toString();
+            } else {
+                result.append(input.charAt(i));
+            }
+
+            i++;
+        }
+
+        return result.toString();
     }
 }
