@@ -186,6 +186,42 @@ public class day18Tests {
         assertEquals(4176, magnitudeOf(actual));
     }
 
+    @Test
+    void part2_magnitudeCheck() {
+        String lhs = "[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]";
+        String rhs = "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]";
+
+        int actual = largestMagnitudeOf(Arrays.asList(lhs, rhs));
+
+        String expected = "[[[[7,8],[6,6]],[[6,0],[7,7]]],[[[7,8],[8,8]],[[7,9],[0,6]]]]";
+
+        assertEquals(3993, magnitudeOf(expected));
+        assertEquals(3993, actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day18_part1_homeworkExample");
+
+        int actual = largestMagnitudeOf(input);
+
+        assertEquals(3993, actual);
+    }
+
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day18");
+
+        int actual = largestMagnitudeOf(input);
+
+        assertEquals(4633, actual);
+    }
+
+    private String addAndReduce(String lhs, String rhs) {
+        List<String> addends = Arrays.asList(lhs, rhs);
+        return addAndReduce(addends);
+    }
+
     private String addAndReduce(List<String> input) {
         String lhs = input.get(0);
         int addWith = 1;
@@ -373,5 +409,33 @@ public class day18Tests {
 
         // nothing split
         return input;
+    }
+
+    private int largestMagnitudeOf(List<String> input) {
+        int result = Integer.MIN_VALUE;
+
+        // for each input line
+        // add to each other input line and reduce
+        // get magnitude and compare to result
+
+        int i = 0;
+        while (i <= input.size() - 1) {
+            int j = 0;
+
+            while (j <= input.size() - 1) {
+                if (i != j) {
+                    String lhs = input.get(i);
+                    String rhs = input.get(j);
+
+                    String reduced = addAndReduce(lhs, rhs);
+                    int magnitude = magnitudeOf(reduced);
+                    result = Math.max(result, magnitude);
+                }
+                j++;
+            }
+            i++;
+        }
+
+        return result;
     }
 }
