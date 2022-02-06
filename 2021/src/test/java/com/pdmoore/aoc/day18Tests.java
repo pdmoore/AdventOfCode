@@ -50,7 +50,7 @@ public class day18Tests {
     void singleExplode_RegularNumberLeft_NotRight() {
         String resultOfAddition = "[7,[6,[5,[4,[3,2]]]]]";
 
-        String actual = attemptExplode_2(resultOfAddition);
+        String actual = attemptExplode(resultOfAddition);
 
         String expected = "[7,[6,[5,[7,0]]]]";
         assertEquals(expected, actual);
@@ -60,7 +60,7 @@ public class day18Tests {
     void singleExplode_RegularNumberLeft_AndRight() {
         String resultOfAddition = "[[6,[5,[4,[3,2]]]],1]";
 
-        String actual = attemptExplode_2(resultOfAddition);
+        String actual = attemptExplode(resultOfAddition);
 
         String expected = "[[6,[5,[7,0]]],3]";
         assertEquals(expected, actual);
@@ -70,7 +70,7 @@ public class day18Tests {
     void singleExplode_DoNotExplodePairOnTheRight() {
         String resultOfAddition = "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]";
 
-        String actual = attemptExplode_2(resultOfAddition);
+        String actual = attemptExplode(resultOfAddition);
 
         String expected = "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]";
         assertEquals(expected, actual);
@@ -80,7 +80,7 @@ public class day18Tests {
     void singleExplode_ExplodePairOnFarRight() {
         String resultOfAddition = "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]";
 
-        String actual = attemptExplode_2(resultOfAddition);
+        String actual = attemptExplode(resultOfAddition);
 
         String expected = "[[3,[2,[8,0]]],[9,[5,[7,0]]]]";
         assertEquals(expected, actual);
@@ -90,7 +90,7 @@ public class day18Tests {
     void explode_regularNumberLargerThan10() {
         String input = "[[[[0,7],4],[7,[[8,4],9]]],[1,1]]";
 
-        String actual = attemptExplode_2(input);
+        String actual = attemptExplode(input);
 
         String expected = "[[[[0,7],4],[15,[0,13]]],[1,1]]";
         assertEquals(expected, actual);
@@ -138,6 +138,7 @@ public class day18Tests {
     }
 
     @Test
+    @Disabled
     void part1_SlightlyLargerExample() {
         /*
 [[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
@@ -223,10 +224,12 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
     private String reduce(String input) {
         String result = input;
+        System.out.println("reduc: " + result.toString());
+
         while (true) {
             String beforeActions = result;
 
-            result = attemptExplode_2(result);
+            result = attemptExplode(result);
 
             if (beforeActions.equals(result)) {
                 result = attemptSplit(result);
@@ -238,7 +241,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
         }
     }
 
-    private String attemptExplode_2(String input) {
+    private String attemptExplode(String input) {
         StringBuilder result = new StringBuilder();
         int i = 0;
         int openBrackCount = 0;
@@ -264,7 +267,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
                     String remainder = "";
                     if (result.length() > indexOfLeftRegularNumber) {
-                        remainder = result.substring(indexOfLeftRegularNumber + 2);
+                        remainder = result.substring(indexOfLeftRegularNumber + 1);
                     }
 
                     result = new StringBuilder();
@@ -272,7 +275,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
                     int leftRegularNumber = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
                     result.append(leftRegularNumber + leftElement);
-                    result.append(",");
+//                    result.append(",");   // May be , may be [ -- need to check what it is in the input
                     result.append(remainder);
                 }
 
@@ -292,6 +295,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                     j++;
                 }
 
+                System.out.println("expld: " + result.toString());
                 return result.toString();
             } else {
                 result.append(input.charAt(i));
@@ -327,6 +331,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
                 result.append(input.substring(i + 2));
 
+                System.out.println("split: " + result.toString());
                 return result.toString();
             } else {
                 result.append(input.charAt(i));
