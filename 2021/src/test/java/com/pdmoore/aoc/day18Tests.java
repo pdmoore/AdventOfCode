@@ -110,7 +110,7 @@ public class day18Tests {
     void part1_add_justTwo() {
         List<String> input = Arrays.asList("[1,2]", "[[3,4],5]");
 
-        String actual = add(input);
+        String actual = add(input.get(0), input.get(1));
 
         String expected = "[[1,2],[[3,4],5]]";
         assertEquals(expected, actual);
@@ -194,17 +194,10 @@ public class day18Tests {
             String rhs = input.get(addWith);
             result = add(lhs, rhs);
             lhs = reduce(result);
-//System.out.println(lhs);
             addWith++;
         }
 
         return lhs;
-    }
-
-    private String add(List<String> input) {
-        String lhs = input.get(0);
-        String rhs = input.get(1);
-        return add(lhs, rhs);
     }
 
     private String add(String lhs, String rhs) {
@@ -217,14 +210,6 @@ public class day18Tests {
 
         return sb.toString();
     }
-
-    // TODO - add number to number
-    // TODO - reduce a number
-    // TODO - reduce via explode
-    // TODO - reduce via split
-    // TODO - part1 example
-    // TODO - part 1 solution
-
 
     private String[] breakApart(String input) {
         String[] result = new String[2];
@@ -259,19 +244,19 @@ public class day18Tests {
     }
 
     private String reduce(String input) {
-        String result = input;
+        String anyReductionApplied = input;
 
         while (true) {
-            String beforeActions = result;
+            String previousPass = anyReductionApplied;
 
-            result = attemptExplode(result);
+            anyReductionApplied = attemptExplode(anyReductionApplied);
 
-            if (beforeActions.equals(result)) {
-                result = attemptSplit(result);
+            if (previousPass.equals(anyReductionApplied)) {
+                anyReductionApplied = attemptSplit(anyReductionApplied);
             }
 
-            if (beforeActions.equals(result)) {
-                return result;
+            if (previousPass.equals(anyReductionApplied)) {
+                return anyReductionApplied;
             }
         }
     }
@@ -280,54 +265,50 @@ public class day18Tests {
         StringBuilder result = new StringBuilder();
         int i = 0;
         int openBrackCount = 0;
-        int indexOfLeftRegularNumber = 0;
+        int indexEndOfLeftRegularNumber = 0;
 
-        // just copy and transform as I go
+        // just copy and transform as we go
         while (i < input.length()) {
             if (input.charAt(i) == '[') openBrackCount++;
             else if (input.charAt(i) == ']') openBrackCount--;
-            else if (Character.isDigit(input.charAt(i))) indexOfLeftRegularNumber = i;
+            else if (Character.isDigit(input.charAt(i))) indexEndOfLeftRegularNumber = i;
 
-            if (openBrackCount == 5) {
+            if (openBrackCount < 5) {
+                result.append(input.charAt(i));
+            } else {
 
-                int closeOfFifthPair = input.indexOf(']', i);
+                int closeOfFifthBracket = input.indexOf(']', i);
 
-                String explodingPair = input.substring(i + 1, closeOfFifthPair);
+                String explodingPair = input.substring(i + 1, closeOfFifthBracket);
                 String[] pairValues = explodingPair.split(",");
-                int leftElement = Integer.parseInt(pairValues[0]);
-                int rightElement = Integer.parseInt(pairValues[1]);
+                int leftPairValue = Integer.parseInt(pairValues[0]);
+                int rightPairValue = Integer.parseInt(pairValues[1]);
 
-                if (indexOfLeftRegularNumber > 0) {
-//System.out.println(input);
+                if (indexEndOfLeftRegularNumber > 0) {
 
-                    int k = indexOfLeftRegularNumber;
-                    while (Character.isDigit(input.charAt(k))) {
-                        k--;
+                    int indexBeginOfLeftRegularNumber = indexEndOfLeftRegularNumber;
+                    while (Character.isDigit(input.charAt(--indexBeginOfLeftRegularNumber))) {
                     }
+                    indexBeginOfLeftRegularNumber++;
 
-                    // TODO - leftRegular can be >9, so need to find the number starting at indexOfLeft and maybe going
-//                    String leftRegularNumberString = String.valueOf(input.charAt(indexOfLeftRegularNumber));
-                    String leftRegularNumberString = input.substring(k + 1, indexOfLeftRegularNumber + 1);
-
-                    String leftPortion = input.substring(0, k + 1);
-
-                    //TODO - remainder will be whatever is to the right of the regular number,not necessarily just +1
                     String remainder = "";
-                    if (result.length() > indexOfLeftRegularNumber) {
-                        remainder = result.substring(indexOfLeftRegularNumber + 1);
+                    if (result.length() > indexEndOfLeftRegularNumber) {
+                        remainder = result.substring(indexEndOfLeftRegularNumber + 1);
                     }
 
+                    String leftPortion = input.substring(0, indexBeginOfLeftRegularNumber);
                     result = new StringBuilder();
                     result.append(leftPortion);
 
+                    String leftRegularNumberString = input.substring(indexBeginOfLeftRegularNumber, indexEndOfLeftRegularNumber + 1);
                     int leftRegularNumber = Integer.parseInt(leftRegularNumberString);
-                    result.append(leftRegularNumber + leftElement);
+                    result.append(leftRegularNumber + leftPairValue);
                     result.append(remainder);
                 }
 
                 result.append("0");
 
-                int j = closeOfFifthPair + 1;
+                int j = closeOfFifthBracket + 1;
                 while (j < input.length()) {
                     if (Character.isDigit(input.charAt(j))) {
 
@@ -339,7 +320,7 @@ public class day18Tests {
                         String rightRegularNumberString = input.substring(j, k);
                         int rightRegularNumber = Integer.parseInt(rightRegularNumberString);
 
-                        result.append(rightRegularNumber + rightElement);
+                        result.append(rightRegularNumber + rightPairValue);
                         result.append(input.substring(j + rightRegularNumberString.length()));
                         return result.toString();
                     } else {
@@ -348,15 +329,14 @@ public class day18Tests {
                     j++;
                 }
 
+                // pair exploded
                 return result.toString();
-            } else {
-                result.append(input.charAt(i));
             }
-
             i++;
         }
 
-        return result.toString();
+        // nothing exploded
+        return input;
     }
 
     private String attemptSplit(String input) {
@@ -368,7 +348,6 @@ public class day18Tests {
         int i = 0;
 
         while (i < input.length()) {
-            // Might need to check for (i +1) < input.length when nothing needs split
             if (Character.isDigit(input.charAt(i)) &&
                     Character.isDigit(input.charAt(i + 1))) {
 
@@ -383,6 +362,7 @@ public class day18Tests {
 
                 result.append(input.substring(i + 2));
 
+                // something split
                 return result.toString();
             } else {
                 result.append(input.charAt(i));
@@ -391,6 +371,7 @@ public class day18Tests {
             i++;
         }
 
-        return result.toString();
+        // nothing split
+        return input;
     }
 }
