@@ -137,6 +137,16 @@ public class day18Tests {
     }
 
     @Test
+    void part1_explode_LeftRegularAndLeftElement_greaterThan10() {
+        String input = "[[[[12,12],[6,14]],[[15,0],[17,[8,1]]]],[2,9]]";
+
+        String actual = attemptExplode(input);
+
+        String expected = "[[[[12,12],[6,14]],[[15,0],[25,0]]],[3,9]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
     @Disabled
     void part1_addition_fails_LeftRegularAbove9() {
         List<String> input = Arrays.asList("[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]", "[2,9]");
@@ -271,12 +281,17 @@ public class day18Tests {
 
                 if (indexOfLeftRegularNumber > 0) {
 //System.out.println(input);
-                    String leftPortion = input.substring(0, indexOfLeftRegularNumber);
+
+                    int k = indexOfLeftRegularNumber;
+                    while (Character.isDigit(input.charAt(k))) {
+                        k--;
+                    }
 
                     // TODO - leftRegular can be >9, so need to find the number starting at indexOfLeft and maybe going
-                    String leftRegularNumberString = String.valueOf(input.charAt(indexOfLeftRegularNumber));
+//                    String leftRegularNumberString = String.valueOf(input.charAt(indexOfLeftRegularNumber));
+                    String leftRegularNumberString = input.substring(k + 1, indexOfLeftRegularNumber + 1);
 
-
+                    String leftPortion = input.substring(0, k + 1);
 
                     //TODO - remainder will be whatever is to the right of the regular number,not necessarily just +1
                     String remainder = "";
