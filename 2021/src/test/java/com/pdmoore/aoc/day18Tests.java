@@ -147,7 +147,6 @@ public class day18Tests {
     }
 
     @Test
-    @Disabled
     void part1_addition_fails_LeftRegularAbove9() {
         List<String> input = Arrays.asList("[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]", "[2,9]");
 
@@ -158,7 +157,6 @@ public class day18Tests {
     }
 
     @Test
-    @Disabled
     void part1_SlightlyLargerExample() {
         List<String> input = PuzzleInput.asStringListFrom("data/day18_part1_largerExample");
 
@@ -166,6 +164,17 @@ public class day18Tests {
 
         String expected = "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]";
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void part1_homeworkExample() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day18_part1_homeworkExample");
+
+        String actual = addAndReduce(input);
+
+        String expected = "[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]";
+        assertEquals(expected, actual);
+        assertEquals(4140, magnitudeOf(actual));
     }
 
     private String addAndReduce(List<String> input) {
