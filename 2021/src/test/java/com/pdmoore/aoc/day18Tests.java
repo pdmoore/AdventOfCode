@@ -177,6 +177,15 @@ public class day18Tests {
         assertEquals(4140, magnitudeOf(actual));
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day18");
+
+        String actual = addAndReduce(input);
+
+        assertEquals(4176, magnitudeOf(actual));
+    }
+
     private String addAndReduce(List<String> input) {
         String lhs = input.get(0);
         int addWith = 1;
