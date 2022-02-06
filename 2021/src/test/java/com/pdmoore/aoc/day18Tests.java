@@ -138,30 +138,39 @@ public class day18Tests {
 
     @Test
     @Disabled
-    void part1_SlightlyLargerExample() {
-        /*
-[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
-[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
-[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]
-[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]
-[7,[5,[[3,8],[1,4]]]]
-[[2,[2,2]],[8,[8,1]]]
-[2,9]
-[1,[[[9,3],9],[[9,0],[0,7]]]]
-[[[5,[7,4]],7],1]
-[[[[4,2],2],6],[8,7]]
+    void part1_addition_fails_LeftRegularAbove9() {
+        List<String> input = Arrays.asList("[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]", "[2,9]");
 
-final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
-         */
+        String actual = addAndReduce(input);
+
+        String expected = "[[[[6,6],[7,7]],[[0,7],[7,7]]],[[[5,5],[5,6]],9]]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Disabled
+    void part1_SlightlyLargerExample() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day18_part1_largerExample");
+
+        String actual = addAndReduce(input);
+
+        String expected = "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]";
+        assertEquals(expected, actual);
     }
 
     private String addAndReduce(List<String> input) {
         String lhs = input.get(0);
-        String rhs = input.get(1);
+        int addWith = 1;
+        String result = "";
+        while (addWith < input.size()) {
+            String rhs = input.get(addWith);
+            result = add(lhs, rhs);
+            lhs = reduce(result);
+//System.out.println(lhs);
+            addWith++;
+        }
 
-        String added = add(lhs, rhs);
-
-        return reduce(added);
+        return lhs;
     }
 
     private String add(List<String> input) {
@@ -223,7 +232,6 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
     private String reduce(String input) {
         String result = input;
-        System.out.println("reduc: " + result.toString());
 
         while (true) {
             String beforeActions = result;
@@ -241,9 +249,6 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
     }
 
     private String attemptExplode(String input) {
-        //TODO - time to start dealing with addition of numbers > 9
-
-
         StringBuilder result = new StringBuilder();
         int i = 0;
         int openBrackCount = 0;
@@ -265,7 +270,13 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                 int rightElement = Integer.parseInt(pairValues[1]);
 
                 if (indexOfLeftRegularNumber > 0) {
+//System.out.println(input);
                     String leftPortion = input.substring(0, indexOfLeftRegularNumber);
+
+                    // TODO - leftRegular can be >9, so need to find the number starting at indexOfLeft and maybe going
+                    String leftRegularNumberString = String.valueOf(input.charAt(indexOfLeftRegularNumber));
+
+
 
                     //TODO - remainder will be whatever is to the right of the regular number,not necessarily just +1
                     String remainder = "";
@@ -276,8 +287,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                     result = new StringBuilder();
                     result.append(leftPortion);
 
-                    // TODO - leftRegular can be >9, so need to find the number starting at indexOfLeft and maybe going
-                    int leftRegularNumber = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
+                    int leftRegularNumber = Integer.parseInt(leftRegularNumberString);
                     result.append(leftRegularNumber + leftElement);
                     result.append(remainder);
                 }
@@ -305,7 +315,6 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                     j++;
                 }
 
-                System.out.println("expld: " + result.toString());
                 return result.toString();
             } else {
                 result.append(input.charAt(i));
@@ -332,7 +341,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
                 int splitThis = Integer.parseInt(input.substring(i, i + 2));
                 int newLeft = Math.floorDiv(splitThis, 2);
-                int newRight = (int)Math.ceil((double)splitThis / 2);
+                int newRight = (int) Math.ceil((double) splitThis / 2);
                 result.append("[");
                 result.append(newLeft);
                 result.append(",");
@@ -341,7 +350,6 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
 
                 result.append(input.substring(i + 2));
 
-                System.out.println("split: " + result.toString());
                 return result.toString();
             } else {
                 result.append(input.charAt(i));
