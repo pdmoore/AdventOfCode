@@ -127,7 +127,6 @@ public class day18Tests {
     }
 
     @Test
-    @Disabled
     void part1_addAndReduce() {
         List<String> input = Arrays.asList("[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]", "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]");
 
@@ -242,6 +241,9 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
     }
 
     private String attemptExplode(String input) {
+        //TODO - time to start dealing with addition of numbers > 9
+
+
         StringBuilder result = new StringBuilder();
         int i = 0;
         int openBrackCount = 0;
@@ -265,6 +267,7 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                 if (indexOfLeftRegularNumber > 0) {
                     String leftPortion = input.substring(0, indexOfLeftRegularNumber);
 
+                    //TODO - remainder will be whatever is to the right of the regular number,not necessarily just +1
                     String remainder = "";
                     if (result.length() > indexOfLeftRegularNumber) {
                         remainder = result.substring(indexOfLeftRegularNumber + 1);
@@ -273,9 +276,9 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                     result = new StringBuilder();
                     result.append(leftPortion);
 
+                    // TODO - leftRegular can be >9, so need to find the number starting at indexOfLeft and maybe going
                     int leftRegularNumber = Integer.parseInt(String.valueOf(input.charAt(indexOfLeftRegularNumber)));
                     result.append(leftRegularNumber + leftElement);
-//                    result.append(",");   // May be , may be [ -- need to check what it is in the input
                     result.append(remainder);
                 }
 
@@ -284,11 +287,18 @@ final sum == [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                 int j = closeOfFifthPair + 1;
                 while (j < input.length()) {
                     if (Character.isDigit(input.charAt(j))) {
-                        int rightRegularNumber = Integer.parseInt(String.valueOf(input.charAt(j)));
-                        result.append(rightRegularNumber + rightElement);
-                        result.append(input.substring(j + 1));
-                        return result.toString();
 
+                        int k = j + 1;
+                        while (Character.isDigit(input.charAt(k))) {
+                            k++;
+                        }
+
+                        String rightRegularNumberString = input.substring(j, k);
+                        int rightRegularNumber = Integer.parseInt(rightRegularNumberString);
+
+                        result.append(rightRegularNumber + rightElement);
+                        result.append(input.substring(j + rightRegularNumberString.length()));
+                        return result.toString();
                     } else {
                         result.append(input.charAt(j));
                     }
