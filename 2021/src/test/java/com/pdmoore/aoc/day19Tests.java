@@ -59,8 +59,8 @@ public class day19Tests {
                     input) {
 
                 if (line.startsWith("--- scanner ")) {
-                    String scannerIdSubstring = line.substring(12, line.length() - 4);
-                    scanner = new Scanner(scannerIdSubstring);
+                    String scannerId = line.substring(12, line.length() - 4);
+                    scanner = new Scanner(scannerId);
                 } else if (!line.isEmpty()) {
                     String[] coords = line.split(",");
                     Point3D p = Point3D.builder()
