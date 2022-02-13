@@ -108,7 +108,7 @@ public class day19Tests {
         }
 
         private Optional<Point3D> overlapsWithMap(Scanner scanner) {
-            return beaconPositions.stream().flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> subtractPoint(mapPoint, scannerPoint)))
+            return beaconPositions.stream().flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> mapPoint.subtractPoint(scannerPoint)))
                     .collect(groupingBy(identity(), counting()))
                     .entrySet()
                     .stream()
@@ -118,15 +118,12 @@ public class day19Tests {
         }
 
         private void placeScannerOnMap(Scanner scanner, int xOffset, int yOffset, int zOffset) {
+            Point3D offset = Point3D.builder().x(xOffset).y(yOffset).z(zOffset).build();
             scanner.setPosition(Point3D.builder().x(xOffset).y(yOffset).z(zOffset).build());
             beaconPositions.addAll(scanner.getPoints()
                     .stream()
-                    .map(point -> Point3D.builder().x(point.getX() + xOffset).y(point.getY() + yOffset).z(point.getZ() + zOffset)
-                            .build()).collect(Collectors.toList()));
-        }
-
-        private Point3D subtractPoint(Point3D a, Point3D b) {
-            return Point3D.builder().x(a.getX() - b.getX()).y(a.getY() - b.getY()).z(a.getZ() - b.getZ()).build();
+                    .map(point -> point.addPoint(offset))
+                    .collect(Collectors.toList()));
         }
     }
 
@@ -153,6 +150,20 @@ public class day19Tests {
 //            this.z = parseInt(z);
 //        }
 
+        public Point3D subtractPoint(Point3D other) {
+            return Point3D.builder()
+                    .x(x - other.getX())
+                    .y(y - other.getY())
+                    .z(z - other.getZ()).build();
+        }
+
+        public Point3D addPoint(Point3D other) {
+            return Point3D.builder()
+                    .x(x + other.getX())
+                    .y(y + other.getY())
+                    .z(z + other.getZ()).build();
+        }
+
         public Point3D rotateAroundX() {
             var oldY = y;
 
@@ -174,7 +185,6 @@ public class day19Tests {
             y = -oldX;
             return this;
         }
-
     }
 
     @Data
