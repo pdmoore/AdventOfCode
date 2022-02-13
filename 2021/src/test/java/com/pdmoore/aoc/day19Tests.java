@@ -57,12 +57,13 @@ public class day19Tests {
                     input) {
 
                 if (line.startsWith("--- scanner ")) {
-//                    String scannerIdSubstring = line.substring(12, line.length() - 4);
-                    scanner = Scanner.builder()
-                            .id(line)
-                            .points(new ArrayList<>())
-                            .position(Point3D.builder().x(0).y(0).z(0).build())
-                            .build();
+                    String scannerIdSubstring = line.substring(12, line.length() - 4);
+                    scanner = new Scanner(scannerIdSubstring);
+//                    scanner = Scanner.builder()
+//                            .id(line)
+//                            .points(new ArrayList<>())
+//                            .position(Point3D.builder().x(0).y(0).z(0).build())
+//                            .build();
                 } else if (!line.isEmpty()) {
                     String[] coords = line.split(",");
                     Point3D p = Point3D.builder()
@@ -177,24 +178,15 @@ public class day19Tests {
     }
 
     @Data
-    @Builder
     static class Scanner {
         private String id;
         private final List<Point3D> points;
         private Point3D position;
 
-//        public Scanner() {
-//            points = new ArrayList<>();
-//        }
-
-        public static Scanner fromInput(String input) {
-            var lines = input.split("\n");
-
-            return Scanner.builder()
-                    .id(lines[0])
-                    .points(Arrays.stream(lines).skip(1).map(Point3D::fromInput).collect(Collectors.toList()))
-                    .position(Point3D.builder().x(0).y(0).z(0).build())
-                    .build();
+        public Scanner(String id) {
+            this.id = id;
+            points = new ArrayList<>();
+            position = Point3D.builder().x(0).y(0).z(0).build();
         }
 
         public void add(Point3D p) {
