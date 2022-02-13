@@ -48,9 +48,8 @@ public class day19Tests {
 
     static class ThreeDRegion {
         public static final int NUM_OVERLAPPING_BEACONS = 12;
+        
         List<Scanner> scanners = new ArrayList<>();
-
-        @Builder.Default
         private Set<Point3D> beaconPositions = new HashSet<>();
 
         public ThreeDRegion(List<String> input) {
