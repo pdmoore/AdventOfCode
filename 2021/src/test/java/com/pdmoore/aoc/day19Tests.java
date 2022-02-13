@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
+import static java.util.Collections.copy;
 import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -46,6 +47,7 @@ public class day19Tests {
     }
 
     static class ThreeDRegion {
+        public static final int NUM_OVERLAPPING_BEACONS = 12;
         List<Scanner> scanners = new ArrayList<>();
 
         @Builder.Default
@@ -59,11 +61,6 @@ public class day19Tests {
                 if (line.startsWith("--- scanner ")) {
                     String scannerIdSubstring = line.substring(12, line.length() - 4);
                     scanner = new Scanner(scannerIdSubstring);
-//                    scanner = Scanner.builder()
-//                            .id(line)
-//                            .points(new ArrayList<>())
-//                            .position(Point3D.builder().x(0).y(0).z(0).build())
-//                            .build();
                 } else if (!line.isEmpty()) {
                     String[] coords = line.split(",");
                     Point3D p = Point3D.builder()
@@ -83,43 +80,40 @@ public class day19Tests {
         }
 
         public void placeBeaconsOnOneMap() {
-            var placedScanners = new LinkedList<Scanner>();
-            var startingScanner = scanners.get(0);
-            placeScannerOnMap(startingScanner, 0, 0, 0);
+            placeScannerOnMap(scanners.get(0), scanners.get(0).position);
 
-            placedScanners.add(startingScanner);
+            List<Scanner> unplacedScanners = scanners.stream()
+                    .skip(1)
+                    .collect(Collectors.toList());
 
-            while (placedScanners.size() < scanners.size()) {
+            while (!unplacedScanners.isEmpty()) {
                 for (Scanner candidateScanner : scanners) {
-                    if (placedScanners.contains(candidateScanner)) {
-                        continue;
-                    }
                     candidateScanner.allOrientations()
                             .map(this::overlapsWithMap)
                             .flatMap(Optional::stream)
                             .findFirst()
                             .ifPresent(offset -> {
-                        placeScannerOnMap(candidateScanner, offset.getX(), offset.getY(), offset.getZ());
+                        placeScannerOnMap(candidateScanner, offset);
 
-                        placedScanners.add(candidateScanner);
+                        unplacedScanners.remove(candidateScanner);
                     });
                 }
             }
         }
 
         private Optional<Point3D> overlapsWithMap(Scanner scanner) {
-            return beaconPositions.stream().flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> mapPoint.subtractPoint(scannerPoint)))
+            return beaconPositions.stream()
+                    .flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> mapPoint.subtractPoint(scannerPoint)))
                     .collect(groupingBy(identity(), counting()))
                     .entrySet()
                     .stream()
-                    .filter(e -> e.getValue() >= 12)
+                    .filter(e -> e.getValue() >= NUM_OVERLAPPING_BEACONS)
                     .findFirst()
                     .map(Map.Entry::getKey);
         }
 
-        private void placeScannerOnMap(Scanner scanner, int xOffset, int yOffset, int zOffset) {
-            Point3D offset = Point3D.builder().x(xOffset).y(yOffset).z(zOffset).build();
-            scanner.setPosition(Point3D.builder().x(xOffset).y(yOffset).z(zOffset).build());
+        private void placeScannerOnMap(Scanner scanner, Point3D offset) {
+            scanner.setPosition(offset);
             beaconPositions.addAll(scanner.getPoints()
                     .stream()
                     .map(point -> point.addPoint(offset))
@@ -129,7 +123,6 @@ public class day19Tests {
 
     @Getter
     @Builder
-    @ToString
     @EqualsAndHashCode
     static class Point3D {
         private int x;
