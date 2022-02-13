@@ -82,24 +82,11 @@ Assemble the full map of beacons. How many beacons are there?
 
 
     @Getter
-//    @Builder(access = AccessLevel.PRIVATE)
     static class ThreeDRegion {
         List<Scanner> scanners = new ArrayList<>();
 
         @Builder.Default
-        private Set<Point3D> map = new HashSet<>();
-
-        public ThreeDRegion(Scanner s, Point3D p) {
-;
-        }
-
-        public static ThreeDRegion fromInput(String input, int overlappingCount) {
-//            return ThreeDRegion.builder()
-//                    .scanners(Arrays.stream(input.split("\n\n")).map(Scanner::fromInput).collect(Collectors.toList())))
-//                    .overlappingCount(overlappingCount)
-//                    .build();
-            return null;
-        }
+        private Set<Point3D> beaconPositions = new HashSet<>();
 
         public ThreeDRegion(List<String> input) {
             Scanner scanner = null;
@@ -107,16 +94,18 @@ Assemble the full map of beacons. How many beacons are there?
                     input) {
 
                 if (line.startsWith("--- scanner ")) {
-                    int scannerID = parseInt(line.substring(12, line.length() - 4));
+//                    String scannerIdSubstring = line.substring(12, line.length() - 4);
                     scanner = Scanner.builder()
-                            .id(line.substring(12, line.length() - 4))
+                            .id(line)
                             .points(new ArrayList<>())
                             .position(Point3D.builder().x(0).y(0).z(0).build())
                             .build();
-
                 } else if (!line.isEmpty()) {
                     String[] coords = line.split(",");
-                    Point3D p = Point3D.builder().x(Integer.parseInt(coords[0])).y(Integer.parseInt(coords[1])).z(Integer.parseInt(coords[2])).build();
+                    Point3D p = Point3D.builder()
+                            .x(Integer.parseInt(coords[0]))
+                            .y(Integer.parseInt(coords[1]))
+                            .z(Integer.parseInt(coords[2])).build();
                     scanner.add(p);
                 } else {
                     scanners.add(scanner);
@@ -126,7 +115,7 @@ Assemble the full map of beacons. How many beacons are there?
         }
 
         public int beaconCount() {
-            return map.size();
+            return beaconPositions.size();
         }
 
         public void placeBeaconsOnOneMap() {
@@ -155,7 +144,7 @@ Assemble the full map of beacons. How many beacons are there?
         }
 
         private Optional<Point3D> overlapsWithMap(Scanner scanner) {
-            return map.stream().flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> subtractPoint(mapPoint, scannerPoint)))
+            return beaconPositions.stream().flatMap(mapPoint -> scanner.getPoints().stream().map(scannerPoint -> subtractPoint(mapPoint, scannerPoint)))
                     .collect(groupingBy(identity(), counting()))
                     .entrySet()
                     .stream()
@@ -166,7 +155,7 @@ Assemble the full map of beacons. How many beacons are there?
 
         private void placeScannerOnMap(Scanner scanner, int xOffset, int yOffset, int zOffset) {
             scanner.setPosition(Point3D.builder().x(xOffset).y(yOffset).z(zOffset).build());
-            map.addAll(scanner.getPoints()
+            beaconPositions.addAll(scanner.getPoints()
                     .stream()
                     .map(point -> Point3D.builder().x(point.getX() + xOffset).y(point.getY() + yOffset).z(point.getZ() + zOffset)
                             .build()).collect(Collectors.toList()));
@@ -200,7 +189,7 @@ Assemble the full map of beacons. How many beacons are there?
 //            this.z = parseInt(z);
 //        }
 
-        public Point3D roll() {
+        public Point3D rotateAroundX() {
             var oldY = y;
 
             y = z;
@@ -208,14 +197,14 @@ Assemble the full map of beacons. How many beacons are there?
             return this;
         }
 
-        public Point3D turn() {
+        public Point3D rotateAroundZ() {
             var oldX = x;
             x = -y;
             y = oldX;
             return this;
         }
 
-        public Point3D reverseTurn() {
+        public Point3D reverseRotateAroundZ() {
             var oldX = x;
             x = y;
             y = -oldX;
@@ -260,17 +249,17 @@ Assemble the full map of beacons. How many beacons are there?
         }
 
         public Scanner roll() {
-            this.points.forEach(Point3D::roll);
+            this.points.forEach(Point3D::rotateAroundX);
             return this;
         }
 
         public Scanner turn() {
-            this.points.forEach(Point3D::turn);
+            this.points.forEach(Point3D::rotateAroundZ);
             return this;
         }
 
         public Scanner reverseTurn() {
-            this.points.forEach(Point3D::reverseTurn);
+            this.points.forEach(Point3D::reverseRotateAroundZ);
             return this;
         }
     }
