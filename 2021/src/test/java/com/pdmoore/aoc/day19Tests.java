@@ -16,41 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day19Tests {
 
-    /*
-    The beacons and scanners float motionless in the water; they're designed to maintain the same position for long periods of time.
-    Each scanner is capable of detecting all beacons in a large cube centered on the scanner;
-    beacons that are at most 1000 units away from the scanner in each of the three axes (x, y, and z) have their precise position determined
-    relative to the scanner.
-    However, scanners cannot detect other scanners.
-    The submarine has automatically summarized the relative positions of beacons detected by each scanner (your puzzle input).
-
-Unfortunately, while each scanner can report the positions of all detected beacons relative to itself, the scanners do not know their own position.
-You'll need to determine the positions of the beacons and scanners yourself.
-
-The scanners and beacons map a single contiguous 3d region.
-This region can be reconstructed by finding pairs of scanners that have overlapping detection regions such that there are at
-least 12 beacons that both scanners detect within the overlap.
-By establishing 12 common beacons, you can precisely determine where the scanners are relative to each other,
-allowing you to reconstruct the beacon map one scanner at a time.
-
-Unfortunately, there's a second problem: the scanners also don't know their rotation or facing direction.
-Due to magnetic alignment, each scanner is rotated some integer number of 90-degree turns around all of the x, y, and z axes.
-That is, one scanner might call a direction positive x, while another scanner might call that direction negative y.
-Or, two scanners might agree on which direction is positive x, but one scanner might be upside-down from the perspective of the
-other scanner. In total, each scanner could be in any of 24 different orientations:
-facing positive or negative x, y, or z, and considering any of four directions "up" from that facing.
-
-Assemble the full map of beacons. How many beacons are there?
-     */
-
-    /*
-    - Figure distance between beacons (not scanner) since that value is the same regardless of orientation or offset
-    - find closest beacon-to-beacon distances, or closest two? want to watch out for same-distancce but different beacons
-    - then use the distance lists to start matching up with other scanner lists
-      - then need to translate matching beacon to scanner 0 (rotation and offset), adding to some master list of unique beacon locations
-     */
-
-
     @Test
     void part1_example_3DRegion_ScannerCount() {
         List<String> input = PuzzleInput.asStringListFrom("data/day19_part1_example");
@@ -80,8 +45,6 @@ Assemble the full map of beacons. How many beacons are there?
         assertEquals(457, sut.beaconCount());
     }
 
-
-    @Getter
     static class ThreeDRegion {
         List<Scanner> scanners = new ArrayList<>();
 
