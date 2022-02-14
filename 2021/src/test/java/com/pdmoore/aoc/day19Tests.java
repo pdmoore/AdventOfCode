@@ -238,8 +238,8 @@ public class day19Tests {
             return this;
         }
 
-    public void setPosition(Point3D p) {
-        this.position = p;
+        public void setPosition(Point3D p) {
+            this.position = p;
+        }
     }
-}
 }
