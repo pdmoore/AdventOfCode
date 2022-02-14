@@ -1,6 +1,8 @@
 package com.pdmoore.aoc;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -8,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.lang.Integer.parseInt;
 import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
