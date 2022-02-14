@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
@@ -196,7 +195,6 @@ public class day19Tests {
         }
     }
 
-    @Data
     static class Scanner {
         private String id;
         private final List<Point3D> beaconLocations;
@@ -219,22 +217,29 @@ public class day19Tests {
         public Stream<Scanner> allOrientations() {
             return IntStream.range(0, 6)
                     .boxed()
-                    .flatMap(rollIndex -> Stream.concat(Stream.of(this.roll()), IntStream.range(0, 3).boxed().map(turnIndex -> rollIndex % 2 == 0 ? this.turn() : this.reverseTurn())));
+                    .flatMap(rotX -> Stream.concat(
+                            Stream.of(this.rotateAroundX()),
+                            IntStream.range(0, 3).boxed()
+                                    .map(rotZ -> rotX % 2 == 0 ? this.rotateAroundZ() : this.reverseRotateAroundZ())));
         }
 
-        public Scanner roll() {
+        public Scanner rotateAroundX() {
             this.beaconLocations.forEach(Point3D::rotateAroundX);
             return this;
         }
 
-        public Scanner turn() {
+        public Scanner rotateAroundZ() {
             this.beaconLocations.forEach(Point3D::rotateAroundZ);
             return this;
         }
 
-        public Scanner reverseTurn() {
+        public Scanner reverseRotateAroundZ() {
             this.beaconLocations.forEach(Point3D::reverseRotateAroundZ);
             return this;
         }
+
+    public void setPosition(Point3D p) {
+        this.position = p;
     }
+}
 }
