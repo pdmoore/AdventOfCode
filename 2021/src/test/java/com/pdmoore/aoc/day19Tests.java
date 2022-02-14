@@ -136,22 +136,12 @@ public class day19Tests {
         }
 
         public int greatestDistanceBetweenScanners() {
-            int greatestDistance = Integer.MIN_VALUE;
-/*
-            In the above example, scanners 2 (1105,-1205,1229) and 3 (-92,-2380,-20) are the largest Manhattan distance apart.
-            In total, they are 1197 + 1175 + 1249 = 3621 units apart.
- */
-            for (Scanner s1 :
-                    scanners) {
-                for (Scanner s2 :
-                        scanners) {
-                    int distance = s1.position.distanceTo(s2.position);
-                    greatestDistance = Math.max(greatestDistance, distance);
-                }
-            }
-
-
-            return greatestDistance;
+            return scanners.stream()
+                    .flatMap(scanner1 ->
+                            scanners.stream().map(scanner2 ->
+                                    scanner1.position.distanceTo(scanner2.position)))
+                    .mapToInt(Integer::valueOf)
+                    .max().orElse(0);
         }
     }
 
