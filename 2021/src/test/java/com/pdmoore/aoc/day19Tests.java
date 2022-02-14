@@ -101,7 +101,7 @@ public class day19Tests {
 
         private Optional<Point3D> overlapsWithMap(Scanner scanner) {
             return beaconPositions.stream()
-                    .flatMap(mapPoint -> scanner.getBeaconLocations().stream().map(scannerPoint -> mapPoint.subtractPoint(scannerPoint)))
+                    .flatMap(mapPoint -> scanner.getBeaconLocations().stream().map(scannerPoint -> mapPoint.subtract(scannerPoint)))
                     .collect(groupingBy(identity(), counting()))
                     .entrySet()
                     .stream()
@@ -114,7 +114,7 @@ public class day19Tests {
             scanner.setPosition(offset);
             beaconPositions.addAll(scanner.getBeaconLocations()
                     .stream()
-                    .map(point -> point.addPoint(offset))
+                    .map(point -> point.add(offset))
                     .collect(Collectors.toList()));
         }
     }
@@ -133,14 +133,14 @@ public class day19Tests {
 //            this.z = parseInt(z);
 //        }
 
-        public Point3D subtractPoint(Point3D other) {
+        public Point3D subtract(Point3D other) {
             return Point3D.builder()
                     .x(x - other.getX())
                     .y(y - other.getY())
                     .z(z - other.getZ()).build();
         }
 
-        public Point3D addPoint(Point3D other) {
+        public Point3D add(Point3D other) {
             return Point3D.builder()
                     .x(x + other.getX())
                     .y(y + other.getY())
@@ -148,24 +148,23 @@ public class day19Tests {
         }
 
         public Point3D rotateAroundX() {
-            var oldY = y;
-
+            var previousY = y;
             y = z;
-            z = -oldY;
+            z = -previousY;
             return this;
         }
 
         public Point3D rotateAroundZ() {
-            var oldX = x;
+            var previousX = x;
             x = -y;
-            y = oldX;
+            y = previousX;
             return this;
         }
 
         public Point3D reverseRotateAroundZ() {
-            var oldX = x;
+            var previousX = x;
             x = y;
-            y = -oldX;
+            y = -previousX;
             return this;
         }
     }
