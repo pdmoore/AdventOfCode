@@ -61,11 +61,7 @@ public class day19Tests {
                     scanner = new Scanner(scannerId);
                 } else if (!line.isEmpty()) {
                     String[] coords = line.split(",");
-                    Point3D p = Point3D.builder()
-                            .x(Integer.parseInt(coords[0]))
-                            .y(Integer.parseInt(coords[1]))
-                            .z(Integer.parseInt(coords[2])).build();
-                    scanner.add(p);
+                    scanner.add(new Point3D(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 } else {
                     scanners.add(scanner);
                 }
@@ -120,31 +116,28 @@ public class day19Tests {
     }
 
     @Getter
-    @Builder
     @EqualsAndHashCode
     static class Point3D {
         private int x;
         private int y;
         private int z;
 
-//        public Point3D(String x, String y, String z) {
-//            this.x = parseInt(x);
-//            this.y = parseInt(y);
-//            this.z = parseInt(z);
-//        }
+        public Point3D(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public Point3D() {
+            this(0, 0, 0);
+        }
 
         public Point3D subtract(Point3D other) {
-            return Point3D.builder()
-                    .x(x - other.getX())
-                    .y(y - other.getY())
-                    .z(z - other.getZ()).build();
+            return new Point3D(x - other.getX(), y - other.getY(), z - other.getZ());
         }
 
         public Point3D add(Point3D other) {
-            return Point3D.builder()
-                    .x(x + other.getX())
-                    .y(y + other.getY())
-                    .z(z + other.getZ()).build();
+            return new Point3D(x + other.getX(), y + other.getY(), z + other.getZ());
         }
 
         public Point3D rotateAroundX() {
@@ -178,7 +171,7 @@ public class day19Tests {
         public Scanner(String id) {
             this.id = id;
             beaconLocations = new ArrayList<>();
-            position = Point3D.builder().x(0).y(0).z(0).build();
+            position = new Point3D();
         }
 
         public void add(Point3D p) {
