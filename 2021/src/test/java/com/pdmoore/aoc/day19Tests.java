@@ -46,6 +46,28 @@ public class day19Tests {
         assertEquals(457, sut.beaconCount());
     }
 
+    @Test
+    void part2_example_MostDispersedScanners() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day19_part1_example");
+
+        ThreeDRegion sut = new ThreeDRegion(input);
+        sut.placeBeaconsOnOneMap();
+
+        assertEquals(3621, sut.greatestDistanceBetweenScanners());
+
+    }
+
+    @Test
+    void part2_solution_MostDispersedScanners() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day19");
+
+        ThreeDRegion sut = new ThreeDRegion(input);
+        sut.placeBeaconsOnOneMap();
+
+        assertEquals(13243, sut.greatestDistanceBetweenScanners());
+
+    }
+
     static class ThreeDRegion {
         public static final int NUM_OVERLAPPING_BEACONS = 12;
 
@@ -56,13 +78,12 @@ public class day19Tests {
             Scanner scanner = null;
             for (String line :
                     input) {
-
                 if (line.startsWith("--- scanner ")) {
                     String scannerId = line.substring(12, line.length() - 4);
                     scanner = new Scanner(scannerId);
                 } else if (!line.isEmpty()) {
-                    String[] coords = line.split(",");
-                    scanner.add(new Point3D(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                    String[] xyz = line.split(",");
+                    scanner.add(new Point3D(Integer.parseInt(xyz[0]), Integer.parseInt(xyz[1]), Integer.parseInt(xyz[2])));
                 } else {
                     scanners.add(scanner);
                 }
@@ -84,19 +105,18 @@ public class day19Tests {
             while (!unplacedScanners.isEmpty()) {
                 for (Scanner candidateScanner : scanners) {
                     candidateScanner.allOrientations()
-                            .map(this::overlapsWithMap)
+                            .map(this::overlapsWithKnownBeacons)
                             .flatMap(Optional::stream)
                             .findFirst()
                             .ifPresent(offset -> {
-                        placeScannerOnMap(candidateScanner, offset);
-
-                        unplacedScanners.remove(candidateScanner);
+                                placeScannerOnMap(candidateScanner, offset);
+                                unplacedScanners.remove(candidateScanner);
                     });
                 }
             }
         }
 
-        private Optional<Point3D> overlapsWithMap(Scanner scanner) {
+        private Optional<Point3D> overlapsWithKnownBeacons(Scanner scanner) {
             return beaconPositions.stream()
                     .flatMap(mapPoint -> scanner.getBeaconLocations().stream().map(scannerPoint -> mapPoint.subtract(scannerPoint)))
                     .collect(groupingBy(identity(), counting()))
@@ -113,6 +133,25 @@ public class day19Tests {
                     .stream()
                     .map(point -> point.add(offset))
                     .collect(Collectors.toList()));
+        }
+
+        public int greatestDistanceBetweenScanners() {
+            int greatestDistance = Integer.MIN_VALUE;
+/*
+            In the above example, scanners 2 (1105,-1205,1229) and 3 (-92,-2380,-20) are the largest Manhattan distance apart.
+            In total, they are 1197 + 1175 + 1249 = 3621 units apart.
+ */
+            for (Scanner s1 :
+                    scanners) {
+                for (Scanner s2 :
+                        scanners) {
+                    int distance = s1.position.distanceTo(s2.position);
+                    greatestDistance = Math.max(greatestDistance, distance);
+                }
+            }
+
+
+            return greatestDistance;
         }
     }
 
@@ -160,6 +199,10 @@ public class day19Tests {
             x = y;
             y = -previousX;
             return this;
+        }
+
+        public int distanceTo(Point3D other) {
+            return Math.abs(x - other.x) + Math.abs(y - other.y) + Math.abs(z - other.z);
         }
     }
 
