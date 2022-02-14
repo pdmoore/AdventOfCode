@@ -138,7 +138,7 @@ public class day19Tests {
             return scanners.stream()
                     .flatMap(scanner1 ->
                             scanners.stream().map(scanner2 ->
-                                    scanner1.position.distanceTo(scanner2.position)))
+                                    scanner1.distanceTo(scanner2)))
                     .mapToInt(Integer::valueOf)
                     .max().orElse(0);
         }
@@ -214,6 +214,14 @@ public class day19Tests {
             return beaconLocations;
         }
 
+        public void setPosition(Point3D p) {
+            this.position = p;
+        }
+
+        public int distanceTo(Scanner other) {
+            return position.distanceTo(other.position);
+        }
+
         public Stream<Scanner> allOrientations() {
             return IntStream.range(0, 6)
                     .boxed()
@@ -236,10 +244,6 @@ public class day19Tests {
         public Scanner reverseRotateAroundZ() {
             this.beaconLocations.forEach(Point3D::reverseRotateAroundZ);
             return this;
-        }
-
-        public void setPosition(Point3D p) {
-            this.position = p;
         }
     }
 }
