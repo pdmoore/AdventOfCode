@@ -80,11 +80,11 @@ public class day19Tests {
                 if (line.startsWith("--- scanner ")) {
                     String scannerId = line.substring(12, line.length() - 4);
                     scanner = new Scanner(scannerId);
-                } else if (!line.isEmpty()) {
+                } else if (line.isEmpty()) {
+                    scanners.add(scanner);
+                } else {
                     String[] xyz = line.split(",");
                     scanner.add(new Point3D(Integer.parseInt(xyz[0]), Integer.parseInt(xyz[1]), Integer.parseInt(xyz[2])));
-                } else {
-                    scanners.add(scanner);
                 }
             }
             scanners.add(scanner);
