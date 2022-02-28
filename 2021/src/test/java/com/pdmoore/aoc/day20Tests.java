@@ -13,7 +13,8 @@ public class day20Tests {
 
     @Test
     void part1_example() {
-        String imageEnhancementAlgorithm = "..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###" +
+        String imageEnhancementAlgorithm = "..#.#..#####.#.#.#.###.##.....###.##.#..###.####." +
+                ".#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###" +
                 ".######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#." +
                 ".#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#....." +
                 ".#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.." +
@@ -21,10 +22,10 @@ public class day20Tests {
                 "..##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#";
 
         List<String> image = Arrays.asList(
-                "#..#.\n",
-                "#....\n",
-                "##..#\n",
-                "..#..\n",
+                "#..#.",
+                "#....",
+                "##..#",
+                "..#..",
                 "..###");
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
@@ -35,6 +36,23 @@ public class day20Tests {
 
         sut.enhance();
         actual = sut.countOfLitPixels();
+        assertEquals(35, actual);
+    }
+
+    @Test
+    void part1_example_from_file() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day20_example");
+        String imageEnhancementAlgorithm = input.get(0);
+        List<String> image = new ArrayList<>();
+        for (int i = 2; i < input.size(); i++) {
+            image.add(input.get(i));
+        }
+
+        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+
+        sut.enhance();
+        sut.enhance();
+        int actual = sut.countOfLitPixels();
         assertEquals(35, actual);
     }
 
@@ -103,7 +121,6 @@ public class day20Tests {
             int newMaxValue = minValue;
 
             int expansion = 2;
-            // TODO - not guaranteed to be sqaure - should I be tracking xmin/max and ymin/max
             for (int x = minValue - expansion; x <= maxValue + expansion; x++) {
                 for (int y = minValue - expansion; y <= maxValue + expansion; y++) {
                     String nextPixel = outputPixelFor(x, y);
@@ -141,16 +158,7 @@ public class day20Tests {
             pixelsAround.append(litPixels.contains(new Point(x + 1, y)) ? "1" : "0");
             pixelsAround.append(litPixels.contains(new Point(x + 1, y + 1)) ? "1" : "0");
             Integer lookup = Integer.parseInt(pixelsAround.toString(), 2);
-//            if (lookup > 1) lookup -= 1;
             String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
-
-//                String dump = pixelsAround.toString();
-//                System.out.println(dump + " == " + lookup);
-//                dump = dump.replace("0", ".");
-//                dump = dump.replace("1", "#");
-//                dump = dump.substring(0, 3) + "\n" + dump.substring(3, 6) + "\n" + dump.substring(6);
-//                System.out.println("[" + x + "," + y + "]\n" + dump + "--> " + replaceWith);
-//                System.out.println();
 
             return replaceWith;
         }
@@ -167,7 +175,6 @@ public class day20Tests {
             System.out.println("min/max - " + minValue + ", " + maxValue);
             System.out.println("");
         }
-
 
         public int countOfLitPixels() {
             return litPixels.size();
