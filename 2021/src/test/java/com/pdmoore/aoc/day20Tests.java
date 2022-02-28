@@ -1,23 +1,23 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class day20Tests {
 
     @Test
     void part1_example() {
-        String imageEnhancementAlgorithm = "..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..##\n" +
-                "#..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###\n" +
-                ".######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#.\n" +
-                ".#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#.....\n" +
-                ".#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#..\n" +
-                "...####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#.....\n" +
+        String imageEnhancementAlgorithm = "..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###" +
+                ".######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#." +
+                ".#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#....." +
+                ".#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.." +
+                "...####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#....." +
                 "..##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#";
 
         List<String> image = Arrays.asList(
@@ -25,15 +25,17 @@ public class day20Tests {
                 "#....\n",
                 "##..#\n",
                 "..#..\n",
-                "..###" );
+                "..###");
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
 
         sut.enhance();
-        sut.enhance();
         int actual = sut.countOfLitPixels();
+        assertEquals(24, actual);
 
-        Assertions.assertEquals(35, actual);
+        sut.enhance();
+        actual = sut.countOfLitPixels();
+        assertEquals(35, actual);
     }
 
     @Test
@@ -45,13 +47,24 @@ public class day20Tests {
                 "#....",
                 "##..#",
                 "..#..",
-                "..###" );
+                "..###");
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
 
         int actual = sut.countOfLitPixels();
 
-        Assertions.assertEquals(10, actual);
+        assertEquals(10, actual);
+    }
+
+    @Test
+    void Integer_ParseBinry() {
+        String input = "000100010";
+        int actual = Integer.parseInt(input, 2);
+        assertEquals(34, actual);
+
+        input = "111111111";
+        actual = Integer.parseInt(input, 2);
+        assertEquals(511, actual);
     }
 
     private class ImageEnhancer {
@@ -81,37 +94,80 @@ public class day20Tests {
             maxValue = x;
         }
 
-        //TODO - left off here - read the description again and take a shot at this
-        // - Looping stuff to handle both unlit and lit pixels
-        // - converting the 9 character string to a digit
-        // - looking that digit up in the image enhancement algo
-        // - storing a new litPixel if the lookup is '#'
         public void enhance() {
+            printLitPixels("prior to enhance");
+
             List<Point> nextImage = new ArrayList<>();
-            //loop through lit pixels, checking neighbors are in litPixels or not
-            // loop through the grid boundaries - square grid, so minValue, maxValue
-            // need to update minValue and MaxVlue as I go
-            // creating a new list along the way
 
+            int newMinValue = maxValue;
+            int newMaxValue = minValue;
 
-                // If the following coord is in litPixels, append a "#, otherwise append a "."
-                // x-1, y-1
-                // x, y-1
-                // x+1, y
-                // x-1, y
-                // x, y
-                // x+1, y
-                // x-1, y+1
-                // x, y+1
-                // x+1, y+1
+            int expansion = 2;
+            // TODO - not guaranteed to be sqaure - should I be tracking xmin/max and ymin/max
+            for (int x = minValue - expansion; x <= maxValue + expansion; x++) {
+                for (int y = minValue - expansion; y <= maxValue + expansion; y++) {
+                    String nextPixel = outputPixelFor(x, y);
 
-                // convert that #.#. string to a number
-                // get the value at that number index in the imageEnhancementAlgorithm
-                // if that value is a "#" then create a new point at x,y
+                    if (nextPixel.equals("#")) {
+                        if (x < minValue) newMinValue = x;
+                        if (y < minValue) newMinValue = y;
+                        if (x > maxValue) newMaxValue = x;
+                        if (y > maxValue) newMaxValue = y;
 
+                        nextImage.add(new Point(x, y));
+                    }
+                }
+            }
 
+            minValue = Math.min(minValue, newMinValue);
+            maxValue = Math.max(maxValue, newMaxValue);
             litPixels = nextImage;
+
+            printLitPixels("after enhance");
         }
+
+        private String outputPixelFor(int x, int y) {
+
+            StringBuilder pixelsAround = new StringBuilder();
+            pixelsAround.append(litPixels.contains(new Point(x - 1, y - 1)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x - 1, y)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x - 1, y + 1)) ? "1" : "0");
+
+            pixelsAround.append(litPixels.contains(new Point(x, y - 1)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x, y)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x, y + 1)) ? "1" : "0");
+
+            pixelsAround.append(litPixels.contains(new Point(x + 1, y - 1)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x + 1, y)) ? "1" : "0");
+            pixelsAround.append(litPixels.contains(new Point(x + 1, y + 1)) ? "1" : "0");
+            Integer lookup = Integer.parseInt(pixelsAround.toString(), 2);
+//            if (lookup > 1) lookup -= 1;
+            String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
+
+//                String dump = pixelsAround.toString();
+//                System.out.println(dump + " == " + lookup);
+//                dump = dump.replace("0", ".");
+//                dump = dump.replace("1", "#");
+//                dump = dump.substring(0, 3) + "\n" + dump.substring(3, 6) + "\n" + dump.substring(6);
+//                System.out.println("[" + x + "," + y + "]\n" + dump + "--> " + replaceWith);
+//                System.out.println();
+
+            return replaceWith;
+        }
+
+        private void printLitPixels(String message) {
+            System.out.println(message);
+            for (int x = 5; x <= maxValue + 3; x++) {
+                for (int y = 5; y <= maxValue + 3; y++) {
+                    if (litPixels.contains(new Point(x, y))) System.out.print("#");
+                    else System.out.print(".");
+                }
+                System.out.println("");
+            }
+            System.out.println("min/max - " + minValue + ", " + maxValue);
+            System.out.println("");
+        }
+
 
         public int countOfLitPixels() {
             return litPixels.size();
@@ -125,6 +181,19 @@ public class day20Tests {
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Point point = (Point) o;
+            return x == point.x && y == point.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 }
