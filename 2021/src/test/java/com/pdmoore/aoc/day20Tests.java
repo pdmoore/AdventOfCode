@@ -1,13 +1,9 @@
 package com.pdmoore.aoc;
 
-import org.checkerframework.framework.qual.IgnoreInWholeProgramInference;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,10 +25,23 @@ public class day20Tests {
         assertEquals(35, actual);
     }
 
-    // TODO - account for the infinite image size
-    // boolean to decide whether pixels outside bounds are on or off
     @Test
-    @Disabled
+    void part2_example_from_file() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day20_example");
+        String imageEnhancementAlgorithm = input.get(0);
+        List<String> image = new ArrayList<>();
+        for (int i = 2; i < input.size(); i++) {
+            image.add(input.get(i));
+        }
+
+        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+        sut.enhance(50);
+
+        int actual = sut.countOfLitPixels();
+        assertEquals(3351, actual);
+    }
+
+    @Test
     void part1_from_file() {
         List<String> input = PuzzleInput.asStringListFrom("data/day20");
         String imageEnhancementAlgorithm = input.get(0);
@@ -45,8 +54,41 @@ public class day20Tests {
         sut.enhance(2);
 
         int actual = sut.countOfLitPixels();
-        //5983 too high
-        assertEquals(99, actual);
+        assertEquals(5301, actual);
+    }
+
+    @Test
+    @Timeout(2)
+    void part2_from_file() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day20");
+        String imageEnhancementAlgorithm = input.get(0);
+        List<String> image = new ArrayList<>();
+        for (int i = 2; i < input.size(); i++) {
+            image.add(input.get(i));
+        }
+
+        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+        sut.enhance(50);
+
+        int actual = sut.countOfLitPixels();
+        assertEquals(19492, actual);
+    }
+
+    @Test
+    @Timeout(1)
+    void part2_10Enhancements_ToImprovePerformance() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day20");
+        String imageEnhancementAlgorithm = input.get(0);
+        List<String> image = new ArrayList<>();
+        for (int i = 2; i < input.size(); i++) {
+            image.add(input.get(i));
+        }
+
+        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+        sut.enhance(10);
+
+        int actual = sut.countOfLitPixels();
+        assertEquals(7126, actual);
     }
 
     @Test
@@ -80,69 +122,81 @@ public class day20Tests {
 
     private class ImageEnhancer {
         private final String imageEnhancementAlgorithm;
-        private List<Point> litPixels;
+        private Collection<Point> litPixels;
         private int countOfEnhancements;
-        int minValue;
-        int maxValue;
 
         public ImageEnhancer(String imageEnhancementAlgorithm, List<String> image) {
-            litPixels = new ArrayList();
-            minValue = 100;
+            litPixels = new HashSet<>();
             countOfEnhancements = 0;
             this.imageEnhancementAlgorithm = imageEnhancementAlgorithm;
             trackLitPixels(image);
         }
 
         private void trackLitPixels(List<String> input) {
-            int x = minValue;
+            int x = 0;
             for (String line :
                     input) {
                 for (int y = 0; y < line.length(); y++) {
                     if (line.charAt(y) == '#') {
-                        litPixels.add(new Point(x, minValue + y));
+                        litPixels.add(new Point(x, y));
                     }
                 }
                 x++;
             }
-            maxValue = x;
+        }
+
+        private Point findUpperLeftPoint(Collection<Point> image) {
+            int x = image.stream().min(Comparator.comparingInt(p -> p.x)).get().x;
+            int y = image.stream().min(Comparator.comparingInt(p -> p.y)).get().y;
+            return new Point(x, y);
+        }
+
+        private Point findLowerRightPoint(Collection<Point> image) {
+            int x = image.stream().max(Comparator.comparingInt(p -> p.x)).get().x;
+            int y = image.stream().max(Comparator.comparingInt(p -> p.y)).get().y;
+            return new Point(x, y);
         }
 
         public void enhance() {
-//            printLitPixels("prior to enhance");
-            List<Point> nextImage = new ArrayList<>();
+            Collection<Point> nextImage = new HashSet<>(litPixels.size());
 
-            int newMinValue = maxValue;
-            int newMaxValue = minValue;
+            Point upperLeft = findUpperLeftPoint(litPixels);
+            Point lowerRight = findLowerRightPoint(litPixels);
 
             int expansion = 2;
-            for (int x = minValue - expansion; x <= maxValue + expansion; x++) {
-                for (int y = minValue - expansion; y <= maxValue + expansion; y++) {
-                    String nextPixel = outputPixelFor(x, y);
+            for (int x = upperLeft.x - expansion; x <= lowerRight.x + expansion; x++) {
+                for (int y = upperLeft.y - expansion; y <= lowerRight.y + expansion; y++) {
+                    String nextPixel = outputPixelFor(x, y, upperLeft, lowerRight);
 
                     if (nextPixel.equals("#")) {
-                        if (x < minValue) newMinValue = x;
-                        if (y < minValue) newMinValue = y;
-                        if (x > maxValue) newMaxValue = x;
-                        if (y > maxValue) newMaxValue = y;
-
                         nextImage.add(new Point(x, y));
                     }
                 }
             }
 
-            minValue = Math.min(minValue, newMinValue);
-            maxValue = Math.max(maxValue, newMaxValue);
             litPixels = nextImage;
-//            printLitPixels("after enhance");
+            countOfEnhancements++;
         }
 
-        private String outputPixelFor(int midX, int midY) {
-
+        private String outputPixelFor(int midX, int midY, Point upperLeft, Point lowerRight) {
             StringBuilder pixelsAround = new StringBuilder();
 
             for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
-                    pixelsAround.append(litPixels.contains(new Point(midX + x, midY + y)) ? "1" : "0");
+
+                    int checkX = midX + x;
+                    int checkY = midY + y;
+
+                    if (imageEnhancementAlgorithm.charAt(0) == '#' && countOfEnhancements % 2 != 0) {
+                        if (checkY >= upperLeft.y && checkY <= lowerRight.y &&
+                                checkX >= upperLeft.x && checkX <= lowerRight.x) {
+                            pixelsAround.append(litPixels.contains(new Point(midX + x, midY + y)) ? "1" : "0");
+                        } else {
+                            pixelsAround.append("1");
+                        }
+                    } else {
+                        pixelsAround.append(litPixels.contains(new Point(midX + x, midY + y)) ? "1" : "0");
+                    }
                 }
             }
 
@@ -150,19 +204,6 @@ public class day20Tests {
 
             String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
             return replaceWith;
-        }
-
-        private void printLitPixels(String message) {
-            System.out.println(message);
-            for (int x = 5; x <= maxValue + 3; x++) {
-                for (int y = 5; y <= maxValue + 3; y++) {
-                    if (litPixels.contains(new Point(x, y))) System.out.print("#");
-                    else System.out.print(".");
-                }
-                System.out.println("");
-            }
-            System.out.println("min/max - " + minValue + ", " + maxValue);
-            System.out.println("");
         }
 
         public int countOfLitPixels() {
