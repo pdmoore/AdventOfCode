@@ -1,5 +1,7 @@
 package com.pdmoore.aoc;
 
+import org.checkerframework.framework.qual.IgnoreInWholeProgramInference;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class day20Tests {
     // TODO - account for the infinite image size
     // boolean to decide whether pixels outside bounds are on or off
     @Test
+    @Disabled
     void part1_from_file() {
         List<String> input = PuzzleInput.asStringListFrom("data/day20");
         String imageEnhancementAlgorithm = input.get(0);
@@ -40,7 +43,7 @@ public class day20Tests {
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
         sut.enhance(2);
-        
+
         int actual = sut.countOfLitPixels();
         //5983 too high
         assertEquals(99, actual);
@@ -78,12 +81,14 @@ public class day20Tests {
     private class ImageEnhancer {
         private final String imageEnhancementAlgorithm;
         private List<Point> litPixels;
+        private int countOfEnhancements;
         int minValue;
         int maxValue;
 
         public ImageEnhancer(String imageEnhancementAlgorithm, List<String> image) {
             litPixels = new ArrayList();
-            minValue = 10;
+            minValue = 100;
+            countOfEnhancements = 0;
             this.imageEnhancementAlgorithm = imageEnhancementAlgorithm;
             trackLitPixels(image);
         }
@@ -131,23 +136,19 @@ public class day20Tests {
 //            printLitPixels("after enhance");
         }
 
-        private String outputPixelFor(int x, int y) {
+        private String outputPixelFor(int midX, int midY) {
 
             StringBuilder pixelsAround = new StringBuilder();
-            pixelsAround.append(litPixels.contains(new Point(x - 1, y - 1)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x - 1, y)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x - 1, y + 1)) ? "1" : "0");
 
-            pixelsAround.append(litPixels.contains(new Point(x, y - 1)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x, y)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x, y + 1)) ? "1" : "0");
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    pixelsAround.append(litPixels.contains(new Point(midX + x, midY + y)) ? "1" : "0");
+                }
+            }
 
-            pixelsAround.append(litPixels.contains(new Point(x + 1, y - 1)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x + 1, y)) ? "1" : "0");
-            pixelsAround.append(litPixels.contains(new Point(x + 1, y + 1)) ? "1" : "0");
             Integer lookup = Integer.parseInt(pixelsAround.toString(), 2);
-            String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
 
+            String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
             return replaceWith;
         }
 
