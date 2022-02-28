@@ -12,34 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class day20Tests {
 
     @Test
-    void part1_example() {
-        String imageEnhancementAlgorithm = "..#.#..#####.#.#.#.###.##.....###.##.#..###.####." +
-                ".#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###" +
-                ".######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#." +
-                ".#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#....." +
-                ".#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.." +
-                "...####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#....." +
-                "..##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#";
-
-        List<String> image = Arrays.asList(
-                "#..#.",
-                "#....",
-                "##..#",
-                "..#..",
-                "..###");
-
-        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
-
-        sut.enhance();
-        int actual = sut.countOfLitPixels();
-        assertEquals(24, actual);
-
-        sut.enhance();
-        actual = sut.countOfLitPixels();
-        assertEquals(35, actual);
-    }
-
-    @Test
     void part1_example_from_file() {
         List<String> input = PuzzleInput.asStringListFrom("data/day20_example");
         String imageEnhancementAlgorithm = input.get(0);
@@ -54,6 +26,26 @@ public class day20Tests {
         sut.enhance();
         int actual = sut.countOfLitPixels();
         assertEquals(35, actual);
+    }
+
+    // TODO - account for the infinite image size
+    // boolean to decide whether pixels outside bounds are on or off
+    @Test
+    void part1_from_file() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day20");
+        String imageEnhancementAlgorithm = input.get(0);
+        List<String> image = new ArrayList<>();
+        for (int i = 2; i < input.size(); i++) {
+            image.add(input.get(i));
+        }
+
+        ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+
+        sut.enhance();
+        sut.enhance();
+        int actual = sut.countOfLitPixels();
+        //5983 too high
+        assertEquals(99, actual);
     }
 
     @Test
@@ -113,8 +105,7 @@ public class day20Tests {
         }
 
         public void enhance() {
-            printLitPixels("prior to enhance");
-
+//            printLitPixels("prior to enhance");
             List<Point> nextImage = new ArrayList<>();
 
             int newMinValue = maxValue;
@@ -139,8 +130,7 @@ public class day20Tests {
             minValue = Math.min(minValue, newMinValue);
             maxValue = Math.max(maxValue, newMaxValue);
             litPixels = nextImage;
-
-            printLitPixels("after enhance");
+//            printLitPixels("after enhance");
         }
 
         private String outputPixelFor(int x, int y) {
