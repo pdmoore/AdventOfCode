@@ -21,9 +21,8 @@ public class day20Tests {
         }
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
+        sut.enhance(2);
 
-        sut.enhance();
-        sut.enhance();
         int actual = sut.countOfLitPixels();
         assertEquals(35, actual);
     }
@@ -40,9 +39,8 @@ public class day20Tests {
         }
 
         ImageEnhancer sut = new ImageEnhancer(imageEnhancementAlgorithm, image);
-
-        sut.enhance();
-        sut.enhance();
+        sut.enhance(2);
+        
         int actual = sut.countOfLitPixels();
         //5983 too high
         assertEquals(99, actual);
@@ -168,6 +166,12 @@ public class day20Tests {
 
         public int countOfLitPixels() {
             return litPixels.size();
+        }
+
+        public void enhance(int enhancementCount) {
+            for (int i = 0; i < enhancementCount; i++) {
+                enhance();
+            }
         }
     }
 
