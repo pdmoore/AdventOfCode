@@ -123,11 +123,11 @@ public class day20Tests {
     private class ImageEnhancer {
         private final String imageEnhancementAlgorithm;
         private Collection<Point> litPixels;
-        private int countOfEnhancements;
+        private int enhancementCount;
 
         public ImageEnhancer(String imageEnhancementAlgorithm, List<String> image) {
             litPixels = new HashSet<>();
-            countOfEnhancements = 0;
+            enhancementCount = 0;
             this.imageEnhancementAlgorithm = imageEnhancementAlgorithm;
             trackLitPixels(image);
         }
@@ -163,22 +163,21 @@ public class day20Tests {
             Point upperLeft = findUpperLeftPoint(litPixels);
             Point lowerRight = findLowerRightPoint(litPixels);
 
-            int expansion = 2;
+            int expansion = 1;
             for (int x = upperLeft.x - expansion; x <= lowerRight.x + expansion; x++) {
                 for (int y = upperLeft.y - expansion; y <= lowerRight.y + expansion; y++) {
-                    String nextPixel = outputPixelFor(x, y, upperLeft, lowerRight);
-
-                    if (nextPixel.equals("#")) {
+                    Character nextPixel = outputPixelFor(x, y, upperLeft, lowerRight);
+                    if (nextPixel.equals('#')) {
                         nextImage.add(new Point(x, y));
                     }
                 }
             }
 
             litPixels = nextImage;
-            countOfEnhancements++;
+            enhancementCount++;
         }
 
-        private String outputPixelFor(int midX, int midY, Point upperLeft, Point lowerRight) {
+        private Character outputPixelFor(int midX, int midY, Point upperLeft, Point lowerRight) {
             StringBuilder pixelsAround = new StringBuilder();
 
             for (int x = -1; x <= 1; x++) {
@@ -187,7 +186,7 @@ public class day20Tests {
                     int checkX = midX + x;
                     int checkY = midY + y;
 
-                    if (imageEnhancementAlgorithm.charAt(0) == '#' && countOfEnhancements % 2 != 0) {
+                    if (imageEnhancementAlgorithm.charAt(0) == '#' && enhancementCount % 2 != 0) {
                         if (checkY >= upperLeft.y && checkY <= lowerRight.y &&
                                 checkX >= upperLeft.x && checkX <= lowerRight.x) {
                             pixelsAround.append(litPixels.contains(new Point(midX + x, midY + y)) ? "1" : "0");
@@ -200,10 +199,9 @@ public class day20Tests {
                 }
             }
 
-            Integer lookup = Integer.parseInt(pixelsAround.toString(), 2);
+            Integer imageEnhacementIndex = Integer.parseInt(pixelsAround.toString(), 2);
 
-            String replaceWith = String.valueOf(imageEnhancementAlgorithm.charAt(lookup));
-            return replaceWith;
+            return imageEnhancementAlgorithm.charAt(imageEnhacementIndex);
         }
 
         public int countOfLitPixels() {
