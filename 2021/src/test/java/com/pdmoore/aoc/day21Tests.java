@@ -17,7 +17,15 @@ public class day21Tests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void part1_solution() {
+        int player1StartAt = 1;
+        int player2StartAt = 10;
+        int trackLength = 10;
+        int actual = playGame(trackLength, player1StartAt, player2StartAt);
 
+        assertEquals(428736, actual);
+    }
 
     private int playGame(int trackLength, int player1StartAt, int player2StartAt) {
         DeterministicDie die = new DeterministicDie();
@@ -48,7 +56,7 @@ public class day21Tests {
             roll2 = die.roll();
             roll3 = die.roll();
             int player2Rolls = roll1 + roll2 + roll3;
-            player2Position = (player2Position + player2Rolls) % 10;
+            player2Position = (player2Position + player2Rolls);
             while (player2Position > 10) {
                 player2Position -= 10;
             }
