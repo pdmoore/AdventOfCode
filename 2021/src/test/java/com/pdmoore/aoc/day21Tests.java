@@ -51,12 +51,9 @@ public class day21Tests {
         int roll() {
             rollCount++;
             int dieResult = returnValue;
-            if (returnValue++ >= 100) {
-                returnValue = 1;
-            }
+            returnValue = ((++returnValue - 1) % 100) + 1;
             return dieResult;
         }
-
     }
 
     private class Player {
