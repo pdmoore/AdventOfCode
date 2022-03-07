@@ -10,8 +10,7 @@ public class day21Tests {
     void part1_example() {
         int player1StartAt = 4;
         int player2StartAt = 8;
-        int trackLength = 10;
-        int actual = playGame(trackLength, player1StartAt, player2StartAt);
+        int actual = playGame(player1StartAt, player2StartAt);
 
         int expected = 745 * 993;
         assertEquals(expected, actual);
@@ -21,13 +20,12 @@ public class day21Tests {
     void part1_solution() {
         int player1StartAt = 1;
         int player2StartAt = 10;
-        int trackLength = 10;
-        int actual = playGame(trackLength, player1StartAt, player2StartAt);
+        int actual = playGame(player1StartAt, player2StartAt);
 
         assertEquals(428736, actual);
     }
 
-    private int playGame(int trackLength, int player1StartAt, int player2StartAt) {
+    private int playGame(int player1StartAt, int player2StartAt) {
         DeterministicDie die = new DeterministicDie();
 
         Player player1 = new Player(player1StartAt);
