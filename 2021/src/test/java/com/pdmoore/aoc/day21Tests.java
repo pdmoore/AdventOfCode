@@ -71,16 +71,9 @@ public class day21Tests {
         }
 
         public void move(DeterministicDie die) {
-            int roll1 = die.roll();
-            int roll2 = die.roll();
-            int roll3 = die.roll();
-            int player1Rolls = roll1 + roll2 + roll3;
-            currentPosition = (currentPosition + player1Rolls);
-            while (currentPosition > 10) {
-                currentPosition -= 10;
-            }
+            currentPosition = (currentPosition + die.roll() + die.roll() + die.roll());
+            currentPosition = ((currentPosition - 1) % 10) + 1;
             score += currentPosition;
-            System.out.println("Player # rolls " + roll1 + "+" + roll2 + "+" + roll3 + " and moves to space "+ currentPosition+" for a total score of " + score + ".");
         }
     }
 }
