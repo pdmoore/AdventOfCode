@@ -30,44 +30,20 @@ public class day21Tests {
     private int playGame(int trackLength, int player1StartAt, int player2StartAt) {
         DeterministicDie die = new DeterministicDie();
 
-        int player1Position = player1StartAt;
-        int player2Position = player2StartAt;
+        Player player1 = new Player(player1StartAt);
+        Player player2 = new Player(player2StartAt);
 
-        int player1Score = 0;
-        int player2Score = 0;
-
-        while (player1Score < 1000 && player2Score < 1000) {
-
-            int roll1 = die.roll();
-            int roll2 = die.roll();
-            int roll3 = die.roll();
-            int player1Rolls = roll1 + roll2 + roll3;
-            player1Position = (player1Position + player1Rolls);
-            while (player1Position > 10) {
-                player1Position -= 10;
-            }
-            player1Score += player1Position;
-            System.out.println("Player 1 rolls " + roll1 + "+" + roll2 + "+" + roll3 + " and moves to space "+ player1Position+" for a total score of " + player1Score+ ".");
-            if (player1Score >= 1000) {
-                return player2Score * die.rollCount;
+        while (true) {
+            player1.move(die);
+            if (player1.score >= 1000) {
+                return player2.score * die.rollCount;
             }
 
-            roll1 = die.roll();
-            roll2 = die.roll();
-            roll3 = die.roll();
-            int player2Rolls = roll1 + roll2 + roll3;
-            player2Position = (player2Position + player2Rolls);
-            while (player2Position > 10) {
-                player2Position -= 10;
-            }
-            player2Score += player2Position;
-            System.out.println("Player 2 rolls " + roll1 + "+" + roll2 + "+" + roll3 + " and moves to space "+ player2Position+" for a total score of " + player2Score+ ".");
-            if (player2Score >= 1000) {
-                return player1Score * die.rollCount;
+            player2.move(die);
+            if (player2.score >= 1000) {
+                return player1.score * die.rollCount;
             }
         }
-
-        return -1;
     }
 
     private class DeterministicDie {
@@ -83,5 +59,28 @@ public class day21Tests {
             return dieResult;
         }
 
+    }
+
+    private class Player {
+        int score;
+        int currentPosition;
+
+        public Player(int startingPosition) {
+            this.currentPosition = startingPosition;
+            this.score = 0;
+        }
+
+        public void move(DeterministicDie die) {
+            int roll1 = die.roll();
+            int roll2 = die.roll();
+            int roll3 = die.roll();
+            int player1Rolls = roll1 + roll2 + roll3;
+            currentPosition = (currentPosition + player1Rolls);
+            while (currentPosition > 10) {
+                currentPosition -= 10;
+            }
+            score += currentPosition;
+            System.out.println("Player # rolls " + roll1 + "+" + roll2 + "+" + roll3 + " and moves to space "+ currentPosition+" for a total score of " + score + ".");
+        }
     }
 }
