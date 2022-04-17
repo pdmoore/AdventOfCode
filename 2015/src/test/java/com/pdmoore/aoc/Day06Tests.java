@@ -1,6 +1,7 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Day06Tests {
@@ -27,12 +28,25 @@ would toggle the first line of 1000 lights, turning off the ones that were on, a
 would turn off (or leave off) the middle four lights.
      */
     @Test
-    public void processTurnOn() {
+    public void processTurnOnCommand() {
         Grid grid = new Grid();
+
         grid.processInstruction("turn on 499,499 through 500,500");
+
         Assertions.assertEquals(4, grid.litCount());
     }
     
+    @Test
+    @Disabled
+    public void processTurnOffCommand() {
+        Grid grid = new Grid();
+        grid.processInstruction("turn on 0,0 through 5,5");
+
+//        grid.processInstruction("turn on 499,499 through 500,500");
+
+        Assertions.assertEquals(4, grid.litCount());
+    }
+
     class Grid {
 
         boolean[][] lights;
@@ -52,12 +66,27 @@ would turn off (or leave off) the middle four lights.
         }
 
         public void processInstruction(String instruction) {
+
+            // "turn on 499,499 through 500,500"
+            String[] tokens = instruction.split(" ");
+
+            // when token 1 is "on"
+            // token 2 is upperleft pair
+            // token 4 is lowerright pair
+
+            String[] upperLeftPair = tokens[2].split(",");
+            String[] lowerRightPair = tokens[4].split(",");
+
+            int upperLeftX = Integer.parseInt(upperLeftPair[0]);
+            int upperLeftY = Integer.parseInt(upperLeftPair[1]);
+            int lowerRightX = Integer.parseInt(lowerRightPair[0]);
+            int lowerRightY = Integer.parseInt(lowerRightPair[1]);
             // assume turn on
             // grab first #,# pair
             // grab second #,# pair
             //loop/loop over the pairs and turn on data structure
-            for (int x = 499; x <= 500; x++) {
-                for (int y = 499; y <= 500; y++) {
+            for (int x = upperLeftX; x <= lowerRightX; x++) {
+                for (int y = upperLeftY; y <= lowerRightY; y++) {
                     lights[x][y] = true;
                 }
             }
