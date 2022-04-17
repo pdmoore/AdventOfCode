@@ -35,7 +35,7 @@ would turn off (or leave off) the middle four lights.
 
         Assertions.assertEquals(4, grid.litCount());
     }
-    
+
     @Test
     public void processTurnOffCommand() {
         Grid grid = new Grid();
@@ -66,27 +66,13 @@ would turn off (or leave off) the middle four lights.
 
         public void processInstruction(String instruction) {
 
-            // "turn on 499,499 through 500,500"
             String[] tokens = instruction.split(" ");
 
-            // when token 1 is "on"
-            // token 2 is upperleft pair
-            // token 4 is lowerright pair
-
-            if ("on".equals(tokens[1])) {
-                String[] upperLeftPair = tokens[2].split(",");
-                String[] lowerRightPair = tokens[4].split(",");
-
-                int upperLeftX = Integer.parseInt(upperLeftPair[0]);
-                int upperLeftY = Integer.parseInt(upperLeftPair[1]);
-                int lowerRightX = Integer.parseInt(lowerRightPair[0]);
-                int lowerRightY = Integer.parseInt(lowerRightPair[1]);
-                for (int x = upperLeftX; x <= lowerRightX; x++) {
-                    for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        lights[x][y] = true;
-                    }
+            boolean lightValue = true;
+            if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
+                if ("off".equals(tokens[1])) {
+                    lightValue = false;
                 }
-            } else if ("off".equals(tokens[1])) {
                 String[] upperLeftPair = tokens[2].split(",");
                 String[] lowerRightPair = tokens[4].split(",");
 
@@ -96,7 +82,7 @@ would turn off (or leave off) the middle four lights.
                 int lowerRightY = Integer.parseInt(lowerRightPair[1]);
                 for (int x = upperLeftX; x <= lowerRightX; x++) {
                     for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        lights[x][y] = false;
+                        lights[x][y] = lightValue;
                     }
                 }
             } else {
