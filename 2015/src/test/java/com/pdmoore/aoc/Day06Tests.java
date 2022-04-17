@@ -1,12 +1,12 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day06Tests {
 
@@ -16,7 +16,7 @@ class Day06Tests {
 
         grid.processInstruction("turn on 499,499 through 500,500");
 
-        Assertions.assertEquals(4, grid.litCount());
+        assertEquals(4, grid.litCount());
     }
 
     @Test
@@ -26,17 +26,17 @@ class Day06Tests {
 
         grid.processInstruction("turn off 0,0 through 1,1");
 
-        Assertions.assertEquals(21, grid.litCount());
+        assertEquals(21, grid.litCount());
     }
 
     @Test
     void processToggleCommand() {
         Grid grid = new Grid();
         grid.processInstruction("toggle 0,0 through 4,4");
-        Assertions.assertEquals(25, grid.litCount());
+        assertEquals(25, grid.litCount());
 
         grid.processInstruction("toggle 0,0 through 4,4");
-        Assertions.assertEquals(0, grid.litCount());
+        assertEquals(0, grid.litCount());
     }
 
     @Test
@@ -48,7 +48,7 @@ class Day06Tests {
 
         grid.process(instructions);
 
-        Assertions.assertEquals(21, grid.litCount());
+        assertEquals(21, grid.litCount());
     }
 
     @Test
@@ -58,7 +58,7 @@ class Day06Tests {
         Grid grid = new Grid();
         grid.process(instructions);
 
-        Assertions.assertEquals(377891, grid.litCount());
+        assertEquals(377891, grid.litCount());
     }
 
     @Test
@@ -67,7 +67,7 @@ class Day06Tests {
 
         grid.processInstruction("turn on 0,0 through 0,0");
 
-        Assertions.assertEquals(BigInteger.ONE, grid.totalBrightness());
+        assertEquals(BigInteger.ONE, grid.totalBrightness());
     }
 
     @Test
@@ -76,24 +76,23 @@ class Day06Tests {
 
         grid.processInstruction("toggle 0,0 through 999,999");
 
-        Assertions.assertEquals(BigInteger.valueOf(2_000_000), grid.totalBrightness());
+        assertEquals(BigInteger.valueOf(2_000_000), grid.totalBrightness());
     }
 
     @Test
     void part2_TurnOffCommand_DecreasesBrightness() {
         Grid grid = new Grid();
         grid.processInstruction("turn on 0,0 through 0,0");
-        Assertions.assertEquals(BigInteger.ONE, grid.totalBrightness());
+        assertEquals(BigInteger.ONE, grid.totalBrightness());
 
         grid.processInstruction("turn on 0,0 through 0,0");
-        Assertions.assertEquals(BigInteger.TWO, grid.totalBrightness());
+        assertEquals(BigInteger.TWO, grid.totalBrightness());
 
         grid.processInstruction("turn on 0,0 through 0,0");
         grid.processInstruction("turn off 0,0 through 0,0");
 
-        Assertions.assertEquals(BigInteger.TWO, grid.totalBrightness());
+        assertEquals(BigInteger.TWO, grid.totalBrightness());
     }
-
 
     @Test
     void part2_solution() {
@@ -102,9 +101,8 @@ class Day06Tests {
         Grid grid = new Grid();
         grid.process(instructions);
 
-        Assertions.assertEquals(BigInteger.valueOf(14110788), grid.totalBrightness());
+        assertEquals(BigInteger.valueOf(14110788), grid.totalBrightness());
     }
-
 
     static class Grid {
 
