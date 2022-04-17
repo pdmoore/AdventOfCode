@@ -59,7 +59,7 @@ class Day06Tests {
         Grid grid = new Grid();
         grid.process(instructions);
 
-        assertEquals(377891, grid.litCount());
+        assertEquals(377_891, grid.litCount());
     }
 
     @Test
@@ -102,7 +102,7 @@ class Day06Tests {
         Grid grid = new Grid();
         grid.process(instructions);
 
-        assertEquals(14110788, grid.totalBrightness());
+        assertEquals(14_110_788, grid.totalBrightness());
     }
 
     static class Grid {
