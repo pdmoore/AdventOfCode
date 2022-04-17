@@ -10,27 +10,6 @@ import java.util.List;
 
 class Day06Tests {
 
-    // data structure
-    // naive - create 1000,1000 array of boolean
-    // or - store grid point and state of light in a map
-    // or - use a packed bit array
-    // parse a line - turn on
-    // parse a line - turn off
-    // parse a line - toggle
-    // process a single line input
-    // process >1 line of input
-    // count number of lit lights
-    // read file and process all input
-
-    /*
-    examples
-- turn on 0,0 through 999,999
-would turn on (or leave on) every light.
-- toggle 0,0 through 999,0
-would toggle the first line of 1000 lights, turning off the ones that were on, and turning on the ones that were off.
-- turn off 499,499 through 500,500
-would turn off (or leave off) the middle four lights.
-     */
     @Test
     void processTurnOnCommand() {
         Grid grid = new Grid();
@@ -88,7 +67,7 @@ would turn off (or leave off) the middle four lights.
 
         grid.processInstruction("turn on 0,0 through 0,0");
 
-        Assertions.assertEquals(1, grid.totalBrightness());
+        Assertions.assertEquals(BigInteger.ONE, grid.totalBrightness());
     }
 
     @Test
@@ -97,18 +76,22 @@ would turn off (or leave off) the middle four lights.
 
         grid.processInstruction("toggle 0,0 through 999,999");
 
-        Assertions.assertEquals(2_000_000, grid.totalBrightness());
+        Assertions.assertEquals(BigInteger.valueOf(2_000_000), grid.totalBrightness());
     }
 
     @Test
     void part2_TurnOffCommand_DecreasesBrightness() {
         Grid grid = new Grid();
         grid.processInstruction("turn on 0,0 through 0,0");
+        Assertions.assertEquals(BigInteger.ONE, grid.totalBrightness());
+
         grid.processInstruction("turn on 0,0 through 0,0");
+        Assertions.assertEquals(BigInteger.TWO, grid.totalBrightness());
+
         grid.processInstruction("turn on 0,0 through 0,0");
         grid.processInstruction("turn off 0,0 through 0,0");
 
-        Assertions.assertEquals(2, grid.totalBrightness());
+        Assertions.assertEquals(BigInteger.TWO, grid.totalBrightness());
     }
 
 
@@ -119,8 +102,7 @@ would turn off (or leave off) the middle four lights.
         Grid grid = new Grid();
         grid.process(instructions);
 
-        // 41157212722278 too high
-        Assertions.assertEquals(BigInteger.ZERO, grid.totalBrightness());
+        Assertions.assertEquals(BigInteger.valueOf(14110788), grid.totalBrightness());
     }
 
 
@@ -152,7 +134,6 @@ would turn off (or leave off) the middle four lights.
                 for (int y = 0; y <= lights[0].length - 1; y++) {
                     totalBrightness = totalBrightness.add(BigInteger.valueOf(brightness[x][y]));
                 }
-                System.out.println(totalBrightness);
             }
             return totalBrightness;
         }
@@ -201,7 +182,7 @@ would turn off (or leave off) the middle four lights.
                             if (newValue < 0) {
                                 newValue = 0;
                             }
-                            brightness[x][y] += newValue;
+                            brightness[x][y] = newValue;
                         }
                     }
                 } else {
