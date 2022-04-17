@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.plaf.IconUIResource;
+
 public class Day06Tests {
 
     // data structure
@@ -46,6 +48,16 @@ would turn off (or leave off) the middle four lights.
         Assertions.assertEquals(21, grid.litCount());
     }
 
+    @Test
+    public void processToggleCommand() {
+        Grid grid = new Grid();
+        grid.processInstruction("toggle 0,0 through 4,4");
+        Assertions.assertEquals(25, grid.litCount());
+
+        grid.processInstruction("toggle 0,0 through 4,4");
+        Assertions.assertEquals(0, grid.litCount());
+    }
+
     class Grid {
 
         boolean[][] lights;
@@ -68,13 +80,9 @@ would turn off (or leave off) the middle four lights.
 
             String[] tokens = instruction.split(" ");
 
-            boolean lightValue = true;
-            if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
-                if ("off".equals(tokens[1])) {
-                    lightValue = false;
-                }
-                String[] upperLeftPair = tokens[2].split(",");
-                String[] lowerRightPair = tokens[4].split(",");
+            if ("toggle".equals(tokens[0])) {
+                String[] upperLeftPair = tokens[1].split(",");
+                String[] lowerRightPair = tokens[3].split(",");
 
                 int upperLeftX = Integer.parseInt(upperLeftPair[0]);
                 int upperLeftY = Integer.parseInt(upperLeftPair[1]);
@@ -82,12 +90,34 @@ would turn off (or leave off) the middle four lights.
                 int lowerRightY = Integer.parseInt(lowerRightPair[1]);
                 for (int x = upperLeftX; x <= lowerRightX; x++) {
                     for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        lights[x][y] = lightValue;
+                        boolean currentValue = lights[x][y];
+                        lights[x][y] = !currentValue;
                     }
                 }
+
             } else {
-                System.out.println("Unknown token at position 1 in command " + instruction);
-                System.exit(-1);
+
+                boolean lightValue = true;
+                if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
+                    if ("off".equals(tokens[1])) {
+                        lightValue = false;
+                    }
+                    String[] upperLeftPair = tokens[2].split(",");
+                    String[] lowerRightPair = tokens[4].split(",");
+
+                    int upperLeftX = Integer.parseInt(upperLeftPair[0]);
+                    int upperLeftY = Integer.parseInt(upperLeftPair[1]);
+                    int lowerRightX = Integer.parseInt(lowerRightPair[0]);
+                    int lowerRightY = Integer.parseInt(lowerRightPair[1]);
+                    for (int x = upperLeftX; x <= lowerRightX; x++) {
+                        for (int y = upperLeftY; y <= lowerRightY; y++) {
+                            lights[x][y] = lightValue;
+                        }
+                    }
+                } else {
+                    System.out.println("Unknown command " + instruction);
+                    System.exit(-1);
+                }
             }
 
         }
