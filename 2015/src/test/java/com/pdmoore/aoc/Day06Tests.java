@@ -1,14 +1,12 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day06Tests {
+class Day06Tests {
 
     // data structure
     // naive - create 1000,1000 array of boolean
@@ -32,7 +30,7 @@ would toggle the first line of 1000 lights, turning off the ones that were on, a
 would turn off (or leave off) the middle four lights.
      */
     @Test
-    public void processTurnOnCommand() {
+    void processTurnOnCommand() {
         Grid grid = new Grid();
 
         grid.processInstruction("turn on 499,499 through 500,500");
@@ -41,7 +39,7 @@ would turn off (or leave off) the middle four lights.
     }
 
     @Test
-    public void processTurnOffCommand() {
+    void processTurnOffCommand() {
         Grid grid = new Grid();
         grid.processInstruction("turn on 0,0 through 4,4");
 
@@ -51,7 +49,7 @@ would turn off (or leave off) the middle four lights.
     }
 
     @Test
-    public void processToggleCommand() {
+    void processToggleCommand() {
         Grid grid = new Grid();
         grid.processInstruction("toggle 0,0 through 4,4");
         Assertions.assertEquals(25, grid.litCount());
@@ -61,7 +59,7 @@ would turn off (or leave off) the middle four lights.
     }
 
     @Test
-    public void processMultipleCommands() {
+    void processMultipleCommands() {
         List<String> instructions = new ArrayList<>();
         instructions.add("turn on 0,0 through 4,4");
         instructions.add("turn off 0,0 through 1,1");
@@ -83,7 +81,7 @@ would turn off (or leave off) the middle four lights.
     }
 
 
-    class Grid {
+    static class Grid {
 
         boolean[][] lights;
 
