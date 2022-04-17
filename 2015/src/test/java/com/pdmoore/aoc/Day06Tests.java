@@ -2,8 +2,8 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -127,14 +127,9 @@ class Day06Tests {
         }
 
         public int totalBrightness() {
-            //TODO convert to stream
-            int totalBrightness = 0;
-            for (int x = 0; x <= lights.length - 1; x++) {
-                for (int y = 0; y <= lights[0].length - 1; y++) {
-                    totalBrightness += brightness[x][y];
-                }
-            }
-            return totalBrightness;
+            return Arrays.stream(brightness)
+                    .flatMapToInt(Arrays::stream)
+                    .reduce(0, Integer::sum);
         }
 
         public void processInstruction(String instruction) {
