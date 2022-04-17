@@ -37,14 +37,13 @@ would turn off (or leave off) the middle four lights.
     }
     
     @Test
-    @Disabled
     public void processTurnOffCommand() {
         Grid grid = new Grid();
-        grid.processInstruction("turn on 0,0 through 5,5");
+        grid.processInstruction("turn on 0,0 through 4,4");
 
-//        grid.processInstruction("turn on 499,499 through 500,500");
+        grid.processInstruction("turn off 0,0 through 1,1");
 
-        Assertions.assertEquals(4, grid.litCount());
+        Assertions.assertEquals(21, grid.litCount());
     }
 
     class Grid {
@@ -74,22 +73,37 @@ would turn off (or leave off) the middle four lights.
             // token 2 is upperleft pair
             // token 4 is lowerright pair
 
-            String[] upperLeftPair = tokens[2].split(",");
-            String[] lowerRightPair = tokens[4].split(",");
+            if ("on".equals(tokens[1])) {
+                String[] upperLeftPair = tokens[2].split(",");
+                String[] lowerRightPair = tokens[4].split(",");
 
-            int upperLeftX = Integer.parseInt(upperLeftPair[0]);
-            int upperLeftY = Integer.parseInt(upperLeftPair[1]);
-            int lowerRightX = Integer.parseInt(lowerRightPair[0]);
-            int lowerRightY = Integer.parseInt(lowerRightPair[1]);
-            // assume turn on
-            // grab first #,# pair
-            // grab second #,# pair
-            //loop/loop over the pairs and turn on data structure
-            for (int x = upperLeftX; x <= lowerRightX; x++) {
-                for (int y = upperLeftY; y <= lowerRightY; y++) {
-                    lights[x][y] = true;
+                int upperLeftX = Integer.parseInt(upperLeftPair[0]);
+                int upperLeftY = Integer.parseInt(upperLeftPair[1]);
+                int lowerRightX = Integer.parseInt(lowerRightPair[0]);
+                int lowerRightY = Integer.parseInt(lowerRightPair[1]);
+                for (int x = upperLeftX; x <= lowerRightX; x++) {
+                    for (int y = upperLeftY; y <= lowerRightY; y++) {
+                        lights[x][y] = true;
+                    }
                 }
+            } else if ("off".equals(tokens[1])) {
+                String[] upperLeftPair = tokens[2].split(",");
+                String[] lowerRightPair = tokens[4].split(",");
+
+                int upperLeftX = Integer.parseInt(upperLeftPair[0]);
+                int upperLeftY = Integer.parseInt(upperLeftPair[1]);
+                int lowerRightX = Integer.parseInt(lowerRightPair[0]);
+                int lowerRightY = Integer.parseInt(lowerRightPair[1]);
+                for (int x = upperLeftX; x <= lowerRightX; x++) {
+                    for (int y = upperLeftY; y <= lowerRightY; y++) {
+                        lights[x][y] = false;
+                    }
+                }
+            } else {
+                System.out.println("Unknown token at position 1 in command " + instruction);
+                System.exit(-1);
             }
+
         }
     }
 }
