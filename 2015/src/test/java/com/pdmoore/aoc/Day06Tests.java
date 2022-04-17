@@ -1,8 +1,10 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +100,30 @@ would turn off (or leave off) the middle four lights.
         Assertions.assertEquals(2_000_000, grid.totalBrightness());
     }
 
+    @Test
+    void part2_TurnOffCommand_DecreasesBrightness() {
+        Grid grid = new Grid();
+        grid.processInstruction("turn on 0,0 through 0,0");
+        grid.processInstruction("turn on 0,0 through 0,0");
+        grid.processInstruction("turn on 0,0 through 0,0");
+        grid.processInstruction("turn off 0,0 through 0,0");
+
+        Assertions.assertEquals(2, grid.totalBrightness());
+    }
+
+
+    @Test
+    void part2_solution() {
+        List<String> instructions = PuzzleInput.asStringListFrom("data/day06");
+
+        Grid grid = new Grid();
+        grid.process(instructions);
+
+        // 41157212722278 too high
+        Assertions.assertEquals(BigInteger.ZERO, grid.totalBrightness());
+    }
+
+
     static class Grid {
 
         boolean[][] lights;
@@ -117,6 +143,18 @@ would turn off (or leave off) the middle four lights.
                 }
             }
             return litCount;
+        }
+
+        public BigInteger totalBrightness() {
+            //TODO convert to stream
+            BigInteger totalBrightness = BigInteger.ZERO;
+            for (int x = 0; x <= lights.length - 1; x++) {
+                for (int y = 0; y <= lights[0].length - 1; y++) {
+                    totalBrightness = totalBrightness.add(BigInteger.valueOf(brightness[x][y]));
+                }
+                System.out.println(totalBrightness);
+            }
+            return totalBrightness;
         }
 
         public void processInstruction(String instruction) {
@@ -158,7 +196,12 @@ would turn off (or leave off) the middle four lights.
                     for (int x = upperLeftX; x <= lowerRightX; x++) {
                         for (int y = upperLeftY; y <= lowerRightY; y++) {
                             lights[x][y] = lightValue;
-                            brightness[x][y] += brightnessDelta;
+
+                            int newValue = brightness[x][y] + brightnessDelta;
+                            if (newValue < 0) {
+                                newValue = 0;
+                            }
+                            brightness[x][y] += newValue;
                         }
                     }
                 } else {
@@ -174,17 +217,6 @@ would turn off (or leave off) the middle four lights.
                     instructions) {
                 processInstruction(instruction);
             }
-        }
-
-        public int totalBrightness() {
-            //TODO convert to stream
-            int totalBrightness = 0;
-            for (int x = 0; x <= lights.length - 1; x++) {
-                for (int y = 0; y <= lights[0].length - 1; y++) {
-                    totalBrightness += brightness[x][y];
-                }
-            }
-            return totalBrightness;
         }
     }
 }
