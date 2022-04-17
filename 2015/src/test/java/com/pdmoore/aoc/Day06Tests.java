@@ -62,12 +62,12 @@ would turn off (or leave off) the middle four lights.
 
     @Test
     public void processMultipleCommands() {
-        List<String> commands = new ArrayList<>();
-        commands.add("turn on 0,0 through 4,4");
-        commands.add("turn off 0,0 through 1,1");
+        List<String> instructions = new ArrayList<>();
+        instructions.add("turn on 0,0 through 4,4");
+        instructions.add("turn off 0,0 through 1,1");
         Grid grid = new Grid();
 
-        grid.process(commands);
+        grid.process(instructions);
 
         Assertions.assertEquals(21, grid.litCount());
     }
@@ -136,10 +136,10 @@ would turn off (or leave off) the middle four lights.
 
         }
 
-        public void process(List<String> commands) {
-            for (String command :
-                    commands) {
-                processInstruction(command);
+        public void process(List<String> instructions) {
+            for (String instruction :
+                    instructions) {
+                processInstruction(instruction);
             }
         }
     }
