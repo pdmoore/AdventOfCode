@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -67,7 +68,7 @@ class Day06Tests {
 
         grid.processInstruction("turn on 0,0 through 0,0");
 
-        assertEquals(BigInteger.ONE, grid.totalBrightness());
+        assertEquals(1, grid.totalBrightness());
     }
 
     @Test
@@ -76,22 +77,22 @@ class Day06Tests {
 
         grid.processInstruction("toggle 0,0 through 999,999");
 
-        assertEquals(BigInteger.valueOf(2_000_000), grid.totalBrightness());
+        assertEquals(2_000_000, grid.totalBrightness());
     }
 
     @Test
     void part2_TurnOffCommand_DecreasesBrightness() {
         Grid grid = new Grid();
         grid.processInstruction("turn on 0,0 through 0,0");
-        assertEquals(BigInteger.ONE, grid.totalBrightness());
+        assertEquals(1, grid.totalBrightness());
 
         grid.processInstruction("turn on 0,0 through 0,0");
-        assertEquals(BigInteger.TWO, grid.totalBrightness());
+        assertEquals(2, grid.totalBrightness());
 
         grid.processInstruction("turn on 0,0 through 0,0");
         grid.processInstruction("turn off 0,0 through 0,0");
 
-        assertEquals(BigInteger.TWO, grid.totalBrightness());
+        assertEquals(2, grid.totalBrightness());
     }
 
     @Test
@@ -101,7 +102,7 @@ class Day06Tests {
         Grid grid = new Grid();
         grid.process(instructions);
 
-        assertEquals(BigInteger.valueOf(14110788), grid.totalBrightness());
+        assertEquals(14110788, grid.totalBrightness());
     }
 
     static class Grid {
@@ -125,12 +126,12 @@ class Day06Tests {
             return litCount;
         }
 
-        public BigInteger totalBrightness() {
+        public int totalBrightness() {
             //TODO convert to stream
-            BigInteger totalBrightness = BigInteger.ZERO;
+            int totalBrightness = 0;
             for (int x = 0; x <= lights.length - 1; x++) {
                 for (int y = 0; y <= lights[0].length - 1; y++) {
-                    totalBrightness = totalBrightness.add(BigInteger.valueOf(brightness[x][y]));
+                    totalBrightness += brightness[x][y];
                 }
             }
             return totalBrightness;
