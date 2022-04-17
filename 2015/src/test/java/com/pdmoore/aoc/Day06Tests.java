@@ -72,6 +72,17 @@ would turn off (or leave off) the middle four lights.
         Assertions.assertEquals(21, grid.litCount());
     }
 
+    @Test
+    void part1_solution() {
+        List<String> instructions = PuzzleInput.asStringListFrom("data/day06");
+
+        Grid grid = new Grid();
+        grid.process(instructions);
+
+        Assertions.assertEquals(377891, grid.litCount());
+    }
+
+
     class Grid {
 
         boolean[][] lights;
