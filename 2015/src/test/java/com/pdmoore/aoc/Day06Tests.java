@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.plaf.IconUIResource;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Day06Tests {
 
@@ -56,6 +58,18 @@ would turn off (or leave off) the middle four lights.
 
         grid.processInstruction("toggle 0,0 through 4,4");
         Assertions.assertEquals(0, grid.litCount());
+    }
+
+    @Test
+    public void processMultipleCommands() {
+        List<String> commands = new ArrayList<>();
+        commands.add("turn on 0,0 through 4,4");
+        commands.add("turn off 0,0 through 1,1");
+        Grid grid = new Grid();
+
+        grid.process(commands);
+
+        Assertions.assertEquals(21, grid.litCount());
     }
 
     class Grid {
@@ -120,6 +134,13 @@ would turn off (or leave off) the middle four lights.
                 }
             }
 
+        }
+
+        public void process(List<String> commands) {
+            for (String command :
+                    commands) {
+                processInstruction(command);
+            }
         }
     }
 }
