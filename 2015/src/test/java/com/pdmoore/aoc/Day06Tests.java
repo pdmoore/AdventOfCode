@@ -221,8 +221,8 @@ class Day06Tests {
 
             @Override
             protected void actUpon(int x, int y) {
-                isLit[x][y] = !isLit[x][y];
-                brightness[x][y] += 2;
+                isLit[x][y] = !isLit[x][y]; // part 1 simply toggles on/off
+                brightness[x][y] += 2;      // part 2 toggle means increase by 2
             }
         }
     }
