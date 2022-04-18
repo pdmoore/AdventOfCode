@@ -142,23 +142,18 @@ class Day06Tests {
                 String[] lowerRightPair = tokens[3].split(",");
 
                 toggle = new ToggleLightAction(upperLeftPair, lowerRightPair);
-            } else {
+            } else if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
+                String[] upperLeftPair = tokens[2].split(",");
+                String[] lowerRightPair = tokens[4].split(",");
 
                 if ("on".equals(tokens[1])) {
-
-                    String[] upperLeftPair = tokens[2].split(",");
-                    String[] lowerRightPair = tokens[4].split(",");
-
                     toggle = new TurnOnLightAction(upperLeftPair, lowerRightPair);
                 } else if ("off".equals(tokens[1])) {
-                    String[] upperLeftPair = tokens[2].split(",");
-                    String[] lowerRightPair = tokens[4].split(",");
-
                     toggle = new TurnOffLightAction(upperLeftPair, lowerRightPair);
-                } else {
-                    System.out.println("Unknown command " + instruction);
-                    System.exit(-1);
                 }
+            } else {
+                System.out.println("Unknown command " + instruction);
+                System.exit(-1);
             }
 
             toggle.performAction();
