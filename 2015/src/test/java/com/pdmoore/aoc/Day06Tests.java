@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -123,6 +122,7 @@ class Day06Tests {
                     if (lights[x][y]) litCount++;
                 }
             }
+
             return litCount;
         }
 
