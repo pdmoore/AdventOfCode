@@ -136,12 +136,12 @@ class Day06Tests {
 
             String[] tokens = instruction.split(" ");
 
+            LightAction toggle = null;
             if ("toggle".equals(tokens[0])) {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
 
-                LightAction toggle = new ToggleLightAction(upperLeftPair, lowerRightPair);
-                toggle.performAction();
+                toggle = new ToggleLightAction(upperLeftPair, lowerRightPair);
             } else {
 
                 if ("on".equals(tokens[1])) {
@@ -149,47 +149,19 @@ class Day06Tests {
                     String[] upperLeftPair = tokens[2].split(",");
                     String[] lowerRightPair = tokens[4].split(",");
 
-                    LightAction toggle = new TurnOnLightAction(upperLeftPair, lowerRightPair);
-                    toggle.performAction();
-
-//                    boolean onOffStatus = true;
-//                    int brightnessDelta = 1;
-//
-//                    int upperLeftX = Integer.parseInt(upperLeftPair[0]);
-//                    int upperLeftY = Integer.parseInt(upperLeftPair[1]);
-//                    int lowerRightX = Integer.parseInt(lowerRightPair[0]);
-//                    int lowerRightY = Integer.parseInt(lowerRightPair[1]);
-//                    for (int x = upperLeftX; x <= lowerRightX; x++) {
-//                        for (int y = upperLeftY; y <= lowerRightY; y++) {
-//                            isLit[x][y] = onOffStatus;
-//                            brightness[x][y] = Math.max(0, brightness[x][y] + brightnessDelta);
-//                        }
-//                    }
+                    toggle = new TurnOnLightAction(upperLeftPair, lowerRightPair);
                 } else if ("off".equals(tokens[1])) {
                     String[] upperLeftPair = tokens[2].split(",");
                     String[] lowerRightPair = tokens[4].split(",");
 
-                    LightAction toggle = new TurnOffLightAction(upperLeftPair, lowerRightPair);
-                    toggle.performAction();
-
-//
-//                    boolean onOffStatus = false;
-//                    int brightnessDelta = -1;
-//                    int upperLeftX = Integer.parseInt(upperLeftPair[0]);
-//                    int upperLeftY = Integer.parseInt(upperLeftPair[1]);
-//                    int lowerRightX = Integer.parseInt(lowerRightPair[0]);
-//                    int lowerRightY = Integer.parseInt(lowerRightPair[1]);
-//                    for (int x = upperLeftX; x <= lowerRightX; x++) {
-//                        for (int y = upperLeftY; y <= lowerRightY; y++) {
-//                            isLit[x][y] = onOffStatus;
-//                            brightness[x][y] = Math.max(0, brightness[x][y] + brightnessDelta);
-//                        }
-//                    }
+                    toggle = new TurnOffLightAction(upperLeftPair, lowerRightPair);
                 } else {
                     System.out.println("Unknown command " + instruction);
                     System.exit(-1);
                 }
             }
+
+            toggle.performAction();
         }
 
         public void process(List<String> instructions) {
