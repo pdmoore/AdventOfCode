@@ -106,20 +106,20 @@ class Day06Tests {
 
     static class Grid {
 
-        boolean[][] lights;
+        boolean[][] isLit;
         int[][] brightness;
 
         public Grid() {
-            this.lights = new boolean[1000][1000];
+            this.isLit = new boolean[1000][1000];
             this.brightness = new int[1000][1000];
         }
 
         public int litCount() {
             //TODO convert to stream
             int litCount = 0;
-            for (int x = 0; x <= lights.length - 1; x++) {
-                for (int y = 0; y <= lights[0].length - 1; y++) {
-                    if (lights[x][y]) litCount++;
+            for (int x = 0; x <= isLit.length - 1; x++) {
+                for (int y = 0; y <= isLit[0].length - 1; y++) {
+                    if (isLit[x][y]) litCount++;
                 }
             }
 
@@ -146,19 +146,19 @@ class Day06Tests {
                 int lowerRightY = Integer.parseInt(lowerRightPair[1]);
                 for (int x = upperLeftX; x <= lowerRightX; x++) {
                     for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        boolean currentValue = lights[x][y];
-                        lights[x][y] = !currentValue;
+                        boolean currentValue = isLit[x][y];
+                        isLit[x][y] = !currentValue;
                         brightness[x][y] += 2;
                     }
                 }
 
             } else {
 
-                boolean lightValue = true;
+                boolean onOffStatus = true;
                 int brightnessDelta = 1;
                 if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
                     if ("off".equals(tokens[1])) {
-                        lightValue = false;
+                        onOffStatus = false;
                         brightnessDelta = -1;
                     }
                     String[] upperLeftPair = tokens[2].split(",");
@@ -170,7 +170,7 @@ class Day06Tests {
                     int lowerRightY = Integer.parseInt(lowerRightPair[1]);
                     for (int x = upperLeftX; x <= lowerRightX; x++) {
                         for (int y = upperLeftY; y <= lowerRightY; y++) {
-                            lights[x][y] = lightValue;
+                            isLit[x][y] = onOffStatus;
                             brightness[x][y] = Math.max(0, brightness[x][y] + brightnessDelta);
                         }
                     }
