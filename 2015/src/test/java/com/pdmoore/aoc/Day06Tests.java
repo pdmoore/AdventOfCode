@@ -140,18 +140,8 @@ class Day06Tests {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
 
-                int upperLeftX = Integer.parseInt(upperLeftPair[0]);
-                int upperLeftY = Integer.parseInt(upperLeftPair[1]);
-                int lowerRightX = Integer.parseInt(lowerRightPair[0]);
-                int lowerRightY = Integer.parseInt(lowerRightPair[1]);
-                for (int x = upperLeftX; x <= lowerRightX; x++) {
-                    for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        boolean currentValue = isLit[x][y];
-                        isLit[x][y] = !currentValue;
-                        brightness[x][y] += 2;
-                    }
-                }
-
+                LightAction toggle = new ToggleLightAction(upperLeftPair, lowerRightPair);
+                toggle.performAction();
             } else {
 
                 boolean onOffStatus = true;
@@ -187,6 +177,40 @@ class Day06Tests {
                     instructions) {
                 processInstruction(instruction);
             }
+        }
+
+        private class ToggleLightAction extends LightAction {
+            public ToggleLightAction(String[] upperLeftPair, String[] lowerRightPair) {
+                super(upperLeftPair, lowerRightPair);
+            }
+
+            @Override
+            public void performAction() {
+                for (int x = upperLeftX; x <= lowerRightX; x++) {
+                    for (int y = upperLeftY; y <= lowerRightY; y++) {
+                        boolean currentValue = isLit[x][y];
+                        isLit[x][y] = !currentValue;
+                        brightness[x][y] += 2;
+                    }
+                }
+
+            }
+        }
+
+        private abstract class LightAction {
+            protected final int upperLeftX;
+            protected final int upperLeftY;
+            protected final int lowerRightX;
+            protected final int lowerRightY;
+
+            public LightAction(String[] upperLeftPair, String[] lowerRightPair) {
+                upperLeftX = Integer.parseInt(upperLeftPair[0]);
+                upperLeftY = Integer.parseInt(upperLeftPair[1]);
+                lowerRightX = Integer.parseInt(lowerRightPair[0]);
+                lowerRightY = Integer.parseInt(lowerRightPair[1]);
+            }
+
+            public abstract void performAction();
         }
     }
 }
