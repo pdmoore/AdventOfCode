@@ -133,49 +133,36 @@ class Day06Tests {
         }
 
         public void processInstruction(String instruction) {
-
             String[] tokens = instruction.split(" ");
 
-            LightAction toggle = null;
+            LightAction lightAction = null;
+            // TODO factory to return action
             if ("toggle".equals(tokens[0])) {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
 
-                toggle = new ToggleLightAction(upperLeftPair, lowerRightPair);
+                lightAction = new ToggleLightAction(upperLeftPair, lowerRightPair);
             } else if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
                 String[] upperLeftPair = tokens[2].split(",");
                 String[] lowerRightPair = tokens[4].split(",");
 
                 if ("on".equals(tokens[1])) {
-                    toggle = new TurnOnLightAction(upperLeftPair, lowerRightPair);
+                    lightAction = new TurnOnLightAction(upperLeftPair, lowerRightPair);
                 } else if ("off".equals(tokens[1])) {
-                    toggle = new TurnOffLightAction(upperLeftPair, lowerRightPair);
+                    lightAction = new TurnOffLightAction(upperLeftPair, lowerRightPair);
                 }
             } else {
                 System.out.println("Unknown command " + instruction);
                 System.exit(-1);
             }
 
-            toggle.performAction();
+            lightAction.performAction();
         }
 
         public void process(List<String> instructions) {
             for (String instruction :
                     instructions) {
                 processInstruction(instruction);
-            }
-        }
-
-        private class ToggleLightAction extends LightAction {
-            public ToggleLightAction(String[] upperLeftPair, String[] lowerRightPair) {
-                super(upperLeftPair, lowerRightPair);
-            }
-
-            @Override
-            protected void actUpon(int x, int y) {
-                boolean currentValue = isLit[x][y];
-                isLit[x][y] = !currentValue;
-                brightness[x][y] += 2;
             }
         }
 
@@ -224,6 +211,18 @@ class Day06Tests {
             protected void actUpon(int x, int y) {
                 isLit[x][y] = false;
                 brightness[x][y] = Math.max(0, brightness[x][y] - 1);
+            }
+        }
+
+        private class ToggleLightAction extends LightAction {
+            public ToggleLightAction(String[] upperLeftPair, String[] lowerRightPair) {
+                super(upperLeftPair, lowerRightPair);
+            }
+
+            @Override
+            protected void actUpon(int x, int y) {
+                isLit[x][y] = !isLit[x][y];
+                brightness[x][y] += 2;
             }
         }
     }
