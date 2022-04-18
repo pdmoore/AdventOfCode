@@ -105,35 +105,38 @@ class Day06Tests {
     }
 
     static class Grid {
-
-        boolean[][] isLit;
+        public static final int GRID_SIZE = 1000;
+        int[][] isLit;
         int[][] brightness;
 
         public Grid() {
-            this.isLit = new boolean[1000][1000];
-            this.brightness = new int[1000][1000];
+            this.isLit = new int[GRID_SIZE][GRID_SIZE];
+            this.brightness = new int[GRID_SIZE][GRID_SIZE];
         }
 
         public int litCount() {
-            //TODO convert to stream
-            int litCount = 0;
-            for (int x = 0; x <= isLit.length - 1; x++) {
-                for (int y = 0; y <= isLit[0].length - 1; y++) {
-                    if (isLit[x][y]) litCount++;
-                }
-            }
-
-            return litCount;
+            return sumNonZeroGridElements(isLit);
         }
 
         public int totalBrightness() {
-            return Arrays.stream(brightness)
-                    .flatMapToInt(Arrays::stream)
-                    .reduce(0, Integer::sum);
+            return sumNonZeroGridElements(brightness);
+        }
+
+        public void process(List<String> instructions) {
+            for (String instruction :
+                    instructions) {
+                processInstruction(instruction);
+            }
         }
 
         public void processInstruction(String instruction) {
             create(instruction).performAction();
+        }
+
+        private int sumNonZeroGridElements(int[][] isLit) {
+            return Arrays.stream(isLit)
+                    .flatMapToInt(Arrays::stream)
+                    .reduce(0, Integer::sum);
         }
 
         private LightAction create(String instruction) {
@@ -157,13 +160,6 @@ class Day06Tests {
             System.out.println("Unknown command " + instruction);
             System.exit(-1);
             return null;
-        }
-
-        public void process(List<String> instructions) {
-            for (String instruction :
-                    instructions) {
-                processInstruction(instruction);
-            }
         }
 
         private abstract class LightAction {
@@ -197,7 +193,7 @@ class Day06Tests {
 
             @Override
             protected void actUpon(int x, int y) {
-                isLit[x][y] = true;
+                isLit[x][y] = 1;
                 brightness[x][y] += 1;
             }
         }
@@ -209,7 +205,7 @@ class Day06Tests {
 
             @Override
             protected void actUpon(int x, int y) {
-                isLit[x][y] = false;
+                isLit[x][y] = 0;
                 brightness[x][y] = Math.max(0, brightness[x][y] - 1);
             }
         }
@@ -221,7 +217,7 @@ class Day06Tests {
 
             @Override
             protected void actUpon(int x, int y) {
-                isLit[x][y] = !isLit[x][y]; // part 1 simply toggles on/off
+                isLit[x][y] ^= 1;      // part 1 simply toggles on/off
                 brightness[x][y] += 2;      // part 2 toggle means increase by 2
             }
         }
