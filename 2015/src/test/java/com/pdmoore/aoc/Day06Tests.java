@@ -169,7 +169,6 @@ class Day06Tests {
                     System.exit(-1);
                 }
             }
-
         }
 
         public void process(List<String> instructions) {
@@ -185,15 +184,10 @@ class Day06Tests {
             }
 
             @Override
-            public void performAction() {
-                for (int x = upperLeftX; x <= lowerRightX; x++) {
-                    for (int y = upperLeftY; y <= lowerRightY; y++) {
-                        boolean currentValue = isLit[x][y];
-                        isLit[x][y] = !currentValue;
-                        brightness[x][y] += 2;
-                    }
-                }
-
+            protected void actUpon(int x, int y) {
+                boolean currentValue = isLit[x][y];
+                isLit[x][y] = !currentValue;
+                brightness[x][y] += 2;
             }
         }
 
@@ -210,7 +204,15 @@ class Day06Tests {
                 lowerRightY = Integer.parseInt(lowerRightPair[1]);
             }
 
-            public abstract void performAction();
+            public void performAction() {
+                for (int x = upperLeftX; x <= lowerRightX; x++) {
+                    for (int y = upperLeftY; y <= lowerRightY; y++) {
+                        actUpon(x, y);
+                    }
+                }
+            }
+
+            protected abstract void actUpon(int x, int y);
         }
     }
 }
