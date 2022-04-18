@@ -133,34 +133,31 @@ class Day06Tests {
         }
 
         public void processInstruction(String instruction) {
-            LightAction lightAction = create(instruction);
-
-            lightAction.performAction();
+            create(instruction).performAction();
         }
 
         private LightAction create(String instruction) {
-            LightAction lightAction = null;
             String[] tokens = instruction.split(" ");
 
             if ("toggle".equals(tokens[0])) {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
 
-                lightAction = new ToggleLightAction(upperLeftPair, lowerRightPair);
+                return new ToggleLightAction(upperLeftPair, lowerRightPair);
             } else if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
                 String[] upperLeftPair = tokens[2].split(",");
                 String[] lowerRightPair = tokens[4].split(",");
 
                 if ("on".equals(tokens[1])) {
-                    lightAction = new TurnOnLightAction(upperLeftPair, lowerRightPair);
+                    return new TurnOnLightAction(upperLeftPair, lowerRightPair);
                 } else if ("off".equals(tokens[1])) {
-                    lightAction = new TurnOffLightAction(upperLeftPair, lowerRightPair);
+                    return new TurnOffLightAction(upperLeftPair, lowerRightPair);
                 }
             } else {
                 System.out.println("Unknown command " + instruction);
                 System.exit(-1);
             }
-            return lightAction;
+            return null;
         }
 
         public void process(List<String> instructions) {
