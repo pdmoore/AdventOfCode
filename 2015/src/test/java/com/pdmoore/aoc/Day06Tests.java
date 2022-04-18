@@ -198,7 +198,7 @@ class Day06Tests {
             @Override
             protected void actUpon(int x, int y) {
                 isLit[x][y] = true;
-                brightness[x][y] = Math.max(0, brightness[x][y] + 1);
+                brightness[x][y] += 1;
             }
         }
 
