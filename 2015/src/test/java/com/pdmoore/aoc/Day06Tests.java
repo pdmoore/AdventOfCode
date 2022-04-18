@@ -133,10 +133,15 @@ class Day06Tests {
         }
 
         public void processInstruction(String instruction) {
+            LightAction lightAction = create(instruction);
+
+            lightAction.performAction();
+        }
+
+        private LightAction create(String instruction) {
+            LightAction lightAction = null;
             String[] tokens = instruction.split(" ");
 
-            LightAction lightAction = null;
-            // TODO factory to return action
             if ("toggle".equals(tokens[0])) {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
@@ -155,8 +160,7 @@ class Day06Tests {
                 System.out.println("Unknown command " + instruction);
                 System.exit(-1);
             }
-
-            lightAction.performAction();
+            return lightAction;
         }
 
         public void process(List<String> instructions) {
