@@ -142,7 +142,6 @@ class Day06Tests {
             if ("toggle".equals(tokens[0])) {
                 String[] upperLeftPair = tokens[1].split(",");
                 String[] lowerRightPair = tokens[3].split(",");
-
                 return new ToggleLightAction(upperLeftPair, lowerRightPair);
             } else if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
                 String[] upperLeftPair = tokens[2].split(",");
@@ -153,10 +152,10 @@ class Day06Tests {
                 } else if ("off".equals(tokens[1])) {
                     return new TurnOffLightAction(upperLeftPair, lowerRightPair);
                 }
-            } else {
-                System.out.println("Unknown command " + instruction);
-                System.exit(-1);
             }
+
+            System.out.println("Unknown command " + instruction);
+            System.exit(-1);
             return null;
         }
 
