@@ -171,12 +171,7 @@ class Day06Tests {
                     for (int x = upperLeftX; x <= lowerRightX; x++) {
                         for (int y = upperLeftY; y <= lowerRightY; y++) {
                             lights[x][y] = lightValue;
-
-                            int newValue = brightness[x][y] + brightnessDelta;
-                            if (newValue < 0) {
-                                newValue = 0;
-                            }
-                            brightness[x][y] = newValue;
+                            brightness[x][y] = Math.max(0, brightness[x][y] + brightnessDelta);
                         }
                     }
                 } else {
