@@ -144,13 +144,31 @@ class Day06Tests {
                 toggle.performAction();
             } else {
 
-                boolean onOffStatus = true;
-                int brightnessDelta = 1;
-                if ("on".equals(tokens[1]) || ("off".equals(tokens[1]))) {
-                    if ("off".equals(tokens[1])) {
-                        onOffStatus = false;
-                        brightnessDelta = -1;
-                    }
+                if ("on".equals(tokens[1])) {
+
+                    String[] upperLeftPair = tokens[2].split(",");
+                    String[] lowerRightPair = tokens[4].split(",");
+
+                    LightAction toggle = new TurnOnLightAction(upperLeftPair, lowerRightPair);
+                    toggle.performAction();
+
+//                    boolean onOffStatus = true;
+//                    int brightnessDelta = 1;
+//
+//                    int upperLeftX = Integer.parseInt(upperLeftPair[0]);
+//                    int upperLeftY = Integer.parseInt(upperLeftPair[1]);
+//                    int lowerRightX = Integer.parseInt(lowerRightPair[0]);
+//                    int lowerRightY = Integer.parseInt(lowerRightPair[1]);
+//                    for (int x = upperLeftX; x <= lowerRightX; x++) {
+//                        for (int y = upperLeftY; y <= lowerRightY; y++) {
+//                            isLit[x][y] = onOffStatus;
+//                            brightness[x][y] = Math.max(0, brightness[x][y] + brightnessDelta);
+//                        }
+//                    }
+                } else if ("off".equals(tokens[1])) {
+                    boolean onOffStatus = false;
+                    int brightnessDelta = -1;
+
                     String[] upperLeftPair = tokens[2].split(",");
                     String[] lowerRightPair = tokens[4].split(",");
 
@@ -213,6 +231,18 @@ class Day06Tests {
             }
 
             protected abstract void actUpon(int x, int y);
+        }
+
+        private class TurnOnLightAction extends LightAction {
+            public TurnOnLightAction(String[] upperLeftPair, String[] lowerRightPair) {
+                super(upperLeftPair, lowerRightPair);
+            }
+
+            @Override
+            protected void actUpon(int x, int y) {
+                isLit[x][y] = true;
+                brightness[x][y] = Math.max(0, brightness[x][y] + 1);
+            }
         }
     }
 }
