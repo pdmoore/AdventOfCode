@@ -46,9 +46,18 @@ public class Day07 {
         assertEquals(65412, actual);
     }
 
+    @Test
+    void lshift() {
+        List<String> input = Arrays.asList("123 -> x", "456 -> y", "x LSHIFT 2 -> f");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("f");
+
+        assertEquals(492, actual);
+    }
+
     // LSHIFT
     // RSHIFT
-    // NOT
     // AND (2 values)
     // OR (2 values)
     // multiple passes to reduce unsolved to solved
@@ -88,16 +97,27 @@ public class Day07 {
                 String expression = unsolved.get(key);
                 String[] tokens = expression.split(" ");
 
-                //check expression type
-                // assuming NOT here
-                // Also assumes it can be solved in this pass - need to confirm solved.get returns something
-                int value = solved.get(tokens[1]);
+                if (expression.contains("NOT")) {
+                    // Also assumes it can be solved in this pass - need to confirm solved.get returns something
+                    int value = solved.get(tokens[1]);
 
-                // is this the best way to do not? it passes the examples
-                int newValue = 65535 - value;
-                solved.put(key, newValue);
+                    // is this the best way to do not? it passes the examples
+                    // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
+                    int newValue = 65535 - value;
+                    solved.put(key, newValue);
 
-                unsolved.remove(key);
+                    unsolved.remove(key);
+                } else if (expression.contains("LSHIFT")) {
+                    String[] operands = expression.split(" LSHIFT ");
+                    int lhs = solved.get(operands[0]);
+                    int shiftBy = Integer.parseInt(operands[1]);
+
+                    int newValue = lhs << shiftBy;
+                    solved.put(key, newValue);
+
+                    unsolved.remove(key);
+                }
+
             }
 
 
