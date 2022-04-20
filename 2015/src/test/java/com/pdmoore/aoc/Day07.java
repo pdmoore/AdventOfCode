@@ -1,9 +1,7 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 
 import java.util.*;
 
@@ -96,7 +94,6 @@ public class Day07 {
     }
 
     @Test
-    @Disabled
     void part1_simpleCircuitExample() {
         Day7Thing sut = new Day7Thing(simpleCircuitInput());
 
@@ -253,14 +250,14 @@ System.out.println("Remaining unsolved " + keys.size());
                         dumpUnsolved();
                         System.exit(-1);
                     } else {
-                        System.out.println("pass resolved:");
-                        dumpSolved();
-                        if (solved.containsKey("a")) {
-                            return;
-                        } else if (!unsolved.containsKey("a")) {
-                            System.out.println("something is wildly wrong");
-                            System.exit(-1);
-                        }
+//                        System.out.println("pass resolved:");
+//                        dumpSolved();
+//                        if (solved.containsKey("a")) {
+//                            return;
+//                        } else if (!unsolved.containsKey("a")) {
+//                            System.out.println("something is wildly wrong");
+//                            System.exit(-1);
+//                        }
                     }
                 }
             }
