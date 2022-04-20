@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,7 +84,6 @@ public class Day07 {
         assertEquals(507, actual);
     }
 
-    // TODO - oops - looks like I'm changing the keyset of unsolved as I go - need to figure that out
     @Test
     void part1_simpleCircuitExample() {
         Day7Thing sut = new Day7Thing(simpleCircuitInput());
@@ -135,10 +131,10 @@ public class Day07 {
 
         private void solveUnsolved() {
 
-            // need to wrap in a while...do until all are solved
+            Set<String> keys = new HashSet<>(unsolved.keySet());
 
             for (String key:
-                    unsolved.keySet()) {
+                    keys) {
 
                 String expression = unsolved.get(key);
                 String[] tokens = expression.split(" ");
