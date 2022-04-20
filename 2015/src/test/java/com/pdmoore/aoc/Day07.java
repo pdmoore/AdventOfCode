@@ -48,7 +48,7 @@ public class Day07 {
 
     @Test
     void lshift() {
-        List<String> input = Arrays.asList("123 -> x", "456 -> y", "x LSHIFT 2 -> f");
+        List<String> input = Arrays.asList("123 -> x", "x LSHIFT 2 -> f");
         Day7Thing sut = new Day7Thing(input);
 
         int actual = sut.valueOf("f");
@@ -56,8 +56,16 @@ public class Day07 {
         assertEquals(492, actual);
     }
 
-    // LSHIFT
-    // RSHIFT
+    @Test
+    void rshift() {
+        List<String> input = Arrays.asList("456 -> y", "y RSHIFT 2 -> g");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("g");
+
+        assertEquals(114, actual);
+    }
+
     // AND (2 values)
     // OR (2 values)
     // multiple passes to reduce unsolved to solved
@@ -112,10 +120,23 @@ public class Day07 {
                     int lhs = solved.get(operands[0]);
                     int shiftBy = Integer.parseInt(operands[1]);
 
-                    int newValue = lhs << shiftBy;
-                    solved.put(key, newValue);
+                    int unsignedShiftResult = lhs << shiftBy;
+                    solved.put(key, unsignedShiftResult);
 
                     unsolved.remove(key);
+                } else if (expression.contains("RSHIFT")) {
+                    String[] operands = expression.split(" RSHIFT ");
+                    int lhs = solved.get(operands[0]);
+                    int shiftBy = Integer.parseInt(operands[1]);
+
+                    int unsignedShiftResult = lhs >>> shiftBy;
+                    solved.put(key, unsignedShiftResult);
+
+                    unsolved.remove(key);
+                }
+                else {
+                    System.out.println("Uknown expression: " + expression);
+                    System.exit(-1);
                 }
 
             }
