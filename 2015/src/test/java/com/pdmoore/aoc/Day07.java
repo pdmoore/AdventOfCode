@@ -130,6 +130,16 @@ public class Day07 {
         assertEquals(3176, actual);
     }
 
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day07_part2");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("a");
+
+        assertEquals(14710, actual);
+    }
+
     private class Day7Thing {
         Map<String, Integer> solved = new HashMap<>();
         Map<String, String> unsolved = new HashMap<>();
