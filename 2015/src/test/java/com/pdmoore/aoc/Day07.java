@@ -74,6 +74,16 @@ public class Day07 {
     }
 
     @Test
+    void and_lhs_is_a_number() {
+        List<String> input = Arrays.asList("456 -> y", "1 AND y -> d");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("d");
+
+        assertEquals(0, actual);
+    }
+
+    @Test
     void or() {
         List<String> input = Arrays.asList("123 -> x", "456 -> y", "x OR y -> e");
         Day7Thing sut = new Day7Thing(input);
@@ -120,8 +130,6 @@ public class Day07 {
 
         assertEquals(999, actual);
     }
-    // multiple passes to reduce unsolved to solved
-
 
     private class Day7Thing {
         Map<String, Integer> solved = new HashMap<>();
@@ -151,105 +159,102 @@ public class Day07 {
             }
         }
 
-        private boolean isANumber(String couldBeAnotherWire) {
-            return couldBeAnotherWire.matches("[0-9]+$");
-        }
-
         private void solveUnsolved() {
             while (!unsolved.isEmpty()) {
                 int numKeysBefore = unsolved.keySet().size();
 
                 Set<String> keys = new HashSet<>(unsolved.keySet());
-System.out.println("Remaining unsolved " + keys.size());
+                System.out.println("Remaining unsolved " + keys.size());
                 for (String key :
                         keys) {
 
                     String expression = unsolved.get(key);
+                    String[] tokens = expression.split(" ");
 
-                    if (!expression.contains(" ")) {
-                        // simple subsitition
+                    if (tokens.length == 1) {
                         if (hasBeenEvaluated(expression)) {
                             solved.put(key, solved.get(expression));
                             unsolved.remove(key);
                         }
-                    } else {
+                    } else if (expression.contains("NOT")) {
+                        if (hasBeenEvaluated(tokens[1])) {
 
+                            int value = solved.get(tokens[1]);
 
-                        String[] tokens = expression.split(" ");
+                            // is this the best way to do not? it passes the examples
+                            // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
+                            int newValue = 65535 - value;
+                            solved.put(key, newValue);
 
-
-                        if (expression.contains("NOT")) {
-                            if (hasBeenEvaluated(tokens[1])) {
-
-                                int value = solved.get(tokens[1]);
-
-                                // is this the best way to do not? it passes the examples
-                                // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
-                                int newValue = 65535 - value;
-                                solved.put(key, newValue);
-
-                                unsolved.remove(key);
-                            }
-                        } else if (expression.contains("LSHIFT")) {
-                            String[] operands = expression.split(" LSHIFT ");
-                            if (hasBeenEvaluated(operands[0])) {
-                                int lhs = solved.get(operands[0]);
-                                int shiftBy = Integer.parseInt(operands[1]);
-
-                                int unsignedShiftResult = lhs << shiftBy;
-                                solved.put(key, unsignedShiftResult);
-
-                                unsolved.remove(key);
-                            }
-                        } else if (expression.contains("RSHIFT")) {
-                            String[] operands = expression.split(" RSHIFT ");
-                            if (hasBeenEvaluated(operands[0])) {
-
-                                int lhs = solved.get(operands[0]);
-                                int shiftBy = Integer.parseInt(operands[1]);
-
-                                int unsignedShiftResult = lhs >>> shiftBy;
-                                solved.put(key, unsignedShiftResult);
-
-                                unsolved.remove(key);
-                            }
-                        } else if (expression.contains("AND")) {
-                            String[] operands = expression.split(" AND ");
-                            if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
-                                int lhs = solved.get(operands[0]);
-                                int rhs = solved.get(operands[1]);
-
-                                int andedValue = lhs & rhs;
-                                solved.put(key, andedValue);
-
-                                unsolved.remove(key);
-                            }
-                        } else if (expression.contains("OR")) {
-                            String[] operands = expression.split(" OR ");
-
-                            if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
-
-                                int lhs = solved.get(operands[0]);
-                                int rhs = solved.get(operands[1]);
-
-                                int oredValue = lhs | rhs;
-                                solved.put(key, oredValue);
-
-                                unsolved.remove(key);
-                            }
-                        } else {
-                            System.out.println("Unknown expression: " + expression);
-                            System.exit(-1);
+                            unsolved.remove(key);
                         }
+                    } else if (expression.contains("LSHIFT")) {
+                        String[] operands = expression.split(" LSHIFT ");
+                        if (hasBeenEvaluated(operands[0])) {
+                            int lhs = solved.get(operands[0]);
+                            int shiftBy = Integer.parseInt(operands[1]);
 
+                            int unsignedShiftResult = lhs << shiftBy;
+                            solved.put(key, unsignedShiftResult);
+
+                            unsolved.remove(key);
+                        }
+                    } else if (expression.contains("RSHIFT")) {
+                        String[] operands = expression.split(" RSHIFT ");
+                        if (hasBeenEvaluated(operands[0])) {
+
+                            int lhs = solved.get(operands[0]);
+                            int shiftBy = Integer.parseInt(operands[1]);
+
+                            int unsignedShiftResult = lhs >>> shiftBy;
+                            solved.put(key, unsignedShiftResult);
+
+                            unsolved.remove(key);
+                        }
+                    } else if (expression.contains("AND")) {
+                        String[] operands = expression.split(" AND ");
+                        if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
+
+                            int lhs;
+                            if (isANumber(operands[0])) {
+                                lhs = Integer.parseInt(operands[0]);
+                            } else {
+                                lhs = solved.get(operands[0]);
+                            }
+
+                            int rhs = solved.get(operands[1]);
+
+                            int andedValue = lhs & rhs;
+                            solved.put(key, andedValue);
+
+                            unsolved.remove(key);
+                        }
+                    } else if (expression.contains("OR")) {
+                        String[] operands = expression.split(" OR ");
+
+                        if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
+
+                            int lhs = solved.get(operands[0]);
+                            int rhs = solved.get(operands[1]);
+
+                            int oredValue = lhs | rhs;
+                            solved.put(key, oredValue);
+
+                            unsolved.remove(key);
+                        }
+                    } else {
+                        System.out.println("Unknown expression: " + expression);
+                        System.exit(-1);
                     }
 
-                    if (numKeysBefore == unsolved.keySet().size()) {
-                        System.out.println("Got stuck - expressions unsolved: " + numKeysBefore);
-                        dumpSolved();
-                        dumpUnsolved();
-                        System.exit(-1);
-                    } else {
+                }
+
+                if (numKeysBefore == unsolved.keySet().size()) {
+                    System.out.println("Got stuck - expressions unsolved: " + numKeysBefore);
+                    dumpSolved();
+                    dumpUnsolved();
+                    System.exit(-1);
+                } else {
 //                        System.out.println("pass resolved:");
 //                        dumpSolved();
 //                        if (solved.containsKey("a")) {
@@ -258,27 +263,31 @@ System.out.println("Remaining unsolved " + keys.size());
 //                            System.out.println("something is wildly wrong");
 //                            System.exit(-1);
 //                        }
-                    }
                 }
+
             }
         }
 
         private void dumpSolved() {
-            for (String key:
+            for (String key :
                     solved.keySet()) {
                 System.out.println(key + ": " + solved.get(key));
             }
         }
 
         private void dumpUnsolved() {
-            for (String key:
-                unsolved.keySet()) {
+            for (String key :
+                    unsolved.keySet()) {
                 System.out.println(unsolved.get(key) + " -> " + key);
             }
         }
 
+        private boolean isANumber(String couldBeAnotherWire) {
+            return couldBeAnotherWire.matches("[0-9]+$");
+        }
+
         private boolean hasBeenEvaluated(String key) {
-            return solved.containsKey(key);
+            return isANumber(key) || solved.containsKey(key);
         }
 
         public int valueOf(String key) {
