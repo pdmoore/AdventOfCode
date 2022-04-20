@@ -68,7 +68,6 @@ public class Day07 {
 
     @Test
     void and() {
-
         List<String> input = Arrays.asList("123 -> x", "456 -> y", "x AND y -> d");
         Day7Thing sut = new Day7Thing(input);
 
@@ -77,7 +76,17 @@ public class Day07 {
         assertEquals(72, actual);
     }
 
-    // OR (2 values)
+    @Test
+    void or() {
+        List<String> input = Arrays.asList("123 -> x", "456 -> y", "x OR y -> e");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("e");
+
+        assertEquals(507, actual);
+    }
+
+
     // multiple passes to reduce unsolved to solved
 
 
@@ -107,7 +116,7 @@ public class Day07 {
 
         private void solveUnsolved() {
 
-            // might need to wrap in a while...do until all are solved
+            // need to wrap in a while...do until all are solved
 
             for (String key:
                     unsolved.keySet()) {
@@ -146,12 +155,21 @@ public class Day07 {
                 } else if (expression.contains("AND")) {
                     String[] operands = expression.split(" AND ");
 
-                    //x AND y -> d
                     int lhs = solved.get(operands[0]);
                     int rhs = solved.get(operands[1]);
 
                     int andedValue = lhs & rhs;
                     solved.put(key, andedValue);
+
+                    unsolved.remove(key);
+                } else if (expression.contains("OR")) {
+                    String[] operands = expression.split(" OR ");
+
+                    int lhs = solved.get(operands[0]);
+                    int rhs = solved.get(operands[1]);
+
+                    int oredValue = lhs | rhs;
+                    solved.put(key, oredValue);
 
                     unsolved.remove(key);
                 }
