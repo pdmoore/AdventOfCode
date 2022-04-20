@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -128,7 +127,7 @@ public class Day07 {
 
         int actual = sut.valueOf("a");
 
-        assertEquals(999, actual);
+        assertEquals(3176, actual);
     }
 
     private class Day7Thing {
@@ -164,7 +163,6 @@ public class Day07 {
                 int numKeysBefore = unsolved.keySet().size();
 
                 Set<String> keys = new HashSet<>(unsolved.keySet());
-                System.out.println("Remaining unsolved " + keys.size());
                 for (String key :
                         keys) {
 
@@ -254,15 +252,6 @@ public class Day07 {
                     dumpSolved();
                     dumpUnsolved();
                     System.exit(-1);
-                } else {
-//                        System.out.println("pass resolved:");
-//                        dumpSolved();
-//                        if (solved.containsKey("a")) {
-//                            return;
-//                        } else if (!unsolved.containsKey("a")) {
-//                            System.out.println("something is wildly wrong");
-//                            System.exit(-1);
-//                        }
                 }
 
             }
