@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day07 {
@@ -86,6 +87,24 @@ public class Day07 {
         assertEquals(507, actual);
     }
 
+    // TODO - oops - looks like I'm changing the keyset of unsolved as I go - need to figure that out
+    @Test
+    void part1_simpleCircuitExample() {
+        Day7Thing sut = new Day7Thing(simpleCircuitInput());
+
+        int actual = sut.valueOf("e");
+
+        assertAll(
+                () -> assertEquals(72, sut.valueOf("d")),
+                () -> assertEquals(507, sut.valueOf("e")),
+                () -> assertEquals(492, sut.valueOf("f")),
+                () -> assertEquals(114, sut.valueOf("g")),
+                () -> assertEquals(65412, sut.valueOf("h")),
+                () -> assertEquals(65079, sut.valueOf("i")),
+                () -> assertEquals(123, sut.valueOf("x")),
+                () -> assertEquals(456, sut.valueOf("y"))
+        );
+    }
 
     // multiple passes to reduce unsolved to solved
 
@@ -124,8 +143,9 @@ public class Day07 {
                 String expression = unsolved.get(key);
                 String[] tokens = expression.split(" ");
 
+                //TODO - need to confirm the lhs/rhs is in solved - if it is not, just skip this circuit this pass
+
                 if (expression.contains("NOT")) {
-                    // Also assumes it can be solved in this pass - need to confirm solved.get returns something
                     int value = solved.get(tokens[1]);
 
                     // is this the best way to do not? it passes the examples
@@ -179,8 +199,6 @@ public class Day07 {
                 }
 
             }
-
-
         }
 
         public int valueOf(String key) {
