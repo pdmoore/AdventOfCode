@@ -32,7 +32,7 @@ public class Day07 {
         Day7Thing sut = new Day7Thing(input);
 
         int actual = sut.valueOf("x");
-        
+
         assertEquals(123, actual);
     }
 
@@ -80,20 +80,27 @@ public class Day07 {
 
         private void solveUnsolved() {
 
-            if (unsolved.isEmpty()) return;
+            // might need to wrap in a while...do until all are solved
 
-            String expression = unsolved.get("h");
-            String[] tokens = expression.split(" ");
+            for (String key:
+                    unsolved.keySet()) {
 
-            //check expression type
-            // assuming NOT here
-            int value = solved.get(tokens[1]);
+                String expression = unsolved.get(key);
+                String[] tokens = expression.split(" ");
 
-            int newValue = 65535 - value;
-            solved.put("h", newValue);
+                //check expression type
+                // assuming NOT here
+                // Also assumes it can be solved in this pass - need to confirm solved.get returns something
+                int value = solved.get(tokens[1]);
+
+                // is this the best way to do not? it passes the examples
+                int newValue = 65535 - value;
+                solved.put(key, newValue);
+
+                unsolved.remove(key);
+            }
 
 
-            unsolved.remove("h");
         }
 
         public int valueOf(String key) {
