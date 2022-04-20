@@ -66,7 +66,17 @@ public class Day07 {
         assertEquals(114, actual);
     }
 
-    // AND (2 values)
+    @Test
+    void and() {
+
+        List<String> input = Arrays.asList("123 -> x", "456 -> y", "x AND y -> d");
+        Day7Thing sut = new Day7Thing(input);
+
+        int actual = sut.valueOf("d");
+
+        assertEquals(72, actual);
+    }
+
     // OR (2 values)
     // multiple passes to reduce unsolved to solved
 
@@ -131,6 +141,17 @@ public class Day07 {
 
                     int unsignedShiftResult = lhs >>> shiftBy;
                     solved.put(key, unsignedShiftResult);
+
+                    unsolved.remove(key);
+                } else if (expression.contains("AND")) {
+                    String[] operands = expression.split(" AND ");
+
+                    //x AND y -> d
+                    int lhs = solved.get(operands[0]);
+                    int rhs = solved.get(operands[1]);
+
+                    int andedValue = lhs & rhs;
+                    solved.put(key, andedValue);
 
                     unsolved.remove(key);
                 }
