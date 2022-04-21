@@ -25,7 +25,7 @@ public class Day07 {
     @Test
     void signalToWire() {
         List<String> input = Arrays.asList("123 -> x");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("x");
 
@@ -35,7 +35,7 @@ public class Day07 {
     @Test
     void not() {
         List<String> input = Arrays.asList("123 -> x", "NOT x -> h");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("h");
 
@@ -45,7 +45,7 @@ public class Day07 {
     @Test
     void lshift() {
         List<String> input = Arrays.asList("123 -> x", "x LSHIFT 2 -> f");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("f");
 
@@ -55,7 +55,7 @@ public class Day07 {
     @Test
     void rshift() {
         List<String> input = Arrays.asList("456 -> y", "y RSHIFT 2 -> g");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("g");
 
@@ -65,7 +65,7 @@ public class Day07 {
     @Test
     void and() {
         List<String> input = Arrays.asList("123 -> x", "456 -> y", "x AND y -> d");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("d");
 
@@ -75,7 +75,7 @@ public class Day07 {
     @Test
     void and_lhs_is_a_number() {
         List<String> input = Arrays.asList("456 -> y", "1 AND y -> d");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("d");
 
@@ -85,7 +85,7 @@ public class Day07 {
     @Test
     void or() {
         List<String> input = Arrays.asList("123 -> x", "456 -> y", "x OR y -> e");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("e");
 
@@ -95,7 +95,7 @@ public class Day07 {
     @Test
     void simpleSubstition() {
         List<String> input = Arrays.asList("lx -> a", "456 -> lx");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("a");
 
@@ -104,7 +104,7 @@ public class Day07 {
 
     @Test
     void part1_simpleCircuitExample() {
-        Day7Thing sut = new Day7Thing(simpleCircuitInput());
+        CircuitEmulator sut = new CircuitEmulator(simpleCircuitInput());
 
         int actual = sut.valueOf("e");
 
@@ -123,7 +123,7 @@ public class Day07 {
     @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day07");
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("a");
 
@@ -132,22 +132,24 @@ public class Day07 {
 
     @Test
     void part2_solution() {
+        // Now, take the signal you got on wire a from Part 1, override wire b to that signal, and reset the other
+        // wires (including wire a).
         List<String> input = PuzzleInput.asStringListFrom("data/day07");
         input.remove("44430 -> b");
         input.add("3176 -> b");
 
-        Day7Thing sut = new Day7Thing(input);
+        CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("a");
 
         assertEquals(14710, actual);
     }
 
-    private class Day7Thing {
+    private class CircuitEmulator {
         Map<String, Integer> solved = new HashMap<>();
         Map<String, String> unsolved = new HashMap<>();
 
-        public Day7Thing(List<String> input) {
+        public CircuitEmulator(List<String> input) {
             for (String inputLine :
                     input) {
                 processInputLine(inputLine);
@@ -159,13 +161,9 @@ public class Day07 {
         public void processInputLine(String input) {
             String[] tokens = input.split(" -> ");
 
-            if (!tokens[0].contains(" ")) {
-                if (isANumber(tokens[0])) {
-                    int value = Integer.parseInt(tokens[0]);
-                    solved.put(tokens[1], value);
-                } else {
-                    unsolved.put(tokens[1], tokens[0]);
-                }
+            if (isANumber(tokens[0])) {
+                int value = Integer.parseInt(tokens[0]);
+                solved.put(tokens[1], value);
             } else {
                 unsolved.put(tokens[1], tokens[0]);
             }
@@ -284,8 +282,8 @@ public class Day07 {
             }
         }
 
-        private boolean isANumber(String couldBeAnotherWire) {
-            return couldBeAnotherWire.matches("[0-9]+$");
+        private boolean isANumber(String expressionElement) {
+            return !expressionElement.contains(" ") && expressionElement.matches("[0-9]+$");
         }
 
         private boolean hasBeenEvaluated(String key) {
