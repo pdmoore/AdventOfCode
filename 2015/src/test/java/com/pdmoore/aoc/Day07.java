@@ -132,7 +132,10 @@ public class Day07 {
 
     @Test
     void part2_solution() {
-        List<String> input = PuzzleInput.asStringListFrom("data/day07_part2");
+        List<String> input = PuzzleInput.asStringListFrom("data/day07");
+        input.remove("44430 -> b");
+        input.add("3176 -> b");
+
         Day7Thing sut = new Day7Thing(input);
 
         int actual = sut.valueOf("a");
