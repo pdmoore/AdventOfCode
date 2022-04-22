@@ -7,7 +7,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day07 {
+public class Day07Tests {
 
     List<String> simpleCircuitInput() {
         return Arrays.asList(
