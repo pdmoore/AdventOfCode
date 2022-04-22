@@ -156,12 +156,13 @@ public class Day07 {
 
         public void processInputLine(String input) {
             String[] tokens = input.split(" -> ");
+            String wire = tokens[1];
+            String signal = tokens[0];
 
-            if (isANumber(tokens[0])) {
-                int value = Integer.parseInt(tokens[0]);
-                solved.put(tokens[1], value);
+            if (isANumber(signal)) {
+                solved.put(wire, Integer.parseInt(signal));
             } else {
-                unsolved.put(tokens[1], tokens[0]);
+                unsolved.put(wire, signal);
             }
         }
 
