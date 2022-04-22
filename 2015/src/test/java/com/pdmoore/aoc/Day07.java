@@ -176,83 +176,87 @@ public class Day07 {
                     String signal = unsolved.get(key);
                     String[] tokens = signal.split(" ");
 
-                    if (tokens.length == 1) {
-                        if (isASpecificValue(signal)) {
-                            solved.put(key, solved.get(signal));
-                            unsolved.remove(key);
-                        }
-                    } else if (signal.contains("NOT")) {
-                        if (isASpecificValue(tokens[1])) {
-
-                            // is this the best way to do not? it passes the examples
-                            // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
-                            int bitwiseComplement = 65535 - solved.get(tokens[1]);
-                            solved.put(key, bitwiseComplement);
-
-                            unsolved.remove(key);
-                        }
-                    } else if (signal.contains("LSHIFT")) {
-                        // TODO shifts are the same except for the operation
-                        // combine them
-                        // use a regex to ignore the L|R that starts the SHIFT
-                        String[] operands = signal.split(" LSHIFT ");
-                        if (isASpecificValue(operands[0])) {
-                            int lhs = solved.get(operands[0]);
-                            int shiftBy = Integer.parseInt(operands[1]);
-
-                            int unsignedShiftResult = lhs << shiftBy;
-                            solved.put(key, unsignedShiftResult);
-
-                            unsolved.remove(key);
-                        }
-                    } else if (signal.contains("RSHIFT")) {
-                        String[] operands = signal.split(" RSHIFT ");
-                        if (isASpecificValue(operands[0])) {
-
-                            int lhs = solved.get(operands[0]);
-                            int shiftBy = Integer.parseInt(operands[1]);
-
-                            int unsignedShiftResult = lhs >>> shiftBy;
-                            solved.put(key, unsignedShiftResult);
-
-                            unsolved.remove(key);
-                        }
-                    } else if (signal.contains("AND")) {
-                        String[] operands = signal.split(" AND ");
-                        if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
-
-                            int lhs;
-                            if (isANumber(operands[0])) {
-                                lhs = Integer.parseInt(operands[0]);
-                            } else {
-                                lhs = solved.get(operands[0]);
-                            }
-
-                            int rhs = solved.get(operands[1]);
-
-                            int andedValue = lhs & rhs;
-                            solved.put(key, andedValue);
-
-                            unsolved.remove(key);
-                        }
-                    } else if (signal.contains("OR")) {
-                        String[] operands = signal.split(" OR ");
-
-                        if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
-
-                            int lhs = solved.get(operands[0]);
-                            int rhs = solved.get(operands[1]);
-
-                            int oredValue = lhs | rhs;
-                            solved.put(key, oredValue);
-
-                            unsolved.remove(key);
-                        }
-                    } else {
-                        System.out.println("Unknown expression: " + signal);
-                        System.exit(-1);
-                    }
+                    solveIfPossible(key, signal, tokens);
                 }
+            }
+        }
+
+        private void solveIfPossible(String key, String signal, String[] tokens) {
+            if (tokens.length == 1) {
+                if (isASpecificValue(signal)) {
+                    solved.put(key, solved.get(signal));
+                    unsolved.remove(key);
+                }
+            } else if (signal.contains("NOT")) {
+                if (isASpecificValue(tokens[1])) {
+
+                    // is this the best way to do not? it passes the examples
+                    // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
+                    int bitwiseComplement = 65535 - solved.get(tokens[1]);
+                    solved.put(key, bitwiseComplement);
+
+                    unsolved.remove(key);
+                }
+            } else if (signal.contains("LSHIFT")) {
+                // TODO shifts are the same except for the operation
+                // combine them
+                // use a regex to ignore the L|R that starts the SHIFT
+                String[] operands = signal.split(" LSHIFT ");
+                if (isASpecificValue(operands[0])) {
+                    int lhs = solved.get(operands[0]);
+                    int shiftBy = Integer.parseInt(operands[1]);
+
+                    int unsignedShiftResult = lhs << shiftBy;
+                    solved.put(key, unsignedShiftResult);
+
+                    unsolved.remove(key);
+                }
+            } else if (signal.contains("RSHIFT")) {
+                String[] operands = signal.split(" RSHIFT ");
+                if (isASpecificValue(operands[0])) {
+
+                    int lhs = solved.get(operands[0]);
+                    int shiftBy = Integer.parseInt(operands[1]);
+
+                    int unsignedShiftResult = lhs >>> shiftBy;
+                    solved.put(key, unsignedShiftResult);
+
+                    unsolved.remove(key);
+                }
+            } else if (signal.contains("AND")) {
+                String[] operands = signal.split(" AND ");
+                if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
+
+                    int lhs;
+                    if (isANumber(operands[0])) {
+                        lhs = Integer.parseInt(operands[0]);
+                    } else {
+                        lhs = solved.get(operands[0]);
+                    }
+
+                    int rhs = solved.get(operands[1]);
+
+                    int andedValue = lhs & rhs;
+                    solved.put(key, andedValue);
+
+                    unsolved.remove(key);
+                }
+            } else if (signal.contains("OR")) {
+                String[] operands = signal.split(" OR ");
+
+                if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
+
+                    int lhs = solved.get(operands[0]);
+                    int rhs = solved.get(operands[1]);
+
+                    int oredValue = lhs | rhs;
+                    solved.put(key, oredValue);
+
+                    unsolved.remove(key);
+                }
+            } else {
+                System.out.println("Unknown expression: " + signal);
+                System.exit(-1);
             }
         }
 
