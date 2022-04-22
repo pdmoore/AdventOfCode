@@ -172,14 +172,15 @@ public class Day07Tests {
                         unsolvedWires) {
 
                     String signal = unsolved.get(key);
-                    String[] tokens = signal.split(" ");
 
-                    solveIfPossible(key, signal, tokens);
+                    solveIfPossible(key, signal);
                 }
             }
         }
 
-        private void solveIfPossible(String key, String signal, String[] tokens) {
+        private void solveIfPossible(String key, String signal) {
+            String[] tokens = signal.split(" ");
+
             if (tokens.length == 1) {
                 if (isASpecificValue(signal)) {
                     solved.put(key, solved.get(signal));
