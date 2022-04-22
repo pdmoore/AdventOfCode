@@ -257,17 +257,11 @@ public class Day07 {
         }
 
         private void dumpSolved() {
-            for (String key :
-                    solved.keySet()) {
-                System.out.println(key + ": " + solved.get(key));
-            }
+            solved.keySet().forEach(key -> System.out.println(key + ": " + solved.get(key)));
         }
 
         private void dumpUnsolved() {
-            for (String key :
-                    unsolved.keySet()) {
-                System.out.println(unsolved.get(key) + " -> " + key);
-            }
+            unsolved.keySet().forEach(key -> System.out.println(key + ": " + unsolved.get(key)));
         }
 
         private boolean isANumber(String expressionElement) {
