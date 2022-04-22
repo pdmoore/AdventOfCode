@@ -192,6 +192,9 @@ public class Day07 {
                             unsolved.remove(key);
                         }
                     } else if (signal.contains("LSHIFT")) {
+                        // TODO shifts are the same except for the operation
+                        // combine them
+                        // use a regex to ignore the L|R that starts the SHIFT
                         String[] operands = signal.split(" LSHIFT ");
                         if (isASpecificValue(operands[0])) {
                             int lhs = solved.get(operands[0]);
