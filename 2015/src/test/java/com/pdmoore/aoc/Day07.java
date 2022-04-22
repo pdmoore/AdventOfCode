@@ -168,35 +168,32 @@ public class Day07 {
 
         private void solveUnsolved() {
             while (!unsolved.isEmpty()) {
-                int numKeysBefore = unsolved.keySet().size();
 
-                Set<String> keys = new HashSet<>(unsolved.keySet());
+                Set<String> unsolvedWires = new HashSet<>(unsolved.keySet());
                 for (String key :
-                        keys) {
+                        unsolvedWires) {
 
-                    String expression = unsolved.get(key);
-                    String[] tokens = expression.split(" ");
+                    String signal = unsolved.get(key);
+                    String[] tokens = signal.split(" ");
 
                     if (tokens.length == 1) {
-                        if (hasBeenEvaluated(expression)) {
-                            solved.put(key, solved.get(expression));
+                        if (isASpecificValue(signal)) {
+                            solved.put(key, solved.get(signal));
                             unsolved.remove(key);
                         }
-                    } else if (expression.contains("NOT")) {
-                        if (hasBeenEvaluated(tokens[1])) {
-
-                            int value = solved.get(tokens[1]);
+                    } else if (signal.contains("NOT")) {
+                        if (isASpecificValue(tokens[1])) {
 
                             // is this the best way to do not? it passes the examples
                             // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
-                            int newValue = 65535 - value;
-                            solved.put(key, newValue);
+                            int bitwiseComplement = 65535 - solved.get(tokens[1]);
+                            solved.put(key, bitwiseComplement);
 
                             unsolved.remove(key);
                         }
-                    } else if (expression.contains("LSHIFT")) {
-                        String[] operands = expression.split(" LSHIFT ");
-                        if (hasBeenEvaluated(operands[0])) {
+                    } else if (signal.contains("LSHIFT")) {
+                        String[] operands = signal.split(" LSHIFT ");
+                        if (isASpecificValue(operands[0])) {
                             int lhs = solved.get(operands[0]);
                             int shiftBy = Integer.parseInt(operands[1]);
 
@@ -205,9 +202,9 @@ public class Day07 {
 
                             unsolved.remove(key);
                         }
-                    } else if (expression.contains("RSHIFT")) {
-                        String[] operands = expression.split(" RSHIFT ");
-                        if (hasBeenEvaluated(operands[0])) {
+                    } else if (signal.contains("RSHIFT")) {
+                        String[] operands = signal.split(" RSHIFT ");
+                        if (isASpecificValue(operands[0])) {
 
                             int lhs = solved.get(operands[0]);
                             int shiftBy = Integer.parseInt(operands[1]);
@@ -217,9 +214,9 @@ public class Day07 {
 
                             unsolved.remove(key);
                         }
-                    } else if (expression.contains("AND")) {
-                        String[] operands = expression.split(" AND ");
-                        if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
+                    } else if (signal.contains("AND")) {
+                        String[] operands = signal.split(" AND ");
+                        if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
 
                             int lhs;
                             if (isANumber(operands[0])) {
@@ -235,10 +232,10 @@ public class Day07 {
 
                             unsolved.remove(key);
                         }
-                    } else if (expression.contains("OR")) {
-                        String[] operands = expression.split(" OR ");
+                    } else if (signal.contains("OR")) {
+                        String[] operands = signal.split(" OR ");
 
-                        if (hasBeenEvaluated(operands[0]) && hasBeenEvaluated(operands[1])) {
+                        if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
 
                             int lhs = solved.get(operands[0]);
                             int rhs = solved.get(operands[1]);
@@ -249,16 +246,9 @@ public class Day07 {
                             unsolved.remove(key);
                         }
                     } else {
-                        System.out.println("Unknown expression: " + expression);
+                        System.out.println("Unknown expression: " + signal);
                         System.exit(-1);
                     }
-                }
-
-                if (numKeysBefore == unsolved.keySet().size()) {
-                    System.out.println("Got stuck - expressions unsolved: " + numKeysBefore);
-                    dumpSolved();
-                    dumpUnsolved();
-                    System.exit(-1);
                 }
             }
         }
@@ -281,7 +271,7 @@ public class Day07 {
             return !expressionElement.contains(" ") && expressionElement.matches("[0-9]+$");
         }
 
-        private boolean hasBeenEvaluated(String key) {
+        private boolean isASpecificValue(String key) {
             return isANumber(key) || solved.containsKey(key);
         }
 
