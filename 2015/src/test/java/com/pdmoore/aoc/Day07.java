@@ -150,11 +150,7 @@ public class Day07 {
         Map<String, String> unsolved = new HashMap<>();
 
         public CircuitEmulator(List<String> input) {
-            for (String inputLine :
-                    input) {
-                processInputLine(inputLine);
-            }
-
+            input.stream().forEach(this::processInputLine);
             solveUnsolved();
         }
 
@@ -255,7 +251,6 @@ public class Day07 {
                         System.out.println("Unknown expression: " + expression);
                         System.exit(-1);
                     }
-
                 }
 
                 if (numKeysBefore == unsolved.keySet().size()) {
@@ -264,7 +259,6 @@ public class Day07 {
                     dumpUnsolved();
                     System.exit(-1);
                 }
-
             }
         }
 
