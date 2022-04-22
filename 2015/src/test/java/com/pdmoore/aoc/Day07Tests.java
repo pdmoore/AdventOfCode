@@ -148,7 +148,7 @@ public class Day07Tests {
         Map<String, String> unsolved = new HashMap<>();
 
         public CircuitEmulator(List<String> input) {
-            input.stream().forEach(this::processInputLine);
+            input.forEach(this::processInputLine);
             solveUnsolved();
         }
 
