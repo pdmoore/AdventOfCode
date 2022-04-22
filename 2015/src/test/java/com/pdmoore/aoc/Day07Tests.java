@@ -166,25 +166,20 @@ public class Day07Tests {
 
         private void solveUnsolved() {
             while (!unsolved.isEmpty()) {
-
                 Set<String> unsolvedWires = new HashSet<>(unsolved.keySet());
-                for (String key :
-                        unsolvedWires) {
-
-                    String signal = unsolved.get(key);
-
-                    solveIfPossible(key, signal);
-                }
+                unsolvedWires.forEach(this::solveIfPossible);
             }
         }
 
-        private void solveIfPossible(String key, String signal) {
+        private void solveIfPossible(String unsolvedKey) {
+            String signal = unsolved.get(unsolvedKey);
+
             String[] tokens = signal.split(" ");
 
             if (tokens.length == 1) {
                 if (isASpecificValue(signal)) {
-                    solved.put(key, solved.get(signal));
-                    unsolved.remove(key);
+                    solved.put(unsolvedKey, solved.get(signal));
+                    unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("NOT")) {
                 if (isASpecificValue(tokens[1])) {
@@ -192,9 +187,9 @@ public class Day07Tests {
                     // is this the best way to do not? it passes the examples
                     // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
                     int bitwiseComplement = 65535 - solved.get(tokens[1]);
-                    solved.put(key, bitwiseComplement);
+                    solved.put(unsolvedKey, bitwiseComplement);
 
-                    unsolved.remove(key);
+                    unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("LSHIFT")) {
                 // TODO shifts are the same except for the operation
@@ -206,9 +201,9 @@ public class Day07Tests {
                     int shiftBy = Integer.parseInt(operands[1]);
 
                     int unsignedShiftResult = lhs << shiftBy;
-                    solved.put(key, unsignedShiftResult);
+                    solved.put(unsolvedKey, unsignedShiftResult);
 
-                    unsolved.remove(key);
+                    unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("RSHIFT")) {
                 String[] operands = signal.split(" RSHIFT ");
@@ -218,9 +213,9 @@ public class Day07Tests {
                     int shiftBy = Integer.parseInt(operands[1]);
 
                     int unsignedShiftResult = lhs >>> shiftBy;
-                    solved.put(key, unsignedShiftResult);
+                    solved.put(unsolvedKey, unsignedShiftResult);
 
-                    unsolved.remove(key);
+                    unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("AND")) {
                 String[] operands = signal.split(" AND ");
@@ -236,9 +231,9 @@ public class Day07Tests {
                     int rhs = solved.get(operands[1]);
 
                     int andedValue = lhs & rhs;
-                    solved.put(key, andedValue);
+                    solved.put(unsolvedKey, andedValue);
 
-                    unsolved.remove(key);
+                    unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("OR")) {
                 String[] operands = signal.split(" OR ");
@@ -249,9 +244,9 @@ public class Day07Tests {
                     int rhs = solved.get(operands[1]);
 
                     int oredValue = lhs | rhs;
-                    solved.put(key, oredValue);
+                    solved.put(unsolvedKey, oredValue);
 
-                    unsolved.remove(key);
+                    unsolved.remove(unsolvedKey);
                 }
             } else {
                 System.out.println("Unknown expression: " + signal);
