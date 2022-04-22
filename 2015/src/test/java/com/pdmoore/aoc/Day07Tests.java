@@ -24,7 +24,7 @@ public class Day07Tests {
 
     @Test
     void signalToWire() {
-        List<String> input = Arrays.asList("123 -> x");
+        List<String> input = List.of("123 -> x");
         CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("x");
@@ -106,8 +106,6 @@ public class Day07Tests {
     void part1_simpleCircuitExample() {
         CircuitEmulator sut = new CircuitEmulator(simpleCircuitInput());
 
-        int actual = sut.valueOf("e");
-
         assertAll(
                 () -> assertEquals(72, sut.valueOf("d")),
                 () -> assertEquals(507, sut.valueOf("e")),
@@ -145,7 +143,7 @@ public class Day07Tests {
         assertEquals(14710, actual);
     }
 
-    private class CircuitEmulator {
+    private static class CircuitEmulator {
         Map<String, Integer> solved = new HashMap<>();
         Map<String, String> unsolved = new HashMap<>();
 
