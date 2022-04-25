@@ -196,16 +196,11 @@ public class Day07Tests {
                 String[] operands;
                 int unsignedShiftResult;
 
-                if (signal.contains(lShift)) {
-                    operands = signal.split(lShift);
-                } else {
-                    operands = signal.split(rShift);
-                }
+                operands = signal.split("\s(L|R)SHIFT\s");
+                int shiftBy = Integer.parseInt(operands[1]);
 
                 if (isASpecificValue(operands[0])) {
                     int lhs = solved.get(operands[0]);
-                    int shiftBy = Integer.parseInt(operands[1]);
-
                     if (signal.contains(lShift)) {
                         unsignedShiftResult = lhs << shiftBy;
                     } else {
@@ -213,27 +208,6 @@ public class Day07Tests {
                     }
                     solved.put(unsolvedKey, unsignedShiftResult);
                     unsolved.remove(unsolvedKey);
-                }
-
-                if (signal.contains(lShift)) {
-//                    if (isASpecificValue(operands[0])) {
-//                        int lhs = solved.get(operands[0]);
-//                        int shiftBy = Integer.parseInt(operands[1]);
-//
-//                        unsignedShiftResult = lhs << shiftBy;
-//                        solved.put(unsolvedKey, unsignedShiftResult);
-//                        unsolved.remove(unsolvedKey);
-//                    }
-                } else if (signal.contains(rShift)) {
-//                    if (isASpecificValue(operands[0])) {
-//
-//                        int lhs = solved.get(operands[0]);
-//                        int shiftBy = Integer.parseInt(operands[1]);
-//
-//                        unsignedShiftResult = lhs >>> shiftBy;
-//                        solved.put(unsolvedKey, unsignedShiftResult);
-//                        unsolved.remove(unsolvedKey);
-//                    }
                 }
             } else if (signal.contains("AND")) {
                 String[] operands = signal.split(" AND ");
