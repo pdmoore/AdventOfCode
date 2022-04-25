@@ -130,16 +130,15 @@ public class Day07Tests {
 
     @Test
     void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day07");
         // Now, take the signal you got on wire a from Part 1, override wire b to that signal, and reset the other
         // wires (including wire a).
-        List<String> input = PuzzleInput.asStringListFrom("data/day07");
         input.remove("44430 -> b");
         input.add("3176 -> b");
 
         CircuitEmulator sut = new CircuitEmulator(input);
 
         int actual = sut.valueOf("a");
-
         assertEquals(14710, actual);
     }
 
@@ -173,7 +172,6 @@ public class Day07Tests {
 
         private void solveIfPossible(String unsolvedKey) {
             String signal = unsolved.get(unsolvedKey);
-
             String[] tokens = signal.split(" ");
 
             if (tokens.length == 1) {
