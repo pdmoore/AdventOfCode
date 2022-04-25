@@ -190,22 +190,13 @@ public class Day07Tests {
                     unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("SHIFT")) {
-                String lShift = " LSHIFT ";
-                String rShift = " RSHIFT ";
-
-                String[] operands;
-                int unsignedShiftResult;
-
-                operands = signal.split("\s(L|R)SHIFT\s");
-                int shiftBy = Integer.parseInt(operands[1]);
+                String[] operands = signal.split("\s(L|R)SHIFT\s");
 
                 if (isASpecificValue(operands[0])) {
+                    int shiftBy = Integer.parseInt(operands[1]);
                     int lhs = solved.get(operands[0]);
-                    if (signal.contains(lShift)) {
-                        unsignedShiftResult = lhs << shiftBy;
-                    } else {
-                        unsignedShiftResult = lhs >>> shiftBy;
-                    }
+                    int unsignedShiftResult =
+                            (signal.contains("LSHIFT")) ? lhs << shiftBy : lhs >>> shiftBy;
                     solved.put(unsolvedKey, unsignedShiftResult);
                     unsolved.remove(unsolvedKey);
                 }
