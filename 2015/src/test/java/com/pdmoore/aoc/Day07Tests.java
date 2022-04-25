@@ -193,31 +193,32 @@ public class Day07Tests {
                 String lShift = " LSHIFT ";
                 String rShift = " RSHIFT ";
 
-                
+                String[] operands;
+                int unsignedShiftResult;
+
                 if (signal.contains(lShift)) {
                     // TODO shifts are the same except for the operation
                     // combine them
                     // use a regex to ignore the L|R that starts the SHIFT
-                    String[] operands = signal.split(lShift);
+                    operands = signal.split(lShift);
                     if (isASpecificValue(operands[0])) {
                         int lhs = solved.get(operands[0]);
                         int shiftBy = Integer.parseInt(operands[1]);
 
-                        int unsignedShiftResult = lhs << shiftBy;
+                        unsignedShiftResult = lhs << shiftBy;
                         solved.put(unsolvedKey, unsignedShiftResult);
 
                         unsolved.remove(unsolvedKey);
                     }
                 } else if (signal.contains(rShift)) {
-                    String[] operands = signal.split(rShift);
+                    operands = signal.split(rShift);
                     if (isASpecificValue(operands[0])) {
 
                         int lhs = solved.get(operands[0]);
                         int shiftBy = Integer.parseInt(operands[1]);
 
-                        int unsignedShiftResult = lhs >>> shiftBy;
+                        unsignedShiftResult = lhs >>> shiftBy;
                         solved.put(unsolvedKey, unsignedShiftResult);
-
                         unsolved.remove(unsolvedKey);
                     }
                 }
