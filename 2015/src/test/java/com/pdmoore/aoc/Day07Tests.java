@@ -7,7 +7,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day07Tests {
+class Day07Tests {
 
     List<String> simpleCircuitInput() {
         return Arrays.asList(
@@ -93,7 +93,7 @@ public class Day07Tests {
     }
 
     @Test
-    void simpleSubstition() {
+    void simpleSubstitution() {
         List<String> input = Arrays.asList("lx -> a", "456 -> lx");
         CircuitEmulator sut = new CircuitEmulator(input);
 
@@ -189,7 +189,7 @@ public class Day07Tests {
                     unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("SHIFT")) {
-                String[] operands = signal.split("\s(L|R)SHIFT\s");
+                String[] operands = signal.split("\s([LR])SHIFT\s");
 
                 if (isASpecificValue(operands[0])) {
                     int shiftBy = Integer.parseInt(operands[1]);
