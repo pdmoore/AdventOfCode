@@ -197,21 +197,20 @@ public class Day07Tests {
                 int unsignedShiftResult;
 
                 if (signal.contains(lShift)) {
-                    // TODO shifts are the same except for the operation
-                    // combine them
-                    // use a regex to ignore the L|R that starts the SHIFT
                     operands = signal.split(lShift);
+                } else {
+                    operands = signal.split(rShift);
+                }
+                if (signal.contains(lShift)) {
                     if (isASpecificValue(operands[0])) {
                         int lhs = solved.get(operands[0]);
                         int shiftBy = Integer.parseInt(operands[1]);
 
                         unsignedShiftResult = lhs << shiftBy;
                         solved.put(unsolvedKey, unsignedShiftResult);
-
                         unsolved.remove(unsolvedKey);
                     }
                 } else if (signal.contains(rShift)) {
-                    operands = signal.split(rShift);
                     if (isASpecificValue(operands[0])) {
 
                         int lhs = solved.get(operands[0]);
