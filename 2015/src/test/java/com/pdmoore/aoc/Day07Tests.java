@@ -183,10 +183,9 @@ public class Day07Tests {
                 if (isASpecificValue(tokens[1])) {
 
                     // is this the best way to do not? it passes the examples
-                    // TODO - try cast to 'short' which should be 16 bit, or char which would be unsigned
+                    // TODO - try cast to 'short' which should be 16 bit
                     int bitwiseComplement = 65535 - solved.get(tokens[1]);
                     solved.put(unsolvedKey, bitwiseComplement);
-
                     unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("SHIFT")) {
@@ -215,20 +214,17 @@ public class Day07Tests {
 
                     int andedValue = lhs & rhs;
                     solved.put(unsolvedKey, andedValue);
-
                     unsolved.remove(unsolvedKey);
                 }
             } else if (signal.contains("OR")) {
                 String[] operands = signal.split(" OR ");
 
                 if (isASpecificValue(operands[0]) && isASpecificValue(operands[1])) {
-
                     int lhs = solved.get(operands[0]);
                     int rhs = solved.get(operands[1]);
 
                     int oredValue = lhs | rhs;
                     solved.put(unsolvedKey, oredValue);
-
                     unsolved.remove(unsolvedKey);
                 }
             } else {
