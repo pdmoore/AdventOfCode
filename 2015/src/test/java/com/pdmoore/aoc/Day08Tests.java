@@ -24,11 +24,18 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
         Assertions.assertEquals(2, differenceOfCharsToMemory(input));
     }
 
+    @Test
+    void DifferenceOf_CharacterString() {
+        String input = "\"abc\"";
+        Assertions.assertEquals(2, differenceOfCharsToMemory(input));
+    }
+
+
+
     private int differenceOfCharsToMemory(String input) {
         int inputLength = input.length();
 
         String memory = input.substring(1, inputLength - 1);
-
 
         return inputLength - memory.length();
     }
