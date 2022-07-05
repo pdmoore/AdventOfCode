@@ -1,8 +1,8 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,18 +40,38 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
     }
 
     @Test
+    void DifferenceOf_SingleBackslash() {
+        String input = "\"x\\\"\\xcaj\\\\xwwvpdldz\"";
+        assertEquals(7, differenceOfCharsToMemory(input));
+    }
+
+    @Test
     void DifferenceOf_HexString() {
         String input = "\"\\x27\"";
         assertEquals(5, differenceOfCharsToMemory(input));
     }
 
     @Test
-    @Disabled("Need a test to ingest day08 text file, process each line, and sum difference of all lines")
     void day01_Solution() {
-        // ingest day08 as list of strings
+        List<String> input = PuzzleInput.asStringListFrom("data/day08");
+        int actual = solvePart1(input);
+
+        assertEquals(-99, actual);
+    }
+
+    private int solvePart1(List<String> input) {
         // confirm string contain quotes and escape characters
         // for each line, cal difference and tally as running total
         // sum is the answer to day 01
+        int result = 0;
+        for (String inputLine :
+                input) {
+            int difference = differenceOfCharsToMemory(inputLine);
+            System.out.println(inputLine + " = " + difference);
+            result += difference;
+        }
+
+        return result;
     }
 
     private int differenceOfCharsToMemory(String input) {
@@ -61,13 +81,18 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
         for (int i = 1; i < inputLength - 1; i++) {
             // TODO need to look ahead is it \x? then consume next as single hex and append char
             if (input.charAt(i) == '\\') {
-                if (input.charAt(i + 1) =='x') {
+
+                char nextChar = input.charAt(i + 1);
+                if (nextChar == 'x') {
                     String hexValue = input.substring(i+2, i+4);
                     long l = Long.parseLong(hexValue, 16);
                     char ch = (char) l;
                     sb.append(ch);
 
                     i += 3;
+                } else if (nextChar == '\\') {
+                    sb.append("\\");
+                    i += 1;
                 }
             }
             else {
