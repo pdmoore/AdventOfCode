@@ -42,7 +42,7 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
     @Test
     void DifferenceOf_HexString() {
         String input = "\"\\x27\"";
-        assertEquals(1, differenceOfCharsToMemory(input));
+        assertEquals(5, differenceOfCharsToMemory(input));
     }
 
     @Test
@@ -60,7 +60,17 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
         StringBuffer sb = new StringBuffer();
         for (int i = 1; i < inputLength - 1; i++) {
             // TODO need to look ahead is it \x? then consume next as single hex and append char
-            if (input.charAt(i) != '\\') {
+            if (input.charAt(i) == '\\') {
+                if (input.charAt(i + 1) =='x') {
+                    String hexValue = input.substring(i+2, i+4);
+                    long l = Long.parseLong(hexValue, 16);
+                    char ch = (char) l;
+                    sb.append(ch);
+
+                    i += 3;
+                }
+            }
+            else {
                 sb.append(input.charAt(i));
             }
         }
