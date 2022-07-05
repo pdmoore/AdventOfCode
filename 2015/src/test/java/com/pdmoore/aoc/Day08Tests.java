@@ -25,6 +25,12 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
     }
 
     @Test
+    void DifferenceOf_QuotedCharacterString() {
+        String input = "\"aaa\\\"aaa\"";
+        Assertions.assertEquals(3, differenceOfCharsToMemory(input));
+    }
+
+    @Test
     void DifferenceOf_CharacterString() {
         String input = "\"abc\"";
         Assertions.assertEquals(2, differenceOfCharsToMemory(input));
@@ -34,6 +40,19 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
 
     private int differenceOfCharsToMemory(String input) {
         int inputLength = input.length();
+
+        if (input.contains("\\")) {
+            // go through and remove first of each \ pair
+            // calc and return
+            StringBuffer sb = new StringBuffer();
+            for (int i = 1; i < inputLength - 1; i++) {
+                if (input.charAt(i) != '\\') {
+                    sb.append(input.charAt(i));
+                }
+            }
+            String memory = sb.toString();
+            return inputLength - memory.length();
+        }
 
         String memory = input.substring(1, inputLength - 1);
 
