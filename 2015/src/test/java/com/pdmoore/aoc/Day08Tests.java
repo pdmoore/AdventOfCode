@@ -56,13 +56,10 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
         List<String> input = PuzzleInput.asStringListFrom("data/day08");
         int actual = solvePart1(input);
 
-        assertEquals(-99, actual);
+        assertEquals(1342, actual);
     }
 
     private int solvePart1(List<String> input) {
-        // confirm string contain quotes and escape characters
-        // for each line, cal difference and tally as running total
-        // sum is the answer to day 01
         int result = 0;
         for (String inputLine :
                 input) {
@@ -79,7 +76,6 @@ minus the total number of characters in memory for string values (0 + 3 + 7 + 1 
 
         StringBuffer sb = new StringBuffer();
         for (int i = 1; i < inputLength - 1; i++) {
-            // TODO need to look ahead is it \x? then consume next as single hex and append char
             if (input.charAt(i) == '\\') {
 
                 char nextChar = input.charAt(i + 1);
