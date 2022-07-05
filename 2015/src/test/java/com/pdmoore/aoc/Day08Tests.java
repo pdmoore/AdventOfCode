@@ -1,5 +1,8 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 public class Day08Tests {
 
 
@@ -13,7 +16,20 @@ public class Day08Tests {
 For example, given the four strings above,
 the total number of characters of string code (2 + 5 + 10 + 6 = 23)
 minus the total number of characters in memory for string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
-
-
      */
+
+    @Test
+    void DifferenceOf_EmptyString() {
+        String input = "\"\"";
+        Assertions.assertEquals(2, differenceOfCharsToMemory(input));
+    }
+
+    private int differenceOfCharsToMemory(String input) {
+        int inputLength = input.length();
+
+        String memory = input.substring(1, inputLength - 1);
+
+
+        return inputLength - memory.length();
+    }
 }
