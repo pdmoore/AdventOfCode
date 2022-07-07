@@ -98,9 +98,19 @@ public class Day08Tests {
     }
 
     @Test
+    void StripQuotesFromFileInput() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day08");
+
+        assertEquals("azlgxdbljwygyttzkfwuxv", input.get(0));
+    }
+
+    @Test
     @Disabled
     void part02_Solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day08");
+
+        // Need to process each input line and remove the start and end quotes from the string
+
         int actual = solvePart2(input);
 
         // 2988 too high
@@ -133,6 +143,7 @@ public class Day08Tests {
 
     private int differenceOfEncodedLength(String input) {
         String encoded = encodedString(input);
+        System.out.println(input + " --> " + encoded);
         return encoded.length() - input.length();
     }
 
