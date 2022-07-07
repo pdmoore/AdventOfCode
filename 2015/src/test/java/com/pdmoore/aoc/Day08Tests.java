@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -38,11 +39,48 @@ public class Day08Tests {
     }
 
     @Test
-    void day01_Solution() {
+    void part01_Solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day08");
         int actual = solvePart1(input);
 
         assertEquals(1342, actual);
+    }
+
+    @Test
+    void Encode_EmptyString() {
+        String input = "\"\"";
+        int actual = differenceOfEncodedLength(input);
+
+        assertEquals(4, actual);
+    }
+
+    @Test
+    @Disabled
+    void Encode_JustCharacters() {
+        int actual = differenceOfEncodedLength("abc");
+
+        assertEquals(4, actual);
+    }
+
+    private int differenceOfEncodedLength(String input) {
+
+        int inputLength = input.length();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("\"");
+        for (int i = 0; i < inputLength; i++) {
+
+            if (input.charAt(i) == '\"') {
+                sb.append("\\\"");
+            } else {
+                sb.append(input.charAt(i));
+            }
+
+        }
+        sb.append("\"");
+
+        String encoded = sb.toString();
+        return encoded.length() - inputLength;
     }
 
     private int solvePart1(List<String> input) {
@@ -50,7 +88,6 @@ public class Day08Tests {
         for (String inputLine :
                 input) {
             int difference = differenceOfCharsToMemory(inputLine);
-            System.out.println(inputLine + " = " + difference);
             result += difference;
         }
 
