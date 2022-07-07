@@ -60,6 +60,20 @@ public class Day08Tests {
         assertEquals("\\\"abc\\\"", actual);
     }
 
+    @Test
+    void Encode_QuoteInTheMiddle() {
+        String actual = encodedString("aaa\\\"aaa");
+
+        assertEquals("\\\"aaa\\\\\\\"aaa\\\"", actual);
+    }
+
+    @Test
+    void Encode_HexEncoding() {
+        String actual = encodedString("\\x27");
+
+        assertEquals("\\\"\\\\x27\\\"", actual);
+    }
+
 
     private String encodedString(String input) {
         StringBuffer sb = new StringBuffer();
@@ -67,7 +81,13 @@ public class Day08Tests {
         for (int i = 0; i < input.length(); i++) {
 
             if (input.charAt(i) == '\"') {
-                sb.append("\\\"");
+                sb.append("\\\\\"");
+            } else if (input.charAt(i) == '\\') {
+                if (input.charAt(i + 1) == 'x') {
+                    sb.append("\\\\");
+                } else {
+                    sb.append("\\");
+                }
             } else {
                 sb.append(input.charAt(i));
             }
@@ -120,7 +140,7 @@ public class Day08Tests {
 
                 char nextChar = input.charAt(i + 1);
                 if (nextChar == 'x') {
-                    String hexValue = input.substring(i+2, i+4);
+                    String hexValue = input.substring(i + 2, i + 4);
                     long l = Long.parseLong(hexValue, 16);
                     char ch = (char) l;
                     sb.append(ch);
@@ -133,8 +153,7 @@ public class Day08Tests {
                     sb.append("\"");
                     i += 1;
                 }
-            }
-            else {
+            } else {
                 sb.append(input.charAt(i));
             }
         }
