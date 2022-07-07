@@ -74,6 +74,13 @@ public class Day08Tests {
         assertEquals("\\\"\\\\x27\\\"", actual);
     }
 
+    @Test
+    void differenceEncodedString() {
+        assertEquals(4, differenceOfEncodedLength(""));
+        assertEquals(4, differenceOfEncodedLength("abc"));
+        assertEquals(6, differenceOfEncodedLength("aaa\\\"aaa"));
+        assertEquals(5, differenceOfEncodedLength("\\x27"));
+    }
 
     private String encodedString(String input) {
         StringBuffer sb = new StringBuffer();
@@ -100,24 +107,8 @@ public class Day08Tests {
     }
 
     private int differenceOfEncodedLength(String input) {
-
-        int inputLength = input.length();
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("\"");
-        for (int i = 0; i < inputLength; i++) {
-
-            if (input.charAt(i) == '\"') {
-                sb.append("\\\"");
-            } else {
-                sb.append(input.charAt(i));
-            }
-
-        }
-        sb.append("\"");
-
-        String encoded = sb.toString();
-        return encoded.length() - inputLength;
+        String encoded = encodedString(input);
+        return encoded.length() - input.length();
     }
 
     private int solvePart1(List<String> input) {
