@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -48,18 +47,36 @@ public class Day08Tests {
 
     @Test
     void Encode_EmptyString() {
-        String input = "\"\"";
-        int actual = differenceOfEncodedLength(input);
+        String input = "";
+        String actual = encodedString(input);
 
-        assertEquals(4, actual);
+        assertEquals("\\\"\\\"", actual);
     }
 
     @Test
-    @Disabled
     void Encode_JustCharacters() {
-        int actual = differenceOfEncodedLength("abc");
+        String actual = encodedString("abc");
 
-        assertEquals(4, actual);
+        assertEquals("\\\"abc\\\"", actual);
+    }
+
+
+    private String encodedString(String input) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("\\\"");
+        for (int i = 0; i < input.length(); i++) {
+
+            if (input.charAt(i) == '\"') {
+                sb.append("\\\"");
+            } else {
+                sb.append(input.charAt(i));
+            }
+
+        }
+        sb.append("\\\"");
+
+        String encoded = sb.toString();
+        return encoded;
     }
 
     private int differenceOfEncodedLength(String input) {
