@@ -1,7 +1,9 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,6 +84,29 @@ public class Day08Tests {
         assertEquals(5, differenceOfEncodedLength("\\x27"));
     }
 
+    @Test
+    void part2Example() {
+        List<String> input = new ArrayList<>();
+        input.add("");
+        input.add("abc");
+        input.add("aaa\\\"aaa");
+        input.add("\\x27");
+
+        int actual = solvePart2(input);
+
+        assertEquals(19, actual);
+    }
+
+    @Test
+    @Disabled
+    void part02_Solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day08");
+        int actual = solvePart2(input);
+
+        // 2988 too high
+        assertEquals(-99, actual);
+    }
+
     private String encodedString(String input) {
         StringBuffer sb = new StringBuffer();
         sb.append("\\\"");
@@ -109,17 +134,6 @@ public class Day08Tests {
     private int differenceOfEncodedLength(String input) {
         String encoded = encodedString(input);
         return encoded.length() - input.length();
-    }
-
-    private int solvePart1(List<String> input) {
-        int result = 0;
-        for (String inputLine :
-                input) {
-            int difference = differenceOfCharsToMemory(inputLine);
-            result += difference;
-        }
-
-        return result;
     }
 
     private int differenceOfCharsToMemory(String input) {
@@ -151,4 +165,27 @@ public class Day08Tests {
         String memory = sb.toString();
         return inputLength - memory.length();
     }
+
+    private int solvePart1(List<String> input) {
+        int result = 0;
+        for (String inputLine :
+                input) {
+            int difference = differenceOfCharsToMemory(inputLine);
+            result += difference;
+        }
+
+        return result;
+    }
+
+    private int solvePart2(List<String> input) {
+        int result = 0;
+        for (String inputLine :
+                input) {
+            int difference = differenceOfEncodedLength(inputLine);
+            result += difference;
+        }
+
+        return result;
+    }
+
 }
