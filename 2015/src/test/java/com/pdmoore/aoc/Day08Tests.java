@@ -8,6 +8,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day08Tests {
+
+    public static final String ENCODED_QUOTE = "\\\"";
+    public static final String ENCODED_BACKSLASH = "\\\\";
+
     @Test
     void DifferenceOf_EmptyString() {
         String input = "\"\"";
@@ -148,33 +152,25 @@ public class Day08Tests {
 
     private String encodedString(String input) {
         StringBuffer sb = new StringBuffer();
-        sb.append("\\\"");
+        sb.append(ENCODED_QUOTE);
         for (int i = 0; i < input.length(); i++) {
 
             if (input.charAt(i) == '\"') {
-                sb.append("\\\"");
+                sb.append(ENCODED_QUOTE);
             } else if (input.charAt(i) == '\\') {
-                if ((i < input.length() - 1) && (input.charAt(i + 1) == 'x')) {
-                    sb.append("\\\\");
-                } else {
-                    sb.append("\\\\");
-                }
+                sb.append(ENCODED_BACKSLASH);
             } else {
                 sb.append(input.charAt(i));
             }
-
         }
-        sb.append("\\\"");
+        sb.append(ENCODED_QUOTE);
 
-        String encoded = sb.toString();
-        return encoded;
+        return sb.toString();
     }
 
     private int differenceOfEncodedLength(String input) {
         String encoded = encodedString(input);
-        int result = encoded.length() - input.length();
-        System.out.println(input + " --> " + encoded + ": " + result);
-        return result;
+        return encoded.length() - input.length();
     }
 
     private int differenceOfCharsToMemory(String input) {
