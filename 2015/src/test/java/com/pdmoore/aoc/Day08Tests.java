@@ -154,18 +154,21 @@ public class Day08Tests {
         StringBuffer sb = new StringBuffer();
         sb.append(ENCODED_QUOTE);
         for (int i = 0; i < input.length(); i++) {
-
-            if (input.charAt(i) == '\"') {
-                sb.append(ENCODED_QUOTE);
-            } else if (input.charAt(i) == '\\') {
-                sb.append(ENCODED_BACKSLASH);
-            } else {
-                sb.append(input.charAt(i));
-            }
+            sb.append(encode(input.charAt(i)));
         }
         sb.append(ENCODED_QUOTE);
 
         return sb.toString();
+    }
+
+    private String encode(char nextChar) {
+        if (nextChar == '\"') {
+            return ENCODED_QUOTE;
+        } else if (nextChar == '\\') {
+            return ENCODED_BACKSLASH;
+        }
+
+        return String.valueOf(nextChar);
     }
 
     private int differenceOfEncodedLength(String input) {
@@ -186,7 +189,6 @@ public class Day08Tests {
                     long l = Long.parseLong(hexValue, 16);
                     char ch = (char) l;
                     sb.append(ch);
-
                     i += 3;
                 } else if (nextChar == '\\') {
                     sb.append("\\");
@@ -199,8 +201,8 @@ public class Day08Tests {
                 sb.append(input.charAt(i));
             }
         }
-        String memory = sb.toString();
-        return inputLength - memory.length();
+        String inMemoryString = sb.toString();
+        return inputLength - inMemoryString.length();
     }
 
     private int solvePart1(List<String> input) {
