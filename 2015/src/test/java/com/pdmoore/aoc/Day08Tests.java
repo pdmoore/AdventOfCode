@@ -102,6 +102,15 @@ public class Day08Tests {
     }
 
     @Test
+    void part2Example_FromFile() {
+        List<String> rawInput = PuzzleInput.asStringListFrom("data/day08-example");
+
+        int actual = solvePart2(removeQuotesFrom(rawInput));
+
+        assertEquals(19, actual);
+    }
+
+    @Test
     void StripQuotesFromFileInput() {
         List<String> rawInput = PuzzleInput.asStringListFrom("data/day08");
 
@@ -129,8 +138,14 @@ public class Day08Tests {
 
         int actual = solvePart2(input);
 
-        // 2988 too high
+        // 2988 too high - passing in strings from file with quotes included
+        // 1788 too low - stripping quotes
         assertEquals(-99, actual);
+
+        // Examples seem correct but are a bit off since I don't explicitly include the quotes around the input anymore
+        // Need to run a subset of the file data exactly as it appears in file
+        // TEHRE IS SOME DATA IN THE day08 input that isn't being encoded correctly
+        // maybe sort it by length and look for exceptions
     }
 
     private String encodedString(String input) {
@@ -159,8 +174,9 @@ public class Day08Tests {
 
     private int differenceOfEncodedLength(String input) {
         String encoded = encodedString(input);
-        System.out.println(input + " --> " + encoded);
-        return encoded.length() - input.length();
+        int result = encoded.length() - input.length();
+        System.out.println(input + " --> " + encoded + ": " + result);
+        return result;
     }
 
     private int differenceOfCharsToMemory(String input) {
