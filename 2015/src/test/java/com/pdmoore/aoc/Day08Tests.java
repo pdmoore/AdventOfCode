@@ -99,9 +99,23 @@ public class Day08Tests {
 
     @Test
     void StripQuotesFromFileInput() {
-        List<String> input = PuzzleInput.asStringListFrom("data/day08");
+        List<String> rawInput = PuzzleInput.asStringListFrom("data/day08");
 
-        assertEquals("azlgxdbljwygyttzkfwuxv", input.get(0));
+        List<String> actual = removeQuotesFrom(rawInput);
+
+        assertEquals("azlgxdbljwygyttzkfwuxv", actual.get(0));
+    }
+
+    private List<String> removeQuotesFrom(List<String> input) {
+        List<String> result = new ArrayList<>();
+
+        for (String inputLine :
+                input) {
+            String removed = inputLine.substring(1, inputLine.length() - 1);
+            result.add(removed);
+        }
+
+        return result;
     }
 
     @Test
