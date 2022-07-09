@@ -85,7 +85,12 @@ public class Day08Tests {
 
     @Test
     void Encode_StringEndingWithBackslash() {
-        assertEquals("\\\"bidsptalmoicyorbv\\\\\\\"", encodedString("bidsptalmoicyorbv\\\\"));
+        assertEquals("\\\"bidsptalmoicyorbv\\\\\\\\\\\"", encodedString("bidsptalmoicyorbv\\\\"));
+    }
+
+    @Test
+    void Encode_StringEndingWithDoubleBackslash() {
+        assertEquals("\\\"n\\\\\\\\c\\\"", encodedString("n\\\\c"));
     }
 
     @Test
@@ -138,14 +143,7 @@ public class Day08Tests {
 
         int actual = solvePart2(input);
 
-        // 2988 too high - passing in strings from file with quotes included
-        // 1788 too low - stripping quotes
-        assertEquals(-99, actual);
-
-        // Examples seem correct but are a bit off since I don't explicitly include the quotes around the input anymore
-        // Need to run a subset of the file data exactly as it appears in file
-        // TEHRE IS SOME DATA IN THE day08 input that isn't being encoded correctly
-        // maybe sort it by length and look for exceptions
+        assertEquals(2074, actual);
     }
 
     private String encodedString(String input) {
@@ -154,12 +152,12 @@ public class Day08Tests {
         for (int i = 0; i < input.length(); i++) {
 
             if (input.charAt(i) == '\"') {
-                sb.append("\\\\\"");
+                sb.append("\\\"");
             } else if (input.charAt(i) == '\\') {
                 if ((i < input.length() - 1) && (input.charAt(i + 1) == 'x')) {
                     sb.append("\\\\");
                 } else {
-                    sb.append("\\");
+                    sb.append("\\\\");
                 }
             } else {
                 sb.append(input.charAt(i));
