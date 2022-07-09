@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -85,6 +84,11 @@ public class Day08Tests {
     }
 
     @Test
+    void Encode_StringEndingWithBackslash() {
+        assertEquals("\\\"bidsptalmoicyorbv\\\\\\\"", encodedString("bidsptalmoicyorbv\\\\"));
+    }
+
+    @Test
     void part2Example() {
         List<String> input = new ArrayList<>();
         input.add("");
@@ -119,11 +123,9 @@ public class Day08Tests {
     }
 
     @Test
-    @Disabled
     void part02_Solution() {
-        List<String> input = PuzzleInput.asStringListFrom("data/day08");
-
-        // Need to process each input line and remove the start and end quotes from the string
+        List<String> rawInput = PuzzleInput.asStringListFrom("data/day08");
+        List<String> input = removeQuotesFrom(rawInput);
 
         int actual = solvePart2(input);
 
@@ -139,7 +141,7 @@ public class Day08Tests {
             if (input.charAt(i) == '\"') {
                 sb.append("\\\\\"");
             } else if (input.charAt(i) == '\\') {
-                if (input.charAt(i + 1) == 'x') {
+                if ((i < input.length() - 1) && (input.charAt(i + 1) == 'x')) {
                     sb.append("\\\\");
                 } else {
                     sb.append("\\");
