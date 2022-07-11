@@ -176,8 +176,13 @@ public class Day08Tests {
     private int differenceOfCharsToMemory(String input) {
         int inputLength = input.length();
 
+        String inMemoryString = inMemoryRepresentation(input);
+        return inputLength - inMemoryString.length();
+    }
+
+    private String inMemoryRepresentation(String input) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 1; i < inputLength - 1; i++) {
+        for (int i = 1; i < input.length() - 1; i++) {
             if (input.charAt(i) == '\\') {
 
                 char nextChar = input.charAt(i + 1);
@@ -199,7 +204,7 @@ public class Day08Tests {
             }
         }
         String inMemoryString = sb.toString();
-        return inputLength - inMemoryString.length();
+        return inMemoryString;
     }
 
     private int solvePart1(List<String> input) {
@@ -213,5 +218,4 @@ public class Day08Tests {
                 mapToInt(i -> differenceOfEncodedLength(i)).
                 reduce(0, Integer::sum);
     }
-
 }
