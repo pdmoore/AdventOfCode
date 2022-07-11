@@ -172,8 +172,7 @@ public class Day08Tests {
 
         return String.valueOf(nextChar);
     }
-
-
+    
     private int differenceOfCharsToMemory(String input) {
         return input.length() - inMemoryRepresentation(input).length();
     }
