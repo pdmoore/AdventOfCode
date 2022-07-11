@@ -181,17 +181,13 @@ public class Day08Tests {
     private String inMemoryRepresentation(String input) {
         StringBuffer sb = new StringBuffer();
         for (int i = 1; i < input.length() - 1; i++) {
-            char thisChar = input.charAt(i);
-            if (thisChar != '\\') {
-                sb.append(thisChar);
+            if (input.charAt(i) != '\\') {
+                sb.append(input.charAt(i));
             } else {
                 String escapeSequence = input.substring(i, i + 2);
                 switch (escapeSequence) {
                     case ASCII_VALUE -> {
-                        String hexValue = input.substring(i + 2, i + 4);
-                        long l = Long.parseLong(hexValue, 16);
-                        char ch = (char) l;
-                        sb.append(ch);
+                        sb.append(convertHexToChar(input, i));
                         i += 3;
                     }
                     case ENCODED_QUOTE -> {
@@ -206,6 +202,13 @@ public class Day08Tests {
             }
         }
         return sb.toString();
+    }
+
+    private char convertHexToChar(String input, int i) {
+        String hexValue = input.substring(i + 2, i + 4);
+        long l = Long.parseLong(hexValue, 16);
+        char ch = (char) l;
+        return ch;
     }
 
     private int solvePart1(List<String> input) {
