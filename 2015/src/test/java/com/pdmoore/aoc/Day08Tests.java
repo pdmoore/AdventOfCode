@@ -203,14 +203,9 @@ public class Day08Tests {
     }
 
     private int solvePart1(List<String> input) {
-        int result = 0;
-        for (String inputLine :
-                input) {
-            int difference = differenceOfCharsToMemory(inputLine);
-            result += difference;
-        }
-
-        return result;
+        return input.stream().
+                mapToInt(i -> differenceOfCharsToMemory(i)).
+                reduce(0, Integer::sum);
     }
 
     private int solvePart2(List<String> input) {
