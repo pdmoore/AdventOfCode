@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -151,14 +152,10 @@ public class Day08Tests {
     }
 
     private String encodedString(String input) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(ENCODED_QUOTE);
-        for (int i = 0; i < input.length(); i++) {
-            sb.append(encode(input.charAt(i)));
-        }
-        sb.append(ENCODED_QUOTE);
-
-        return sb.toString();
+        String encoded = input.chars().
+                mapToObj(c -> encode((char) c)).
+                collect(Collectors.joining());
+        return ENCODED_QUOTE + encoded + ENCODED_QUOTE;
     }
 
     private String encode(char nextChar) {
