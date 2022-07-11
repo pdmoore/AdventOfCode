@@ -174,37 +174,33 @@ public class Day08Tests {
 
 
     private int differenceOfCharsToMemory(String input) {
-        int inputLength = input.length();
-
-        String inMemoryString = inMemoryRepresentation(input);
-        return inputLength - inMemoryString.length();
+        return input.length() - inMemoryRepresentation(input).length();
     }
 
     private String inMemoryRepresentation(String input) {
         StringBuffer sb = new StringBuffer();
         for (int i = 1; i < input.length() - 1; i++) {
-            if (input.charAt(i) == '\\') {
-
-                char nextChar = input.charAt(i + 1);
-                if (nextChar == 'x') {
+            char thisChar = input.charAt(i);
+            if (thisChar != '\\') {
+                sb.append(thisChar);
+            } else {
+                String escapeSequence = input.substring(i, i + 2);
+                if (escapeSequence.equals("\\x")) {
                     String hexValue = input.substring(i + 2, i + 4);
                     long l = Long.parseLong(hexValue, 16);
                     char ch = (char) l;
                     sb.append(ch);
                     i += 3;
-                } else if (nextChar == '\\') {
+                } else if (escapeSequence.equals("\\\\")) {
                     sb.append("\\");
                     i += 1;
                 } else {
                     sb.append("\"");
                     i += 1;
                 }
-            } else {
-                sb.append(input.charAt(i));
             }
         }
-        String inMemoryString = sb.toString();
-        return inMemoryString;
+        return sb.toString();
     }
 
     private int solvePart1(List<String> input) {
