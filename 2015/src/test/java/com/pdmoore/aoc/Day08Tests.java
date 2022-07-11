@@ -12,6 +12,7 @@ public class Day08Tests {
 
     public static final String ENCODED_QUOTE = "\\\"";
     public static final String ENCODED_BACKSLASH = "\\\\";
+    public static final String ASCII_VALUE = "\\x";
 
     @Test
     void DifferenceOf_EmptyString() {
@@ -186,19 +187,19 @@ public class Day08Tests {
             } else {
                 String escapeSequence = input.substring(i, i + 2);
                 switch (escapeSequence) {
-                    case "\\x" -> {
+                    case ASCII_VALUE -> {
                         String hexValue = input.substring(i + 2, i + 4);
                         long l = Long.parseLong(hexValue, 16);
                         char ch = (char) l;
                         sb.append(ch);
                         i += 3;
                     }
-                    case "\\\\" -> {
-                        sb.append("\\");
+                    case ENCODED_QUOTE -> {
+                        sb.append("\"");
                         i += 1;
                     }
                     default -> {
-                        sb.append("\"");
+                        sb.append("\\");
                         i += 1;
                     }
                 }
