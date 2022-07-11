@@ -214,14 +214,9 @@ public class Day08Tests {
     }
 
     private int solvePart2(List<String> input) {
-        int result = 0;
-        for (String inputLine :
-                input) {
-            int difference = differenceOfEncodedLength(inputLine);
-            result += difference;
-        }
-
-        return result;
+        return input.stream().
+                mapToInt(i -> differenceOfEncodedLength(i)).
+                reduce(0, Integer::sum);
     }
 
 }
