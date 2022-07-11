@@ -185,18 +185,22 @@ public class Day08Tests {
                 sb.append(thisChar);
             } else {
                 String escapeSequence = input.substring(i, i + 2);
-                if (escapeSequence.equals("\\x")) {
-                    String hexValue = input.substring(i + 2, i + 4);
-                    long l = Long.parseLong(hexValue, 16);
-                    char ch = (char) l;
-                    sb.append(ch);
-                    i += 3;
-                } else if (escapeSequence.equals("\\\\")) {
-                    sb.append("\\");
-                    i += 1;
-                } else {
-                    sb.append("\"");
-                    i += 1;
+                switch (escapeSequence) {
+                    case "\\x" -> {
+                        String hexValue = input.substring(i + 2, i + 4);
+                        long l = Long.parseLong(hexValue, 16);
+                        char ch = (char) l;
+                        sb.append(ch);
+                        i += 3;
+                    }
+                    case "\\\\" -> {
+                        sb.append("\\");
+                        i += 1;
+                    }
+                    default -> {
+                        sb.append("\"");
+                        i += 1;
+                    }
                 }
             }
         }
