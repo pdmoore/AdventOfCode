@@ -151,6 +151,10 @@ public class Day08Tests {
         assertEquals(2074, actual);
     }
 
+    private int differenceOfEncodedLength(String input) {
+        return encodedString(input).length() - input.length();
+    }
+
     private String encodedString(String input) {
         String encoded = input.chars().
                 mapToObj(c -> encode((char) c)).
@@ -168,10 +172,6 @@ public class Day08Tests {
         return String.valueOf(nextChar);
     }
 
-    private int differenceOfEncodedLength(String input) {
-        String encoded = encodedString(input);
-        return encoded.length() - input.length();
-    }
 
     private int differenceOfCharsToMemory(String input) {
         int inputLength = input.length();
