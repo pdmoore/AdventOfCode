@@ -34,14 +34,14 @@ public class Day09Tests {
     void part1_example() {
         Day09 sut = new Day09(exampleInput);
 
-        assertEquals(605, sut.shortestDistance());
+        assertEquals(605, sut.shortestDistance);
     }
 
     @Test
     void part2_example() {
         Day09 sut = new Day09(exampleInput);
 
-        assertEquals(982, sut.longestDistance());
+        assertEquals(982, sut.longestDistance);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class Day09Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day09");
         Day09 sut = new Day09(input);
 
-        assertEquals(251, sut.shortestDistance());
+        assertEquals(251, sut.shortestDistance);
     }
 
     @Test
@@ -57,18 +57,19 @@ public class Day09Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day09");
         Day09 sut = new Day09(input);
 
-        assertEquals(898, sut.longestDistance());
+        assertEquals(898, sut.longestDistance);
     }
 
     private class Day09 {
         public List<String> cities;
         public Map<String, Integer> distanceMap;
-        private int shortestDistance;
-        private int longestDistance;
+        public int shortestDistance;
+        public int longestDistance;
 
         public Day09(List<String> input) {
-            cities = collectCityNamesFrom(input);
-            distanceMap = createDistanceMapFrom(input);
+            cities = new ArrayList<>();
+            distanceMap = new HashMap<>();
+            gatherData(input, cities, distanceMap);
 
             findShortAndLongDistancesThatVisitAllCities(cities);
         }
@@ -99,49 +100,26 @@ public class Day09Tests {
             }
         }
 
-        private Map<String, Integer> createDistanceMapFrom(List<String> input) {
-            // input line is of form
-            // cityName to CityName = mileage
-            Map<String, Integer> map = new HashMap();
-            for (String inputLine :
-                    input) {
-
-                String[] tokens = inputLine.split(" ");
-                String cityA = tokens[0];
-                String cityB = tokens[2];
-                int distance = Integer.parseInt(tokens[4]);
-
-                map.put(createKey(cityA, cityB), distance);
-                map.put(createKey(cityB, cityA), distance);
-            }
-
-            return map;
-        }
-
         private String createKey(String cityA, String cityB) {
             return cityA + "-" + cityB;
         }
 
-        private List collectCityNamesFrom(List<String> input) {
-            // input line is of form
-            // cityName to CityName = mileage
-            List uniqueCityNames = new ArrayList();
+        private void gatherData(List<String> input, List<String> cities, Map<String, Integer> distanceMap) {
             for (String inputLine :
                     input) {
                 String[] tokens = inputLine.split(" ");
-                if (!uniqueCityNames.contains(tokens[0])) uniqueCityNames.add(tokens[0]);
-                if (!uniqueCityNames.contains(tokens[2])) uniqueCityNames.add(tokens[2]);
+
+                String cityA = tokens[0];
+                String cityB = tokens[2];
+
+                if (!cities.contains(cityA)) cities.add(tokens[0]);
+                if (!cities.contains(cityB)) cities.add(tokens[2]);
+
+                int distance = Integer.parseInt(tokens[4]);
+
+                distanceMap.put(createKey(cityA, cityB), distance);
+                distanceMap.put(createKey(cityB, cityA), distance);
             }
-
-            return uniqueCityNames;
-        }
-
-        public int shortestDistance() {
-            return shortestDistance;
-        }
-
-        public int longestDistance() {
-            return longestDistance;
         }
     }
 }
