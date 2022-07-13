@@ -38,6 +38,15 @@ public class Day09Tests {
         assertEquals(605, sut.shortestDistance());
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day09");
+        Day09 sut = new Day09(input);
+
+        //446 is too high
+        assertEquals(251, sut.shortestDistance());
+    }
+
     private class Day09 {
         public List<String> cities;
         public Map<String, Integer> distanceMap;
@@ -53,8 +62,6 @@ public class Day09Tests {
         private void findShortestDistance(List cities) {
             shortestDistance = Integer.MAX_VALUE;
             List<String> unvisitedCities = new ArrayList(cities);
-            // TODO not tracking order of visit or which cities comprise path - should I?
-
             for (String currentCity :
                     unvisitedCities) {
                 recurse(currentCity, 0, unvisitedCities);
@@ -74,11 +81,10 @@ public class Day09Tests {
 
             for (String connection :
                     connectingCities) {
-                currentDistance += distanceMap.get(currentCity + "-" + connection);
-                recurse(connection, currentDistance, connectingCities);
+                recurse(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
             }
         }
-        
+
         private Map<String, Integer> createDistanceMapFrom(List<String> input) {
             // input line is of form
             // cityName to CityName = mileage
