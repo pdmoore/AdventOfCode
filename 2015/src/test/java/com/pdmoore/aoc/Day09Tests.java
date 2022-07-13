@@ -105,7 +105,7 @@ public class Day09Tests {
 
             for (String connection :
                     connectingCities) {
-                recurseShortest(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
+                recurseShortest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
             }
         }
 
@@ -122,7 +122,7 @@ public class Day09Tests {
 
             for (String connection :
                     connectingCities) {
-                recurseLongest(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
+                recurseLongest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
             }
         }
 
@@ -138,11 +138,15 @@ public class Day09Tests {
                 String cityB = tokens[2];
                 int distance = Integer.parseInt(tokens[4]);
 
-                map.put(cityA + "-" + cityB, distance);
-                map.put(cityB + "-" + cityA, distance);
+                map.put(createKey(cityA, cityB), distance);
+                map.put(createKey(cityB, cityA), distance);
             }
 
             return map;
+        }
+
+        private String createKey(String cityA, String cityB) {
+            return cityA + "-" + cityB;
         }
 
         private List collectCityNamesFrom(List<String> input) {
