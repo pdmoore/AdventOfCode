@@ -49,8 +49,15 @@ public class Day09Tests {
         List<String> input = PuzzleInput.asStringListFrom("data/day09");
         Day09 sut = new Day09(input);
 
-        //446 is too high
         assertEquals(251, sut.shortestDistance());
+    }
+
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day09");
+        Day09 sut = new Day09(input);
+
+        assertEquals(898, sut.longestDistance());
     }
 
     private class Day09 {
@@ -118,8 +125,6 @@ public class Day09Tests {
                 recurseLongest(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
             }
         }
-
-
 
         private Map<String, Integer> createDistanceMapFrom(List<String> input) {
             // input line is of form
