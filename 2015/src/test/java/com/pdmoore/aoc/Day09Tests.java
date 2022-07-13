@@ -79,27 +79,23 @@ public class Day09Tests {
             List<String> unvisitedCities = new ArrayList(cities);
             for (String currentCity :
                     unvisitedCities) {
-                recurseShortest(currentCity, 0, unvisitedCities);
+                recurse(currentCity, 0, unvisitedCities);
             }
         }
 
-        private void recurseShortest(String currentCity, int currentDistance, List unvisitedCities) {
+        private void recurse(String currentCity, int currentDistance, List unvisitedCities) {
             List<String> connectingCities = new ArrayList<>(unvisitedCities);
             connectingCities.remove(currentCity);
 
             if (connectingCities.isEmpty()) {
-                if (currentDistance < shortestDistance) {
-                    shortestDistance = currentDistance;
-                    return;
-                } else if (currentDistance > longestDistance) {
-                    longestDistance = currentDistance;
-                    return;
-                }
+                shortestDistance = Math.min(shortestDistance, currentDistance);
+                longestDistance  = Math.max(longestDistance, currentDistance);
+                return;
             }
 
             for (String connection :
                     connectingCities) {
-                recurseShortest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
+                recurse(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
             }
         }
 
