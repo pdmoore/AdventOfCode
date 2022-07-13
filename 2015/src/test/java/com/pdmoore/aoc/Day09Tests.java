@@ -32,7 +32,6 @@ public class Day09Tests {
     }
 
     @Test
-    @Disabled
     void part1_example() {
         Day09 sut = new Day09(exampleInput);
 
@@ -48,9 +47,38 @@ public class Day09Tests {
             cities = collectCityNamesFrom(input);
             distanceMap = createDistanceMapFrom(input);
 
-//            findShortestDistance(cities, input);
+            findShortestDistance(cities);
         }
 
+        private void findShortestDistance(List cities) {
+            shortestDistance = Integer.MAX_VALUE;
+            List<String> unvisitedCities = new ArrayList(cities);
+            // TODO not tracking order of visit or which cities comprise path - should I?
+
+            for (String currentCity :
+                    unvisitedCities) {
+                recurse(currentCity, 0, unvisitedCities);
+            }
+        }
+
+        private void recurse(String currentCity, int currentDistance, List unvisitedCities) {
+            List<String> connectingCities = new ArrayList<>(unvisitedCities);
+            connectingCities.remove(currentCity);
+
+            if (connectingCities.isEmpty()) {
+                if (currentDistance < shortestDistance) {
+                    shortestDistance = currentDistance;
+                    return;
+                }
+            }
+
+            for (String connection :
+                    connectingCities) {
+                currentDistance += distanceMap.get(currentCity + "-" + connection);
+                recurse(connection, currentDistance, connectingCities);
+            }
+        }
+        
         private Map<String, Integer> createDistanceMapFrom(List<String> input) {
             // input line is of form
             // cityName to CityName = mileage
@@ -69,13 +97,6 @@ public class Day09Tests {
 
             return map;
         }
-
-//        private int findShortestDistance(List cities, List<String> input) {
-//            shortestDistance = Integer.MAX_VALUE;
-//            int currentDistance = 0;
-//            List unvisitedCities = new ArrayList(cities);
-//            List visitedCities = new ArrayList();
-//        }
 
         private List collectCityNamesFrom(List<String> input) {
             // input line is of form
