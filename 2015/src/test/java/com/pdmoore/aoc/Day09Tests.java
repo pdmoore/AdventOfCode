@@ -70,21 +70,12 @@ public class Day09Tests {
             cities = collectCityNamesFrom(input);
             distanceMap = createDistanceMapFrom(input);
 
-            findShortestDistance(cities);
-            findLongestDistance(cities);
+            findShortAndLongDistancesThatVisitAllCities(cities);
         }
 
-        private void findLongestDistance(List<String> cities) {
-            longestDistance = 0;
-            List<String> unvisitedCities = new ArrayList(cities);
-            for (String currentCity :
-                    unvisitedCities) {
-                recurseLongest(currentCity, 0, unvisitedCities);
-            }
-        }
-
-        private void findShortestDistance(List cities) {
+        private void findShortAndLongDistancesThatVisitAllCities(List cities) {
             shortestDistance = Integer.MAX_VALUE;
+            longestDistance  = 0;
             List<String> unvisitedCities = new ArrayList(cities);
             for (String currentCity :
                     unvisitedCities) {
@@ -100,21 +91,7 @@ public class Day09Tests {
                 if (currentDistance < shortestDistance) {
                     shortestDistance = currentDistance;
                     return;
-                }
-            }
-
-            for (String connection :
-                    connectingCities) {
-                recurseShortest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
-            }
-        }
-
-        private void recurseLongest(String currentCity, int currentDistance, List<String> unvisitedCities) {
-            List<String> connectingCities = new ArrayList<>(unvisitedCities);
-            connectingCities.remove(currentCity);
-
-            if (connectingCities.isEmpty()) {
-                if (currentDistance > longestDistance) {
+                } else if (currentDistance > longestDistance) {
                     longestDistance = currentDistance;
                     return;
                 }
@@ -122,7 +99,7 @@ public class Day09Tests {
 
             for (String connection :
                     connectingCities) {
-                recurseLongest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
+                recurseShortest(connection, currentDistance + distanceMap.get(createKey(currentCity, connection)), connectingCities);
             }
         }
 
