@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -39,6 +38,13 @@ public class Day09Tests {
     }
 
     @Test
+    void part2_example() {
+        Day09 sut = new Day09(exampleInput);
+
+        assertEquals(982, sut.longestDistance());
+    }
+
+    @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09");
         Day09 sut = new Day09(input);
@@ -51,12 +57,23 @@ public class Day09Tests {
         public List<String> cities;
         public Map<String, Integer> distanceMap;
         private int shortestDistance;
+        private int longestDistance;
 
         public Day09(List<String> input) {
             cities = collectCityNamesFrom(input);
             distanceMap = createDistanceMapFrom(input);
 
             findShortestDistance(cities);
+            findLongestDistance(cities);
+        }
+
+        private void findLongestDistance(List<String> cities) {
+            longestDistance = 0;
+            List<String> unvisitedCities = new ArrayList(cities);
+            for (String currentCity :
+                    unvisitedCities) {
+                recurseLongest(currentCity, 0, unvisitedCities);
+            }
         }
 
         private void findShortestDistance(List cities) {
@@ -64,11 +81,11 @@ public class Day09Tests {
             List<String> unvisitedCities = new ArrayList(cities);
             for (String currentCity :
                     unvisitedCities) {
-                recurse(currentCity, 0, unvisitedCities);
+                recurseShortest(currentCity, 0, unvisitedCities);
             }
         }
 
-        private void recurse(String currentCity, int currentDistance, List unvisitedCities) {
+        private void recurseShortest(String currentCity, int currentDistance, List unvisitedCities) {
             List<String> connectingCities = new ArrayList<>(unvisitedCities);
             connectingCities.remove(currentCity);
 
@@ -81,9 +98,28 @@ public class Day09Tests {
 
             for (String connection :
                     connectingCities) {
-                recurse(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
+                recurseShortest(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
             }
         }
+
+        private void recurseLongest(String currentCity, int currentDistance, List<String> unvisitedCities) {
+            List<String> connectingCities = new ArrayList<>(unvisitedCities);
+            connectingCities.remove(currentCity);
+
+            if (connectingCities.isEmpty()) {
+                if (currentDistance > longestDistance) {
+                    longestDistance = currentDistance;
+                    return;
+                }
+            }
+
+            for (String connection :
+                    connectingCities) {
+                recurseLongest(connection, currentDistance + distanceMap.get(currentCity + "-" + connection), connectingCities);
+            }
+        }
+
+
 
         private Map<String, Integer> createDistanceMapFrom(List<String> input) {
             // input line is of form
@@ -120,6 +156,10 @@ public class Day09Tests {
 
         public int shortestDistance() {
             return shortestDistance;
+        }
+
+        public int longestDistance() {
+            return longestDistance;
         }
     }
 }
