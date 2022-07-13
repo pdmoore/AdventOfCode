@@ -69,7 +69,7 @@ public class Day09Tests {
         public Day09(List<String> input) {
             cities = new ArrayList<>();
             distanceMap = new HashMap<>();
-            gatherData(input, cities, distanceMap);
+            populateCityAndDistanceInfo(input, cities, distanceMap);
 
             findShortAndLongDistancesThatVisitAllCities(cities);
         }
@@ -104,7 +104,7 @@ public class Day09Tests {
             return cityA + "-" + cityB;
         }
 
-        private void gatherData(List<String> input, List<String> cities, Map<String, Integer> distanceMap) {
+        private void populateCityAndDistanceInfo(List<String> input, List<String> cities, Map<String, Integer> distanceMap) {
             for (String inputLine :
                     input) {
                 String[] tokens = inputLine.split(" ");
@@ -112,8 +112,8 @@ public class Day09Tests {
                 String cityA = tokens[0];
                 String cityB = tokens[2];
 
-                if (!cities.contains(cityA)) cities.add(tokens[0]);
-                if (!cities.contains(cityB)) cities.add(tokens[2]);
+                if (!cities.contains(cityA)) cities.add(cityA);
+                if (!cities.contains(cityB)) cities.add(cityB);
 
                 int distance = Integer.parseInt(tokens[4]);
 
