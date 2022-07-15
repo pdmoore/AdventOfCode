@@ -25,25 +25,25 @@ public class Day10Tests {
 
     @Test
     void part1_solution() {
-        String actual = lookAndSay(input, 40);
-        assertEquals(492982, actual.length());
+        int actual = lookAndSay(input, 40);
+        assertEquals(492982, actual);
     }
 
     @Test
     void part2_solution() {
         // Kinda disappointed this was so easy
         // Was expecting the result o exceed the max length of String/StringBuilder
-        String actual = lookAndSay(input, 50);
-        assertEquals(6989950, actual.length());
+        int actual = lookAndSay(input, 50);
+        assertEquals(6989950, actual);
     }
 
-    private String lookAndSay(String input, int count) {
+    private int lookAndSay(String input, int count) {
         String result = input;
         for (int i = 0; i < count; i++) {
             result = lookAndSay(result);
         }
 
-        return result;
+        return result.length();
     }
 
     class Value {
