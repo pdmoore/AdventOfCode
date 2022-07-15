@@ -26,6 +26,13 @@ public class Day10Tests {
         assertEquals(492982, actual.length());
     }
 
+    @Test
+    void part2_solution() {
+        //Kinda disappointed this was so easy
+        String actual = lookAndSay(input, 50);
+        assertEquals(6989950, actual.length());
+    }
+
     private String lookAndSay(String input, int count) {
         String result = input;
         for (int i = 0; i < count; i++) {
