@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,11 +14,13 @@ public class Day10Tests {
 
     @Test
     void examples_SingleTransformations() {
-        assertEquals("11", lookAndSay("1"));
-        assertEquals("21", lookAndSay("11"));
-        assertEquals("1211", lookAndSay("21"));
-        assertEquals("111221", lookAndSay("1211"));
-        assertEquals("312211", lookAndSay("111221"));
+        Assertions.assertAll(() -> {
+                    assertEquals("11", lookAndSay("1"));
+                    assertEquals("21", lookAndSay("11"));
+                    assertEquals("1211", lookAndSay("21"));
+                    assertEquals("111221", lookAndSay("1211"));
+                    assertEquals("312211", lookAndSay("111221"));
+                });
     }
 
     @Test
