@@ -47,42 +47,42 @@ public class Day10Tests {
         return result.length();
     }
 
-    class Value {
-        Character value;
-        Integer count;
+    class NextStep {
+        Integer numberOfDigits;
+        Character digitItself;
 
-        public Value(Character v, int i) {
-            value = v;
-            count = i;
+        public NextStep(Character d, int numberOfDigits) {
+            this.digitItself = d;
+            this.numberOfDigits = numberOfDigits;
         }
 
         @Override
         public String toString() {
-            return new StringBuilder().append(count).append(value).toString();
+            return new StringBuilder().append(numberOfDigits).append(digitItself).toString();
         }
     }
 
     private String lookAndSay(String input) {
-        List<Value> result = new ArrayList<>();
-        Value characterAndCount = null;
+        List<NextStep> result = new ArrayList<>();
+        NextStep characterAndCount = null;
         Character previousChar = null;
         for (int i = 0; i < input.length(); i++) {
             Character currentChar = input.charAt(i);
 
             if (currentChar.equals(previousChar)) {
-                characterAndCount.count++;
+                characterAndCount.numberOfDigits++;
             } else {
                 previousChar = currentChar;
                 if (characterAndCount != null) {
                     result.add(characterAndCount);
                 }
-                characterAndCount = new Value(currentChar, 1);
+                characterAndCount = new NextStep(currentChar, 1);
             }
         }
         result.add(characterAndCount);
 
         return result.stream()
-                .map(v -> v.toString())
+                .map(n -> n.toString())
                 .collect(Collectors.joining());
     }
 
