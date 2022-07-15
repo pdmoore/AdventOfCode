@@ -10,12 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day10Tests {
 
-    /*
-21 becomes 1211 (one 2 followed by one 1).
-1211 becomes 111221 (one 1, one 2, and two 1s).
-111221 becomes 312211 (three 1s, two 2s, and one 1).
-     */
-
     static final String input = "1321131112";
 
     @Test
@@ -25,6 +19,21 @@ public class Day10Tests {
         assertEquals("1211", lookAndSay("21"));
         assertEquals("111221", lookAndSay("1211"));
         assertEquals("312211", lookAndSay("111221"));
+    }
+
+    @Test
+    void part1_solution() {
+        String actual = lookAndSay(input, 40);
+        assertEquals(492982, actual.length());
+    }
+
+    private String lookAndSay(String input, int count) {
+        String result = input;
+        for (int i = 0; i < count; i++) {
+            result = lookAndSay(result);
+        }
+
+        return result;
     }
 
     private String lookAndSay(String input) {
