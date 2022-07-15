@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Day10Tests {
 
@@ -28,14 +26,14 @@ public class Day10Tests {
     private String lookAndSay(String input) {
 
         class Value {
-            String value;
+            Character value;
             Integer count;
 
-            public Value(String v, int i) {
+            public Value(Character v, int i) {
                 value = v;
                 count = i;
             }
-            
+
             @Override
             public String toString() {
                 StringBuilder sb = new StringBuilder();
@@ -45,8 +43,28 @@ public class Day10Tests {
             }
         }
 
+        // foreach element of input
+        // if it is same as previous char, increment count
+        // if it is different, add new value to list and start a new value
+        Character previousChar = null;
         List<Value> result = new ArrayList<>();
-        Value v = new Value("1", 1);
+        Value v = null;
+        int currentCharCount = 0;
+        for (int i = 0; i < input.length(); i++) {
+            Character currentChar = input.charAt(i);
+
+            if (currentChar.equals(previousChar)) {
+                currentCharCount++;
+            } else {
+                if (v != null) {
+                    v.count = currentCharCount;
+                    result.add(v);
+                }
+                v = new Value(currentChar, 1);
+                currentCharCount = 1;
+            }
+        }
+
 
 
 
