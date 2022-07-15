@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,59 +35,48 @@ public class Day10Tests {
         return result;
     }
 
-    private String lookAndSay(String input) {
+    class Value {
+        Character value;
+        Integer count;
 
-        class Value {
-            Character value;
-            Integer count;
-
-            public Value(Character v, int i) {
-                value = v;
-                count = i;
-            }
-
-            @Override
-            public String toString() {
-                StringBuilder sb = new StringBuilder();
-                sb.append(count);
-                sb.append(value);
-                return sb.toString();
-            }
+        public Value(Character v, int i) {
+            value = v;
+            count = i;
         }
 
-        // foreach element of input
-        // if it is same as previous char, increment count
-        // if it is different, add new value to list and start a new value
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(count);
+            sb.append(value);
+            return sb.toString();
+        }
+    }
+
+    private String lookAndSay(String input) {
         Character previousChar = null;
         List<Value> result = new ArrayList<>();
-        Value v = null;
-        int currentCharCount = 0;
+        Value characterAndCount = null;
         for (int i = 0; i < input.length(); i++) {
             Character currentChar = input.charAt(i);
 
             if (currentChar.equals(previousChar)) {
-                currentCharCount++;
+                characterAndCount.count++;
             } else {
                 previousChar = currentChar;
-                if (v != null) {
-                    v.count = currentCharCount;
-                    result.add(v);
+                if (characterAndCount != null) {
+                    result.add(characterAndCount);
                 }
-                v = new Value(currentChar, 1);
-                currentCharCount = 1;
+                characterAndCount = new Value(currentChar, 1);
             }
         }
-        v.count = currentCharCount;
-        result.add(v);
-
+        result.add(characterAndCount);
 
         StringBuilder sb = new StringBuilder();
-        for (Value vs :
+        for (Value v :
                 result) {
-            sb.append(vs.toString());
+            sb.append(v.toString());
         }
-
-
 
         return sb.toString();
     }
