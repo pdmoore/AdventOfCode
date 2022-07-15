@@ -83,6 +83,10 @@ public class Day10Tests {
         }
         result.add(characterAndCount);
 
+        return convertResultsToConcattedString(result);
+    }
+
+    private String convertResultsToConcattedString(List<Value> result) {
         StringBuilder sb = new StringBuilder();
         for (Value v :
                 result) {
