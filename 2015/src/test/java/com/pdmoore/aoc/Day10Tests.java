@@ -16,12 +16,12 @@ public class Day10Tests {
     @Test
     void examples_SingleTransformations() {
         Assertions.assertAll(() -> {
-                    assertEquals("11", lookAndSay("1"));
-                    assertEquals("21", lookAndSay("11"));
-                    assertEquals("1211", lookAndSay("21"));
-                    assertEquals("111221", lookAndSay("1211"));
-                    assertEquals("312211", lookAndSay("111221"));
-                });
+            assertEquals("11", lookAndSay("1"));
+            assertEquals("21", lookAndSay("11"));
+            assertEquals("1211", lookAndSay("21"));
+            assertEquals("111221", lookAndSay("1211"));
+            assertEquals("312211", lookAndSay("111221"));
+        });
     }
 
     @Test
@@ -58,17 +58,14 @@ public class Day10Tests {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(count);
-            sb.append(value);
-            return sb.toString();
+            return new StringBuilder().append(count).append(value).toString();
         }
     }
 
     private String lookAndSay(String input) {
-        Character previousChar = null;
         List<Value> result = new ArrayList<>();
         Value characterAndCount = null;
+        Character previousChar = null;
         for (int i = 0; i < input.length(); i++) {
             Character currentChar = input.charAt(i);
 
