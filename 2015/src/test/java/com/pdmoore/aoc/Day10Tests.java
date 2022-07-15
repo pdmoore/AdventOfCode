@@ -23,6 +23,8 @@ public class Day10Tests {
         assertEquals("11", lookAndSay("1"));
         assertEquals("21", lookAndSay("11"));
         assertEquals("1211", lookAndSay("21"));
+        assertEquals("111221", lookAndSay("1211"));
+        assertEquals("312211", lookAndSay("111221"));
     }
 
     private String lookAndSay(String input) {
