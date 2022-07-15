@@ -1,5 +1,13 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Day10Tests {
 
     /*
@@ -11,5 +19,39 @@ public class Day10Tests {
      */
 
     static final String input = "1321131112";
+
+    @Test
+    void examples_SingleTransformations() {
+        Assertions.assertEquals("11", lookAndSay("1"));
+    }
+
+    private String lookAndSay(String input) {
+
+        class Value {
+            String value;
+            Integer count;
+
+            public Value(String v, int i) {
+                value = v;
+                count = i;
+            }
+            
+            @Override
+            public String toString() {
+                StringBuilder sb = new StringBuilder();
+                sb.append(count);
+                sb.append(value);
+                return sb.toString();
+            }
+        }
+
+        List<Value> result = new ArrayList<>();
+        Value v = new Value("1", 1);
+
+
+
+
+        return v.toString();
+    }
 
 }
