@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -83,17 +84,9 @@ public class Day10Tests {
         }
         result.add(characterAndCount);
 
-        return convertResultsToConcattedString(result);
-    }
-
-    private String convertResultsToConcattedString(List<Value> result) {
-        StringBuilder sb = new StringBuilder();
-        for (Value v :
-                result) {
-            sb.append(v.toString());
-        }
-
-        return sb.toString();
+        return result.stream()
+                .map(v -> v.toString())
+                .collect(Collectors.joining());
     }
 
 }
