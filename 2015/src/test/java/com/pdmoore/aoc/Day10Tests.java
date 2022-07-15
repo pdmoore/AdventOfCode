@@ -28,7 +28,8 @@ public class Day10Tests {
 
     @Test
     void part2_solution() {
-        //Kinda disappointed this was so easy
+        // Kinda disappointed this was so easy
+        // Was expecting the result o exceed the max length of String/StringBuilder
         String actual = lookAndSay(input, 50);
         assertEquals(6989950, actual.length());
     }
