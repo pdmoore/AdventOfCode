@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Day10Tests {
 
     /*
@@ -20,7 +22,8 @@ public class Day10Tests {
 
     @Test
     void examples_SingleTransformations() {
-        Assertions.assertEquals("11", lookAndSay("1"));
+        assertEquals("11", lookAndSay("1"));
+        assertEquals("21", lookAndSay("11"));
     }
 
     private String lookAndSay(String input) {
@@ -56,6 +59,7 @@ public class Day10Tests {
             if (currentChar.equals(previousChar)) {
                 currentCharCount++;
             } else {
+                previousChar = currentChar;
                 if (v != null) {
                     v.count = currentCharCount;
                     result.add(v);
@@ -64,6 +68,8 @@ public class Day10Tests {
                 currentCharCount = 1;
             }
         }
+        v.count = currentCharCount;
+        result.add(v);
 
 
 
