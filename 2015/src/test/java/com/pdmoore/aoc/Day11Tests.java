@@ -53,15 +53,40 @@ public class Day11Tests {
     }
 
     @Test
+    void PasswordCheck_InvalidPassword_LacksTwoNonOverlappingCharacterPairs() {
+        assertFalse(isValidPassword("abbcegjkpqr"));
+    }
+
+    @Test
     void PassworkCheck_ValidPasswordExamples() {
         Assertions.assertAll("Examples of passwords that adhere to all rules",
                 () -> assertTrue(isValidPassword("abcdffaa")),
                 () -> assertTrue(isValidPassword("ghjaabcc"))
         );
     }
-    
+
     private boolean isValidPassword(String password) {
-        return containsStraight(password) && !containsIllegalCharacter(password);
+        return containsStraight(password) &&
+                !containsIllegalCharacter(password) &&
+                containsTwoNonOverlappingCharacterPairs(password);
+    }
+
+    private boolean containsTwoNonOverlappingCharacterPairs(String password) {
+        boolean firstPairFound = false;
+
+        for (int i = 0; i < password.length() - 1; i++) {
+            char thisChar = password.charAt(i);
+            if (thisChar == password.charAt(i + 1)) {
+                if (!firstPairFound) {
+                    firstPairFound = true;
+                    i += 1;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean containsIllegalCharacter(String password) {
