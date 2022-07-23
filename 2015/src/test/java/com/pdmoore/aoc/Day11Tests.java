@@ -1,6 +1,7 @@
 package com.pdmoore.aoc;
 
 import com.google.common.base.CharMatcher;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,16 +40,19 @@ public class Day11Tests {
 
     @Test
     void PasswordCheck_InvalidPassword_InvalidCharacters() {
-        //TODO - assert multiple
-        assertFalse(isValidPassword("hijklmmn"));
-        assertFalse(isValidPassword("abckimmn"));
-        assertFalse(isValidPassword("abckmmno"));
+        Assertions.assertAll("Examples of password with one invalid character",
+                () -> assertFalse(isValidPassword("hijklmmn")),
+                () -> assertFalse(isValidPassword("abckimmn")),
+                () -> assertFalse(isValidPassword("abckmmno"))
+        );
     }
 
     @Test
     void PassworkCheck_ValidPasswordExamples() {
-        assertTrue(isValidPassword("abcdffaa"));
-        assertTrue(isValidPassword("ghjaabcc"));
+        Assertions.assertAll("Examples of passwords that adhere to all rules",
+                () -> assertTrue(isValidPassword("abcdffaa")),
+                () -> assertTrue(isValidPassword("ghjaabcc"))
+        );
     }
 
 
