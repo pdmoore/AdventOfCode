@@ -3,6 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Day11Tests {
 
@@ -28,11 +29,23 @@ public class Day11Tests {
     void simpleIncrementToNextCharacter() {
         assertEquals("xy", increment("xx"));
         assertEquals("xz", increment("xy"));
+        assertEquals("yb", increment("ya"));
     }
 
     @Test
     void increment_ZWrapsToA() {
         assertEquals("ya", increment("xz"));
+    }
+
+    @Test
+    void PasswordCheck_InvalidPassword_InvalidCharacters() {
+        assertFalse(isValidPassword("hijklmmn"));
+        assertFalse(isValidPassword("abckimmn"));
+        assertFalse(isValidPassword("abckmmno"));
+    }
+
+    private boolean isValidPassword(String password) {
+        return !password.contains("l") && !password.contains("i") && !password.contains("o");
     }
 
 
