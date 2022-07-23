@@ -48,6 +48,11 @@ public class Day11Tests {
     }
 
     @Test
+    void PasswordCheck_InvalidPassword_LacksThreeCharacterStraight() {
+        assertFalse(isValidPassword("abbceffg"));
+    }
+
+    @Test
     void PassworkCheck_ValidPasswordExamples() {
         Assertions.assertAll("Examples of passwords that adhere to all rules",
                 () -> assertTrue(isValidPassword("abcdffaa")),
@@ -59,7 +64,27 @@ public class Day11Tests {
     private boolean isValidPassword(String password) {
         // TODO - make class const
         CharMatcher illegalCharacters = CharMatcher.anyOf("ilo");
-        return !illegalCharacters.matchesAnyOf(password);
+        boolean containsIllegalCharacter = illegalCharacters.matchesAnyOf(password);
+
+        boolean hasThreeLetterStraight = containsStraight(password);
+
+
+        return hasThreeLetterStraight && !containsIllegalCharacter;
+    }
+
+    private boolean containsStraight(String password) {
+
+        for (int i = 0; i < password.length() - 2; i++) {
+            char first = password.charAt(i);
+            char second = password.charAt(i + 1);
+            char third  = password.charAt(i + 2);
+
+            if ((second == (first + 1)) && (third == (second + 1))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
