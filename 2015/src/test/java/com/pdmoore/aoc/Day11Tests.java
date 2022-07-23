@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import com.google.common.base.CharMatcher;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,9 @@ public class Day11Tests {
     }
 
     private boolean isValidPassword(String password) {
-        return !password.contains("l") && !password.contains("i") && !password.contains("o");
+        // TODO - make class const
+        CharMatcher illegalCharacters = CharMatcher.anyOf("ilo");
+        return !illegalCharacters.matchesAnyOf(password);
     }
 
 
