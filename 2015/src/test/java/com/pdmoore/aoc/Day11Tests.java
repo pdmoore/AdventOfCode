@@ -3,18 +3,17 @@ package com.pdmoore.aoc;
 import com.google.common.base.CharMatcher;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day11Tests {
 
     /*
-    Increase rightmost,
+    DONE - Increase rightmost,
     xx, xy, xz, ya, yb
 
     PW rules
     - Passwords must include one increasing straight of at least three letters, like abc, bcd, cde, and so on, up to xyz. They cannot skip letters; abd doesn't count.
-    - Passwords may not contain the letters i, o, or l, as these letters can be mistaken for other characters and are therefore confusing.
+    - DONE Passwords may not contain the letters i, o, or l, as these letters can be mistaken for other characters and are therefore confusing.
     - Passwords must contain at least two different, non-overlapping pairs of letters, like aa, bb, or zz.
 
     Examples
@@ -40,10 +39,18 @@ public class Day11Tests {
 
     @Test
     void PasswordCheck_InvalidPassword_InvalidCharacters() {
+        //TODO - assert multiple
         assertFalse(isValidPassword("hijklmmn"));
         assertFalse(isValidPassword("abckimmn"));
         assertFalse(isValidPassword("abckmmno"));
     }
+
+    @Test
+    void PassworkCheck_ValidPasswordExamples() {
+        assertTrue(isValidPassword("abcdffaa"));
+        assertTrue(isValidPassword("ghjaabcc"));
+    }
+
 
     private boolean isValidPassword(String password) {
         // TODO - make class const
