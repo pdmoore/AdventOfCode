@@ -3,6 +3,8 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Day11Tests {
 
     /*
@@ -25,10 +27,10 @@ public class Day11Tests {
 
     @Test
     void simpleIncrementToNextCharacter() {
-        Assertions.assertEquals("xy", increment("xx"));
+        assertEquals("xy", increment("xx"));
     }
 
     private String increment(String input) {
-        return null;
+        return input.substring(0, 1) + "y";
     }
 }
