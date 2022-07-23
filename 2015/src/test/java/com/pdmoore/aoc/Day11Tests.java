@@ -28,11 +28,18 @@ public class Day11Tests {
     @Test
     void simpleIncrementToNextCharacter() {
         assertEquals("xy", increment("xx"));
+        assertEquals("xz", increment("xy"));
     }
+
+    @Test
+    void increment_ZWrapsToA() {
+        assertEquals("xz", increment("ya"));
+    }
+
 
     private String increment(String input) {
         char lastCharacter = input.charAt(input.length() - 1);
-        lastCharacter += 1;
+            lastCharacter += 1;
         return input.substring(0, 1) + lastCharacter;
     }
 }
