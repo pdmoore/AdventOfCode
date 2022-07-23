@@ -31,6 +31,8 @@ public class Day11Tests {
     }
 
     private String increment(String input) {
-        return input.substring(0, 1) + "y";
+        char lastCharacter = input.charAt(input.length() - 1);
+        lastCharacter += 1;
+        return input.substring(0, 1) + lastCharacter;
     }
 }
