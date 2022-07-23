@@ -59,17 +59,15 @@ public class Day11Tests {
                 () -> assertTrue(isValidPassword("ghjaabcc"))
         );
     }
-
-
+    
     private boolean isValidPassword(String password) {
+        return containsStraight(password) && !containsIllegalCharacter(password);
+    }
+
+    private boolean containsIllegalCharacter(String password) {
         // TODO - make class const
         CharMatcher illegalCharacters = CharMatcher.anyOf("ilo");
-        boolean containsIllegalCharacter = illegalCharacters.matchesAnyOf(password);
-
-        boolean hasThreeLetterStraight = containsStraight(password);
-
-
-        return hasThreeLetterStraight && !containsIllegalCharacter;
+        return illegalCharacters.matchesAnyOf(password);
     }
 
     private boolean containsStraight(String password) {
