@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,13 +32,19 @@ public class Day11Tests {
 
     @Test
     void increment_ZWrapsToA() {
-        assertEquals("xz", increment("ya"));
+        assertEquals("ya", increment("xz"));
     }
 
 
     private String increment(String input) {
+
         char lastCharacter = input.charAt(input.length() - 1);
+        if (lastCharacter != 'z') {
             lastCharacter += 1;
-        return input.substring(0, 1) + lastCharacter;
+            return input.substring(0, input.length() - 1) + lastCharacter;
+        }
+
+        String lessLastCharacter = input.substring(0, input.length() - 1);
+        return increment(lessLastCharacter) + 'a';
     }
 }
