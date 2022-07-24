@@ -67,6 +67,8 @@ public class Day11Tests {
 
     @Test
     void nextValidPassword_examples() {
+        // TODO - improve cases where input has an invalid character?
+        // should be just to once increment each i -> j, l -> m, o -> p
         assertAll(
                 () -> assertEquals("abcdffaa", nextPassword("abcdefgh")),
                 () -> assertEquals("ghjaabcc", nextPassword("ghijklmn"))
@@ -76,6 +78,11 @@ public class Day11Tests {
     @Test
     void solution_Part1() {
         assertEquals("cqjxxyzz", nextPassword("cqjxjnds"));
+    }
+
+    @Test
+    void solution_Part2() {
+        assertEquals("cqkaabcc", nextPassword("cqjxxyzz"));
     }
 
     private String nextPassword(String currentPassword) {
