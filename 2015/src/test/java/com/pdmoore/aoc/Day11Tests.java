@@ -73,6 +73,11 @@ public class Day11Tests {
         );
     }
 
+    @Test
+    void solution_Part1() {
+        assertEquals("cqjxxyzz", nextPassword("cqjxjnds"));
+    }
+
     private String nextPassword(String currentPassword) {
         String nextPassword = increment(currentPassword);
         while (!isValidPassword(nextPassword)) {
