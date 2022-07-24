@@ -65,6 +65,23 @@ public class Day11Tests {
         );
     }
 
+    @Test
+    void nextValidPassword_examples() {
+        assertAll(
+                () -> assertEquals("abcdffaa", nextPassword("abcdefgh")),
+                () -> assertEquals("ghjaabcc", nextPassword("ghijklmn"))
+        );
+    }
+
+    private String nextPassword(String currentPassword) {
+        String nextPassword = increment(currentPassword);
+        while (!isValidPassword(nextPassword)) {
+            nextPassword = increment(nextPassword);
+        }
+        return nextPassword;
+    }
+
+
     private boolean isValidPassword(String password) {
         return containsStraight(password) &&
                 !containsIllegalCharacter(password) &&
@@ -100,7 +117,7 @@ public class Day11Tests {
         for (int i = 0; i < password.length() - 2; i++) {
             char first = password.charAt(i);
             char second = password.charAt(i + 1);
-            char third  = password.charAt(i + 2);
+            char third = password.charAt(i + 2);
 
             if ((second == (first + 1)) && (third == (second + 1))) {
                 return true;
