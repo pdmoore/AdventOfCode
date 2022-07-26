@@ -53,7 +53,7 @@ public class Day11Tests {
     }
 
     @Test
-    @Timeout(value = 500, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 350, unit = TimeUnit.MILLISECONDS)
     void nextValidPassword_examples() {
         assertAll(
                 () -> assertEquals("abcdffaa", nextPassword("abcdefgh")),
@@ -72,14 +72,12 @@ public class Day11Tests {
     }
 
     private String nextPassword(String currentPassword) {
-        // Maybe increment any illegal characters first
         String nextPassword = increment(currentPassword);
         while (!isValidPassword(nextPassword)) {
             nextPassword = increment(nextPassword);
         }
         return nextPassword;
     }
-
 
     private boolean isValidPassword(String password) {
         return containsStraight(password) &&
@@ -91,8 +89,7 @@ public class Day11Tests {
         boolean firstPairFound = false;
 
         for (int i = 0; i < password.length() - 1; i++) {
-            char thisChar = password.charAt(i);
-            if (thisChar == password.charAt(i + 1)) {
+            if (password.charAt(i) == password.charAt(i + 1)) {
                 if (!firstPairFound) {
                     firstPairFound = true;
                     i += 1;
@@ -115,12 +112,19 @@ public class Day11Tests {
             char second = password.charAt(i + 1);
             char third = password.charAt(i + 2);
 
-            if ((second == (first + 1)) && (third == (second + 1))) {
+            if (!areSequntial(second, third)) {
+                // when 2nd and 3rd are not sequential, can start one past 3rd the next pass
+                i += 3;
+            } else if (areSequntial(first, second)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private boolean areSequntial(char first, char second) {
+        return second == first + 1;
     }
 
     private String increment(String input) {
