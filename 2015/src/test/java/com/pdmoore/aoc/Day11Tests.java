@@ -3,6 +3,9 @@ package com.pdmoore.aoc;
 import com.google.common.base.CharMatcher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,9 +53,8 @@ public class Day11Tests {
     }
 
     @Test
+    @Timeout(value = 500, unit = TimeUnit.MILLISECONDS)
     void nextValidPassword_examples() {
-        // TODO - improve cases where input has an invalid character?
-        // should be just to once increment each i -> j, l -> m, o -> p
         assertAll(
                 () -> assertEquals("abcdffaa", nextPassword("abcdefgh")),
                 () -> assertEquals("ghjaabcc", nextPassword("ghijklmn"))
@@ -70,6 +72,7 @@ public class Day11Tests {
     }
 
     private String nextPassword(String currentPassword) {
+        // Maybe increment any illegal characters first
         String nextPassword = increment(currentPassword);
         while (!isValidPassword(nextPassword)) {
             nextPassword = increment(nextPassword);
@@ -103,7 +106,6 @@ public class Day11Tests {
     }
 
     private boolean containsIllegalCharacter(String password) {
-        // TODO - make class const
         return ILLEGAL_CHARACTERS.matchesAnyOf(password);
     }
 
@@ -122,14 +124,15 @@ public class Day11Tests {
     }
 
     private String increment(String input) {
-
         char lastCharacter = input.charAt(input.length() - 1);
         if (lastCharacter != 'z') {
-            lastCharacter += 1;
+            do {
+                lastCharacter += 1;
+            } while (ILLEGAL_CHARACTERS.matches(lastCharacter));
             return input.substring(0, input.length() - 1) + lastCharacter;
         }
 
-        String lessLastCharacter = input.substring(0, input.length() - 1);
-        return increment(lessLastCharacter) + 'a';
+        String upToLastCharacter = input.substring(0, input.length() - 1);
+        return increment(upToLastCharacter) + 'a';
     }
 }
