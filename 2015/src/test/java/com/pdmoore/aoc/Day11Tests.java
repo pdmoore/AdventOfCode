@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Day11Tests {
 
+    // Implementation assumes Illegal Characters are never sequential, or 'z'
     private static final CharMatcher ILLEGAL_CHARACTERS = CharMatcher.anyOf("ilo");
 
     @Test
@@ -73,7 +74,7 @@ public class Day11Tests {
 
     private String nextPassword(String currentPassword) {
         if (ILLEGAL_CHARACTERS.matchesAnyOf(currentPassword)) {
-            currentPassword = cleverTime(currentPassword);
+            currentPassword = jumpAheadToNextLegalPassword(currentPassword);
         }
 
         String nextPassword = increment(currentPassword);
@@ -83,7 +84,11 @@ public class Day11Tests {
         return nextPassword;
     }
 
-    private String cleverTime(String password) {
+    private String jumpAheadToNextLegalPassword(String password) {
+        // Locate the first illegal character
+        // replace it with the next character
+        // (assumes illegal characters are never consecutive)
+        // pad remainder of password with 'a'
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < password.length(); i++) {
             char c = password.charAt(i);
