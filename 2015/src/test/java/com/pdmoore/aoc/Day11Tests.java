@@ -53,7 +53,7 @@ public class Day11Tests {
     }
 
     @Test
-    @Timeout(value = 350, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 50, unit = TimeUnit.MILLISECONDS)
     void nextValidPassword_examples() {
         assertAll(
                 () -> assertEquals("abcdffaa", nextPassword("abcdefgh")),
@@ -72,11 +72,34 @@ public class Day11Tests {
     }
 
     private String nextPassword(String currentPassword) {
+        if (ILLEGAL_CHARACTERS.matchesAnyOf(currentPassword)) {
+            currentPassword = cleverTime(currentPassword);
+        }
+
         String nextPassword = increment(currentPassword);
         while (!isValidPassword(nextPassword)) {
             nextPassword = increment(nextPassword);
         }
         return nextPassword;
+    }
+
+    private String cleverTime(String password) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            if (ILLEGAL_CHARACTERS.matches(c)) {
+                c += 1;
+                sb.append(c);
+                for (int j = 1 + 2; j < password.length(); j++) {
+                    sb.append('a');
+                }
+                return sb.toString();
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 
     private boolean isValidPassword(String password) {
