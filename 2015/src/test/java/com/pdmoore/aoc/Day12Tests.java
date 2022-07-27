@@ -13,8 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day12Tests {
 
     @Test
-    void dumbAttempt() {
+    void sumArray() {
         String input = "[1,2,3]";
+
+        int actual = sumAllNumbersIn(input);
+
+        assertEquals(6, actual);
+    }
+
+    @Test
+    void sumObjects() {
+        String input = "{\"a\":2,\"b\":4}";
 
         int actual = sumAllNumbersIn(input);
 
@@ -28,15 +37,21 @@ public class Day12Tests {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        JSONArray jo = (JSONArray) parsed;
 
-        int sum = 0;
+            int sum = 0;
+        if (parsed instanceof JSONArray) {
+            JSONArray jo = (JSONArray) parsed;
+            for (Iterator it = jo.iterator(); it.hasNext(); ) {
+                Long l = (Long) it.next();
+                sum += l;
+            }
+        } else { //assumes JSONObject
+            JSONObject jo = (JSONObject) parsed;
+            for (:
+                 ) {
 
-        for (Iterator it = jo.iterator(); it.hasNext(); ) {
-            Long l = (Long) it.next();
-            sum += l;
+            }
         }
-
 
 
         return sum;
