@@ -47,9 +47,10 @@ public class Day12Tests {
             }
         } else { //assumes JSONObject
             JSONObject jo = (JSONObject) parsed;
-            for (:
-                 ) {
 
+            for (Object o : jo.keySet()) {
+                Long l = (Long) jo.get(o);
+                sum += l;
             }
         }
 
