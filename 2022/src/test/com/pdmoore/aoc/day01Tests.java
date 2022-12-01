@@ -13,10 +13,11 @@ public class day01Tests {
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
 
-        int actual = findMaxSum(input);
+        int actual = sumTopN(input, 1);
 
         Assertions.assertEquals(24000, actual);
     }
+
     @Test
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
@@ -26,42 +27,16 @@ public class day01Tests {
         Assertions.assertEquals(45000, actual);
     }
 
-    private int sumTopN(List<String> input, int n) {
-        List<Integer> sums = new ArrayList<>();
-        int sum = 0;;
-        for (String inputLine :
-                input) {
-            if (inputLine.isEmpty()) {
-                sums.add(sum);
-
-                sum = 0;
-            } else {
-                sum += Integer.parseInt(inputLine);
-            }
-        }
-        sums.add(sum);
-        Collections.sort(sums);
-        Collections.reverse(sums);
-
-        int sumOfTopN = 0;
-        for (int i = 0; i < n; i++) {
-            sumOfTopN += sums.get(i);
-        }
-        return sumOfTopN;
-    }
-
-    private int findMaxSum(List<String> input) {
-        return sumTopN(input, 1);
-    }
-
     @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01");
 
-        int actual = findMaxSum(input);
+        int actual = sumTopN(input, 1);
 
         Assertions.assertEquals(71471, actual);
-    }    @Test
+    }
+
+    @Test
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01");
 
@@ -70,4 +45,33 @@ public class day01Tests {
         Assertions.assertEquals(211189, actual);
     }
 
+    private int sumTopN(List<String> input, int n) {
+        List<Integer> caloriesPerElf = sumCaloriesByElf(input);
+        Collections.sort(caloriesPerElf);
+        Collections.reverse(caloriesPerElf);
+
+        int sumOfTopN = 0;
+        for (int i = 0; i < n; i++) {
+            sumOfTopN += caloriesPerElf.get(i);
+        }
+        return sumOfTopN;
+    }
+
+    private static List<Integer> sumCaloriesByElf(List<String> input) {
+        List<Integer> sums = new ArrayList<>();
+        int sumForOneElf = 0;
+
+        for (String inputLine :
+                input) {
+            if (inputLine.isEmpty()) {
+                sums.add(sumForOneElf);
+
+                sumForOneElf = 0;
+            } else {
+                sumForOneElf += Integer.parseInt(inputLine);
+            }
+        }
+        sums.add(sumForOneElf);
+        return sums;
+    }
 }
