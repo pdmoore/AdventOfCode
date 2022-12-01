@@ -21,12 +21,12 @@ public class day01Tests {
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
 
-        int actual = sumTopN(input);
+        int actual = sumTopN(input,3);
 
         Assertions.assertEquals(45000, actual);
     }
 
-    private int sumTopN(List<String> input) {
+    private int sumTopN(List<String> input, int n) {
         List<Integer> sums = new ArrayList<>();
         int sum = 0;;
         for (String inputLine :
@@ -44,7 +44,7 @@ public class day01Tests {
         Collections.reverse(sums);
 
         int i = 0;
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < n; j++) {
             i += sums.get(j);
         }
         return i;
@@ -79,7 +79,7 @@ public class day01Tests {
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01");
 
-        int actual = sumTopN(input);
+        int actual = sumTopN(input, 3);
 
         Assertions.assertEquals(211189, actual);
     }
