@@ -47,8 +47,7 @@ public class day01Tests {
 
     private int sumTopN(List<String> input, int n) {
         List<Integer> caloriesPerElf = sumCaloriesByElf(input);
-        Collections.sort(caloriesPerElf);
-        Collections.reverse(caloriesPerElf);
+        Collections.sort(caloriesPerElf, Collections.reverseOrder());
 
         int sumOfTopN = 0;
         for (int i = 0; i < n; i++) {
