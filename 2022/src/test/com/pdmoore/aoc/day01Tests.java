@@ -55,20 +55,20 @@ public class day01Tests {
     }
 
     private static List<Integer> sumCaloriesByElf(List<String> input) {
-        List<Integer> sums = new ArrayList<>();
+        List<Integer> caloriesPerElf = new ArrayList<>();
         int sumForOneElf = 0;
 
         for (String inputLine :
                 input) {
             if (inputLine.isEmpty()) {
-                sums.add(sumForOneElf);
+                caloriesPerElf.add(sumForOneElf);
 
                 sumForOneElf = 0;
             } else {
                 sumForOneElf += Integer.parseInt(inputLine);
             }
         }
-        sums.add(sumForOneElf);
-        return sums;
+        caloriesPerElf.add(sumForOneElf);
+        return caloriesPerElf;
     }
 }
