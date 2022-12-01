@@ -51,21 +51,7 @@ public class day01Tests {
     }
 
     private int findMaxSum(List<String> input) {
-        int maxSum = 0;
-
-        int sum = 0;;
-        for (String inputLine :
-                input) {
-            if (inputLine.isEmpty()) {
-
-                if (sum > maxSum) maxSum = sum;
-                sum = 0;
-            } else {
-                sum += Integer.parseInt(inputLine);
-            }
-        }
-
-        return maxSum;
+        return sumTopN(input, 1);
     }
 
     @Test
