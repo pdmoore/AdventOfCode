@@ -1,7 +1,6 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,12 +21,12 @@ public class day01Tests {
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
 
-        int actual = findTopThree(input);
+        int actual = sumTopN(input);
 
         Assertions.assertEquals(45000, actual);
     }
 
-    private int findTopThree(List<String> input) {
+    private int sumTopN(List<String> input) {
         List<Integer> sums = new ArrayList<>();
         int sum = 0;;
         for (String inputLine :
@@ -43,7 +42,6 @@ public class day01Tests {
         sums.add(sum);
         Collections.sort(sums);
         Collections.reverse(sums);
-
 
         int i = 0;
         for (int j = 0; j < 3; j++) {
@@ -81,7 +79,7 @@ public class day01Tests {
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day01");
 
-        int actual = findTopThree(input);
+        int actual = sumTopN(input);
 
         Assertions.assertEquals(211189, actual);
     }
