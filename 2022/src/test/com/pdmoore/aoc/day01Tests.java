@@ -46,10 +46,10 @@ public class day01Tests {
     }
 
     private int sumTopN(List<String> input, int n) {
-        List<Integer> caloriesPerElf = sumCaloriesByElf(input);
-        Collections.sort(caloriesPerElf, Collections.reverseOrder());
+        List<Integer> orderedCaloriesPerElf = sumCaloriesByElf(input);
+        Collections.sort(orderedCaloriesPerElf, Collections.reverseOrder());
 
-        return caloriesPerElf.stream()
+        return orderedCaloriesPerElf.stream()
                 .limit(n)
                 .reduce(0, Integer::sum);
     }
