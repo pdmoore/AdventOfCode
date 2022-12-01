@@ -13,12 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day12Tests {
 
+    // what's current Java json library?
+
     @Test
     void emptyElements_SumToZero() {
         assertEquals(0, sumAllNumbersIn("[]"));
         assertEquals(0, sumAllNumbersIn("{}"));
     }
-    
+
     @Test
     void sumArray() {
         String input = "[1,2,3]";
@@ -55,6 +57,13 @@ public class Day12Tests {
         int actual = sumAllNumbersIn(input);
 
         assertEquals(3, actual);
+    }
+
+    @Test
+    @Disabled("JSON can contain both Objects and Arrays")
+    void mixOfObjectsAndArrays() {
+        assertEquals(0, sumAllNumbersIn("{\"a\":[-1,1]}"));
+        assertEquals(0, sumAllNumbersIn("[-1,{\"a\":1}]"));
     }
 
     private int sumAllNumbersIn(String json) {
