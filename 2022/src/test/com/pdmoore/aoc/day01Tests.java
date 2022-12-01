@@ -43,11 +43,11 @@ public class day01Tests {
         Collections.sort(sums);
         Collections.reverse(sums);
 
-        int i = 0;
-        for (int j = 0; j < n; j++) {
-            i += sums.get(j);
+        int sumOfTopN = 0;
+        for (int i = 0; i < n; i++) {
+            sumOfTopN += sums.get(i);
         }
-        return i;
+        return sumOfTopN;
     }
 
     private int findMaxSum(List<String> input) {
