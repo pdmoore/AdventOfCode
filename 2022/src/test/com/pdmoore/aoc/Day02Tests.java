@@ -2,7 +2,6 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.OptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
