@@ -1,8 +1,8 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.BlacklistedExceptions;
 
+import javax.swing.plaf.OptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class Day02Tests {
 
         assertEquals(15, actual);
     }
+
     @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day02");
@@ -29,6 +30,15 @@ public class Day02Tests {
         int actual = scoreFor(input);
 
         assertEquals(11841, actual);
+    }
+
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day02");
+
+        int actual = part2(input);
+
+        assertEquals(13022, actual);
     }
 
     private int scoreFor(List<String> input) {
@@ -83,4 +93,64 @@ public class Day02Tests {
         if (rps == 'Z') return 3;
         throw new IllegalArgumentException("unknown move " + rps);
     }
+
+    @Test
+    void part2_example() {
+        //List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
+        List<String> input = new ArrayList<>();
+        input.add("A Y");
+        input.add("B X");
+        input.add("C Z");
+
+        int actual = part2(input);
+
+        assertEquals(12, actual);
+    }
+
+    private int part2(List<String> input) {
+        //X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win.
+        int result = 0;
+
+        for (String round :
+                input) {
+
+            char opponentPlayed = round.charAt(0);
+            char iNeedTo = round.charAt(2);
+
+            char whatIShouldPlay = whatToPlay(opponentPlayed, iNeedTo);
+
+            int myMoveScored = scoreForWhat(whatIShouldPlay);
+            int myPlayScored = whoWins(opponentPlayed, whatIShouldPlay);
+
+            result += myMoveScored+myPlayScored;
+        }
+        return result;
+    }
+
+    private char whatToPlay(char opponentPlayed, char iNeedTo) {
+        //X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win.
+//        X for Rock, Y for Paper, and Z for Scissors
+        if (opponentPlayed == 'A') { //rock
+            switch (iNeedTo) {
+                case 'X': return 'Z';
+                case 'Y': return 'X';
+                case 'Z': return 'Y';
+            }
+        }if (opponentPlayed == 'B') { //PAPER
+            switch (iNeedTo) {
+                case 'X': return 'X';
+                case 'Y': return 'Y';
+                case 'Z': return 'Z';
+            }
+        }if (opponentPlayed == 'C') { //SCISSORS
+            switch (iNeedTo) {
+                case 'X': return 'Y';
+                case 'Y': return 'Z';
+                case 'Z': return 'X';
+            }
+        }
+        throw new IllegalArgumentException("unknown move " + opponentPlayed);
+
+    }
+
 }
