@@ -1,13 +1,14 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class day01Tests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class Day01Tests {
 
     @Test
     void part1_example() {
@@ -15,7 +16,7 @@ public class day01Tests {
 
         int actual = sumTopN(input, 1);
 
-        Assertions.assertEquals(24000, actual);
+        assertEquals(24000, actual);
     }
 
     @Test
@@ -24,7 +25,7 @@ public class day01Tests {
 
         int actual = sumTopN(input,3);
 
-        Assertions.assertEquals(45000, actual);
+        assertEquals(45000, actual);
     }
 
     @Test
@@ -33,7 +34,7 @@ public class day01Tests {
 
         int actual = sumTopN(input, 1);
 
-        Assertions.assertEquals(71471, actual);
+        assertEquals(71471, actual);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class day01Tests {
 
         int actual = sumTopN(input, 3);
 
-        Assertions.assertEquals(211189, actual);
+        assertEquals(211189, actual);
     }
 
     private int sumTopN(List<String> input, int n) {
