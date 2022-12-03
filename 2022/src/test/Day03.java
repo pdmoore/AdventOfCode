@@ -1,5 +1,4 @@
 import com.pdmoore.aoc.PuzzleInput;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,6 +15,16 @@ public class Day03 {
 
         assertEquals(157, actual);
     }
+
+    @Test
+    public void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day03_example");
+
+        int actual = part2(input);
+
+        assertEquals(70, actual);
+    }
+
     @Test
     public void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day03");
@@ -23,6 +32,15 @@ public class Day03 {
         int actual = thing(input);
 
         assertEquals(8018, actual);
+    }
+
+    @Test
+    public void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day03");
+
+        int actual = part2(input);
+
+        assertEquals(2518, actual);
     }
 
     private int thing(List<String> input) {
@@ -53,6 +71,31 @@ public class Day03 {
         if (c >= 'a' && c <= 'z') return c - 'a' + 1;
         if (c >= 'A' && c <= 'Z') return c - 'A' + 27;
         return -9999;
+    }
+
+
+    private int part2(List<String> input) {
+        // grab line 1,  2, 3
+        // each char in line 1 - if it appears in line 2 and 3, sum iy and do next 3
+        int sum = 0;
+        for (int i = 0; i < input.size(); i += 3) {
+            String line1 = input.get(i);
+            String line2 = input.get(i+1);
+            String line3 = input.get(i+2);
+
+            for (int j = 0; j < line1.length(); j++) {
+                if (line2.contains(""+line1.charAt(j)) &&
+                    line3.contains(""+line1.charAt(j))) {
+                    sum += valueOf(line1.charAt(j));
+                    break;
+                }
+            }
+
+
+        }
+
+
+        return sum;
     }
 
 }
