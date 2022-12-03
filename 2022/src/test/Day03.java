@@ -57,12 +57,7 @@ public class Day03 {
                     break;
                 }
             }
-//            continue;
-
         }
-
-
-
 
         return sum;
     }
@@ -73,10 +68,7 @@ public class Day03 {
         return -9999;
     }
 
-
     private int part2(List<String> input) {
-        // grab line 1,  2, 3
-        // each char in line 1 - if it appears in line 2 and 3, sum iy and do next 3
         int sum = 0;
         for (int i = 0; i < input.size(); i += 3) {
             String line1 = input.get(i);
@@ -90,12 +82,8 @@ public class Day03 {
                     break;
                 }
             }
-
-
         }
-
 
         return sum;
     }
-
 }
