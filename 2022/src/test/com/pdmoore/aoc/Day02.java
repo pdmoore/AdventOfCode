@@ -7,11 +7,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day02Tests {
+public class Day02 {
 
     @Test
     void part1_example() {
-        //List<String> input = PuzzleInput.asStringListFrom("./data/day01_example");
         List<String> input = new ArrayList<>();
         input.add("A Y");
         input.add("B X");
@@ -149,7 +148,5 @@ public class Day02Tests {
             }
         }
         throw new IllegalArgumentException("unknown move " + opponentPlayed);
-
     }
-
 }
