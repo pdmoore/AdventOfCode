@@ -1,3 +1,5 @@
+package com.pdmoore.aoc;
+
 import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
