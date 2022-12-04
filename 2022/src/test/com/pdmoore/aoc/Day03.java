@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import com.pdmoore.aoc.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,7 +12,7 @@ public class Day03 {
     public void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day03_example");
 
-        int actual = thing(input);
+        int actual = part1(input);
 
         assertEquals(157, actual);
     }
@@ -31,7 +30,7 @@ public class Day03 {
     public void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day03");
 
-        int actual = thing(input);
+        int actual = part1(input);
 
         assertEquals(8018, actual);
     }
@@ -45,7 +44,7 @@ public class Day03 {
         assertEquals(2518, actual);
     }
 
-    private int thing(List<String> input) {
+    private int part1(List<String> input) {
 
         int sum =0;
         for (String inputLine :
