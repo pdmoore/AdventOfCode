@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import com.google.common.base.Function;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +13,8 @@ public class Day04 {
     public void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day04_example");
 
-        int actual = part1(input);
+        Function<String, Boolean> stringBooleanFunction = inputLine1 -> part2_overlaps(inputLine1);
+        int actual = processEachInputLine(input, stringBooleanFunction);
 
         assertEquals(2, actual);
     }
@@ -21,15 +23,18 @@ public class Day04 {
     public void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day04");
 
-        int actual = part1(input);
+        Function<String, Boolean> stringBooleanFunction = inputLine1 -> part2_overlaps(inputLine1);
+        int actual = processEachInputLine(input, stringBooleanFunction);
 
         assertEquals(462, actual);
     }
+
     @Test
     public void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day04");
 
-        int actual = part2(input);
+        Function<String, Boolean> stringBooleanFunction = inputLine1 -> overlapAtAll(inputLine1);
+        int actual = processEachInputLine(input, stringBooleanFunction);
 
         assertEquals(835, actual);
     }
@@ -38,18 +43,18 @@ public class Day04 {
     public void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day04_example");
 
-        int actual = part2(input);
+        Function<String, Boolean> stringBooleanFunction = inputLine1 -> overlapAtAll(inputLine1);
+        int actual = processEachInputLine(input, stringBooleanFunction);
 
         assertEquals(4, actual);
     }
 
-    private int part2(List<String> input) {
+    private int processEachInputLine(List<String> input, Function<String, Boolean> doesInputLineMatchRule) {
         int result = 0;
 
         for (String inputLine :
                 input) {
-
-            if (overlapAtAll(inputLine)) {
+            if (doesInputLineMatchRule.apply(inputLine)) {
                 result++;
             }
         }
@@ -57,6 +62,9 @@ public class Day04 {
         return result;
     }
 
+
+    //TODO - introduce data object for the 4 params, pass that to the strategy
+    // then combine the dupe code and pass only the strategy
     private boolean overlapAtAll(String inputLine) {
         String[] split = inputLine.split(",");
         String lhs = split[0];
@@ -71,27 +79,10 @@ public class Day04 {
         int r_lower = Integer.parseInt(rhsplit[0]);
         int r_upper = Integer.parseInt(rhsplit[1]);
 
-        if (l_lower <= r_lower && l_upper >= r_lower) return true;
-        if (r_lower <= l_lower && r_upper >= l_lower) return true;
-
-        return false;
+        return part2_overlaps(l_lower, l_upper, r_lower, r_upper);
     }
 
-    private int part1(List<String> input) {
-        int result = 0;
-
-        for (String inputLine :
-                input) {
-
-            if (fullyContains(inputLine)) {
-                result++;
-            }
-        }
-
-        return result;
-    }
-
-    private boolean fullyContains(String inputLine) {
+    private boolean part2_overlaps(String inputLine) {
         String[] split = inputLine.split(",");
         String lhs = split[0];
         String rhs = split[1];
@@ -105,13 +96,40 @@ public class Day04 {
         int r_lower = Integer.parseInt(rhsplit[0]);
         int r_upper = Integer.parseInt(rhsplit[1]);
 
-        if (l_lower <= r_lower && l_upper >= r_upper)
-            return true;
-
-        if (r_lower <= l_lower && r_upper >= l_upper)
-            return true;
-
-        return false;
+        Range range1 = new Range(l_lower, l_upper);
+        Range range2 = new Range(r_lower, r_upper);
+        return part1_fullycontains(range1, range2);
     }
 
+
+
+    private static boolean part2_overlaps(int l_lower, int l_upper, int r_lower, int r_upper) {
+        Range range1 = new Range(l_lower, l_upper);
+        Range range2 = new Range(r_lower, r_upper);
+        return range1.overlaps(range2);
+    }
+    private static boolean part1_fullycontains(Range range1, Range range2) {
+        return range1.fullyContains(range2) || range2.fullyContains(range1);
+    }
+
+    static class Range {
+        private final int lower;
+        private final int upper;
+
+        public Range(int lower, int upper) {
+            this.lower = lower;
+            this.upper = upper;
+        }
+
+        public boolean overlaps(Range r2) {
+            if (lower <= r2.lower && upper >= r2.lower) return true;
+            if (r2.lower <= lower && r2.upper >= lower) return true;
+
+            return false;
+        }
+
+        public boolean fullyContains(Range r2) {
+            return lower <= r2.lower && upper >= r2.upper;
+        }
+    }
 }
