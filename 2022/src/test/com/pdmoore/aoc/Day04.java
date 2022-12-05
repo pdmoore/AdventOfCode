@@ -62,9 +62,6 @@ public class Day04 {
         return result;
     }
 
-
-    //TODO - introduce data object for the 4 params, pass that to the strategy
-    // then combine the dupe code and pass only the strategy
     private boolean overlapAtAll(String inputLine) {
         String[] split = inputLine.split(",");
         String lhs = split[0];
@@ -79,9 +76,8 @@ public class Day04 {
         int r_lower = Integer.parseInt(rhsplit[0]);
         int r_upper = Integer.parseInt(rhsplit[1]);
 
-
-        Range range1 = new Range(l_lower, l_upper);
-        Range range2 = new Range(r_lower, r_upper);
+        Range range1 = new Range(lhs);
+        Range range2 = new Range(rhs);
         return range1.overlaps(range2);
     }
 
@@ -111,6 +107,13 @@ public class Day04 {
         public Range(int lower, int upper) {
             this.lower = lower;
             this.upper = upper;
+        }
+
+        public Range(String lower_dash_upper) {
+            String[] lhsplit = lower_dash_upper.split("-");
+
+            lower = Integer.parseInt(lhsplit[0]);
+            upper = Integer.parseInt(lhsplit[1]);
         }
 
         public boolean overlaps(Range r2) {
