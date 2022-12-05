@@ -67,18 +67,7 @@ public class Day04 {
         String lhs = split[0];
         String rhs = split[1];
 
-        String[] lhsplit = lhs.split("-");
-        String[] rhsplit = rhs.split("-");
-
-        int l_lower = Integer.parseInt(lhsplit[0]);
-        int l_upper = Integer.parseInt(lhsplit[1]);
-
-        int r_lower = Integer.parseInt(rhsplit[0]);
-        int r_upper = Integer.parseInt(rhsplit[1]);
-
-        Range range1 = new Range(lhs);
-        Range range2 = new Range(rhs);
-        return range1.overlaps(range2);
+        return new Range(lhs).overlaps(new Range(rhs));
     }
 
     private boolean part2_overlaps(String inputLine) {
@@ -86,17 +75,8 @@ public class Day04 {
         String lhs = split[0];
         String rhs = split[1];
 
-        String[] lhsplit = lhs.split("-");
-        String[] rhsplit = rhs.split("-");
-
-        int l_lower = Integer.parseInt(lhsplit[0]);
-        int l_upper = Integer.parseInt(lhsplit[1]);
-
-        int r_lower = Integer.parseInt(rhsplit[0]);
-        int r_upper = Integer.parseInt(rhsplit[1]);
-
-        Range range1 = new Range(l_lower, l_upper);
-        Range range2 = new Range(r_lower, r_upper);
+        Range range1 = new Range(lhs);
+        Range range2 = new Range(rhs);
         return range1.fullyContains(range2) || range2.fullyContains(range1);
     }
 
