@@ -64,19 +64,17 @@ public class Day04 {
 
     private boolean overlapAtAll(String inputLine) {
         String[] split = inputLine.split(",");
-        String lhs = split[0];
-        String rhs = split[1];
 
-        return new Range(lhs).overlaps(new Range(rhs));
+        Range range1 = new Range(split[0]);
+        Range range2 = new Range(split[1]);
+        return range1.overlaps(range2);
     }
 
     private boolean part2_overlaps(String inputLine) {
         String[] split = inputLine.split(",");
-        String lhs = split[0];
-        String rhs = split[1];
 
-        Range range1 = new Range(lhs);
-        Range range2 = new Range(rhs);
+        Range range1 = new Range(split[0]);
+        Range range2 = new Range(split[1]);
         return range1.fullyContains(range2) || range2.fullyContains(range1);
     }
 
