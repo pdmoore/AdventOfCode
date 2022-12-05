@@ -79,7 +79,10 @@ public class Day04 {
         int r_lower = Integer.parseInt(rhsplit[0]);
         int r_upper = Integer.parseInt(rhsplit[1]);
 
-        return part2_overlaps(l_lower, l_upper, r_lower, r_upper);
+
+        Range range1 = new Range(l_lower, l_upper);
+        Range range2 = new Range(r_lower, r_upper);
+        return range1.overlaps(range2);
     }
 
     private boolean part2_overlaps(String inputLine) {
@@ -98,17 +101,6 @@ public class Day04 {
 
         Range range1 = new Range(l_lower, l_upper);
         Range range2 = new Range(r_lower, r_upper);
-        return part1_fullycontains(range1, range2);
-    }
-
-
-
-    private static boolean part2_overlaps(int l_lower, int l_upper, int r_lower, int r_upper) {
-        Range range1 = new Range(l_lower, l_upper);
-        Range range2 = new Range(r_lower, r_upper);
-        return range1.overlaps(range2);
-    }
-    private static boolean part1_fullycontains(Range range1, Range range2) {
         return range1.fullyContains(range2) || range2.fullyContains(range1);
     }
 
