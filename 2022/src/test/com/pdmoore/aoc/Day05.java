@@ -60,7 +60,6 @@ public class Day05 {
         return answer;
     }
 
-
     private String part2(List<String> input) {
         List<Stack<String>> allStacks = createStartingPoint(input);
 
