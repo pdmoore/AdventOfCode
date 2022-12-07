@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Day07 {
 
@@ -20,13 +22,56 @@ public class Day07 {
     }
 
     private BigInteger part1(List<String> input) {
-        // foreach input
+        boolean processing_ls = false;
 
-        // process cd
-            // track current directory
+        Directory current_dir = null;
+        Map<String, Directory> directories = new HashMap<>();
 
-        // process ls
-            // map of directory name to list of file name, size
+        Directory root = new Directory("dir /");
+        directories.put("dir \\", root);
+
+        for (String inputLine :
+                input) {
+            if (processing_ls) {
+                if (inputLine.startsWith("$")) {
+                    processing_ls = false;
+                } else {
+                    current_dir.contents.add(inputLine);
+                }
+            }
+
+            if (inputLine.startsWith("$ cd /")) {
+                current_dir = root;
+            } else if (inputLine.startsWith("$ cd ..")) {
+                current_dir = current_dir.parent;
+            } else if (inputLine.startsWith("$ cd")) {
+                String dirname = "dir" + inputLine.substring(4);
+                if (!directories.containsKey(dirname)) {
+                    Directory currentDir = new Directory(dirname);
+                    currentDir.parent = current_dir;
+                    directories.put(dirname, currentDir);
+                }
+                current_dir = directories.get(dirname);
+            } else if (inputLine.startsWith("$ ls")) {
+                current_dir.contents = new ArrayList<>();
+                processing_ls = true;
+            } else {
+//                throw new IllegalArgumentException("choked on " + inputLine);
+            }
+
+            // list of directories
+            // list of files within directory
+
+            // current directory (or path)
+
+            // map dirname - list<string> contents
+
+
+        }
+
+        // now process the keys of directories
+        // sum each entry and store in new map - dirname to size
+        // might need to recurse?
 
         // sum the directory plus any sub dirs
         // store sum in a list of big ints, pass to filterAndSum
@@ -45,6 +90,17 @@ public class Day07 {
         BigInteger result = filterAndSumBelowLimit(sizes);
 
         return result;
+    }
+
+    class Directory {
+        String name;
+        Directory parent = null;
+        List<String> contents;
+
+        public Directory(String name) {
+            this.name = name;
+            contents = new ArrayList<>();
+        }
     }
 
     private BigInteger filterAndSumBelowLimit(List<BigInteger> sizes) {
