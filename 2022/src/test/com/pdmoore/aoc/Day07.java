@@ -51,18 +51,7 @@ public class Day07 {
             } else if (inputLine.startsWith("$ ls")) {
                 current_dir.contents = new ArrayList<>();
                 processing_ls = true;
-            } else {
-//                throw new IllegalArgumentException("choked on " + inputLine);
             }
-
-            // list of directories
-            // list of files within directory
-
-            // current directory (or path)
-
-            // map dirname - list<string> contents
-
-
         }
 
         // now process the keys of directories
@@ -73,18 +62,46 @@ public class Day07 {
         // store sum in a list of big ints, pass to filterAndSum
         Map<String, BigInteger> dirsBySize = new HashMap<>();
 
-        BigInteger dir_e = new BigInteger("584");
-        BigInteger dir_a = new BigInteger("94853");
-        BigInteger dir_d = new BigInteger("24933642");
-        BigInteger dir_root = new BigInteger("48381165");
-
-        dirsBySize.put("dir /", dir_root);
-        dirsBySize.put("dir a", dir_a);
-        dirsBySize.put("dir d", dir_d);
-        dirsBySize.put("dir e", dir_e);
+        // i have directories - which has durName and everything in it
+        // dirsBySize which starts off empty and is populated as leaf nodes sum, up to root
+        // need to process each directories, parsing BigInteger or 'dir' and once contents are exhausted, add that to dirsBySize
+        calcTotalSizes(directories, dirsBySize);
 
         return filterAndSumBelowLimit(dirsBySize.values());
     }
+
+    private void calcTotalSizes(Map<String, Directory> directories, Map<String, BigInteger> dirsBySize) {
+
+        for (String dirName :
+                directories.keySet()) {
+
+            BigInteger totalSize = totalSizeOf(dirName, directories, dirsBySize);
+            dirsBySize.put(dirName, totalSize);
+        }
+    }
+
+    private BigInteger totalSizeOf(String dirName, Map<String, Directory> directories, Map<String, BigInteger> dirsBySize) {
+        if (dirsBySize.containsKey(dirName)) {
+            return dirsBySize.get(dirName);
+        }
+
+        BigInteger result = BigInteger.ZERO;
+
+        for (String dirContent :
+                directories.get(dirName).contents) {
+            if (dirContent.startsWith("dir")) {
+                result = result.add(totalSizeOf(dirContent, directories, dirsBySize));
+            } else {
+                // not tracking filenamr
+                String[] s = dirContent.split(" ");
+                result = result.add(new BigInteger(s[0]));
+            }
+        }
+
+//        dirsBySize.put(dirName, result);
+        return result;
+    }
+
 
     class Directory {
         String name;
