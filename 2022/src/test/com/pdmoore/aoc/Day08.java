@@ -33,6 +33,15 @@ public class Day08 {
         assertEquals(1801, actual);
     }
 
+    @Test
+    void part2_solution() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day08");
+
+        int actual = part2(input);
+
+        assertEquals(209880, actual);
+    }
+
     private int part1(int[][] input) {
         int visibleCount = 0;
 
@@ -45,8 +54,6 @@ public class Day08 {
 
             }
         }
-
-
         return visibleCount;
     }
 
