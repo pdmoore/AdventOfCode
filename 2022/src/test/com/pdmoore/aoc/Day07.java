@@ -17,14 +17,36 @@ public class Day07 {
         Assertions.assertEquals(new BigInteger("95437"), actual);
     }
 
+    @Test
+    void part1_example_withDuplicateDirectoryName() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07_withDupes");
+
+        BigInteger actual = part1(input);
+
+        Assertions.assertEquals(new BigInteger("60"), actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07");
+
+        BigInteger actual = part1(input);
+
+        Assertions.assertEquals(new BigInteger("1306611"), actual);
+    }
+
     private BigInteger part1(List<String> input) {
+        // Im assuming dir names are unique! need to store by path instead
+        // create an example to demo this problem
+        // root/a/dupe and root/b/dupe
+
         boolean processing_ls = false;
 
         Directory current_dir = null;
         Map<String, Directory> directories = new HashMap<>();
 
-        Directory root = new Directory("dir /");
-        directories.put("dir \\", root);
+        Directory root = new Directory("/");
+        directories.put(root.name, root);
 
         for (String inputLine :
                 input) {
@@ -37,17 +59,22 @@ public class Day07 {
             }
 
             if (inputLine.startsWith("$ cd /")) {
+                System.out.println("cd /");
                 current_dir = root;
             } else if (inputLine.startsWith("$ cd ..")) {
                 current_dir = current_dir.parent;
+                System.out.println("cd .. -- current now: " + current_dir.path());
             } else if (inputLine.startsWith("$ cd")) {
-                String dirname = "dir" + inputLine.substring(4);
-                if (!directories.containsKey(dirname)) {
-                    Directory currentDir = new Directory(dirname);
+//                String dirname = "dir" + inputLine.substring(4);
+                String betterName = current_dir.path() + inputLine.substring(5) + "/";
+                if (!directories.containsKey(betterName)) {
+                    Directory currentDir = new Directory(betterName);
                     currentDir.parent = current_dir;
-                    directories.put(dirname, currentDir);
+                    directories.put(betterName, currentDir);
                 }
-                current_dir = directories.get(dirname);
+                current_dir = directories.get(betterName);
+                System.out.println("cd " + inputLine + " -- " + current_dir.path());
+
             } else if (inputLine.startsWith("$ ls")) {
                 current_dir.contents = new ArrayList<>();
                 processing_ls = true;
@@ -90,9 +117,10 @@ public class Day07 {
         for (String dirContent :
                 directories.get(dirName).contents) {
             if (dirContent.startsWith("dir")) {
-                result = result.add(totalSizeOf(dirContent, directories, dirsBySize));
+                String betterName = directories.get(dirName).path() + dirContent.substring(4) + "/";
+                result = result.add(totalSizeOf(betterName, directories, dirsBySize));
             } else {
-                // not tracking filenamr
+                // not tracking filename
                 String[] s = dirContent.split(" ");
                 result = result.add(new BigInteger(s[0]));
             }
@@ -111,6 +139,24 @@ public class Day07 {
         public Directory(String name) {
             this.name = name;
             contents = new ArrayList<>();
+        }
+
+        public String path() {
+            return name;
+//            Stack<String> path = new Stack<>();
+//            Directory x = this;
+//            while (x.parent != null) {
+//                path.push(x.name);
+//                 x = x.parent;
+//            }
+//
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("\\");
+//            while (!path.isEmpty()) {
+//                sb.append(path.pop().substring(4));
+//                sb.append("\\");
+//            }
+//            return sb.toString();
         }
     }
 
