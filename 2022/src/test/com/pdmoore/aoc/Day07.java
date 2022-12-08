@@ -3,12 +3,8 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Day07 {
 
@@ -75,21 +71,19 @@ public class Day07 {
 
         // sum the directory plus any sub dirs
         // store sum in a list of big ints, pass to filterAndSum
+        Map<String, BigInteger> dirsBySize = new HashMap<>();
 
         BigInteger dir_e = new BigInteger("584");
         BigInteger dir_a = new BigInteger("94853");
         BigInteger dir_d = new BigInteger("24933642");
         BigInteger dir_root = new BigInteger("48381165");
 
-        List<BigInteger> sizes = new ArrayList<>();
-        sizes.add(dir_root);
-        sizes.add(dir_a);
-        sizes.add(dir_e);
-        sizes.add(dir_d);
+        dirsBySize.put("dir /", dir_root);
+        dirsBySize.put("dir a", dir_a);
+        dirsBySize.put("dir d", dir_d);
+        dirsBySize.put("dir e", dir_e);
 
-        BigInteger result = filterAndSumBelowLimit(sizes);
-
-        return result;
+        return filterAndSumBelowLimit(dirsBySize.values());
     }
 
     class Directory {
@@ -103,7 +97,7 @@ public class Day07 {
         }
     }
 
-    private BigInteger filterAndSumBelowLimit(List<BigInteger> sizes) {
+    private BigInteger filterAndSumBelowLimit(Collection<BigInteger> sizes) {
         BigInteger limit = new BigInteger("100000");
         BigInteger result = BigInteger.ZERO;
         for (BigInteger size :
