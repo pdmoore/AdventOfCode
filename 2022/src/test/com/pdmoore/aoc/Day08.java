@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +13,15 @@ public class Day08 {
         int actual = part1(input);
 
         assertEquals(21, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day08");
+
+        int actual = part1(input);
+
+        assertEquals(1801, actual);
     }
 
     private int part1(int[][] input) {
