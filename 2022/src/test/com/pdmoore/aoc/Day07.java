@@ -8,6 +8,8 @@ import java.util.*;
 
 public class Day07 {
 
+    final BigInteger total_space = new BigInteger("70000000");
+
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day07_example");
@@ -15,6 +17,15 @@ public class Day07 {
         BigInteger actual = part1(input);
 
         Assertions.assertEquals(new BigInteger("95437"), actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07_example");
+
+        BigInteger actual = part2(input);
+
+        Assertions.assertEquals(new BigInteger("24933642"), actual);
     }
 
     @Test
@@ -36,10 +47,6 @@ public class Day07 {
     }
 
     private BigInteger part1(List<String> input) {
-        // Im assuming dir names are unique! need to store by path instead
-        // create an example to demo this problem
-        // root/a/dupe and root/b/dupe
-
         boolean processing_ls = false;
 
         Directory current_dir = null;
@@ -65,7 +72,6 @@ public class Day07 {
                 current_dir = current_dir.parent;
                 System.out.println("cd .. -- current now: " + current_dir.path());
             } else if (inputLine.startsWith("$ cd")) {
-//                String dirname = "dir" + inputLine.substring(4);
                 String betterName = current_dir.path() + inputLine.substring(5) + "/";
                 if (!directories.containsKey(betterName)) {
                     Directory currentDir = new Directory(betterName);
@@ -126,8 +132,11 @@ public class Day07 {
             }
         }
 
-//        dirsBySize.put(dirName, result);
         return result;
+    }
+
+    private BigInteger part2(List<String> input) {
+        return null;
     }
 
 
@@ -143,20 +152,6 @@ public class Day07 {
 
         public String path() {
             return name;
-//            Stack<String> path = new Stack<>();
-//            Directory x = this;
-//            while (x.parent != null) {
-//                path.push(x.name);
-//                 x = x.parent;
-//            }
-//
-//            StringBuilder sb = new StringBuilder();
-//            sb.append("\\");
-//            while (!path.isEmpty()) {
-//                sb.append(path.pop().substring(4));
-//                sb.append("\\");
-//            }
-//            return sb.toString();
         }
     }
 
