@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -20,15 +19,11 @@ public class Day06 {
 
     @Test
     void part2_examples() {
-        assertEquals(19, part2("mjqjpqmgbljsphdztnvjfqwrcgsmlb"));
-        assertEquals(23, part2("bvwbjplbgvbhsrlpgdmjqwftvncz"));
-        assertEquals(23, part2("nppdvjthqldpwncqszvftbrmjlhg"));
-        assertEquals(29, part2("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"));
-        assertEquals(26, part2("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"));
-    }
-
-    private int part2(String input) {
-        return part1(input, 14);
+        assertEquals(19, part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14));
+        assertEquals(23, part1("bvwbjplbgvbhsrlpgdmjqwftvncz", 14));
+        assertEquals(23, part1("nppdvjthqldpwncqszvftbrmjlhg", 14));
+        assertEquals(29, part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 14));
+        assertEquals(26, part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 14));
     }
 
     @Test
@@ -44,7 +39,7 @@ public class Day06 {
     void part2_solution() {
         String input = PuzzleInput.asStringFrom("data/day06");
 
-        int actual = part2(input);
+        int actual = part1(input, 14);
 
         assertEquals(2315, actual);
     }
