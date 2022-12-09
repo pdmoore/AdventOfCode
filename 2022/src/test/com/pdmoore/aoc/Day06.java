@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -10,41 +11,53 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day06 {
     @Test
     void part1_examples() {
-        assertEquals(7, part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb"));
-        assertEquals(5, part1("bvwbjplbgvbhsrlpgdmjqwftvncz"));
-        assertEquals(6, part1("nppdvjthqldpwncqszvftbrmjlhg"));
-        assertEquals(10, part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"));
-        assertEquals(11, part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"));
+        assertEquals(7, part1("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 4));
+        assertEquals(5, part1("bvwbjplbgvbhsrlpgdmjqwftvncz", 4));
+        assertEquals(6, part1("nppdvjthqldpwncqszvftbrmjlhg", 4));
+        assertEquals(10, part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 4));
+        assertEquals(11, part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 4));
+    }
+
+    @Test
+    void part2_examples() {
+        assertEquals(19, part2("mjqjpqmgbljsphdztnvjfqwrcgsmlb"));
+        assertEquals(23, part2("bvwbjplbgvbhsrlpgdmjqwftvncz"));
+        assertEquals(23, part2("nppdvjthqldpwncqszvftbrmjlhg"));
+        assertEquals(29, part2("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"));
+        assertEquals(26, part2("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"));
+    }
+
+    private int part2(String input) {
+        return part1(input, 14);
     }
 
     @Test
     void part1_solution() {
         String input = PuzzleInput.asStringFrom("data/day06");
 
-        int actual = part1(input);
+        int actual = part1(input, 4);
 
         assertEquals(1538, actual);
     }
 
-    private int part1(String input) {
-        // for 4th char to length
+    @Test
+    void part2_solution() {
+        String input = PuzzleInput.asStringFrom("data/day06");
 
-        // throw each of index and preceding three into a set
-        // if suze of set is 4, we're done
+        int actual = part2(input);
 
+        assertEquals(2315, actual);
+    }
 
-        for (int i = 3; i < input.length(); i++) {
+    private int part1(String input, int length) {
+        for (int i = length - 1; i < input.length(); i++) {
             Set<Character> lastFour = new HashSet<>();
-            lastFour.add(input.charAt(i));
-            lastFour.add(input.charAt(i-1));
-            lastFour.add(input.charAt(i-2));
-            lastFour.add(input.charAt(i-3));
+            for (int j = 0; j < length; j++) {
+                lastFour.add(input.charAt(i-j));
+            }
 
-            if (lastFour.size() == 4) return i + 1;
-
+            if (lastFour.size() == length) return i + 1;
         }
-
-
 
         return 0;
     }
