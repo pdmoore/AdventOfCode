@@ -9,6 +9,7 @@ import java.util.*;
 public class Day07 {
 
     final BigInteger total_space = new BigInteger("70000000");
+    final BigInteger min_unused_space = new BigInteger("30000000");
 
     @Test
     void part1_example() {
@@ -47,45 +48,9 @@ public class Day07 {
     }
 
     private BigInteger part1(List<String> input) {
-        boolean processing_ls = false;
 
-        Directory current_dir = null;
         Map<String, Directory> directories = new HashMap<>();
-
-        Directory root = new Directory("/");
-        directories.put(root.name, root);
-
-        for (String inputLine :
-                input) {
-            if (processing_ls) {
-                if (inputLine.startsWith("$")) {
-                    processing_ls = false;
-                } else {
-                    current_dir.contents.add(inputLine);
-                }
-            }
-
-            if (inputLine.startsWith("$ cd /")) {
-                System.out.println("cd /");
-                current_dir = root;
-            } else if (inputLine.startsWith("$ cd ..")) {
-                current_dir = current_dir.parent;
-                System.out.println("cd .. -- current now: " + current_dir.path());
-            } else if (inputLine.startsWith("$ cd")) {
-                String betterName = current_dir.path() + inputLine.substring(5) + "/";
-                if (!directories.containsKey(betterName)) {
-                    Directory currentDir = new Directory(betterName);
-                    currentDir.parent = current_dir;
-                    directories.put(betterName, currentDir);
-                }
-                current_dir = directories.get(betterName);
-                System.out.println("cd " + inputLine + " -- " + current_dir.path());
-
-            } else if (inputLine.startsWith("$ ls")) {
-                current_dir.contents = new ArrayList<>();
-                processing_ls = true;
-            }
-        }
+        extracted(input, directories);
 
         // now process the keys of directories
         // sum each entry and store in new map - dirname to size
@@ -101,6 +66,41 @@ public class Day07 {
         calcTotalSizes(directories, dirsBySize);
 
         return filterAndSumBelowLimit(dirsBySize.values());
+    }
+
+    private void extracted(List<String> input, Map<String, Directory> directories) {
+        Directory root = new Directory("/");
+        directories.put(root.name, root);
+
+        Directory current_dir = null;
+        boolean processing_ls = false;
+        for (String inputLine :
+                input) {
+            if (processing_ls) {
+                if (inputLine.startsWith("$")) {
+                    processing_ls = false;
+                } else {
+                    current_dir.contents.add(inputLine);
+                }
+            }
+
+            if (inputLine.startsWith("$ cd /")) {
+                current_dir = root;
+            } else if (inputLine.startsWith("$ cd ..")) {
+                current_dir = current_dir.parent;
+            } else if (inputLine.startsWith("$ cd")) {
+                String betterName = current_dir.path() + inputLine.substring(5) + "/";
+                if (!directories.containsKey(betterName)) {
+                    Directory currentDir = new Directory(betterName);
+                    currentDir.parent = current_dir;
+                    directories.put(betterName, currentDir);
+                }
+                current_dir = directories.get(betterName);
+            } else if (inputLine.startsWith("$ ls")) {
+                current_dir.contents = new ArrayList<>();
+                processing_ls = true;
+            }
+        }
     }
 
     private void calcTotalSizes(Map<String, Directory> directories, Map<String, BigInteger> dirsBySize) {
@@ -136,7 +136,42 @@ public class Day07 {
     }
 
     private BigInteger part2(List<String> input) {
-        return null;
+        // build total tree
+        // get space used of root
+        // calc min required to delete
+
+        // for each dir, find one that is closest to just bigger than min required
+
+
+        Map<String, Directory> directories = new HashMap<>();
+        extracted(input, directories);
+
+        Map<String, BigInteger> dirsBySize = new HashMap<>();
+        calcTotalSizes(directories, dirsBySize);
+
+        BigInteger totalUsed = dirsBySize.get("/");
+        BigInteger unusedSpace = total_space.subtract(totalUsed);
+        BigInteger minSpaceNeeded = min_unused_space.subtract(unusedSpace);
+
+        BigInteger result = totalUsed;
+        for (String directoryName :
+                dirsBySize.keySet()) {
+            BigInteger check = dirsBySize.get(directoryName);
+
+            // is this bigger than min needed?
+            // is it smallr than urrent result?
+
+            if (check.compareTo(minSpaceNeeded) >= 0) {
+                if (check.compareTo(result) < 0) {
+                    result = check;
+                }
+            }
+
+
+        }
+
+
+        return result;
     }
 
 
