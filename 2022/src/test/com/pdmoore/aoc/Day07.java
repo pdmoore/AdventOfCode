@@ -47,6 +47,15 @@ public class Day07 {
         Assertions.assertEquals(new BigInteger("1306611"), actual);
     }
 
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07");
+
+        BigInteger actual = part2(input);
+
+        Assertions.assertEquals(new BigInteger("13210366"), actual);
+    }
+
     private BigInteger part1(List<String> input) {
 
         Map<String, Directory> directories = new HashMap<>();
@@ -136,13 +145,6 @@ public class Day07 {
     }
 
     private BigInteger part2(List<String> input) {
-        // build total tree
-        // get space used of root
-        // calc min required to delete
-
-        // for each dir, find one that is closest to just bigger than min required
-
-
         Map<String, Directory> directories = new HashMap<>();
         extracted(input, directories);
 
@@ -156,20 +158,14 @@ public class Day07 {
         BigInteger result = totalUsed;
         for (String directoryName :
                 dirsBySize.keySet()) {
-            BigInteger check = dirsBySize.get(directoryName);
+            BigInteger thisDirSize = dirsBySize.get(directoryName);
 
-            // is this bigger than min needed?
-            // is it smallr than urrent result?
-
-            if (check.compareTo(minSpaceNeeded) >= 0) {
-                if (check.compareTo(result) < 0) {
-                    result = check;
+            if (thisDirSize.compareTo(minSpaceNeeded) >= 0) {
+                if (thisDirSize.compareTo(result) < 0) {
+                    result = thisDirSize;
                 }
             }
-
-
         }
-
 
         return result;
     }
