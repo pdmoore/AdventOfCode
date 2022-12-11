@@ -21,7 +21,6 @@ public class Day09 {
     }
 
     @Test
-    @Disabled
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09_example");
 
