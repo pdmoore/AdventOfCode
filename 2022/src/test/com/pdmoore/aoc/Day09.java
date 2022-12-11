@@ -15,7 +15,7 @@ public class Day09 {
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09_example");
 
-        int actual = part1(input);
+        int actual = part1(input, 2);
 
         Assertions.assertEquals(13, actual);
     }
@@ -44,7 +44,7 @@ public class Day09 {
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09");
 
-        int actual = part1(input);
+        int actual = part1(input, 2);
 
         Assertions.assertEquals(6271, actual);
     }
@@ -67,8 +67,8 @@ public class Day09 {
         return 0;
     }
 
-    private int part1(List<String> input) {
-        int numKnots = 2;
+    private int part1(List<String> input, int numKnots) {
+
         Set<Point> tailVisits = new HashSet<>();
 
         List<Point> positions = new ArrayList<>();
