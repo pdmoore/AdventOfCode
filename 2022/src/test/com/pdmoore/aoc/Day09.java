@@ -25,7 +25,7 @@ public class Day09 {
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09_example");
 
-        int actual = part2(input);
+        int actual = part1(input, 10);
 
         Assertions.assertEquals(1, actual);
     }
@@ -61,9 +61,6 @@ public class Day09 {
 
 
     private int part2(List<String> input) {
-
-
-
         return 0;
     }
 
@@ -91,28 +88,35 @@ public class Day09 {
 
             for (int i = 0; i < repeatMoveCount; i++) {
 
+                List<Point> nextPositions = new ArrayList<>();
+
                 //always move head, knotNum 0, then iterate over the rest based on prev position
                 // Move the head
                 Point oldHeadPosition = positions.get(0);
                 Point newHeadPosition = oldHeadPosition.move(direction);
-                ((ArrayList)positions).set(0, newHeadPosition);
+//                ((ArrayList)positions).set(0, newHeadPosition);
+                nextPositions.add(newHeadPosition);
 
                 // loop range stays the same, guts need tweaked
                 for (int knotNum = 1; knotNum < numKnots; knotNum++) {
 
                     Point prevKnot = positions.get(knotNum);
 
-                    if (!prevKnot.adjacentTo(newHeadPosition)) {
-                        ((ArrayList)positions).set(knotNum, oldHeadPosition);
-                        newHeadPosition = oldHeadPosition;
+                    if (!prevKnot.adjacentTo(nextPositions.get(knotNum-1))) {
+                        nextPositions.add(positions.get(knotNum-1));
+//                        ((ArrayList)positions).set(knotNum, oldHeadPosition);
+//                        newHeadPosition = oldHeadPosition;
                         if (knotNum == numKnots - 1) {
                             tailVisits.add(oldHeadPosition);
                         }
+                    } else {
+                        nextPositions.add(prevKnot);
                     }
 
-                    oldHeadPosition = prevKnot;
-
+//                    oldHeadPosition = prevKnot;
                 }
+
+                positions = nextPositions;
             }
         }
 
