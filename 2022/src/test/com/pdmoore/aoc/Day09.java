@@ -76,38 +76,42 @@ public class Day09 {
             positions.add(new Point(0, 0));
         }
 
-//        Point headPosition = new Point(0, 0);
-//        Point tailPosition = new Point(0, 0);
-//        tailVisits.add(tailPosition);
         tailVisits.add(positions.get(numKnots - 1));
 
         for (String inputLine :
                 input) {
             String[] split = inputLine.split(" ");
             String direction = split[0];
-            int count = Integer.parseInt(split[1]);
+            int repeatMoveCount = Integer.parseInt(split[1]);
 
-            for (int i = 0; i < count; i++) {
+            // works for 2 knots, but needs fixed for 10
+            // distinguish between moving head to a new position and all other moves that can snap
+            // to preceding knot's position
 
+
+            for (int i = 0; i < repeatMoveCount; i++) {
+
+                //always move head, knotNum 0, then iterate over the rest based on prev position
+                // Move the head
+                Point oldHeadPosition = positions.get(0);
+                Point newHeadPosition = oldHeadPosition.move(direction);
+                ((ArrayList)positions).set(0, newHeadPosition);
+
+                // loop range stays the same, guts need tweaked
                 for (int knotNum = 1; knotNum < numKnots; knotNum++) {
-//                    Point oldHeadPosition = headPosition;
-                    Point oldHeadPosition = positions.get(knotNum - 1);
-
-                    Point newHeadPosition = oldHeadPosition.move(direction);
 
                     Point prevKnot = positions.get(knotNum);
 
                     if (!prevKnot.adjacentTo(newHeadPosition)) {
                         ((ArrayList)positions).set(knotNum, oldHeadPosition);
-
-//                        tailPosition = oldHeadPosition;
-
+                        newHeadPosition = oldHeadPosition;
                         if (knotNum == numKnots - 1) {
                             tailVisits.add(oldHeadPosition);
                         }
                     }
 
-                    ((ArrayList)positions).set(knotNum - 1, newHeadPosition);
+                    oldHeadPosition = prevKnot;
+
                 }
             }
         }
