@@ -30,11 +30,13 @@ public class Day09 {
     }
 
     @Test
-    @Disabled
     void part2_example_2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day09_example_part2");
 
-        int actual = part2(input);
+        //TODO - left off here - the tail logic for the example isn't clear
+        // see the part 2 description for the second move (U) where the head to tail
+        // has the diagonal but then knots 5 and 4 are adjacent horizontally
+        int actual = part1(input, 10);
 
         Assertions.assertEquals(36, actual);
     }
@@ -80,11 +82,6 @@ public class Day09 {
             String direction = split[0];
             int repeatMoveCount = Integer.parseInt(split[1]);
 
-            // works for 2 knots, but needs fixed for 10
-            // distinguish between moving head to a new position and all other moves that can snap
-            // to preceding knot's position
-
-
             for (int i = 0; i < repeatMoveCount; i++) {
 
                 List<Point> nextPositions = new ArrayList<>();
@@ -93,26 +90,30 @@ public class Day09 {
                 // Move the head
                 Point oldHeadPosition = positions.get(0);
                 Point newHeadPosition = oldHeadPosition.move(direction);
-//                ((ArrayList)positions).set(0, newHeadPosition);
                 nextPositions.add(newHeadPosition);
 
-                // loop range stays the same, guts need tweaked
                 for (int knotNum = 1; knotNum < numKnots; knotNum++) {
 
                     Point prevKnot = positions.get(knotNum);
 
+                    // rather than move the knot to the prev knot's exact position,
+                    // drag it to within one of new position - this may be a position
+                    // the head hasn't visited
+
                     if (!prevKnot.adjacentTo(nextPositions.get(knotNum-1))) {
-                        nextPositions.add(positions.get(knotNum-1));
-//                        ((ArrayList)positions).set(knotNum, oldHeadPosition);
-//                        newHeadPosition = oldHeadPosition;
+
+                        Point next = prevKnot.move(direction);
+
+                        nextPositions.add(next);
+//                        nextPositions.add(positions.get(knotNum-1));
+
+
                         if (knotNum == numKnots - 1) {
                             tailVisits.add(oldHeadPosition);
                         }
                     } else {
                         nextPositions.add(prevKnot);
                     }
-
-//                    oldHeadPosition = prevKnot;
                 }
 
                 positions = nextPositions;
