@@ -9,10 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+class Day01 {
 
-public class Day01 {
-
-    private Map<String, Integer> digitFromSpelling = Stream.of( new Object[][] {
+    private final Map<String, Integer> digitFromSpelling = Stream.of( new Object[][] {
             {"one", 1},
             {"two", 2},
             {"three", 3},
@@ -25,7 +24,7 @@ public class Day01 {
     }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
 
     @Test
-    public void CalibrationValue_FromFirstAndLastNumber() {
+    void CalibrationValue_FromFirstAndLastNumber() {
         String input = "1abc2";
         int expected = 12;
         int actual = calibrationFromDigitsOnly(input);
@@ -79,7 +78,7 @@ public class Day01 {
     }
 
     @Test
-    void CalibrationValaue_spelledNumbers() {
+    void CalibrationValue_spelledNumbers() {
         assertEquals(29, calibrationValueFrom("two1nine"));
         assertEquals(83, calibrationValueFrom("eightwothree"));
         assertEquals(13, calibrationValueFrom("abcone2threexyz"));
@@ -92,11 +91,10 @@ public class Day01 {
     //-------------------------------------------------------
 
     private int calibrationValueFrom(String input) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(findFirstNumber(input));
-        sb.append(findSecondNumber(input));
+        String sb = String.valueOf(findFirstNumber(input)) +
+                findSecondNumber(input);
 
-        return Integer.parseInt(sb.toString());
+        return Integer.parseInt(sb);
     }
 
     private int findSecondNumber(String input) {
