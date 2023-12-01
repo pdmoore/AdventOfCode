@@ -49,6 +49,16 @@ public class Day01 {
         assertEquals(142, actual);
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day01");
+
+        int actual = day01part1(input);
+
+        assertEquals(54159, actual);
+    }
+
+
     private int day01part1(List<String> input) {
         int sum = 0;
         for (String inputLine :
