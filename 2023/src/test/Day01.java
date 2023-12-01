@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -32,6 +35,29 @@ public class Day01 {
     void CalibrationValue_OnlyOneNumber() {
         assertEquals(77, thingie("treb7uchet"));
     }
+
+    @Test
+    void sumAllCalibrationValues() {
+        List<String> input = new ArrayList<>();
+        input.add("1abc2");
+        input.add("pqr3stu8vwx");
+        input.add("a1b2c3d4e5f");
+        input.add("treb7uchet");
+
+        int actual = day01part1(input);
+
+        assertEquals(142, actual);
+    }
+
+    private int day01part1(List<String> input) {
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            sum += thingie(inputLine);
+        }
+        return sum;
+    }
+
 
     private int thingie(String input) {
         String firstDigitFromLeft = fromLeft(input);
