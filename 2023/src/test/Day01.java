@@ -70,9 +70,23 @@ public class Day01 {
     }
 
     @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day01");
+
+        int actual = day01part2(input);
+
+        assertEquals(53866, actual);
+    }
+
+    @Test
     void CalibrationValaue_spelledNumbers() {
-        String input = "two1nine";
-        assertEquals(29, calibrationValueFrom(input));
+        assertEquals(29, calibrationValueFrom("two1nine"));
+        assertEquals(83, calibrationValueFrom("eightwothree"));
+        assertEquals(13, calibrationValueFrom("abcone2threexyz"));
+        assertEquals(24, calibrationValueFrom("xtwone3four"));
+        assertEquals(42, calibrationValueFrom("4nineeightseven2"));
+        assertEquals(14, calibrationValueFrom("zoneight234"));
+        assertEquals(76, calibrationValueFrom("7pqrstsixteen"));
     }
 
     //-------------------------------------------------------
@@ -134,6 +148,15 @@ public class Day01 {
         return sum;
     }
 
+    private int day01part2(List<String> input) {
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            sum += calibrationValueFrom(
+                    inputLine);
+        }
+        return sum;
+    }
 
     private int calibrationFromDigitsOnly(String input) {
         String firstDigitFromLeft = fromLeft(input);
