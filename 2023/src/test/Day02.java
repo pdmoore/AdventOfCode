@@ -3,6 +3,8 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Day02 {
@@ -28,9 +30,14 @@ public class Day02 {
         Assertions.assertEquals(2101, actual);
     }
 
+    @Test
+    void part2_fewestCubesExamples() {
+        String input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
+        List<Integer> expected = Arrays.asList(4, 2, 6);  // R G B
+        Assertions.assertEquals(expected, part2singlething(input));
+    }
 
-
-//-------------------------
+    //-------------------------
     private int sumPossibleGames(List<String> input) {
         int sum = 0;
         for (String inputLine :
@@ -43,12 +50,50 @@ public class Day02 {
         return sum;
     }
 
+    private List<Integer> part2singlething(String inputLine) {
+        List<Integer> result = new ArrayList<>();
+
+        int maxRed = 0;
+        int maxGreen = 0;
+        int maxBlue = 0;
+
+        //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+        // split on colon
+        // rhs of colon, split on semicolon
+        // copy the parsing stuff from below
+        String[] firstsplit = inputLine.split(":");
+        String rhs = firstsplit[1].trim();
+        String[] subsets = rhs.split(";");
+
+        for (int i = 0; i < subsets.length; i++) {
+            String[] cubesRevealed = subsets[i].split(",");
+            for (int j = 0; j < cubesRevealed.length; j++) {
+
+                String[] check = cubesRevealed[j].trim().split(" ");
+                if (check[1].trim().equals("red")) {
+                    maxRed = Math.max(maxRed, 4);
+                }
+                if (check[1].trim().equals("green")) {
+                    maxGreen = Math.max(maxGreen, 2);
+                }
+                if (check[1].trim().equals("blue")) {
+                    maxBlue = Math.max(maxBlue, 6);
+                }
+            }
+        }
+        result.add(maxRed);
+        result.add(maxGreen);
+        result.add(maxBlue);
+
+        return result;
+    }
+
     private int gameNumberOf(String inputLine) {
         String[] firstsplit = inputLine.split(":");
         return Integer.parseInt(firstsplit[0].split(" ")[1]);
     }
 
-    private boolean isPossible(String inputLine){
+    private boolean isPossible(String inputLine) {
         //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         String[] firstsplit = inputLine.split(":");
         String rhs = firstsplit[1].trim();
