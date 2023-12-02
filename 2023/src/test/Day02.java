@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Day02 {
     final int max_red = 12;
     final int max_green = 13;
@@ -18,7 +20,7 @@ public class Day02 {
 
         int actual = sumPossibleGames(input);
 
-        Assertions.assertEquals(8, actual);
+        assertEquals(8, actual);
     }
 
     @Test
@@ -27,14 +29,15 @@ public class Day02 {
 
         int actual = sumPossibleGames(input);
 
-        Assertions.assertEquals(2101, actual);
+        assertEquals(2101, actual);
     }
 
     @Test
     void part2_fewestCubesExamples() {
         String input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
         List<Integer> expected = Arrays.asList(4, 2, 6);  // R G B
-        Assertions.assertEquals(expected, part2singlething(input));
+        assertEquals(expected, part2singlething(input));
+        assertEquals(Arrays.asList(1, 3, 4), part2singlething("Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue"));
     }
 
     //-------------------------
@@ -70,14 +73,16 @@ public class Day02 {
             for (int j = 0; j < cubesRevealed.length; j++) {
 
                 String[] check = cubesRevealed[j].trim().split(" ");
+                Integer numCubes = Integer.parseInt(check[0]);
+
                 if (check[1].trim().equals("red")) {
-                    maxRed = Math.max(maxRed, 4);
+                    maxRed = Math.max(maxRed, numCubes);
                 }
                 if (check[1].trim().equals("green")) {
-                    maxGreen = Math.max(maxGreen, 2);
+                    maxGreen = Math.max(maxGreen, numCubes);
                 }
                 if (check[1].trim().equals("blue")) {
-                    maxBlue = Math.max(maxBlue, 6);
+                    maxBlue = Math.max(maxBlue, numCubes);
                 }
             }
         }
