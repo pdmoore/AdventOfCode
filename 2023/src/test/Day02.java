@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day02 {
+class Day02 {
     final int max_red = 12;
     final int max_green = 13;
     final int max_blue = 14;
@@ -38,18 +37,18 @@ public class Day02 {
 
         int actual = sumPowers(input);
 
-        assertEquals(99, actual);
+        assertEquals(58269, actual);
     }
 
     @Test
     void part2_fewestCubesExamples() {
         String input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
         List<Integer> expected = Arrays.asList(4, 2, 6);  // R G B
-        assertEquals(expected, part2singlething(input));
-        assertEquals(Arrays.asList(1, 3, 4), part2singlething("Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue"));
-        assertEquals(Arrays.asList(20, 13, 6), part2singlething("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red"));
-        assertEquals(Arrays.asList(14, 3, 15), part2singlething("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red"));
-        assertEquals(Arrays.asList(6, 3, 2), part2singlething("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"));
+        assertEquals(expected, fewestCubesNeeded(input));
+        assertEquals(Arrays.asList(1, 3, 4), fewestCubesNeeded("Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue"));
+        assertEquals(Arrays.asList(20, 13, 6), fewestCubesNeeded("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red"));
+        assertEquals(Arrays.asList(14, 3, 15), fewestCubesNeeded("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red"));
+        assertEquals(Arrays.asList(6, 3, 2), fewestCubesNeeded("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"));
     }
 
     @Test
@@ -64,7 +63,7 @@ public class Day02 {
         assertEquals(36, powerOfSetOfCubes(Arrays.asList(6, 3, 2)));
     }
 
-    //-------------------------
+//--------------------------------------
     private int powerOfSetOfCubes(List<Integer> setOfCubes) {
         return setOfCubes.stream().reduce(1, (a, b) -> a * b);
     }
@@ -85,25 +84,20 @@ public class Day02 {
         int sum = 0;
         for (String inputLine :
                 input) {
-            List<Integer> setOfCubes = part2singlething(inputLine);
+            List<Integer> setOfCubes = fewestCubesNeeded(inputLine);
             sum += powerOfSetOfCubes(setOfCubes);
         }
         return sum;
     }
 
-    private List<Integer> part2singlething(String inputLine) {
+    private List<Integer> fewestCubesNeeded(String inputLine) {
         List<Integer> result = new ArrayList<>();
 
         int maxRed = 0;
         int maxGreen = 0;
         int maxBlue = 0;
 
-        //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-        // split on colon
-        // rhs of colon, split on semicolon
-        // copy the parsing stuff from below
-        String[] firstsplit = inputLine.split(":");
-        String rhs = firstsplit[1].trim();
+        String rhs = inputLine.split(":")[1].trim();
         String[] subsets = rhs.split(";");
 
         for (int i = 0; i < subsets.length; i++) {
@@ -132,14 +126,12 @@ public class Day02 {
     }
 
     private int gameNumberOf(String inputLine) {
-        String[] firstsplit = inputLine.split(":");
-        return Integer.parseInt(firstsplit[0].split(" ")[1]);
+        return Integer.parseInt(inputLine.split(":")[0].split(" ")[1]);
     }
 
     private boolean isPossible(String inputLine) {
         //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-        String[] firstsplit = inputLine.split(":");
-        String rhs = firstsplit[1].trim();
+        String rhs = inputLine.split(":")[1].trim();
         String[] subsets = rhs.split(";");
 
         // foreach subset, split into rgb
@@ -149,7 +141,7 @@ public class Day02 {
             for (int j = 0; j < cubesRevealed.length; j++) {
 
                 String[] check = cubesRevealed[j].trim().split(" ");
-                Integer numCubes = Integer.parseInt(check[0]);
+                int numCubes = Integer.parseInt(check[0]);
                 if (check[1].trim().equals("red")) {
                     if (numCubes > max_red) return false;
                 }
@@ -163,5 +155,4 @@ public class Day02 {
         }
         return true;
     }
-
 }
