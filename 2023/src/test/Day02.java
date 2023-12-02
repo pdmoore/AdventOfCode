@@ -33,6 +33,15 @@ public class Day02 {
     }
 
     @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day02");
+
+        int actual = sumPowers(input);
+
+        assertEquals(99, actual);
+    }
+
+    @Test
     void part2_fewestCubesExamples() {
         String input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
         List<Integer> expected = Arrays.asList(4, 2, 6);  // R G B
@@ -53,7 +62,6 @@ public class Day02 {
         assertEquals(1560, powerOfSetOfCubes(Arrays.asList(20, 13, 6)));
         assertEquals(630, powerOfSetOfCubes(Arrays.asList(14, 3, 15)));
         assertEquals(36, powerOfSetOfCubes(Arrays.asList(6, 3, 2)));
-
     }
 
     //-------------------------
@@ -69,6 +77,16 @@ public class Day02 {
                 int gameNumber = gameNumberOf(inputLine);
                 sum += gameNumber;
             }
+        }
+        return sum;
+    }
+
+    private int sumPowers(List<String> input) {
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            List<Integer> setOfCubes = part2singlething(inputLine);
+            sum += powerOfSetOfCubes(setOfCubes);
         }
         return sum;
     }
