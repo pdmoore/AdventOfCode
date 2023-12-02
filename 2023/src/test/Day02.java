@@ -43,7 +43,24 @@ public class Day02 {
         assertEquals(Arrays.asList(6, 3, 2), part2singlething("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"));
     }
 
+    @Test
+    void part2_powerOfSetOfCubes() {
+        List<Integer> setOfCubes = Arrays.asList(4, 2, 6);
+        int expected = 4 * 2 * 6;
+        assertEquals(expected, powerOfSetOfCubes(setOfCubes));
+
+        assertEquals(12, powerOfSetOfCubes(Arrays.asList(1, 3, 4)));
+        assertEquals(1560, powerOfSetOfCubes(Arrays.asList(20, 13, 6)));
+        assertEquals(630, powerOfSetOfCubes(Arrays.asList(14, 3, 15)));
+        assertEquals(36, powerOfSetOfCubes(Arrays.asList(6, 3, 2)));
+
+    }
+
     //-------------------------
+    private int powerOfSetOfCubes(List<Integer> setOfCubes) {
+        return setOfCubes.stream().reduce(1, (a, b) -> a * b);
+    }
+
     private int sumPossibleGames(List<String> input) {
         int sum = 0;
         for (String inputLine :
