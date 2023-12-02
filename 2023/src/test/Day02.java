@@ -100,12 +100,12 @@ class Day02 {
         String rhs = inputLine.split(":")[1].trim();
         String[] subsets = rhs.split(";");
 
-        for (int i = 0; i < subsets.length; i++) {
-            String[] cubesRevealed = subsets[i].split(",");
-            for (int j = 0; j < cubesRevealed.length; j++) {
+        for (String subset : subsets) {
+            String[] cubesRevealed = subset.split(",");
+            for (String s : cubesRevealed) {
 
-                String[] check = cubesRevealed[j].trim().split(" ");
-                Integer numCubes = Integer.parseInt(check[0]);
+                String[] check = s.trim().split(" ");
+                int numCubes = Integer.parseInt(check[0]);
 
                 if (check[1].trim().equals("red")) {
                     maxRed = Math.max(maxRed, numCubes);
@@ -130,17 +130,15 @@ class Day02 {
     }
 
     private boolean isPossible(String inputLine) {
-        //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         String rhs = inputLine.split(":")[1].trim();
         String[] subsets = rhs.split(";");
 
-        // foreach subset, split into rgb
-        // if any rgb exceeds the max, return false
-        for (int i = 0; i < subsets.length; i++) {
-            String[] cubesRevealed = subsets[i].split(",");
-            for (int j = 0; j < cubesRevealed.length; j++) {
+        // if any grab of rgb exceeds the max, game is not possible (return false)
+        for (String subset : subsets) {
+            String[] cubesRevealed = subset.split(",");
+            for (String s : cubesRevealed) {
 
-                String[] check = cubesRevealed[j].trim().split(" ");
+                String[] check = s.trim().split(" ");
                 int numCubes = Integer.parseInt(check[0]);
                 if (check[1].trim().equals("red")) {
                     if (numCubes > max_red) return false;
