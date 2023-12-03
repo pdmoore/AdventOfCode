@@ -11,6 +11,10 @@ public class Day03 {
     static public char[][] as2dCharArray(String filename) {
         List<String> input = PuzzleInput.asStringListFrom(filename);
 
+        return as2dCharArray(input);
+    }
+
+    private static char[][] as2dCharArray(List<String> input) {
         int rowCount = input.size();
         int colCount = input.get(0).length();
         char[][] locations = new char[rowCount][colCount];
@@ -61,6 +65,56 @@ public class Day03 {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void part1_example() {
+        List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_example");
+
+        Integer actual = partNumbers.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        assertEquals(4361, actual);
+    }
+
+    @Test
+    void part1_example_from_reddit() {
+        List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_reddit_example");
+
+        Integer actual = partNumbers.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        assertEquals(925, actual);
+        // part 2 s/b 6756
+    }
+
+    @Test
+    void part1_example_upandleft_bug() {
+        List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_bugdata");
+
+        Integer actual = partNumbers.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        assertEquals(0, actual);
+    }
+
+    @Test
+    void part1_solution() {
+
+        // SUNDAY - this is still not right
+        // assumed it was because I included duplicate part numbers
+        // now not sure
+        // take a look at All Numbers vs Part Numbers
+
+        List<Integer> partNumbers = getAllPartNumbers("./data/day03");
+
+        Integer actual = partNumbers.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        // TOO low - 335339
+        // TOO HIGH - 518753
+        assertEquals(99, actual);
+    }
+
+
     private List<Integer> getAllPartNumbers(String filename) {
         Map<Point, Integer> allTheNumbers = getAllTheNumbers(filename);
 
@@ -81,12 +135,11 @@ public class Day03 {
     private boolean isPartNumber(char[][] grid, Point point, Integer integer) {
         int numDigits = String.valueOf(integer).length();
 
-        // missing 467, 617, 755
         for (int curY = point.y - 1; curY <= point.y + numDigits; curY++) {
             int curX = point.x;
             if (symbolAt(grid, curX - 1, curY)) return true;
-            if (symbolAt(grid, curX - 1, curY - 1)) return true;
-            if (symbolAt(grid, curX - 1, curY + 1)) return true;
+//            if (symbolAt(grid, curX - 1, curY - 1)) return true;
+//            if (symbolAt(grid, curX - 1, curY + 1)) return true;
 
             if (symbolAt(grid, curX, curY)) return true;
             if (symbolAt(grid, curX, curY)) return true;
@@ -130,13 +183,11 @@ public class Day03 {
                         y++;
                     }
 
-
                     result.put(startOfNumber, Integer.parseInt(number));
                 }
             }
         }
 
         return result;
-
     }
 }
