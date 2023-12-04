@@ -107,10 +107,6 @@ public class Day04 {
                 }
 
             }
-
-            if (cardsLeftToProcess.size() % 100 == 0) {
-                System.out.println(cardNumber + " -- left: " + cardsLeftToProcess.size());
-            }
         }
 
         return cardsByCount.values().stream().mapToInt(r -> r.countOfThisCard).sum();
