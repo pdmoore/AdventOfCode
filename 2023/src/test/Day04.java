@@ -68,15 +68,15 @@ public class Day04 {
         assertEquals(8063216, actual);
     }
 
-    class Record {
+    static class ScratchCard {
         int cardNumber;
         int numMatches;
-        int cardCount;
+        int countOfThisCard;
 
-        public Record(int cardNumber, Integer matches) {
+        public ScratchCard(int cardNumber, Integer matches) {
             this.cardNumber = cardNumber;
             this.numMatches = matches;
-            this.cardCount = 1;
+            this.countOfThisCard = 1;
         }
     }
 
@@ -86,9 +86,9 @@ public class Day04 {
         ArrayList<String> cardsLeftToProcess = new ArrayList<>();
         cardsLeftToProcess.addAll(input);
 
-        Map<Integer, Record> cardsByCount = new HashMap<>();
+        Map<Integer, ScratchCard> cardsByCount = new HashMap<>();
         for (int i = 1; i <= cardsLeftToProcess.size(); i++) {
-            Record next = new Record(i, cardNumberToNumMatches.get(i));
+            ScratchCard next = new ScratchCard(i, cardNumberToNumMatches.get(i));
             cardsByCount.put(i, next);
         }
 
@@ -97,13 +97,13 @@ public class Day04 {
             int cardNumber = cardNumberFrom(nextCard);
             int numMatches = cardNumberToNumMatches.get(cardNumber);
 
-            Record currentCard = cardsByCount.get(cardNumber);
-            for (int i = 0; i < currentCard.cardCount; i++) {
+            ScratchCard currentCard = cardsByCount.get(cardNumber);
+            for (int i = 0; i < currentCard.countOfThisCard; i++) {
                 for (int j = 0; j < numMatches; j++) {
     //                cardsLeftToProcess.add(input.get(cardNumber + i));
 
-                    Record record = cardsByCount.get(cardNumber + j + 1);
-                    record.cardCount += 1;
+                    ScratchCard scratchCard = cardsByCount.get(cardNumber + j + 1);
+                    scratchCard.countOfThisCard += 1;
                 }
 
             }
@@ -115,10 +115,10 @@ public class Day04 {
 
         // sum all the record's macthes in cardsByCount
         int sum = 0;
-        for(Record r:
+        for(ScratchCard r:
                 cardsByCount.values())
         {
-            sum += r.cardCount;
+            sum += r.countOfThisCard;
         }
 
 
