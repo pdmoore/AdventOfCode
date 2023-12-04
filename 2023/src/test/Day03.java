@@ -60,7 +60,7 @@ public class Day03 {
         List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_example");
 
         Integer actual = partNumbers.stream()
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, Integer::sum);
 
         assertEquals(4361, actual);
     }
@@ -70,10 +70,9 @@ public class Day03 {
         List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_reddit_example");
 
         Integer actual = partNumbers.stream()
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, Integer::sum);
 
         assertEquals(925, actual);
-        // part 2 s/b 6756
     }
 
     @Test
@@ -88,7 +87,7 @@ public class Day03 {
         List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_bug_data");
 
         Integer actual = partNumbers.stream()
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, Integer::sum);
 
         assertEquals(0, actual);
     }
@@ -98,7 +97,7 @@ public class Day03 {
         List<Integer> partNumbers = getAllPartNumbers("./data/day03");
 
         Integer actual = partNumbers.stream()
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, Integer::sum);
 
         assertEquals(514969, actual);
     }
