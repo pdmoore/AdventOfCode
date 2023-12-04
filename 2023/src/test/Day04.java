@@ -152,11 +152,6 @@ public class Day04 {
                 filter(numberYouHave -> !numberYouHave.isEmpty() &&
                         winningNumbers.contains(numberYouHave)).count();
 
-        // split on colon, only retain second half
-        // split second half on '|'
-        // [0] is the winning numbers - convert to list
-        // [1] is numbers you have - for each instance in winning numbers, score is 2^(num matches - 1)
-
         return (int) Math.pow(2, count - 1);
     }
 }
