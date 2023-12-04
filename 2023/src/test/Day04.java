@@ -1,10 +1,8 @@
 package com.pdmoore.aoc;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +28,9 @@ public class Day04 {
     }
 
     private int cardNumberFrom(String input) {
-        return Integer.parseInt(input.split(":")[0].split(" ")[1]);
+        String[] firstSplit = input.split(":");
+        String secondSplit = firstSplit[0].substring(5);
+        return Integer.parseInt(secondSplit.trim());
     }
 
     @Test
@@ -61,7 +61,6 @@ public class Day04 {
     }
 
     @Test
-    @Disabled
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day04");
 
@@ -71,7 +70,6 @@ public class Day04 {
     }
 
     private int solvePart2(List<String> input) {
-        // build list of card number to number of matches
         Map<Integer, Integer> cardNumberToNumMatches = findMatchesForCards(input);
 
         ArrayList<String> cardsLeftToProcess = new ArrayList<>();
@@ -85,6 +83,10 @@ public class Day04 {
 
             for (int i = 0; i < numMatches; i++) {
                 cardsLeftToProcess.add(input.get(cardNumber + i));
+            }
+
+            if (cardsLeftToProcess.size() % 100 == 0) {
+                System.out.println(cardNumber + " -- left: " + cardsLeftToProcess.size());
             }
         }
 
