@@ -138,12 +138,7 @@ public class Day04 {
     }
 
     private int solvePart1(List<String> input) {
-        int sum = 0;
-        for (String inputLine :
-                input) {
-            sum += scoreScratchCard(inputLine);
-        }
-        return sum;
+        return input.stream().mapToInt(this::scoreScratchCard).sum();
     }
 
     private int scoreScratchCard(String input) {
