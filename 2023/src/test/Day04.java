@@ -69,20 +69,44 @@ public class Day04 {
         assertEquals(99, actual);
     }
 
+    class Record {
+        int cardNumber;
+        int numMatches;
+        int cardCount;
+
+        public Record(int cardNumber, Integer matches) {
+            this.cardNumber = cardNumber;
+            this.numMatches = matches;
+            this.cardCount = 1;
+        }
+    }
+
     private int solvePart2(List<String> input) {
         Map<Integer, Integer> cardNumberToNumMatches = findMatchesForCards(input);
 
         ArrayList<String> cardsLeftToProcess = new ArrayList<>();
         cardsLeftToProcess.addAll(input);
-        int count = 0;
+
+        Map<Integer, Record> cardsByCount = new HashMap<>();
+        for (int i = 1; i <= cardsLeftToProcess.size(); i++) {
+            Record next = new Record(i, cardNumberToNumMatches.get(i));
+            cardsByCount.put(i, next);
+        }
+
         while (!cardsLeftToProcess.isEmpty()) {
-            count++;
             String nextCard = cardsLeftToProcess.remove(0);
             int cardNumber = cardNumberFrom(nextCard);
             int numMatches = cardNumberToNumMatches.get(cardNumber);
 
-            for (int i = 0; i < numMatches; i++) {
-                cardsLeftToProcess.add(input.get(cardNumber + i));
+            Record currentCard = cardsByCount.get(cardNumber);
+            for (int i = 0; i < currentCard.cardCount; i++) {
+                for (int j = 0; j < numMatches; j++) {
+    //                cardsLeftToProcess.add(input.get(cardNumber + i));
+
+                    Record record = cardsByCount.get(cardNumber + j + 1);
+                    record.cardCount += 1;
+                }
+
             }
 
             if (cardsLeftToProcess.size() % 100 == 0) {
@@ -90,7 +114,16 @@ public class Day04 {
             }
         }
 
-        return count;
+        // sum all the record's macthes in cardsByCount
+        int sum = 0;
+        for(Record r:
+                cardsByCount.values())
+        {
+            sum += r.cardCount;
+        }
+
+
+        return sum;
     }
 
     private Map<Integer, Integer> findMatchesForCards(List<String> input) {
