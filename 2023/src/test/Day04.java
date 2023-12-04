@@ -85,17 +85,14 @@ public class Day04 {
     private int solvePart2(List<String> input) {
         Map<Integer, Integer> cardNumberToNumMatches = findMatchesForCards(input);
 
-        ArrayList<String> cardsLeftToProcess = new ArrayList<>();
-        cardsLeftToProcess.addAll(input);
-
         Map<Integer, ScratchCard> cardsByCount = new HashMap<>();
-        for (int i = 1; i <= cardsLeftToProcess.size(); i++) {
+        for (int i = 1; i <= input.size(); i++) {
             ScratchCard next = new ScratchCard(i, cardNumberToNumMatches.get(i));
             cardsByCount.put(i, next);
         }
 
-        while (!cardsLeftToProcess.isEmpty()) {
-            String nextCard = cardsLeftToProcess.remove(0);
+        while (!input.isEmpty()) {
+            String nextCard = input.remove(0);
             int cardNumber = cardNumberFrom(nextCard);
             int numMatches = cardNumberToNumMatches.get(cardNumber);
 
@@ -105,7 +102,6 @@ public class Day04 {
                     ScratchCard scratchCard = cardsByCount.get(cardNumber + j + 1);
                     scratchCard.countOfThisCard += 1;
                 }
-
             }
         }
 
