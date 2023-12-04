@@ -84,8 +84,8 @@ public class Day03 {
     }
 
     @Test
-    void part1_example_upandleft_bug() {
-        List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_bugdata");
+    void part1_example_up_and_left_bug() {
+        List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_bug_data");
 
         Integer actual = partNumbers.stream()
                 .reduce(0, (a, b) -> a + b);
