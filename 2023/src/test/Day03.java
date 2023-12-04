@@ -229,9 +229,7 @@ public class Day03 {
 
         char c = grid[x][y];
         if (c == '.') return false;
-        if (c >= '0' && c <= '9') return false;
-
-        return true;
+        return c < '0' || c > '9';
     }
 
     private Map<Point, Integer> getAllTheNumbers(String filename) {
