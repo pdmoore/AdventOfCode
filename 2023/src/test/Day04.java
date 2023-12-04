@@ -6,7 +6,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day04 {
+class Day04 {
 
     @Test
     void part1_score_single_scratch_card() {
@@ -125,16 +125,11 @@ public class Day04 {
         String[] secondSplit = firstSplit[1].split("\\|");
 
         List<String> winningNumbers = Arrays.asList(secondSplit[0].split(" "));
-        List<String> numbersYouHave = Arrays.asList(secondSplit[1].split(" "));
+        String[] numbersYouHave = secondSplit[1].split(" ");
 
-        int count = 0;
-        for (String numberYouHave :
-                numbersYouHave) {
-            if (!numberYouHave.isEmpty() && winningNumbers.contains(numberYouHave)) {
-                count++;
-            }
-        }
-        return count;
+        return (int) Arrays.stream(numbersYouHave)
+                .filter(numberYouHave -> !numberYouHave.isEmpty() &&
+                        winningNumbers.contains(numberYouHave)).count();
     }
 
     private int solvePart1(List<String> input) {
