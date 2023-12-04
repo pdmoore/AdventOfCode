@@ -36,12 +36,10 @@ public class Day03 {
 
         Map<Point, Integer> actual = getAllTheNumbers("./data/day03_part1_example");
 
-        Collection<Integer> values = actual.values();
-        List<Integer> xxx = new ArrayList<>();
-        xxx.addAll(values);
-        Collections.sort(xxx);
+        List<Integer> actualSortedNumbers = new ArrayList<>(actual.values());
+        Collections.sort(actualSortedNumbers);
 
-        assertEquals(expected, xxx);
+        assertEquals(expected, actualSortedNumbers);
     }
 
     @Test
