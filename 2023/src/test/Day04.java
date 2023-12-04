@@ -66,7 +66,7 @@ public class Day04 {
 
         int actual = solvePart2(input);
 
-        assertEquals(99, actual);
+        assertEquals(8063216, actual);
     }
 
     class Record {
