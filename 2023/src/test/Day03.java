@@ -218,8 +218,6 @@ public class Day03 {
             if (symbolAt(grid, curX, curY)) return true;
 
             if (symbolAt(grid, curX + 1, curY)) return true;
-            if (symbolAt(grid, curX + 1, curY)) return true;
-            if (symbolAt(grid, curX + 1, curY)) return true;
         }
 
         return false;
