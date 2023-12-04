@@ -18,9 +18,34 @@ public class Day04 {
         assertEquals(8, actual);
     }
 
-    private int scoreScratchCard(String input) {
-//        "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53";
+    @Test
+    void part1_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04_part1_example");
 
+        int actual = solvePart1(input);
+
+        assertEquals(13, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day04");
+
+        int actual = solvePart1(input);
+
+        assertEquals(18619, actual);
+    }
+
+    private int solvePart1(List<String> input) {
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            sum += scoreScratchCard(inputLine);
+        }
+        return sum;
+    }
+
+    private int scoreScratchCard(String input) {
         String[] firstSplit = input.split(":");
         String[] secondSplit = firstSplit[1].split("\\|");
 
