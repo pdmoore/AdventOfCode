@@ -75,6 +75,86 @@ public class Day03 {
         assertEquals(4361, actual);
     }
 
+    private int solvePart2(String filename) {
+        Map<Point, Integer> allTheNumbers = getAllTheNumbers(filename);
+        List<Point> gearLocations = getAllTheGears(filename);
+
+        // for each point
+        // is it adjacent to gear?
+        // if yes, add that integer to the gear's list of adjacent parts
+        Map<Point, List<Integer>> gearAdjacentPartNumbers = new HashMap<>();
+        for (Point p : allTheNumbers.keySet()) {
+            int partNumber = allTheNumbers.get(p);
+
+            // PASSING IN THE PartNumber Point, the PartNumber (length of that is important)
+            // and list of gears
+            // scan around each point in part number, if that point is in gearlocations, then
+            // return that gearlocation point
+            // otherwise return null
+            Point adjacentGear = findAdjacentGear(gearLocations, p, partNumber);
+            if (adjacentGear != null) {
+                if (!gearAdjacentPartNumbers.containsKey(adjacentGear)) {
+                    List<Integer> partNumberList = new ArrayList<>();
+                    partNumberList.add(partNumber);
+                    gearAdjacentPartNumbers.put(adjacentGear, partNumberList);
+                } else {
+                    gearAdjacentPartNumbers.get(adjacentGear).add(partNumber);
+                }
+            }
+        }
+
+        // iterate list of gears, if has exactly two integers,
+        // multiply them and add to sum
+        int result = 0;
+        for (Point g: gearAdjacentPartNumbers.keySet()) {
+            List<Integer> partNumbers = gearAdjacentPartNumbers.get(g);
+
+            if (partNumbers.size() == 2) {
+                result += partNumbers.get(0) * partNumbers.get(1);
+            }
+        }
+
+        return result;
+    }
+
+    private Point findAdjacentGear(List<Point> gearLocations, Point p, int partNumber) {
+        // PASSING IN THE PartNumber Point, the PartNumber (length of that is important)
+        // and list of gears
+        // scan around each point in part number, if that point is in gearlocations, then
+        // return that gearlocation point
+        // otherwise return null
+        int numDigits = String.valueOf(partNumber).length();
+        int lowY = p.y - 1;
+        int highY = p.y + numDigits;
+        int lowX = p.x - 1;
+        int highX = p.x + 1;
+
+        for (Point gearLocation :
+                gearLocations) {
+            if ((lowX <= gearLocation.x && gearLocation.x <= highX) &&
+                    (lowY <= gearLocation.y && gearLocation.y <= highY))
+                return gearLocation;
+        }
+
+        return null;
+    }
+
+    private List<Point> getAllTheGears(String filename) {
+        char[][] input = as2dCharArray(filename);
+
+        List<Point> result = new ArrayList<>();
+
+        for (int x = 0; x < input.length; x++) {
+            for (int y = 0; y < (input[x]).length; y++) {
+                if (input[x][y] == '*') {
+                    result.add(new Point(x, y));
+                }
+            }
+        }
+
+        return result;
+    }
+
     @Test
     void part1_example_from_reddit() {
         List<Integer> partNumbers = getAllPartNumbers("./data/day03_part1_reddit_example");
@@ -98,20 +178,26 @@ public class Day03 {
 
     @Test
     void part1_solution() {
-
-        // SUNDAY - this is still not right
-        // assumed it was because I included duplicate part numbers
-        // now not sure
-        // take a look at All Numbers vs Part Numbers
-
         List<Integer> partNumbers = getAllPartNumbers("./data/day03");
 
         Integer actual = partNumbers.stream()
                 .reduce(0, (a, b) -> a + b);
 
-        // TOO low - 335339
-        // TOO HIGH - 518753
-        assertEquals(99, actual);
+        assertEquals(514969, actual);
+    }
+
+    @Test
+    void part2_example() {
+        int sumOfGearRatios = solvePart2("./data/day03_part1_example");
+
+        assertEquals(467835, sumOfGearRatios);
+    }
+
+    @Test
+    void part2_solution() {
+        int sumOfGearRatios = solvePart2("./data/day03");
+
+        assertEquals(78915902, sumOfGearRatios);
     }
 
 
@@ -138,8 +224,6 @@ public class Day03 {
         for (int curY = point.y - 1; curY <= point.y + numDigits; curY++) {
             int curX = point.x;
             if (symbolAt(grid, curX - 1, curY)) return true;
-//            if (symbolAt(grid, curX - 1, curY - 1)) return true;
-//            if (symbolAt(grid, curX - 1, curY + 1)) return true;
 
             if (symbolAt(grid, curX, curY)) return true;
             if (symbolAt(grid, curX, curY)) return true;
