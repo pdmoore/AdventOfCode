@@ -92,15 +92,12 @@ public class Day04 {
             cardsByCount.put(i, next);
         }
 
-        // likely able to just iterate from 1 to # scratch cards
-        while (!input.isEmpty()) {
-            String nextCard = input.remove(0);
-            int cardNumber = cardNumberFrom(nextCard);
-            int numMatches = cardNumberToNumMatches.get(cardNumber);
-
+        // for each initial scratch card
+        for (int cardNumber = 1; cardNumber <= input.size(); cardNumber++) {
             ScratchCard currentCard = cardsByCount.get(cardNumber);
+            // add more of the initial matches, including previous matches on this card
             for (int i = 0; i < currentCard.countOfThisCard; i++) {
-                for (int j = 0; j < numMatches; j++) {
+                for (int j = 0; j < currentCard.numMatches; j++) {
                     ScratchCard scratchCard = cardsByCount.get(cardNumber + j + 1);
                     scratchCard.countOfThisCard += 1;
                 }
