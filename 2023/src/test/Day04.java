@@ -68,6 +68,8 @@ public class Day04 {
         assertEquals(8063216, actual);
     }
 
+// ---------------------------------------
+
     static class ScratchCard {
         int cardNumber;
         int numMatches;
@@ -100,8 +102,6 @@ public class Day04 {
             ScratchCard currentCard = cardsByCount.get(cardNumber);
             for (int i = 0; i < currentCard.countOfThisCard; i++) {
                 for (int j = 0; j < numMatches; j++) {
-    //                cardsLeftToProcess.add(input.get(cardNumber + i));
-
                     ScratchCard scratchCard = cardsByCount.get(cardNumber + j + 1);
                     scratchCard.countOfThisCard += 1;
                 }
@@ -113,16 +113,7 @@ public class Day04 {
             }
         }
 
-        // sum all the record's macthes in cardsByCount
-        int sum = 0;
-        for(ScratchCard r:
-                cardsByCount.values())
-        {
-            sum += r.countOfThisCard;
-        }
-
-
-        return sum;
+        return cardsByCount.values().stream().mapToInt(r -> r.countOfThisCard).sum();
     }
 
     private Map<Integer, Integer> findMatchesForCards(List<String> input) {
@@ -155,7 +146,6 @@ public class Day04 {
         return count;
     }
 
-    // ---------------------------------------
     private int solvePart1(List<String> input) {
         int sum = 0;
         for (String inputLine :
