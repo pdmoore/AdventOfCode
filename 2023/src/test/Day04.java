@@ -148,15 +148,11 @@ public class Day04 {
         List<String> winningNumbers = Arrays.asList(secondSplit[0].split(" "));
         List<String> numbersYouHave = Arrays.asList(secondSplit[1].split(" "));
 
-        int count = 0;
-        for (String numberYouHave :
-                numbersYouHave) {
-            if (!numberYouHave.isEmpty() && winningNumbers.contains(numberYouHave)) {
-                count++;
-            }
-        }
+        int count = (int) numbersYouHave.stream().
+                filter(numberYouHave -> !numberYouHave.isEmpty() &&
+                        winningNumbers.contains(numberYouHave)).count();
 
-       // split on colon, only retain second half
+        // split on colon, only retain second half
         // split second half on '|'
         // [0] is the winning numbers - convert to list
         // [1] is numbers you have - for each instance in winning numbers, score is 2^(num matches - 1)
