@@ -85,12 +85,14 @@ public class Day04 {
     private int solvePart2(List<String> input) {
         Map<Integer, Integer> cardNumberToNumMatches = findMatchesForCards(input);
 
+        // Track each scratch card by how many copies of it we end up with
         Map<Integer, ScratchCard> cardsByCount = new HashMap<>();
         for (int i = 1; i <= input.size(); i++) {
             ScratchCard next = new ScratchCard(i, cardNumberToNumMatches.get(i));
             cardsByCount.put(i, next);
         }
 
+        // likely able to just iterate from 1 to # scratch cards
         while (!input.isEmpty()) {
             String nextCard = input.remove(0);
             int cardNumber = cardNumberFrom(nextCard);
