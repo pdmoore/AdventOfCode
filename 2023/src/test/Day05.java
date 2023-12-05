@@ -129,8 +129,31 @@ public class Day05 {
         }
 
         assertEquals(new BigDecimal(26273516), lowest);
-
     }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05_part1_example");
+        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        populateMappingThingy(input);
+
+        BigDecimal lowest = BigDecimal.valueOf(999999999);
+        for (int i = 0; i < seeds.size(); i += 2) {
+            BigDecimal startWith = seeds.get(i);
+            BigDecimal rangeLength = seeds.get(i+1);
+
+            BigDecimal upperLimit = startWith.add(rangeLength);
+            for (BigDecimal seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigDecimal.ONE)) {
+                BigDecimal location = findLocationForSeed(seed);
+                if (location.compareTo(lowest) < 0) {
+                    lowest = location;
+                }
+            }
+        }
+
+        assertEquals(new BigDecimal(46), lowest);
+    }
+
 
     // ---------------------------------
     private BigDecimal findLocationForSeed(BigDecimal seedNumber) {
