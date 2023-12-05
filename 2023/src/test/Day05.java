@@ -30,7 +30,7 @@ public class Day05 {
             "56 93 4"));
 
     @Test
-    void convert_largse_string_to_big_decimal() {
+    void convert_large_string_to_big_decimal() {
         BigDecimal expected = BigDecimal.valueOf(4188359137L);
         BigDecimal actual = new BigDecimal("4188359137");
         assertEquals(expected, actual);
@@ -226,9 +226,6 @@ public class Day05 {
                 String[] chunks = inputLine.split(" ");
                 BigDecimal sourceStart = new BigDecimal(chunks[1]);
                 BigDecimal destination = new BigDecimal(chunks[0]);
-                // TODO ignoring 3rd param for now - will probaby bite me in the real data
-                // since the test data lines up nicely and doesn't have gaps
-                // To fix, at the end of the run, add a new BigDecimal and a modifier of 0
                 BigDecimal modifier = destination.subtract(sourceStart);
                 Range r = new Range(sourceStart, destination, new BigDecimal(Integer.parseInt(chunks[2])), modifier);
                 ranges.put(sourceStart, r);
