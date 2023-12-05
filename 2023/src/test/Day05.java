@@ -3,6 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -154,6 +155,43 @@ public class Day05 {
         assertEquals(new BigDecimal(46), lowest);
     }
 
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05");
+        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        populateMappingThingy(input);
+
+        BigDecimal lowest = BigDecimal.valueOf(9999999999999l);
+        int count = 1;
+        for (int i = 0; i < seeds.size(); i += 2) {
+            BigDecimal startWith = seeds.get(i);
+            System.out.println("Lowest so far: " + lowest);
+            System.out.println("seeds start: " + startWith + " --" + LocalDateTime.now());
+            BigDecimal rangeLength = seeds.get(i+1);
+
+            BigDecimal upperLimit = startWith.add(rangeLength);
+
+            // TODO - brute force, answer is in the second range....
+            // Could try skipping a lot of values by checking
+            // seed -> location
+            // seed+100 -> location
+            // and if the difference between the two is the same, skip all 98 in between
+            // if diff between two is not same, divide into 50/25/10 back down to each 1
+            for (BigDecimal seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigDecimal.ONE)) {
+                BigDecimal location = findLocationForSeed(seed);
+                if (location.compareTo(lowest) < 0) {
+                    lowest = location;
+                }
+                count++;
+                if (count % 1000000 == 0) {
+                    System.out.println("on it: " + count );
+                }
+            }
+        }
+
+        assertEquals(new BigDecimal(34039469), lowest);
+    }
+
 
     // ---------------------------------
     private BigDecimal findLocationForSeed(BigDecimal seedNumber) {
@@ -185,7 +223,6 @@ public class Day05 {
 
         public MappingThingy(List<String> input) {
             ranges = new TreeMap();
-            // TODO construct from List<String> of input lines
             for (String inputLine :
                     input) {
                 String[] chunks = inputLine.split(" ");
@@ -266,6 +303,4 @@ public class Day05 {
             }
         }
     }
-
-
 }
