@@ -30,9 +30,8 @@ public class Day05 {
 
         BigDecimal actual = findLocationForSeed(seedNumber);
 
-        BigDecimal exepcted = new BigDecimal(82);
-        assertEquals(exepcted, actual);
-
+        BigDecimal expected = new BigDecimal(82);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -84,8 +83,8 @@ public class Day05 {
             "68 64 13"));
     MappingThingy _temperatureToHumidity = new MappingThingy(Arrays.asList("0 69 1",
             "1 0 69"));
-    MappingThingy _humidityToLocation = new MappingThingy(Arrays.asList("0 69 1",
-            "1 0 69"));
+    MappingThingy _humidityToLocation = new MappingThingy(Arrays.asList("60 56 37",
+            "56 93 4"));
 
     private List<BigDecimal> seedListFrom(String inputLine) {
         String[] seedNumbers = inputLine.substring(7).split(" ");
@@ -105,8 +104,6 @@ public class Day05 {
             // TODO construct from List<String> of input lines
             for (String inputLine :
                     input) {
-                // 50 98 2  - source 98, maps to dest 50, for range of 2
-                // 52 50 48 - source 50, maps to dest 52 for range of 48
                 String[] chunks = inputLine.split(" ");
                 BigDecimal sourceStart = new BigDecimal(Integer.parseInt(chunks[1]));
                 BigDecimal destination = new BigDecimal(Integer.parseInt(chunks[0]));
