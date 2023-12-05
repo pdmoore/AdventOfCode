@@ -9,6 +9,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day05 {
 
+    MappingThingy _seedToSoil = new MappingThingy(Arrays.asList("50 98 2", "52 50 48"));
+    MappingThingy _soilToFertilizer = new MappingThingy(Arrays.asList("0 15 37",
+            "37 52 2",
+            "39 0 15"));
+    MappingThingy _fertilizerToWater = new MappingThingy(Arrays.asList("49 53 8",
+            "0 11 42",
+            "42 0 7",
+            "57 7 4"));
+    MappingThingy _waterToLight = new MappingThingy(Arrays.asList("88 18 7",
+            "18 25 70"));
+    MappingThingy _lightToTemperature = new MappingThingy(Arrays.asList("45 77 23",
+            "81 45 19",
+            "68 64 13"));
+    MappingThingy _temperatureToHumidity = new MappingThingy(Arrays.asList("0 69 1",
+            "1 0 69"));
+    MappingThingy _humidityToLocation = new MappingThingy(Arrays.asList("60 56 37",
+            "56 93 4"));
+
     @Test
     void get_seed_list_from_input() {
         List<BigDecimal> actual = seedListFrom("seeds: 79 14 55 13");
@@ -27,7 +45,6 @@ public class Day05 {
         BigDecimal seedNumber = new BigDecimal(79);
 
         // Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
-
         BigDecimal actual = findLocationForSeed(seedNumber);
 
         BigDecimal expected = new BigDecimal(82);
@@ -53,6 +70,34 @@ public class Day05 {
         assertEquals(new BigDecimal(51), sut.correspondsTo(new BigDecimal(99)));
     }
 
+    @Test
+    void part1_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05_part1_example");
+
+        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        assertEquals(4, seeds.size());
+
+        populateMappingThingy(input);
+        assertEquals(new BigDecimal(81), _seedToSoil.correspondsTo(new BigDecimal(79)));
+        assertEquals(new BigDecimal(81), _soilToFertilizer.correspondsTo(new BigDecimal(81)));
+        assertEquals(new BigDecimal(81), _fertilizerToWater.correspondsTo(new BigDecimal(81)));
+        assertEquals(new BigDecimal(74), _waterToLight.correspondsTo(new BigDecimal(81)));
+        assertEquals(new BigDecimal(78), _lightToTemperature.correspondsTo(new BigDecimal(74)));
+        assertEquals(new BigDecimal(78), _temperatureToHumidity.correspondsTo(new BigDecimal(78)));
+        assertEquals(new BigDecimal(82), _humidityToLocation.correspondsTo(new BigDecimal(78)));
+
+        BigDecimal lowest = BigDecimal.valueOf(999999999);
+        for (BigDecimal seed :
+                seeds) {
+
+            BigDecimal location = findLocationForSeed(seed);
+            if (location.compareTo(lowest) < 0) {
+                lowest = location;
+            }
+        }
+
+        assertEquals(new BigDecimal(35), lowest);
+    }
 
     // ---------------------------------
     private BigDecimal findLocationForSeed(BigDecimal seedNumber) {
@@ -68,23 +113,6 @@ public class Day05 {
     }
 
     //Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
-    MappingThingy _seedToSoil = new MappingThingy(Arrays.asList("50 98 2", "52 50 48"));
-    MappingThingy _soilToFertilizer = new MappingThingy(Arrays.asList("0 15 37",
-            "37 52 2",
-            "39 0 15"));
-    MappingThingy _fertilizerToWater = new MappingThingy(Arrays.asList("49 53 8",
-            "0 11 42",
-            "42 0 7",
-            "57 7 4"));
-    MappingThingy _waterToLight = new MappingThingy(Arrays.asList("88 18 7",
-            "18 25 70"));
-    MappingThingy _lightToTemperature = new MappingThingy(Arrays.asList("45 77 23",
-            "81 45 19",
-            "68 64 13"));
-    MappingThingy _temperatureToHumidity = new MappingThingy(Arrays.asList("0 69 1",
-            "1 0 69"));
-    MappingThingy _humidityToLocation = new MappingThingy(Arrays.asList("60 56 37",
-            "56 93 4"));
 
     private List<BigDecimal> seedListFrom(String inputLine) {
         String[] seedNumbers = inputLine.substring(7).split(" ");
@@ -147,4 +175,41 @@ public class Day05 {
             return source;
         }
     }
+
+    private void populateMappingThingy(List<String> input) {
+        int index = 0;
+        while (index < input.size()) {
+            String inputLine = input.get(index++);
+            if (inputLine.isEmpty() || inputLine.startsWith("seeds:")) {
+                continue;
+            }
+
+            String thisMappingThingy = inputLine.split(":")[0];
+
+            inputLine = input.get(index++);
+            List<String> mappings = new ArrayList<>();
+            while (index < input.size() && !inputLine.isEmpty()) {
+                mappings.add(inputLine);
+                inputLine = input.get(index++);
+            }
+
+            if (thisMappingThingy.startsWith("seed-to")) {
+                _seedToSoil = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("soil-to")) {
+                _soilToFertilizer = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("fertilizer-to")) {
+                _fertilizerToWater = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("water-to")) {
+                _waterToLight = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("light-to")) {
+                _lightToTemperature = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("temperature-to")) {
+                _temperatureToHumidity = new MappingThingy(mappings);
+            } else if (thisMappingThingy.startsWith("humidity-to")) {
+                _humidityToLocation = new MappingThingy(mappings);
+            }
+        }
+    }
+
+
 }
