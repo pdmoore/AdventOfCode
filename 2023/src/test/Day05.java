@@ -11,22 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day05 {
 
-    MappingThingy _seedToSoil = new MappingThingy(Arrays.asList("50 98 2", "52 50 48"));
-    MappingThingy _soilToFertilizer = new MappingThingy(Arrays.asList("0 15 37",
+    MappingConversion _seedToSoil = new MappingConversion(Arrays.asList("50 98 2", "52 50 48"));
+    MappingConversion _soilToFertilizer = new MappingConversion(Arrays.asList("0 15 37",
             "37 52 2",
             "39 0 15"));
-    MappingThingy _fertilizerToWater = new MappingThingy(Arrays.asList("49 53 8",
+    MappingConversion _fertilizerToWater = new MappingConversion(Arrays.asList("49 53 8",
             "0 11 42",
             "42 0 7",
             "57 7 4"));
-    MappingThingy _waterToLight = new MappingThingy(Arrays.asList("88 18 7",
+    MappingConversion _waterToLight = new MappingConversion(Arrays.asList("88 18 7",
             "18 25 70"));
-    MappingThingy _lightToTemperature = new MappingThingy(Arrays.asList("45 77 23",
+    MappingConversion _lightToTemperature = new MappingConversion(Arrays.asList("45 77 23",
             "81 45 19",
             "68 64 13"));
-    MappingThingy _temperatureToHumidity = new MappingThingy(Arrays.asList("0 69 1",
+    MappingConversion _temperatureToHumidity = new MappingConversion(Arrays.asList("0 69 1",
             "1 0 69"));
-    MappingThingy _humidityToLocation = new MappingThingy(Arrays.asList("60 56 37",
+    MappingConversion _humidityToLocation = new MappingConversion(Arrays.asList("60 56 37",
             "56 93 4"));
 
     @Test
@@ -65,7 +65,7 @@ public class Day05 {
         //seed-to-soil map:
         List<String> input = Arrays.asList("50 98 2", "52 50 48");
 
-        MappingThingy sut = new MappingThingy(input);
+        MappingConversion sut = new MappingConversion(input);
 
         assertEquals(new BigDecimal(1), sut.correspondsTo(new BigDecimal(1)));
         assertEquals(new BigDecimal(10), sut.correspondsTo(new BigDecimal(10)));
@@ -216,10 +216,10 @@ public class Day05 {
         return seeds;
     }
 
-    private class MappingThingy {
+    private static class MappingConversion {
         private final TreeMap<BigDecimal, Range> ranges;
 
-        public MappingThingy(List<String> input) {
+        public MappingConversion(List<String> input) {
             ranges = new TreeMap();
             for (String inputLine :
                     input) {
@@ -281,19 +281,19 @@ public class Day05 {
             }
 
             if (thisMappingThingy.startsWith("seed-to")) {
-                _seedToSoil = new MappingThingy(mappings);
+                _seedToSoil = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("soil-to")) {
-                _soilToFertilizer = new MappingThingy(mappings);
+                _soilToFertilizer = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("fertilizer-to")) {
-                _fertilizerToWater = new MappingThingy(mappings);
+                _fertilizerToWater = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("water-to")) {
-                _waterToLight = new MappingThingy(mappings);
+                _waterToLight = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("light-to")) {
-                _lightToTemperature = new MappingThingy(mappings);
+                _lightToTemperature = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("temperature-to")) {
-                _temperatureToHumidity = new MappingThingy(mappings);
+                _temperatureToHumidity = new MappingConversion(mappings);
             } else if (thisMappingThingy.startsWith("humidity-to")) {
-                _humidityToLocation = new MappingThingy(mappings);
+                _humidityToLocation = new MappingConversion(mappings);
             }
         }
     }
