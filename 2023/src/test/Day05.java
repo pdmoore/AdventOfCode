@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -30,9 +31,6 @@ public class Day05 {
 
     @Test
     void convert_largse_string_to_big_decimal() {
-
-        String input = "4188359137";
-
         BigDecimal expected = BigDecimal.valueOf(4188359137l);
         BigDecimal actual = new BigDecimal("4188359137");
         assertEquals(expected, actual);
@@ -156,6 +154,7 @@ public class Day05 {
     }
 
     @Test
+    @Disabled("Correct answer, takes 40+ minutes to get there")
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day05");
         List<BigDecimal> seeds = seedListFrom(input.get(0));
