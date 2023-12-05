@@ -9,7 +9,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day05 {
+class Day05 {
 
     MappingConversion _seedToSoil = new MappingConversion(Arrays.asList("50 98 2", "52 50 48"));
     MappingConversion _soilToFertilizer = new MappingConversion(Arrays.asList("0 15 37",
