@@ -31,7 +31,7 @@ public class Day05 {
 
     @Test
     void convert_largse_string_to_big_decimal() {
-        BigDecimal expected = BigDecimal.valueOf(4188359137l);
+        BigDecimal expected = BigDecimal.valueOf(4188359137L);
         BigDecimal actual = new BigDecimal("4188359137");
         assertEquals(expected, actual);
     }
