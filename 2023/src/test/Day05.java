@@ -257,8 +257,7 @@ public class Day05 {
                 if (source.compareTo(sourceStart) >= 0) {
                     Range r = ranges.get(sourceStart);
                     if (source.compareTo(sourceStart.add(r.length)) < 0) {
-                        BigDecimal corresponds = source.add(r.modifier);
-                        return corresponds;
+                        return source.add(r.modifier);
                     }
                 }
             }
