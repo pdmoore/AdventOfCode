@@ -200,9 +200,8 @@ public class Day05 {
         BigDecimal light = _waterToLight.correspondsTo(water);
         BigDecimal temperature = _lightToTemperature.correspondsTo(light);
         BigDecimal humidity = _temperatureToHumidity.correspondsTo(temperature);
-        BigDecimal location = _humidityToLocation.correspondsTo(humidity);
 
-        return location;
+        return _humidityToLocation.correspondsTo(humidity);
     }
 
     //Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
