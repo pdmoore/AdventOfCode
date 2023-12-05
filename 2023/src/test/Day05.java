@@ -220,7 +220,7 @@ class Day05 {
         private final TreeMap<BigDecimal, Range> ranges;
 
         public MappingConversion(List<String> input) {
-            ranges = new TreeMap();
+            ranges = new TreeMap<>();
             for (String inputLine :
                     input) {
                 String[] chunks = inputLine.split(" ");
