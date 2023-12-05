@@ -61,7 +61,7 @@ class Day05 {
     }
 
     @Test
-    void construct_mapping_thingy() {
+    void construct_mapping_conversion_for_example_seed_to_soil() {
         //seed-to-soil map:
         List<String> input = Arrays.asList("50 98 2", "52 50 48");
 
@@ -203,8 +203,6 @@ class Day05 {
 
         return _humidityToLocation.correspondsTo(humidity);
     }
-
-    //Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
 
     private List<BigDecimal> seedListFrom(String inputLine) {
         String[] seedNumbers = inputLine.substring(7).split(" ");
