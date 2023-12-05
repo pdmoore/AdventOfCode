@@ -232,7 +232,7 @@ public class Day05 {
             }
         }
 
-        class Range {
+        static class Range {
             final BigDecimal sourceStart;
             final BigDecimal destination;
             final BigDecimal length;
