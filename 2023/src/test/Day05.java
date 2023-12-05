@@ -28,6 +28,16 @@ public class Day05 {
             "56 93 4"));
 
     @Test
+    void convert_largse_string_to_big_decimal() {
+
+        String input = "4188359137";
+
+        BigDecimal expected = BigDecimal.valueOf(4188359137l);
+        BigDecimal actual = new BigDecimal("4188359137");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void get_seed_list_from_input() {
         List<BigDecimal> actual = seedListFrom("seeds: 79 14 55 13");
 
@@ -99,6 +109,29 @@ public class Day05 {
         assertEquals(new BigDecimal(35), lowest);
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day05");
+
+        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        assertEquals(20, seeds.size());
+
+        populateMappingThingy(input);
+
+        BigDecimal lowest = BigDecimal.valueOf(999999999);
+        for (BigDecimal seed :
+                seeds) {
+
+            BigDecimal location = findLocationForSeed(seed);
+            if (location.compareTo(lowest) < 0) {
+                lowest = location;
+            }
+        }
+
+        assertEquals(new BigDecimal(26273516), lowest);
+
+    }
+
     // ---------------------------------
     private BigDecimal findLocationForSeed(BigDecimal seedNumber) {
         BigDecimal soil = _seedToSoil.correspondsTo(seedNumber);
@@ -119,7 +152,7 @@ public class Day05 {
         List<BigDecimal> seeds = new ArrayList<>();
         for (String seedStr :
                 seedNumbers) {
-            seeds.add(new BigDecimal(Integer.parseInt(seedStr)));
+            seeds.add(new BigDecimal(seedStr));
         }
         return seeds;
     }
@@ -133,8 +166,8 @@ public class Day05 {
             for (String inputLine :
                     input) {
                 String[] chunks = inputLine.split(" ");
-                BigDecimal sourceStart = new BigDecimal(Integer.parseInt(chunks[1]));
-                BigDecimal destination = new BigDecimal(Integer.parseInt(chunks[0]));
+                BigDecimal sourceStart = new BigDecimal(chunks[1]);
+                BigDecimal destination = new BigDecimal(chunks[0]);
                 // TODO ignoring 3rd param for now - will probaby bite me in the real data
                 // since the test data lines up nicely and doesn't have gaps
                 // To fix, at the end of the run, add a new BigDecimal and a modifier of 0
