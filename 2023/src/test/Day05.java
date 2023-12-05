@@ -160,7 +160,7 @@ public class Day05 {
         List<BigDecimal> seeds = seedListFrom(input.get(0));
         populateMappingThingy(input);
 
-        BigDecimal lowest = BigDecimal.valueOf(9999999999999l);
+        BigDecimal lowest = BigDecimal.valueOf(9999999999L);
         int count = 1;
         for (int i = 0; i < seeds.size(); i += 2) {
             BigDecimal startWith = seeds.get(i);
