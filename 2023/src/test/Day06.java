@@ -113,10 +113,7 @@ public class Day06 {
         List<BigDecimal> result = new ArrayList<>();
         for (BigDecimal i = BigDecimal.ONE; i.compareTo(time) <= 0; i = i.add(BigDecimal.ONE)) {
             BigDecimal speed = i;
-            BigDecimal distance = BigDecimal.ZERO;
-            for (BigDecimal j = i.add(BigDecimal.ONE); j.compareTo(time) <= 0; j = j.add(BigDecimal.ONE)) {
-                distance = distance.add(speed);
-            }
+            BigDecimal distance = speed.multiply(time.subtract(i));
 
             if (distance.compareTo(recordDistance) > 0) {
                 result.add(i);
