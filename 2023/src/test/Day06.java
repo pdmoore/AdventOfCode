@@ -1,8 +1,8 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +32,34 @@ public class Day06 {
 
         assertEquals(-99, race1.size() * race2.size() * race3.size() * race4.size());
     }
+
+    @Test
+    void part2_example_Int() {
+        List<String> input = Arrays.asList("Time:      71530", "Distance:  940200");
+
+        List<Integer> race1 = findWinningNumbers(71530, 940200);
+
+        assertEquals(71503, race1.size());
+    }
+
+    @Test
+    void part2_example_BD() {
+        List<String> input = Arrays.asList("Time:      71530", "Distance:  940200");
+
+        List<BigDecimal> race1 = findWinningNumbers(new BigDecimal(71530), new BigDecimal(940200));
+
+        assertEquals(71503, race1.size());
+    }
+
+    @Test
+    void part2_solution() {
+        List<String> input = Arrays.asList("Time:        35937366", "Distance:   212206012011044");
+
+        List<BigDecimal> race1 = findWinningNumbers(new BigDecimal(35937366L), new BigDecimal(212206012011044L));
+
+        assertEquals(-99, race1.size());
+    }
+
 
     @Test
     void part1_example_single_race_musing1() {
@@ -81,5 +109,21 @@ public class Day06 {
         return result;
     }
 
+    private List<BigDecimal> findWinningNumbers(BigDecimal time, BigDecimal recordDistance) {
+        List<BigDecimal> result = new ArrayList<>();
+        for (BigDecimal i = BigDecimal.ONE; i.compareTo(time) <= 0; i = i.add(BigDecimal.ONE)) {
+            BigDecimal speed = i;
+            BigDecimal distance = BigDecimal.ZERO;
+            for (BigDecimal j = i.add(BigDecimal.ONE); j.compareTo(time) <= 0; j = j.add(BigDecimal.ONE)) {
+                distance = distance.add(speed);
+            }
+
+            if (distance.compareTo(recordDistance) > 0) {
+                result.add(i);
+            }
+        }
+
+        return result;
+    }
 
 }
