@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day06 {
+class Day06 {
     @Test
     void part1_example() {
         // "Time:      7  15   30", "Distance:  9  40  200"
@@ -89,12 +89,7 @@ public class Day06 {
     private List<Integer> findWinningNumbers(int time, int recordDistance) {
         List<Integer> result = new ArrayList<>();
         for (int i = 1; i <= time; i++) {
-            int speed = i;
-            int distance = 0;
-            for (int j = i + 1; j <= time; j++) {
-                distance += speed;
-            }
-
+            int distance = i * (time - i);
             if (distance > recordDistance) {
                 result.add(i);
             }
@@ -106,8 +101,7 @@ public class Day06 {
     private List<BigDecimal> findWinningNumbers(BigDecimal time, BigDecimal recordDistance) {
         List<BigDecimal> result = new ArrayList<>();
         for (BigDecimal i = BigDecimal.ONE; i.compareTo(time) <= 0; i = i.add(BigDecimal.ONE)) {
-            BigDecimal speed = i;
-            BigDecimal distance = speed.multiply(time.subtract(i));
+            BigDecimal distance = i.multiply(time.subtract(i));
 
             if (distance.compareTo(recordDistance) > 0) {
                 result.add(i);
