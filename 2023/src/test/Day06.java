@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day06 {
     @Test
     void part1_example() {
-        List<String> input = Arrays.asList("Time:      7  15   30", "Distance:  9  40  200");
-
+        // "Time:      7  15   30", "Distance:  9  40  200"
         List<Integer> race1 = findWinningNumbers(7, 9);
         List<Integer> race2 = findWinningNumbers(15, 40);
         List<Integer> race3 = findWinningNumbers(30, 200);
@@ -23,20 +22,18 @@ public class Day06 {
 
     @Test
     void part1_solution() {
-        List<String> input = Arrays.asList("Time:        35     93     73     66", "Distance:   212   2060   1201   1044");
-
+        // "Time:        35     93     73     66", "Distance:   212   2060   1201   1044"
         List<Integer> race1 = findWinningNumbers(35, 212);
         List<Integer> race2 = findWinningNumbers(93, 2060);
         List<Integer> race3 = findWinningNumbers(73, 1201);
         List<Integer> race4 = findWinningNumbers(66, 1044);
 
-        assertEquals(-99, race1.size() * race2.size() * race3.size() * race4.size());
+        assertEquals(114400, race1.size() * race2.size() * race3.size() * race4.size());
     }
 
     @Test
     void part2_example_Int() {
-        List<String> input = Arrays.asList("Time:      71530", "Distance:  940200");
-
+        // "Time:      71530", "Distance:  940200"
         List<Integer> race1 = findWinningNumbers(71530, 940200);
 
         assertEquals(71503, race1.size());
@@ -44,8 +41,7 @@ public class Day06 {
 
     @Test
     void part2_example_BD() {
-        List<String> input = Arrays.asList("Time:      71530", "Distance:  940200");
-
+        // "Time:      71530", "Distance:  940200"
         List<BigDecimal> race1 = findWinningNumbers(new BigDecimal(71530), new BigDecimal(940200));
 
         assertEquals(71503, race1.size());
@@ -53,13 +49,11 @@ public class Day06 {
 
     @Test
     void part2_solution() {
-        List<String> input = Arrays.asList("Time:        35937366", "Distance:   212206012011044");
-
+        // "Time:        35937366", "Distance:   212206012011044"
         List<BigDecimal> race1 = findWinningNumbers(new BigDecimal(35937366L), new BigDecimal(212206012011044L));
 
-        assertEquals(-99, race1.size());
+        assertEquals(21039729, race1.size());
     }
-
 
     @Test
     void part1_example_single_race_musing1() {
@@ -122,5 +116,4 @@ public class Day06 {
 
         return result;
     }
-
 }
