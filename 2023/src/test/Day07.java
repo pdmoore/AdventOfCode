@@ -388,7 +388,7 @@ public class Day07 {
             inputToBid.put(hand, bid);
         }
 
-        List<String> rankedHands = new ArrayList();
+        List<String> rankedHands = new ArrayList<>();
 
         for (String hand :
                 inputToBid.keySet()) {
