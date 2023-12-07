@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Day07 {
 
-    enum handTypes { fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard };
+    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
 
     @Test
     @Disabled
@@ -53,12 +53,26 @@ public class Day07 {
     }
 
     @Test
-    void determine_hand_2ofakind() {
+    void determine_hand_2pair() {
         assertEquals(handTypes.twoPair, determineHand("K4422"));
         assertEquals(handTypes.twoPair, determineHand("22344"));
         assertEquals(handTypes.twoPair, determineHand("23244"));
         assertEquals(handTypes.twoPair, determineHand("32244"));
         assertEquals(handTypes.twoPair, determineHand("42K24"));
+    }
+
+    @Test
+    void determine_hand_1pair() {
+        assertEquals(handTypes.onePair, determineHand("44689"));
+        assertEquals(handTypes.onePair, determineHand("44289"));
+        assertEquals(handTypes.onePair, determineHand("84289"));
+        assertEquals(handTypes.onePair, determineHand("94289"));
+        assertEquals(handTypes.onePair, determineHand("94982"));
+    }
+
+    @Test
+    void determine_hand_highCard() {
+        assertEquals(handTypes.highCard, determineHand("K2856"));
     }
 
     private boolean compareHands(String hand1, String hand2) {
@@ -69,9 +83,9 @@ public class Day07 {
 
     private handTypes determineHand(String hand) {
         if (hand.charAt(0) == hand.charAt(1) &&
-            hand.charAt(1) == hand.charAt(2) &&
-            hand.charAt(2) == hand.charAt(3) &&
-            hand.charAt(3) == hand.charAt(4)) {
+                hand.charAt(1) == hand.charAt(2) &&
+                hand.charAt(2) == hand.charAt(3) &&
+                hand.charAt(3) == hand.charAt(4)) {
             return handTypes.fiveOfKind;
         }
 
@@ -113,8 +127,14 @@ public class Day07 {
             return handTypes.twoPair;
         }
 
+        if (charArray[0] == charArray[1] ||
+            charArray[1] == charArray[2] ||
+            charArray[2] == charArray[3] ||
+            charArray[3] == charArray[4]) {
+            return handTypes.onePair;
+        }
 
-        return null;
+        return handTypes.highCard;
     }
 
     private int part1SolveFor(List<String> input) {
