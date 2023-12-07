@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -10,14 +9,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Day07 {
 
+    private boolean _part2 = false;
+
     enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
 
     @Test
-    void cardValue_for_all_cards() {
+    void cardValue_for_all_cards_part1() {
         assertEquals(14, cardValue('A'));
         assertEquals(13, cardValue('K'));
         assertEquals(12, cardValue('Q'));
         assertEquals(11, cardValue('J'));
+        assertEquals(10, cardValue('T'));
+        assertEquals(9, cardValue('9'));
+        assertEquals(5, cardValue('5'));
+        assertEquals(2, cardValue('2'));
+    }
+
+    @Test
+    void cardValue_for_all_cards_part2() {
+        _part2 = true;
+        assertEquals(14, cardValue('A'));
+        assertEquals(13, cardValue('K'));
+        assertEquals(12, cardValue('Q'));
+        assertEquals(1, cardValue('J'));
         assertEquals(10, cardValue('T'));
         assertEquals(9, cardValue('9'));
         assertEquals(5, cardValue('5'));
@@ -35,6 +49,16 @@ public class Day07 {
     }
 
     @Test
+    void part2_example() {
+        List<String> input = Arrays.asList("32T3K 765", "T55J5 684",
+                "KK677 28", "KTJJT 220", "QQQJA 483");
+
+        int actual = part2SolveFor(input);
+
+        assertEquals(5905, actual);
+    }
+
+    @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day07");
 
@@ -42,8 +66,6 @@ public class Day07 {
 
         assertEquals(246163188, actual);
     }
-
-
 
     @Test
     void compare_four_of_kind() {
@@ -102,6 +124,14 @@ public class Day07 {
     @Test
     void determine_hand_highCard() {
         assertEquals(handTypes.highCard, determineHand("K2856"));
+    }
+
+    @Test
+    void determine_hand_joker() {
+        _part2 = true;
+        assertEquals(handTypes.fourOfKind, determineHand("T55J5"));
+        assertEquals(handTypes.fourOfKind, determineHand("KTJJT"));
+        assertEquals(handTypes.fourOfKind, determineHand("QQQJA"));
     }
 
     @Test
@@ -172,7 +202,11 @@ public class Day07 {
             case 'T':
                 return 10;
             case 'J':
-                return 11;
+                if (_part2) {
+                    return 1;
+                } else {
+                    return 11;
+                }
             case 'Q':
                 return 12;
             case 'K':
@@ -195,6 +229,44 @@ public class Day07 {
     }
 
     private handTypes determineHand(String hand) {
+        handTypes handType = determineHand_part1(hand);
+        if (_part2 == false) {
+            return handType;
+        }
+
+        long jokerCount = hand.chars().filter(ch -> ch == 'J').count();
+        if (jokerCount == 1) {
+            switch (handType) {
+                case highCard -> throw new IllegalArgumentException("1 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case onePair -> throw new IllegalArgumentException("2 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case twoPair -> throw new IllegalArgumentException("3 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case threeOfKind -> {
+                    return handTypes.fourOfKind;
+                }
+                case fullHouse -> throw new IllegalArgumentException("5 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fourOfKind -> throw new IllegalArgumentException("6 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fiveOfKind -> throw new IllegalArgumentException("7 got here - hand is [" + hand + "] joker count is " + jokerCount);
+            }
+        }
+        if (jokerCount == 2) {
+            switch (handType) {
+                case highCard -> throw new IllegalArgumentException("1- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case onePair -> throw new IllegalArgumentException("2- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case twoPair -> {
+                    return handTypes.fourOfKind;
+                }
+                case threeOfKind -> throw new IllegalArgumentException("4- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fullHouse -> throw new IllegalArgumentException("5- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fourOfKind -> throw new IllegalArgumentException("6- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fiveOfKind -> throw new IllegalArgumentException("7- got here - hand is [" + hand + "] joker count is " + jokerCount);
+            }
+        }
+
+        throw new IllegalArgumentException(" got here - hand is [" + hand + "] joker count is " + jokerCount);
+    }
+
+    private static handTypes determineHand_part1(String hand) {
+
         if (hand.charAt(0) == hand.charAt(1) &&
                 hand.charAt(1) == hand.charAt(2) &&
                 hand.charAt(2) == hand.charAt(3) &&
@@ -278,16 +350,6 @@ public class Day07 {
             inputToBid.put(hand, bid);
         }
 
-
-        //"32T3K 765",
-        // "T55J5 684",
-        //"KK677 28",
-        // "KTJJT 220",
-        // "QQQJA 483"
-
-
-        // hands to rank
-
         List<String> rankedHands = new ArrayList();
 
         for (String hand :
@@ -313,7 +375,6 @@ public class Day07 {
             }
         }
 
-
         // sum hand/rank/bid
         int sum = 0;
         for (int i = 0; i < rankedHands.size(); i++) {
@@ -321,7 +382,10 @@ public class Day07 {
         }
 
         return sum;
-//        int result = 765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5;
-//        return result;
+    }
+
+    private int part2SolveFor(List<String> input) {
+        _part2 = true;
+        return part1SolveFor(input);
     }
 }
