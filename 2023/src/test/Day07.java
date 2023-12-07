@@ -11,7 +11,7 @@ public class Day07 {
 
     private boolean _part2 = false;
 
-    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
+    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard}
 
     @Test
     void cardValue_for_all_cards_part1() {
@@ -73,7 +73,7 @@ public class Day07 {
 
         int actual = part2SolveFor(input);
 
-        assertEquals(-99, actual);
+        assertEquals(245794069, actual);
     }
 
     @Test
@@ -300,7 +300,7 @@ public class Day07 {
             return handTypes.fiveOfKind;
         }
 
-            throw new IllegalArgumentException(" got here - hand is [" + hand + "] joker count is " + jokerCount);
+        throw new IllegalArgumentException(" got here - hand is [" + hand + "] joker count is " + jokerCount);
     }
 
     private static handTypes determineHand_part1(String hand) {
