@@ -44,6 +44,13 @@ public class Day07 {
     }
 
     @Test
+    void determine_hand_fullHouse() {
+        assertEquals(handTypes.fullHouse, determineHand("22KKK"));
+        assertEquals(handTypes.fullHouse, determineHand("222KK"));
+        assertEquals(handTypes.fullHouse, determineHand("3Q3QQ"));
+    }
+
+    @Test
     void determine_hand_3ofakind() {
         assertEquals(handTypes.threeOfKind, determineHand("K3335"));
         assertEquals(handTypes.threeOfKind, determineHand("KK3K5"));
@@ -78,6 +85,23 @@ public class Day07 {
     // TODO - compareTo to cover five of a kind down to high card
 
     @Test
+    void compare_different_hands() {
+        String highCard   = "2468K";
+        String onePair    = "KQT99";
+        String twoPair    = "QQT99";
+        String threeKind  = "QQTQ9";
+        String fullHouse  = "QQTQT";
+        String fourKind   = "QQTQQ";
+        String fiveKind   = "QQQQQ";
+
+        assertEquals(1, compareHands(onePair, highCard));
+        assertEquals(1, compareHands(twoPair, onePair));
+        assertEquals(1, compareHands(threeKind, twoPair));
+        assertEquals(1, compareHands(fullHouse, threeKind));
+
+    }
+
+    @Test
     void compareTo_same_hand_twoPair() {
         // KK677 and KTJJT are both two pair.
         // Their first cards both have the same label,
@@ -91,15 +115,10 @@ public class Day07 {
 
     private int compareHands(String hand1, String hand2) {
 
-        // TODO all the handType comparisons
+        handTypes hand1Type = determineHand(hand1);
+        handTypes hand2Type = determineHand(hand2);
 
-        if (areHandsEqual(hand1, hand2)) {
-
-            // hands are same type, walk the hands and return the high card
-            // KK677 and KTJJT are both two pair.
-            // Their first cards both have the same label,
-            // but the second card of KK677 is stronger (K vs T), so KTJJT gets rank 2 and KK677 gets rank 3.
-
+        if (hand1Type == hand2Type) {
             for (int i = 0; i < 5; i++) {
                 if (hand1.charAt(i) != hand2.charAt(i)) {
                     return compareCard(hand1.charAt(i), hand2.charAt(i));
@@ -109,7 +128,8 @@ public class Day07 {
             throw new IllegalArgumentException("Hands are equal, type, couldn't find different card " + hand1 + "-" + hand2);
         }
 
-        return 99;
+        // hand2 comes first since enum is highest to lowest
+        return new Integer(hand2Type.ordinal()).compareTo(hand1Type.ordinal());
     }
 
     private int compareCard(char c1, char c2) {
@@ -164,6 +184,18 @@ public class Day07 {
                 charArray[2] == charArray[3] &&
                 charArray[3] == charArray[4]) {
             return handTypes.fourOfKind;
+        }
+
+        if (charArray[0] == charArray[1] &&
+            charArray[2] == charArray[3] &&
+            charArray[3] == charArray[4]) {
+            return handTypes.fullHouse;
+        }
+
+        if (charArray[0] == charArray[1] &&
+            charArray[1] == charArray[2] &&
+            charArray[3] == charArray[4]) {
+            return handTypes.fullHouse;
         }
 
         if (charArray[0] == charArray[1] &&
