@@ -189,7 +189,7 @@ public class Day07 {
         }
 
         // hand2 comes first since enum is highest to lowest
-        return new Integer(hand2Type.ordinal()).compareTo(hand1Type.ordinal());
+        return Integer.valueOf(hand2Type.ordinal()).compareTo(hand1Type.ordinal());
     }
 
     private int compareCard(char c1, char c2) {
@@ -203,7 +203,7 @@ public class Day07 {
         int cardNum1 = cardValue(c1);
         int cardNum2 = cardValue(c2);
 
-        return new Integer(cardNum1).compareTo(cardNum2);
+        return Integer.valueOf(cardNum1).compareTo(cardNum2);
     }
 
     private int cardValue(char card) {
