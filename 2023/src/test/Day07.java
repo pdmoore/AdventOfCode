@@ -10,7 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Day07 {
 
-    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
+    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard}
+
+    ;
 
     @Test
     void part1_example() {
@@ -85,13 +87,13 @@ public class Day07 {
 
     @Test
     void compare_different_hands() {
-        String highCard   = "2468K";
-        String onePair    = "KQT99";
-        String twoPair    = "QQT99";
-        String threeKind  = "QQTQ9";
-        String fullHouse  = "QQTQT";
-        String fourKind   = "QQTQQ";
-        String fiveKind   = "QQQQQ";
+        String highCard = "2468K";
+        String onePair = "KQT99";
+        String twoPair = "QQT99";
+        String threeKind = "QQTQ9";
+        String fullHouse = "QQTQT";
+        String fourKind = "QQTQQ";
+        String fiveKind = "QQQQQ";
 
         assertEquals(1, compareHands(onePair, highCard));
         assertEquals(1, compareHands(twoPair, onePair));
@@ -136,7 +138,7 @@ public class Day07 {
         // should only be called when they are different
         // TODO - tests for all these cases?
         if ('1' <= c1 && c1 <= '9' &&
-            '1' <= c2 && c2 <= '9') {
+                '1' <= c2 && c2 <= '9') {
             return new Character(c1).compareTo(c2);
         }
 
@@ -148,12 +150,16 @@ public class Day07 {
 
     private int cardValue(char card) {
         switch (card) {
-            case 'T': return 10;
-            case 'J': return 11;
-            case 'Q': return 12;
-            case 'K': return 13;
+            case 'T':
+                return 10;
+            case 'J':
+                return 11;
+            case 'Q':
+                return 12;
+            case 'K':
+                return 13;
         }
-        throw new IllegalArgumentException("how'd this card get here? " + card );
+        throw new IllegalArgumentException("how'd this card get here? " + card);
     }
 
 
@@ -187,14 +193,14 @@ public class Day07 {
         }
 
         if (charArray[0] == charArray[1] &&
-            charArray[2] == charArray[3] &&
-            charArray[3] == charArray[4]) {
+                charArray[2] == charArray[3] &&
+                charArray[3] == charArray[4]) {
             return handTypes.fullHouse;
         }
 
         if (charArray[0] == charArray[1] &&
-            charArray[1] == charArray[2] &&
-            charArray[3] == charArray[4]) {
+                charArray[1] == charArray[2] &&
+                charArray[3] == charArray[4]) {
             return handTypes.fullHouse;
         }
 
@@ -226,9 +232,9 @@ public class Day07 {
         }
 
         if (charArray[0] == charArray[1] ||
-            charArray[1] == charArray[2] ||
-            charArray[2] == charArray[3] ||
-            charArray[3] == charArray[4]) {
+                charArray[1] == charArray[2] ||
+                charArray[2] == charArray[3] ||
+                charArray[3] == charArray[4]) {
             return handTypes.onePair;
         }
 
@@ -238,7 +244,6 @@ public class Day07 {
     private int part1SolveFor(List<String> input) {
         Map<String, Integer> inputToBid = new HashMap<>();
 
-        int i = 0;
         for (String inputLine :
                 input) {
             String[] pair = inputLine.split(" ");
@@ -257,26 +262,41 @@ public class Day07 {
 
 
         // hands to rank
-        List<String> rankedHands = new ArrayList<>();
-        for (String hand:
-            inputToBid.keySet()) {
 
-            if (!rankedHands.isEmpty()) {
+        List<String> rankedHands = new ArrayList();
+
+        for (String hand :
+                inputToBid.keySet()) {
+            boolean added = false;
+            if (rankedHands.isEmpty()) {
+                rankedHands.add(hand);
+            } else {
+
 
                 for (int j = 0; j < rankedHands.size(); j++) {
-                    if (compareHands(hand, rankedHands.get(j)) > 0) {
+                    if (compareHands(hand, rankedHands.get(j)) < 0) {
                         rankedHands.add(j, hand);
+                        added = true;
                         break;
                     }
                 }
-            } else {
-                rankedHands.add(hand);
+
+                if (!added) {
+                    rankedHands.add(hand);
+                }
+
             }
         }
+
+
         // sum hand/rank/bid
+        int sum = 0;
+        for (int i = 0; i < rankedHands.size(); i++) {
+            sum += (i + 1) * inputToBid.get(rankedHands.get(i));
+        }
 
-
-        int result = 765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5;
-        return result;
+        return sum;
+//        int result = 765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5;
+//        return result;
     }
 }
