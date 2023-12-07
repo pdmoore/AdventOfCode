@@ -13,7 +13,6 @@ public class Day07 {
     enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
 
     @Test
-    @Disabled
     void part1_example() {
         List<String> input = Arrays.asList("32T3K 765", "T55J5 684",
                 "KK677 28", "KTJJT 220", "QQQJA 483");
@@ -237,28 +236,17 @@ public class Day07 {
     }
 
     private int part1SolveFor(List<String> input) {
-        Map<Integer, Integer> inputToBid = new HashMap<>();
-        List<String> hands = new ArrayList<>();
+        Map<String, Integer> inputToBid = new HashMap<>();
 
         int i = 0;
         for (String inputLine :
                 input) {
             String[] pair = inputLine.split(" ");
             String hand = pair[0];
-            hands.add(hand);
 
             int bid = Integer.parseInt(pair[1]);
-            inputToBid.put(i++, bid);
+            inputToBid.put(hand, bid);
         }
-
-        // 5 of a kind
-        // 4 of a kind
-        // full house
-        // 3 of a kind
-        // 2 pair
-        // 1 pair
-        // high card
-        // same rank, compare on first card
 
 
         //"32T3K 765",
@@ -266,12 +254,25 @@ public class Day07 {
         //"KK677 28",
         // "KTJJT 220",
         // "QQQJA 483"
-        // need to know if a hand is greater than another
-        // and insert in the right palce
 
 
         // hands to rank
+        List<String> rankedHands = new ArrayList<>();
+        for (String hand:
+            inputToBid.keySet()) {
 
+            if (!rankedHands.isEmpty()) {
+
+                for (int j = 0; j < rankedHands.size(); j++) {
+                    if (compareHands(hand, rankedHands.get(j)) > 0) {
+                        rankedHands.add(j, hand);
+                        break;
+                    }
+                }
+            } else {
+                rankedHands.add(hand);
+            }
+        }
         // sum hand/rank/bid
 
 
