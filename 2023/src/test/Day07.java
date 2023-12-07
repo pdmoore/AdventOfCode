@@ -197,7 +197,7 @@ public class Day07 {
         // TODO - tests for all these cases?
         if ('2' <= c1 && c1 <= '9' &&
                 '2' <= c2 && c2 <= '9') {
-            return new Character(c1).compareTo(c2);
+            return Character.compare(c1, c2);
         }
 
         int cardNum1 = cardValue(c1);
