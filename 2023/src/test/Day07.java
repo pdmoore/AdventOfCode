@@ -175,8 +175,8 @@ class Day07 {
         assertEquals(-1, compareHands(hand2, hand1));
     }
 
+// --------------------------------
     private int compareHands(String hand1, String hand2) {
-
         handTypes hand1Type = determineHand(hand1);
         handTypes hand2Type = determineHand(hand2);
 
@@ -195,8 +195,6 @@ class Day07 {
     }
 
     private int compareCard(char c1, char c2) {
-        // should only be called when they are different
-        // TODO - tests for all these cases?
         if ('2' <= c1 && c1 <= '9' &&
                 '2' <= c2 && c2 <= '9') {
             return Character.compare(c1, c2);
