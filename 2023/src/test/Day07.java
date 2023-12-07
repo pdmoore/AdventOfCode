@@ -68,6 +68,15 @@ public class Day07 {
     }
 
     @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07");
+
+        int actual = part2SolveFor(input);
+
+        assertEquals(-99, actual);
+    }
+
+    @Test
     void compare_four_of_kind() {
         String hand1 = "KKKK2";
         String hand2 = "5KKKK";
@@ -241,32 +250,57 @@ public class Day07 {
 
         if (jokerCount == 1) {
             switch (handType) {
-                case highCard -> throw new IllegalArgumentException("1 got here - hand is [" + hand + "] joker count is " + jokerCount);
-                case onePair -> throw new IllegalArgumentException("2 got here - hand is [" + hand + "] joker count is " + jokerCount);
-                case twoPair -> throw new IllegalArgumentException("3 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case highCard -> {
+                    return handTypes.onePair;
+                }
+                case onePair -> {
+                    return handTypes.threeOfKind;
+                }
+                case twoPair -> { return handTypes.fullHouse; }
                 case threeOfKind -> {
                     return handTypes.fourOfKind;
                 }
                 case fullHouse -> throw new IllegalArgumentException("5 got here - hand is [" + hand + "] joker count is " + jokerCount);
-                case fourOfKind -> throw new IllegalArgumentException("6 got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fourOfKind ->  { return handTypes.fiveOfKind; }
                 case fiveOfKind -> throw new IllegalArgumentException("7 got here - hand is [" + hand + "] joker count is " + jokerCount);
             }
         }
         if (jokerCount == 2) {
             switch (handType) {
                 case highCard -> throw new IllegalArgumentException("1- got here - hand is [" + hand + "] joker count is " + jokerCount);
-                case onePair -> throw new IllegalArgumentException("2- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case onePair -> {
+                    return handTypes.threeOfKind;
+                }
+
                 case twoPair -> {
                     return handTypes.fourOfKind;
                 }
                 case threeOfKind -> throw new IllegalArgumentException("4- got here - hand is [" + hand + "] joker count is " + jokerCount);
-                case fullHouse -> throw new IllegalArgumentException("5- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fullHouse ->  { return handTypes.fiveOfKind; }
                 case fourOfKind -> throw new IllegalArgumentException("6- got here - hand is [" + hand + "] joker count is " + jokerCount);
                 case fiveOfKind -> throw new IllegalArgumentException("7- got here - hand is [" + hand + "] joker count is " + jokerCount);
             }
         }
 
-        throw new IllegalArgumentException(" got here - hand is [" + hand + "] joker count is " + jokerCount);
+        if (jokerCount == 3) {
+            switch (handType) {
+                case highCard -> throw new IllegalArgumentException("1--- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case onePair ->  throw new IllegalArgumentException("2--- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case twoPair -> throw new IllegalArgumentException("3--- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case threeOfKind -> {
+                    return handTypes.fourOfKind;
+                }
+                case fullHouse -> { return handTypes.fiveOfKind; }
+                case fourOfKind -> throw new IllegalArgumentException("6--- got here - hand is [" + hand + "] joker count is " + jokerCount);
+                case fiveOfKind -> throw new IllegalArgumentException("7--- got here - hand is [" + hand + "] joker count is " + jokerCount);
+            }
+        }
+
+        if (jokerCount == 4 || jokerCount == 5) {
+            return handTypes.fiveOfKind;
+        }
+
+            throw new IllegalArgumentException(" got here - hand is [" + hand + "] joker count is " + jokerCount);
     }
 
     private static handTypes determineHand_part1(String hand) {
