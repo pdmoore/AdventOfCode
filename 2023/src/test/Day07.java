@@ -53,7 +53,8 @@ class Day07 {
         List<String> input = Arrays.asList("32T3K 765", "T55J5 684",
                 "KK677 28", "KTJJT 220", "QQQJA 483");
 
-        int actual = part2SolveFor(input);
+        _part2 = true;
+        int actual = part1SolveFor(input);
 
         assertEquals(5905, actual);
     }
@@ -71,7 +72,8 @@ class Day07 {
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day07");
 
-        int actual = part2SolveFor(input);
+        _part2 = true;
+        int actual = part1SolveFor(input);
 
         assertEquals(245794069, actual);
     }
@@ -413,17 +415,11 @@ class Day07 {
             }
         }
 
-        // sum hand/rank/bid
         int sum = 0;
         for (int i = 0; i < rankedHands.size(); i++) {
             sum += (i + 1) * inputToBid.get(rankedHands.get(i));
         }
 
         return sum;
-    }
-
-    private int part2SolveFor(List<String> input) {
-        _part2 = true;
-        return part1SolveFor(input);
     }
 }
