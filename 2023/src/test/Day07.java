@@ -24,11 +24,10 @@ public class Day07 {
     }
 
     @Test
-    @Disabled
     void compare_four_of_kind() {
         String hand1 = "KKKK2";
         String hand2 = "5KKKK";
-        assertTrue(compareHands(hand1, hand2));
+        assertTrue(areHandsEqual(hand1, hand2));
     }
 
     @Test
@@ -59,6 +58,7 @@ public class Day07 {
         assertEquals(handTypes.twoPair, determineHand("23244"));
         assertEquals(handTypes.twoPair, determineHand("32244"));
         assertEquals(handTypes.twoPair, determineHand("42K24"));
+        assertEquals(handTypes.twoPair, determineHand("KK677"));
     }
 
     @Test
@@ -75,7 +75,69 @@ public class Day07 {
         assertEquals(handTypes.highCard, determineHand("K2856"));
     }
 
-    private boolean compareHands(String hand1, String hand2) {
+    // TODO - compareTo to cover five of a kind down to high card
+
+    @Test
+    void compareTo_same_hand_twoPair() {
+        // KK677 and KTJJT are both two pair.
+        // Their first cards both have the same label,
+        // but the second card of KK677 is stronger (K vs T), so KTJJT gets rank 2 and KK677 gets rank 3.
+        String hand1 = "KK677";
+        String hand2 = "KTJJT";
+
+        assertEquals(1, compareHands(hand1, hand2));
+        assertEquals(-1, compareHands(hand2, hand1));
+    }
+
+    private int compareHands(String hand1, String hand2) {
+
+        // TODO all the handType comparisons
+
+        if (areHandsEqual(hand1, hand2)) {
+
+            // hands are same type, walk the hands and return the high card
+            // KK677 and KTJJT are both two pair.
+            // Their first cards both have the same label,
+            // but the second card of KK677 is stronger (K vs T), so KTJJT gets rank 2 and KK677 gets rank 3.
+
+            for (int i = 0; i < 5; i++) {
+                if (hand1.charAt(i) != hand2.charAt(i)) {
+                    return compareCard(hand1.charAt(i), hand2.charAt(i));
+                }
+            }
+
+            throw new IllegalArgumentException("Hands are equal, type, couldn't find different card " + hand1 + "-" + hand2);
+        }
+
+        return 99;
+    }
+
+    private int compareCard(char c1, char c2) {
+        // should only be called when they are different
+        // TODO - tests for all these cases?
+        if ('1' <= c1 && c1 <= '9' &&
+            '1' <= c2 && c2 <= '9') {
+            return new Character(c1).compareTo(c2);
+        }
+
+        int cardNum1 = cardValue(c1);
+        int cardNum2 = cardValue(c2);
+
+        return new Integer(cardNum1).compareTo(cardNum2);
+    }
+
+    private int cardValue(char card) {
+        switch (card) {
+            case 'T': return 10;
+            case 'J': return 11;
+            case 'Q': return 12;
+            case 'K': return 13;
+        }
+        throw new IllegalArgumentException("how'd this card get here? " + card );
+    }
+
+
+    private boolean areHandsEqual(String hand1, String hand2) {
         handTypes hand1Type = determineHand(hand1);
         handTypes hand2Type = determineHand(hand2);
         return hand1Type == hand2Type;
@@ -124,6 +186,10 @@ public class Day07 {
         }
 
         if (charArray[0] == charArray[1] && charArray[2] == charArray[3]) {
+            return handTypes.twoPair;
+        }
+
+        if (charArray[1] == charArray[2] && charArray[3] == charArray[4]) {
             return handTypes.twoPair;
         }
 
