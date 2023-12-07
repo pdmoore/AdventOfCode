@@ -235,6 +235,10 @@ public class Day07 {
         }
 
         long jokerCount = hand.chars().filter(ch -> ch == 'J').count();
+        if (jokerCount == 0) {
+            return handType;
+        }
+
         if (jokerCount == 1) {
             switch (handType) {
                 case highCard -> throw new IllegalArgumentException("1 got here - hand is [" + hand + "] joker count is " + jokerCount);
