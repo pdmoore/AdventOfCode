@@ -98,7 +98,8 @@ public class Day07 {
         assertEquals(1, compareHands(twoPair, onePair));
         assertEquals(1, compareHands(threeKind, twoPair));
         assertEquals(1, compareHands(fullHouse, threeKind));
-
+        assertEquals(1, compareHands(fourKind, fullHouse));
+        assertEquals(1, compareHands(fiveKind, fourKind));
     }
 
     @Test
