@@ -239,7 +239,7 @@ public class Day07 {
 
     private handTypes determineHand(String hand) {
         handTypes handType = determineHand_part1(hand);
-        if (_part2 == false) {
+        if (!_part2) {
             return handType;
         }
 
