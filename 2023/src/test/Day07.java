@@ -10,9 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Day07 {
 
-    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard}
+    enum handTypes {fiveOfKind, fourOfKind, fullHouse, threeOfKind, twoPair, onePair, highCard};
 
-    ;
+    @Test
+    void cardValue_for_all_cards() {
+        assertEquals(14, cardValue('A'));
+        assertEquals(13, cardValue('K'));
+        assertEquals(12, cardValue('Q'));
+        assertEquals(11, cardValue('J'));
+        assertEquals(10, cardValue('T'));
+        assertEquals(9, cardValue('9'));
+        assertEquals(5, cardValue('5'));
+        assertEquals(2, cardValue('2'));
+    }
 
     @Test
     void part1_example() {
@@ -23,6 +33,17 @@ public class Day07 {
 
         assertEquals(6440, actual);
     }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day07");
+
+        int actual = part1SolveFor(input);
+
+        assertEquals(246163188, actual);
+    }
+
+
 
     @Test
     void compare_four_of_kind() {
@@ -83,8 +104,6 @@ public class Day07 {
         assertEquals(handTypes.highCard, determineHand("K2856"));
     }
 
-    // TODO - compareTo to cover five of a kind down to high card
-
     @Test
     void compare_different_hands() {
         String highCard = "2468K";
@@ -137,8 +156,8 @@ public class Day07 {
     private int compareCard(char c1, char c2) {
         // should only be called when they are different
         // TODO - tests for all these cases?
-        if ('1' <= c1 && c1 <= '9' &&
-                '1' <= c2 && c2 <= '9') {
+        if ('2' <= c1 && c1 <= '9' &&
+                '2' <= c2 && c2 <= '9') {
             return new Character(c1).compareTo(c2);
         }
 
@@ -158,7 +177,13 @@ public class Day07 {
                 return 12;
             case 'K':
                 return 13;
+            case 'A':
+                return 14;
         }
+
+        if ('2' <= card && card <= '9')
+            return Integer.parseInt(String.valueOf(card));
+
         throw new IllegalArgumentException("how'd this card get here? " + card);
     }
 
