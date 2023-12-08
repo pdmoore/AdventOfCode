@@ -10,7 +10,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day08 {
+class Day08 {
 
     @Test
     void nod_data_structure_from_input_line() {
@@ -150,7 +150,7 @@ public class Day08 {
     }
 
 
-    class Node {
+    static class Node {
 
         public String key;
         public String left;
