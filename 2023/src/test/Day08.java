@@ -56,8 +56,6 @@ class Day08 {
     }
 
     private BigInteger stepCountToFindAllZ(List<String> input) {
-
-
         String instructions = input.get(0);
 
         Map<String, Node> nodeMap = new HashMap<>();
@@ -74,12 +72,8 @@ class Day08 {
             }
         }
 
-        // TODO something about LCM
-        // get the stepCount for each currentKey and then find the LCM of all those stepCounts
-        // will need something similar to part 1, but ??Z instead of ZZZ as the terminator
-
-        // for each key, get the stepCount abd store in list of ints
-        // find the LCM of the list of ints
+        // for each key, get the stepCount
+        // find the LCM of ll those stepCounts
         List<BigInteger> stepCounts = new ArrayList<>();
         for (String key :
                 currentKeys) {
@@ -102,7 +96,6 @@ class Day08 {
             }
 
             stepCounts.add(new BigInteger("" + stepCount));
-            System.out.println(" - stepcount " + stepCount);
         }
 
         /*
@@ -115,11 +108,9 @@ class Day08 {
             Plugged these stepcounts into a LCM calculator and got the right answer
          */
         BigInteger lcm = stepCounts.get(0);
-
         for (int i = 1; i < stepCounts.size(); i++) {
             lcm = lcm(lcm, stepCounts.get(i));
         }
-
 
         return lcm;
     }
