@@ -3,6 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,20 +42,20 @@ class Day08 {
     @Test
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08_part2_example");
-        BigDecimal actual = stepCountToFindAllZ(input);
+        BigInteger actual = stepCountToFindAllZ(input);
 
-        assertEquals(new BigDecimal(6), actual);
+        assertEquals(new BigInteger("" + 6), actual);
     }
 
     @Test
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08");
-        BigDecimal actual = stepCountToFindAllZ(input);
+        BigInteger actual = stepCountToFindAllZ(input);
 
-        assertEquals(new BigDecimal(18215611419223L), actual);
+        assertEquals(new BigInteger("18215611419223"), actual);
     }
 
-    private BigDecimal stepCountToFindAllZ(List<String> input) {
+    private BigInteger stepCountToFindAllZ(List<String> input) {
 
 
         String instructions = input.get(0);
@@ -79,7 +80,7 @@ class Day08 {
 
         // for each key, get the stepCount abd store in list of ints
         // find the LCM of the list of ints
-        List<Integer> stepCounts = new ArrayList<>();
+        List<BigInteger> stepCounts = new ArrayList<>();
         for (String key :
                 currentKeys) {
             int instructionIndex = 0;
@@ -100,7 +101,7 @@ class Day08 {
                 }
             }
 
-            stepCounts.add(stepCount);
+            stepCounts.add(new BigInteger("" + stepCount));
             System.out.println(" - stepcount " + stepCount);
         }
 
@@ -113,10 +114,26 @@ class Day08 {
             key GTA - stepcount 16043
             Plugged these stepcounts into a LCM calculator and got the right answer
          */
+        BigInteger lcm = stepCounts.get(0);
+
+        for (int i = 1; i < stepCounts.size(); i++) {
+            lcm = lcm(lcm, stepCounts.get(i));
+        }
 
 
+        return lcm;
+    }
 
-        BigDecimal lcm = new BigDecimal(18215611419223L);
+    public static BigInteger lcm(BigInteger s, BigInteger s1)
+    {
+        // calculate multiplication of two bigintegers
+        BigInteger mul = s.multiply(s1);
+
+        // calculate gcd of two bigintegers
+        BigInteger gcd = s.gcd(s1);
+
+        // calculate lcm using formula: lcm * gcd = x * y
+        BigInteger lcm = mul.divide(gcd);
         return lcm;
     }
 
