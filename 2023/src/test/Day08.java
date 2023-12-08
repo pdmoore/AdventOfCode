@@ -117,15 +117,11 @@ class Day08 {
 
     public static BigInteger lcm(BigInteger s, BigInteger s1)
     {
-        // calculate multiplication of two bigintegers
         BigInteger mul = s.multiply(s1);
-
-        // calculate gcd of two bigintegers
         BigInteger gcd = s.gcd(s1);
 
         // calculate lcm using formula: lcm * gcd = x * y
-        BigInteger lcm = mul.divide(gcd);
-        return lcm;
+        return mul.divide(gcd);
     }
 
     private int stepCountToFind(List<String> input, String target) {
