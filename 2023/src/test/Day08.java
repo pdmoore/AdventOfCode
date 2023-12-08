@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,72 @@ public class Day08 {
 
         assertEquals(12361, actual);
     }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day08_part2_example");
+        int actual = stepCountToFindAllZ(input);
+
+        assertEquals(6, actual);
+    }
+
+    private int stepCountToFindAllZ(List<String> input) {
+        int stepCount = 0;
+
+        String instructions = input.get(0);
+
+        Map<String, Node> nodeMap = new HashMap<>();
+        for (int i = 2; i < input.size(); i++) {
+            Node node = new Node(input.get(i));
+            nodeMap.put(node.key, node);
+        }
+
+        List<String> currentKeys = new ArrayList<>();
+        for (String key :
+                nodeMap.keySet()) {
+            if (key.endsWith("A")) {
+                currentKeys.add(key);
+            }
+        }
+
+        int instructionIndex = 0;
+        while (!allNodesEndWithZ(currentKeys)) {
+            stepCount++;
+
+            List<String> nextKeys = new ArrayList<>();
+            for (String key :
+                    currentKeys) {
+                if (instructions.charAt(instructionIndex) == 'L') {
+                    nextKeys.add(nodeMap.get(key).left);
+                } else {
+                    nextKeys.add(nodeMap.get(key).right);
+                }
+            }
+            currentKeys = nextKeys;
+
+
+
+            instructionIndex++;
+            if (instructionIndex >= instructions.length()) {
+                instructionIndex = 0;
+            }
+        }
+
+
+
+        return stepCount;
+    }
+
+    private boolean allNodesEndWithZ(List<String> keys) {
+        for (String key :
+                keys) {
+            if (!key.endsWith("Z")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     private int stepCountToFind(List<String> input, String target) {
         int stepCount = 0;
