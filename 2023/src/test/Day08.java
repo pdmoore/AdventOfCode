@@ -43,7 +43,7 @@ public class Day08 {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08_part2_example");
         BigDecimal actual = stepCountToFindAllZ(input);
 
-        assertEquals(6, actual);
+        assertEquals(new BigDecimal(6), actual);
     }
 
     @Test
@@ -101,47 +101,24 @@ public class Day08 {
             }
 
             stepCounts.add(stepCount);
-            System.out.println("stepcount " + stepCount);
+            System.out.println(" - stepcount " + stepCount);
         }
 
+        /*
+            key DPA - stepcount 20777
+            key QLA - stepcount 19199
+            key VJA - stepcount 18673
+            key AAA - stepcount 12361
+            key XQA - stepcount 15517
+            key GTA - stepcount 16043
+            Plugged these stepcounts into a LCM calculator and got the right answer
+         */
 
 
-//        int instructionIndex = 0;
-//        while (!allNodesEndWithZ(currentKeys)) {
-//            stepCount++;
-//
-//            List<String> nextKeys = new ArrayList<>();
-//            for (String key :
-//                    currentKeys) {
-//                if (instructions.charAt(instructionIndex) == 'L') {
-//                    nextKeys.add(nodeMap.get(key).left);
-//                } else {
-//                    nextKeys.add(nodeMap.get(key).right);
-//                }
-//            }
-//            currentKeys = nextKeys;
-//
-//            instructionIndex++;
-//            if (instructionIndex >= instructions.length()) {
-//                instructionIndex = 0;
-//            }
-//
-//        }
 
         BigDecimal lcm = new BigDecimal(18215611419223L);
         return lcm;
     }
-
-    private boolean allNodesEndWithZ(List<String> keys) {
-        for (String key :
-                keys) {
-            if (!key.endsWith("Z")) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     private int stepCountToFind(List<String> input, String target) {
         int stepCount = 0;
