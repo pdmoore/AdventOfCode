@@ -26,7 +26,7 @@ class Day08 {
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08_part1_example");
-        int actual = stepCountToFind(input, "ZZZ");
+        int actual = stepCountToFind(input);
 
         assertEquals(2, actual);
     }
@@ -34,7 +34,7 @@ class Day08 {
     @Test
     void part1_solutions() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08");
-        int actual = stepCountToFind(input, "ZZZ");
+        int actual = stepCountToFind(input);
 
         assertEquals(12361, actual);
     }
@@ -124,7 +124,7 @@ class Day08 {
         return mul.divide(gcd);
     }
 
-    private int stepCountToFind(List<String> input, String target) {
+    private int stepCountToFind(List<String> input) {
         int stepCount = 0;
         String instructions = input.get(0);
 
