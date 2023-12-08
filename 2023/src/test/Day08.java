@@ -28,6 +28,14 @@ public class Day08 {
         assertEquals(2, actual);
     }
 
+    @Test
+    void part1_solutions() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day08");
+        int actual = stepCountToFind(input, "ZZZ");
+
+        assertEquals(12361, actual);
+    }
+
     private int stepCountToFind(List<String> input, String target) {
         int stepCount = 0;
         String instructions = input.get(0);
