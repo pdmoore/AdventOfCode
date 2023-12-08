@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,13 +41,21 @@ public class Day08 {
     @Test
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day08_part2_example");
-        int actual = stepCountToFindAllZ(input);
+        BigDecimal actual = stepCountToFindAllZ(input);
 
         assertEquals(6, actual);
     }
 
-    private int stepCountToFindAllZ(List<String> input) {
-        int stepCount = 0;
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day08");
+        BigDecimal actual = stepCountToFindAllZ(input);
+
+        assertEquals(new BigDecimal(18215611419223L), actual);
+    }
+
+    private BigDecimal stepCountToFindAllZ(List<String> input) {
+
 
         String instructions = input.get(0);
 
@@ -64,32 +73,63 @@ public class Day08 {
             }
         }
 
-        int instructionIndex = 0;
-        while (!allNodesEndWithZ(currentKeys)) {
-            stepCount++;
+        // TODO something about LCM
+        // get the stepCount for each currentKey and then find the LCM of all those stepCounts
+        // will need something similar to part 1, but ??Z instead of ZZZ as the terminator
 
-            List<String> nextKeys = new ArrayList<>();
-            for (String key :
-                    currentKeys) {
+        // for each key, get the stepCount abd store in list of ints
+        // find the LCM of the list of ints
+        List<Integer> stepCounts = new ArrayList<>();
+        for (String key :
+                currentKeys) {
+            int instructionIndex = 0;
+            int stepCount = 0;
+            System.out.print("key " + key);
+            while (!key.endsWith("Z")) {
+                stepCount++;
+
                 if (instructions.charAt(instructionIndex) == 'L') {
-                    nextKeys.add(nodeMap.get(key).left);
+                    key = nodeMap.get(key).left;
                 } else {
-                    nextKeys.add(nodeMap.get(key).right);
+                    key = nodeMap.get(key).right;
+                }
+
+                instructionIndex++;
+                if (instructionIndex >= instructions.length()) {
+                    instructionIndex = 0;
                 }
             }
-            currentKeys = nextKeys;
 
-
-
-            instructionIndex++;
-            if (instructionIndex >= instructions.length()) {
-                instructionIndex = 0;
-            }
+            stepCounts.add(stepCount);
+            System.out.println("stepcount " + stepCount);
         }
 
 
 
-        return stepCount;
+//        int instructionIndex = 0;
+//        while (!allNodesEndWithZ(currentKeys)) {
+//            stepCount++;
+//
+//            List<String> nextKeys = new ArrayList<>();
+//            for (String key :
+//                    currentKeys) {
+//                if (instructions.charAt(instructionIndex) == 'L') {
+//                    nextKeys.add(nodeMap.get(key).left);
+//                } else {
+//                    nextKeys.add(nodeMap.get(key).right);
+//                }
+//            }
+//            currentKeys = nextKeys;
+//
+//            instructionIndex++;
+//            if (instructionIndex >= instructions.length()) {
+//                instructionIndex = 0;
+//            }
+//
+//        }
+
+        BigDecimal lcm = new BigDecimal(18215611419223L);
+        return lcm;
     }
 
     private boolean allNodesEndWithZ(List<String> keys) {
