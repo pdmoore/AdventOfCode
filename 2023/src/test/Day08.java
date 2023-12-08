@@ -2,7 +2,6 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,13 +98,12 @@ class Day08 {
         }
 
         /*
-            key DPA - stepcount 20777
-            key QLA - stepcount 19199
-            key VJA - stepcount 18673
-            key AAA - stepcount 12361
-            key XQA - stepcount 15517
-            key GTA - stepcount 16043
-            Plugged these stepcounts into a LCM calculator and got the right answer
+            key DPA - step count 20777
+            key QLA - step count 19199
+            key VJA - step count 18673
+            key AAA - step count 12361
+            key XQA - step count 15517
+            key GTA - step count 16043
          */
         BigInteger lcm = stepCounts.get(0);
         for (int i = 1; i < stepCounts.size(); i++) {
