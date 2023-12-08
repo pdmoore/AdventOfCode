@@ -3,7 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -31,32 +31,32 @@ class Day05 {
 
     @Test
     void convert_large_string_to_big_decimal() {
-        BigDecimal expected = BigDecimal.valueOf(4188359137L);
-        BigDecimal actual = new BigDecimal("4188359137");
+        BigInteger expected = BigInteger.valueOf(4188359137L);
+        BigInteger actual = new BigInteger("4188359137");
         assertEquals(expected, actual);
     }
 
     @Test
     void get_seed_list_from_input() {
-        List<BigDecimal> actual = seedListFrom("seeds: 79 14 55 13");
+        List<BigInteger> actual = seedListFrom("seeds: 79 14 55 13");
 
-        List<BigDecimal> expected = new ArrayList<>();
-        expected.add(new BigDecimal(79));
-        expected.add(new BigDecimal(14));
-        expected.add(new BigDecimal(55));
-        expected.add(new BigDecimal(13));
+        List<BigInteger> expected = new ArrayList<>();
+        expected.add(BigInteger.valueOf(79));
+        expected.add(BigInteger.valueOf(14));
+        expected.add(BigInteger.valueOf(55));
+        expected.add(BigInteger.valueOf(13));
 
         assertEquals(expected, actual);
     }
 
     @Test
     void find_location_given_seed() {
-        BigDecimal seedNumber = new BigDecimal(79);
+        BigInteger seedNumber = BigInteger.valueOf(79);
 
         // Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
-        BigDecimal actual = findLocationForSeed(seedNumber);
+        BigInteger actual = findLocationForSeed(seedNumber);
 
-        BigDecimal expected = new BigDecimal(82);
+        BigInteger expected = BigInteger.valueOf(82);
         assertEquals(expected, actual);
     }
 
@@ -67,108 +67,108 @@ class Day05 {
 
         MappingConversion sut = new MappingConversion(input);
 
-        assertEquals(new BigDecimal(1), sut.correspondsTo(new BigDecimal(1)));
-        assertEquals(new BigDecimal(10), sut.correspondsTo(new BigDecimal(10)));
-        assertEquals(new BigDecimal(49), sut.correspondsTo(new BigDecimal(49)));
-        assertEquals(new BigDecimal(52), sut.correspondsTo(new BigDecimal(50)));
-        assertEquals(new BigDecimal(53), sut.correspondsTo(new BigDecimal(51)));
-        assertEquals(new BigDecimal(55), sut.correspondsTo(new BigDecimal(53)));
-        assertEquals(new BigDecimal(98), sut.correspondsTo(new BigDecimal(96)));
-        assertEquals(new BigDecimal(99), sut.correspondsTo(new BigDecimal(97)));
-        assertEquals(new BigDecimal(50), sut.correspondsTo(new BigDecimal(98)));
-        assertEquals(new BigDecimal(51), sut.correspondsTo(new BigDecimal(99)));
+        assertEquals(BigInteger.valueOf(1), sut.correspondsTo(BigInteger.valueOf(1)));
+        assertEquals(BigInteger.valueOf(10), sut.correspondsTo(BigInteger.valueOf(10)));
+        assertEquals(BigInteger.valueOf(49), sut.correspondsTo(BigInteger.valueOf(49)));
+        assertEquals(BigInteger.valueOf(52), sut.correspondsTo(BigInteger.valueOf(50)));
+        assertEquals(BigInteger.valueOf(53), sut.correspondsTo(BigInteger.valueOf(51)));
+        assertEquals(BigInteger.valueOf(55), sut.correspondsTo(BigInteger.valueOf(53)));
+        assertEquals(BigInteger.valueOf(98), sut.correspondsTo(BigInteger.valueOf(96)));
+        assertEquals(BigInteger.valueOf(99), sut.correspondsTo(BigInteger.valueOf(97)));
+        assertEquals(BigInteger.valueOf(50), sut.correspondsTo(BigInteger.valueOf(98)));
+        assertEquals(BigInteger.valueOf(51), sut.correspondsTo(BigInteger.valueOf(99)));
     }
 
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day05_part1_example");
 
-        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        List<BigInteger> seeds = seedListFrom(input.get(0));
         assertEquals(4, seeds.size());
 
         populateMappingThingy(input);
-        assertEquals(new BigDecimal(81), _seedToSoil.correspondsTo(new BigDecimal(79)));
-        assertEquals(new BigDecimal(81), _soilToFertilizer.correspondsTo(new BigDecimal(81)));
-        assertEquals(new BigDecimal(81), _fertilizerToWater.correspondsTo(new BigDecimal(81)));
-        assertEquals(new BigDecimal(74), _waterToLight.correspondsTo(new BigDecimal(81)));
-        assertEquals(new BigDecimal(78), _lightToTemperature.correspondsTo(new BigDecimal(74)));
-        assertEquals(new BigDecimal(78), _temperatureToHumidity.correspondsTo(new BigDecimal(78)));
-        assertEquals(new BigDecimal(82), _humidityToLocation.correspondsTo(new BigDecimal(78)));
+        assertEquals(BigInteger.valueOf(81), _seedToSoil.correspondsTo(BigInteger.valueOf(79)));
+        assertEquals(BigInteger.valueOf(81), _soilToFertilizer.correspondsTo(BigInteger.valueOf(81)));
+        assertEquals(BigInteger.valueOf(81), _fertilizerToWater.correspondsTo(BigInteger.valueOf(81)));
+        assertEquals(BigInteger.valueOf(74), _waterToLight.correspondsTo(BigInteger.valueOf(81)));
+        assertEquals(BigInteger.valueOf(78), _lightToTemperature.correspondsTo(BigInteger.valueOf(74)));
+        assertEquals(BigInteger.valueOf(78), _temperatureToHumidity.correspondsTo(BigInteger.valueOf(78)));
+        assertEquals(BigInteger.valueOf(82), _humidityToLocation.correspondsTo(BigInteger.valueOf(78)));
 
-        BigDecimal lowest = BigDecimal.valueOf(999999999);
-        for (BigDecimal seed :
+        BigInteger lowest = BigInteger.valueOf(999999999);
+        for (BigInteger seed :
                 seeds) {
 
-            BigDecimal location = findLocationForSeed(seed);
+            BigInteger location = findLocationForSeed(seed);
             if (location.compareTo(lowest) < 0) {
                 lowest = location;
             }
         }
 
-        assertEquals(new BigDecimal(35), lowest);
+        assertEquals(BigInteger.valueOf(35), lowest);
     }
 
     @Test
     void part1_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day05");
 
-        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        List<BigInteger> seeds = seedListFrom(input.get(0));
         assertEquals(20, seeds.size());
 
         populateMappingThingy(input);
 
-        BigDecimal lowest = BigDecimal.valueOf(999999999);
-        for (BigDecimal seed :
+        BigInteger lowest = BigInteger.valueOf(999999999);
+        for (BigInteger seed :
                 seeds) {
 
-            BigDecimal location = findLocationForSeed(seed);
+            BigInteger location = findLocationForSeed(seed);
             if (location.compareTo(lowest) < 0) {
                 lowest = location;
             }
         }
 
-        assertEquals(new BigDecimal(26273516), lowest);
+        assertEquals(BigInteger.valueOf(26273516), lowest);
     }
 
     @Test
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day05_part1_example");
-        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        List<BigInteger> seeds = seedListFrom(input.get(0));
         populateMappingThingy(input);
 
-        BigDecimal lowest = BigDecimal.valueOf(999999999);
+        BigInteger lowest = BigInteger.valueOf(999999999);
         for (int i = 0; i < seeds.size(); i += 2) {
-            BigDecimal startWith = seeds.get(i);
-            BigDecimal rangeLength = seeds.get(i+1);
+            BigInteger startWith = seeds.get(i);
+            BigInteger rangeLength = seeds.get(i+1);
 
-            BigDecimal upperLimit = startWith.add(rangeLength);
-            for (BigDecimal seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigDecimal.ONE)) {
-                BigDecimal location = findLocationForSeed(seed);
+            BigInteger upperLimit = startWith.add(rangeLength);
+            for (BigInteger seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigInteger.ONE)) {
+                BigInteger location = findLocationForSeed(seed);
                 if (location.compareTo(lowest) < 0) {
                     lowest = location;
                 }
             }
         }
 
-        assertEquals(new BigDecimal(46), lowest);
+        assertEquals(BigInteger.valueOf(46), lowest);
     }
 
     @Test
     @Disabled("Correct answer, takes 40+ minutes to get there")
     void part2_solution() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day05");
-        List<BigDecimal> seeds = seedListFrom(input.get(0));
+        List<BigInteger> seeds = seedListFrom(input.get(0));
         populateMappingThingy(input);
 
-        BigDecimal lowest = BigDecimal.valueOf(9999999999L);
+        BigInteger lowest = BigInteger.valueOf(9999999999L);
         int count = 1;
         for (int i = 0; i < seeds.size(); i += 2) {
-            BigDecimal startWith = seeds.get(i);
+            BigInteger startWith = seeds.get(i);
             System.out.println("Lowest so far: " + lowest);
             System.out.println("seeds start: " + startWith + " --" + LocalDateTime.now());
-            BigDecimal rangeLength = seeds.get(i+1);
+            BigInteger rangeLength = seeds.get(i+1);
 
-            BigDecimal upperLimit = startWith.add(rangeLength);
+            BigInteger upperLimit = startWith.add(rangeLength);
 
             // TODO - brute force, answer is in the second range....
             // Could try skipping a lot of values by checking
@@ -176,8 +176,8 @@ class Day05 {
             // seed+100 -> location
             // and if the difference between the two is the same, skip all 98 in between
             // if diff between two is not same, divide into 50/25/10 back down to each 1
-            for (BigDecimal seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigDecimal.ONE)) {
-                BigDecimal location = findLocationForSeed(seed);
+            for (BigInteger seed = startWith; seed.compareTo(upperLimit) < 0; seed = seed.add(BigInteger.ONE)) {
+                BigInteger location = findLocationForSeed(seed);
                 if (location.compareTo(lowest) < 0) {
                     lowest = location;
                 }
@@ -188,55 +188,55 @@ class Day05 {
             }
         }
 
-        assertEquals(new BigDecimal(34039469), lowest);
+        assertEquals(BigInteger.valueOf(34039469), lowest);
     }
 
 
     // ---------------------------------
-    private BigDecimal findLocationForSeed(BigDecimal seedNumber) {
-        BigDecimal soil = _seedToSoil.correspondsTo(seedNumber);
-        BigDecimal fertilizer = _soilToFertilizer.correspondsTo(soil);
-        BigDecimal water = _fertilizerToWater.correspondsTo(fertilizer);
-        BigDecimal light = _waterToLight.correspondsTo(water);
-        BigDecimal temperature = _lightToTemperature.correspondsTo(light);
-        BigDecimal humidity = _temperatureToHumidity.correspondsTo(temperature);
+    private BigInteger findLocationForSeed(BigInteger seedNumber) {
+        BigInteger soil = _seedToSoil.correspondsTo(seedNumber);
+        BigInteger fertilizer = _soilToFertilizer.correspondsTo(soil);
+        BigInteger water = _fertilizerToWater.correspondsTo(fertilizer);
+        BigInteger light = _waterToLight.correspondsTo(water);
+        BigInteger temperature = _lightToTemperature.correspondsTo(light);
+        BigInteger humidity = _temperatureToHumidity.correspondsTo(temperature);
 
         return _humidityToLocation.correspondsTo(humidity);
     }
 
-    private List<BigDecimal> seedListFrom(String inputLine) {
+    private List<BigInteger> seedListFrom(String inputLine) {
         String[] seedNumbers = inputLine.substring(7).split(" ");
-        List<BigDecimal> seeds = new ArrayList<>();
+        List<BigInteger> seeds = new ArrayList<>();
         for (String seedStr :
                 seedNumbers) {
-            seeds.add(new BigDecimal(seedStr));
+            seeds.add(new BigInteger(seedStr));
         }
         return seeds;
     }
 
     private static class MappingConversion {
-        private final TreeMap<BigDecimal, Range> ranges;
+        private final TreeMap<BigInteger, Range> ranges;
 
         public MappingConversion(List<String> input) {
             ranges = new TreeMap<>();
             for (String inputLine :
                     input) {
                 String[] chunks = inputLine.split(" ");
-                BigDecimal sourceStart = new BigDecimal(chunks[1]);
-                BigDecimal destination = new BigDecimal(chunks[0]);
-                BigDecimal modifier = destination.subtract(sourceStart);
-                Range r = new Range(sourceStart, destination, new BigDecimal(Integer.parseInt(chunks[2])), modifier);
+                BigInteger sourceStart = new BigInteger(chunks[1]);
+                BigInteger destination = new BigInteger(chunks[0]);
+                BigInteger modifier = destination.subtract(sourceStart);
+                Range r = new Range(sourceStart, destination, BigInteger.valueOf(Integer.parseInt(chunks[2])), modifier);
                 ranges.put(sourceStart, r);
             }
         }
 
         static class Range {
-            final BigDecimal sourceStart;
-            final BigDecimal destination;
-            final BigDecimal length;
-            final BigDecimal modifier;
+            final BigInteger sourceStart;
+            final BigInteger destination;
+            final BigInteger length;
+            final BigInteger modifier;
 
-            public Range(BigDecimal sourceStart, BigDecimal destination, BigDecimal length, BigDecimal modifier) {
+            public Range(BigInteger sourceStart, BigInteger destination, BigInteger length, BigInteger modifier) {
                 this.sourceStart = sourceStart;
                 this.destination = destination;
                 this.length = length;
@@ -244,9 +244,9 @@ class Day05 {
             }
         }
 
-        public BigDecimal correspondsTo(BigDecimal source) {
-            Set<BigDecimal> bigDecimals = ranges.keySet();
-            for (BigDecimal sourceStart:
+        public BigInteger correspondsTo(BigInteger source) {
+            Set<BigInteger> bigDecimals = ranges.keySet();
+            for (BigInteger sourceStart:
                     bigDecimals) {
 
                 if (source.compareTo(sourceStart) >= 0) {
