@@ -6,7 +6,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day09 {
+class Day09 {
 
     @Test
     void part1_example() {
@@ -64,7 +64,6 @@ public class Day09 {
     }
 
     private int part1_solveSingleLine(String input) {
-        Map<Integer, List<Integer>> thingy = new HashMap<>();
         String[] s = input.split(" ");
 
         List<Integer> firstRow = new ArrayList<>();
@@ -105,75 +104,4 @@ public class Day09 {
 
         return histories.get(0).get(histories.get(0).size() - 1);
     }
-
-    private int part1_solveSingleLine_take1(String input) {
-        Map<Integer, List<Integer>> thingy = new HashMap<>();
-        String[] s = input.split(" ");
-
-        List<Integer> firstRow = new ArrayList<>();
-        for (String number :
-                s) {
-            firstRow.add(Integer.valueOf(number));
-        }
-        thingy.put(0, firstRow);
-
-        List<Integer> secondRow = new ArrayList<>();
-        for (int i = 1; i < firstRow.size(); i++) {
-            secondRow.add(firstRow.get(i) - firstRow.get(i - 1));
-        }
-        thingy.put(1, secondRow);
-
-        List<Integer> thirdRow = new ArrayList<>();
-        for (int i = 1; i < secondRow.size(); i++) {
-            thirdRow.add(secondRow.get(i) - secondRow.get(i - 1));
-        }
-        thingy.put(2, thirdRow);
-
-        int lastRow = thingy.size() - 1;
-        if (allZeros(thingy.get(lastRow))) {
-            // build back up to top row, and return last element
-            thingy.get(lastRow).add(0);
-
-
-//            for (int i = thingy.size() - 1; i >= 0; i--) {
-//                List<Integer> rowAbove = thingy.get(i - 1);
-//                rowAbove.add(rowAbove.get(thingy.get(i - 1).size() - 1));
-//            }
-//
-            List<Integer> rowAbove = thingy.get(lastRow - 1);
-            rowAbove.add(rowAbove.get(thingy.get(lastRow - 1).size() - 1) + thingy.get(lastRow).get(thingy.get(lastRow).size() - 1));
-
-            List<Integer> firstIndex = thingy.get(lastRow - 2);
-            firstIndex.add(secondRow.get(thingy.get(lastRow - 1).size() - 1) + firstIndex.get(firstIndex.size() - 1));
-        }
-
-        return firstRow.get(firstRow.size() - 1);
-    }
-
-    private boolean allZeros(List<Integer> row) {
-        for (Integer n :
-                row) {
-            if (n != 0) {
-                return false;
-            }
-
-        }
-        return true;
-    }
-
-    @Test
-    void not_sure() {
-        assertEquals(114, (18 + 28 + 68));
-    }
-
-    /*
-    10  13  16  21  30  45  68  101  146
-   3   3   5   9  15  23  33  45
-     0   2   4   6   8  10  12
-       2   2   2   2  2   2
-         0   0   0  0   0
-           0    0    0
-              0
-     */
-
 }
