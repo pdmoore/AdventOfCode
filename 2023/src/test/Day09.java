@@ -20,6 +20,13 @@ public class Day09 {
         assertEquals(114, actual);
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day09");
+        int actual = actuallySolvePart1(input);
+        assertEquals(1798691765, actual);
+    }
+
     private int actuallySolvePart1(List<String> input) {
         int sum = 0;
         for (String inputLine :
