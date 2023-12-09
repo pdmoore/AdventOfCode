@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -41,23 +40,81 @@ public class Day09 {
                 s) {
             firstRow.add(Integer.valueOf(number));
         }
+
+        List<List<Integer>> histories = new ArrayList<>();
+        histories.add(firstRow);
+
+        boolean allZeros = false;
+        while (!allZeros)  {
+            List<Integer> nextHistory = new ArrayList<>();
+            List<Integer> lastHistory = histories.get(histories.size() - 1);
+            allZeros = true;
+            for (int i = 1; i < lastHistory.size(); i++) {
+                int difference = lastHistory.get(i) - lastHistory.get(i - 1);
+                nextHistory.add(difference);
+                if (difference != 0) {
+                    allZeros = false;
+                }
+            }
+            histories.add(nextHistory);
+        }
+
+
+        // Now go backwards and add up to the top
+        for (int i = histories.size() - 1; i > 0; i--) {
+            List<Integer> bottomHistory = histories.get(i);
+            List<Integer> historyOneAbove = histories.get(i - 1);
+            int newEnd = bottomHistory.get(bottomHistory.size() - 1) + historyOneAbove.get(historyOneAbove.size() - 1);
+            historyOneAbove.add(newEnd);
+        }
+
+
+
+
+
+
+        return histories.get(0).get(histories.get(0).size() - 1);
+    }
+
+    private int part1_solveSingleLine_take1(String input) {
+        Map<Integer, List<Integer>> thingy = new HashMap<>();
+        String[] s = input.split(" ");
+
+        List<Integer> firstRow = new ArrayList<>();
+        for (String number :
+                s) {
+            firstRow.add(Integer.valueOf(number));
+        }
         thingy.put(0, firstRow);
 
         List<Integer> secondRow = new ArrayList<>();
         for (int i = 1; i < firstRow.size(); i++) {
             secondRow.add(firstRow.get(i) - firstRow.get(i - 1));
         }
+        thingy.put(1, secondRow);
 
         List<Integer> thirdRow = new ArrayList<>();
         for (int i = 1; i < secondRow.size(); i++) {
             thirdRow.add(secondRow.get(i) - secondRow.get(i - 1));
         }
+        thingy.put(2, thirdRow);
 
-        if (allZeros(thirdRow)) {
+        int lastRow = thingy.size() - 1;
+        if (allZeros(thingy.get(lastRow))) {
             // build back up to top row, and return last element
-            thirdRow.add(0);
-            secondRow.add(secondRow.get(secondRow.size() - 1));
-            firstRow.add(secondRow.get(secondRow.size() - 1)  + firstRow.get(firstRow.size() - 1));
+            thingy.get(lastRow).add(0);
+
+
+//            for (int i = thingy.size() - 1; i >= 0; i--) {
+//                List<Integer> rowAbove = thingy.get(i - 1);
+//                rowAbove.add(rowAbove.get(thingy.get(i - 1).size() - 1));
+//            }
+//
+            List<Integer> rowAbove = thingy.get(lastRow - 1);
+            rowAbove.add(rowAbove.get(thingy.get(lastRow - 1).size() - 1) + thingy.get(lastRow).get(thingy.get(lastRow).size() - 1));
+
+            List<Integer> firstIndex = thingy.get(lastRow - 2);
+            firstIndex.add(secondRow.get(thingy.get(lastRow - 1).size() - 1)  + firstIndex.get(firstIndex.size() - 1));
         }
 
         return firstRow.get(firstRow.size() - 1);
