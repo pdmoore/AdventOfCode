@@ -44,25 +44,6 @@ class Day09 {
         assertEquals(1104, actual);
     }
 
-    private int actuallySolvePart1(List<String> input) {
-        int sum = 0;
-        for (String inputLine :
-                input) {
-            sum += part1_solveSingleLine(inputLine);
-        }
-        return sum;
-    }
-
-    private int actuallySolvePart2(List<String> input) {
-        int sum = 0;
-        for (String inputLine :
-                input) {
-            sum += part2_solveSingleLine(inputLine);
-        }
-        return sum;
-    }
-
-
 
     @Test
     void part1_example_line_1() {
@@ -118,31 +99,16 @@ class Day09 {
         assertEquals(5, actual);
     }
 
+    // ----------------------------------------
     private int part2_solveSingleLine(String input) {
         List<Integer> firstRow = convertStringsToIntgers(input);
-
         Collections.reverse(firstRow);
-
         return solvePart1(firstRow);
     }
 
     private int part1_solveSingleLine(String input) {
         List<Integer> firstRow = convertStringsToIntgers(input);
-
         return solvePart1(firstRow);
-    }
-
-    private static List<Integer> convertStringsToIntgers(String input) {
-        String[] s = input.split(" ");
-
-        List<Integer> firstRow = new ArrayList<>();
-        for (String number :
-                s) {
-            if (!number.isEmpty()) {
-                firstRow.add(Integer.valueOf(number));
-            }
-        }
-        return firstRow;
     }
 
     private static Integer solvePart1(List<Integer> firstRow) {
@@ -173,5 +139,28 @@ class Day09 {
         }
 
         return histories.get(0).get(histories.get(0).size() - 1);
+    }
+
+    private int actuallySolvePart1(List<String> input) {
+        return input.stream().mapToInt(this::part1_solveSingleLine).sum();
+    }
+
+    private int actuallySolvePart2(List<String> input) {
+        return input.stream().mapToInt(this::part2_solveSingleLine).sum();
+    }
+
+
+
+    private static List<Integer> convertStringsToIntgers(String input) {
+        String[] s = input.split(" ");
+
+        List<Integer> firstRow = new ArrayList<>();
+        for (String number :
+                s) {
+            if (!number.isEmpty()) {
+                firstRow.add(Integer.valueOf(number));
+            }
+        }
+        return firstRow;
     }
 }
