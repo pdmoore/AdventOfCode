@@ -119,15 +119,7 @@ class Day09 {
     }
 
     private int part2_solveSingleLine(String input) {
-        String[] s = input.split(" ");
-
-        List<Integer> firstRow = new ArrayList<>();
-        for (String number :
-                s) {
-            if (!number.isEmpty()) {
-                firstRow.add(Integer.valueOf(number));
-            }
-        }
+        List<Integer> firstRow = convertStringsToIntgers(input);
 
         Collections.reverse(firstRow);
 
@@ -135,6 +127,12 @@ class Day09 {
     }
 
     private int part1_solveSingleLine(String input) {
+        List<Integer> firstRow = convertStringsToIntgers(input);
+
+        return solvePart1(firstRow);
+    }
+
+    private static List<Integer> convertStringsToIntgers(String input) {
         String[] s = input.split(" ");
 
         List<Integer> firstRow = new ArrayList<>();
@@ -144,8 +142,7 @@ class Day09 {
                 firstRow.add(Integer.valueOf(number));
             }
         }
-
-        return solvePart1(firstRow);
+        return firstRow;
     }
 
     private static Integer solvePart1(List<Integer> firstRow) {
