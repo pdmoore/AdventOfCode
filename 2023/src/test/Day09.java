@@ -1,10 +1,15 @@
 package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class Day09 {
 
@@ -40,59 +45,31 @@ class Day09 {
         assertEquals(1104, actual);
     }
 
+    @ParameterizedTest
+    @MethodSource("exampleInput")
+    void part1_example_input_each_line(String inputLine, int expected, int ignored) {
+        int actual = part1_solveSingleLine(inputLine);
 
-    @Test
-    void part1_example_line_1() {
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @MethodSource("exampleInput")
+    void part2_example_input_each_line(String inputLine, int ignored, int expected) {
         String input = "0 3 6 9 12 15";
 
-        int actual = part1_solveSingleLine(input);
+        int actual = part2_solveSingleLine(inputLine);
 
-        assertEquals(18, actual);
+        assertEquals(expected, actual);
     }
 
-    @Test
-    void part1_example_line_2() {
-        String input = "1   3   6  10  15  21";
-
-        int actual = part1_solveSingleLine(input);
-
-        assertEquals(28, actual);
-    }
-
-    @Test
-    void part1_example_line_3() {
-        String input = "10 13 16 21 30 45";
-
-        int actual = part1_solveSingleLine(input);
-
-        assertEquals(68, actual);
-    }
-
-    @Test
-    void part2_example_line_1() {
-        String input = "0 3 6 9 12 15";
-
-        int actual = part2_solveSingleLine(input);
-
-        assertEquals(-3, actual);
-    }
-
-    @Test
-    void part2_example_line_2() {
-        String input = "1   3   6  10  15  21";
-
-        int actual = part2_solveSingleLine(input);
-
-        assertEquals(0, actual);
-    }
-
-    @Test
-    void part2_example_line_3() {
-        String input = "10 13 16 21 30 45";
-
-        int actual = part2_solveSingleLine(input);
-
-        assertEquals(5, actual);
+    private static Stream<Arguments> exampleInput() {
+        // single line of input, part 1 expected answer, part 2 expected answer
+        return Stream.of(
+            arguments("0 3 6 9 12 15", 18, -3),
+            arguments("1   3   6  10  15  21", 28, 0),
+            arguments("10 13 16 21 30 45", 68, 5)
+        );
     }
 
     // ----------------------------------------
