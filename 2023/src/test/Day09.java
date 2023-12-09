@@ -8,24 +8,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day09 {
 
+    private List<String> _exampleInput  = Arrays.asList("0 3 6 9 12 15",
+            "1 3 6 10 15 21",
+            "10 13 16 21 30 45");
+
     @Test
     void part1_example() {
-        List<String> input = Arrays.asList("0 3 6 9 12 15",
-                "1 3 6 10 15 21",
-                "10 13 16 21 30 45");
-
-        int actual = actuallySolvePart1(input);
+        int actual = actuallySolvePart1(_exampleInput);
 
         assertEquals(114, actual);
     }
 
     @Test
     void part2_example() {
-        List<String> input = Arrays.asList("0 3 6 9 12 15",
-                "1 3 6 10 15 21",
-                "10 13 16 21 30 45");
-
-        int actual = actuallySolvePart2(input);
+        int actual = actuallySolvePart2(_exampleInput);
 
         assertEquals(2, actual);
     }
@@ -148,8 +144,6 @@ class Day09 {
     private int actuallySolvePart2(List<String> input) {
         return input.stream().mapToInt(this::part2_solveSingleLine).sum();
     }
-
-
 
     private static List<Integer> convertStringsToIntgers(String input) {
         String[] s = input.split(" ");
