@@ -14,12 +14,19 @@ public class Day09 {
                 "1 3 6 10 15 21",
                 "10 13 16 21 30 45");
 
-        int actual_1 = part1_solveSingleLine(input.get(0));
-        int actual_2 = part1_solveSingleLine(input.get(1));
-        int actual_3 = part1_solveSingleLine(input.get(2));
+        int actual = actuallySolvePart1(input);
 
 
-        assertEquals(114, actual_1 + actual_2 + actual_3);
+        assertEquals(114, actual);
+    }
+
+    private int actuallySolvePart1(List<String> input) {
+        int sum = 0;
+        for (String inputLine :
+                input) {
+            sum += part1_solveSingleLine(inputLine);
+        }
+        return sum;
     }
 
     @Test
@@ -31,6 +38,24 @@ public class Day09 {
         assertEquals(18, actual);
     }
 
+    @Test
+    void part1_example_line_2() {
+        String input = "1   3   6  10  15  21";
+
+        int actual = part1_solveSingleLine(input);
+
+        assertEquals(28, actual);
+    }
+
+    @Test
+    void part1_example_line_3() {
+        String input = "10 13 16 21 30 45";
+
+        int actual = part1_solveSingleLine(input);
+
+        assertEquals(68, actual);
+    }
+
     private int part1_solveSingleLine(String input) {
         Map<Integer, List<Integer>> thingy = new HashMap<>();
         String[] s = input.split(" ");
@@ -38,14 +63,16 @@ public class Day09 {
         List<Integer> firstRow = new ArrayList<>();
         for (String number :
                 s) {
-            firstRow.add(Integer.valueOf(number));
+            if (!number.isEmpty()) {
+                firstRow.add(Integer.valueOf(number));
+            }
         }
 
         List<List<Integer>> histories = new ArrayList<>();
         histories.add(firstRow);
 
         boolean allZeros = false;
-        while (!allZeros)  {
+        while (!allZeros) {
             List<Integer> nextHistory = new ArrayList<>();
             List<Integer> lastHistory = histories.get(histories.size() - 1);
             allZeros = true;
@@ -67,10 +94,6 @@ public class Day09 {
             int newEnd = bottomHistory.get(bottomHistory.size() - 1) + historyOneAbove.get(historyOneAbove.size() - 1);
             historyOneAbove.add(newEnd);
         }
-
-
-
-
 
 
         return histories.get(0).get(histories.get(0).size() - 1);
@@ -114,7 +137,7 @@ public class Day09 {
             rowAbove.add(rowAbove.get(thingy.get(lastRow - 1).size() - 1) + thingy.get(lastRow).get(thingy.get(lastRow).size() - 1));
 
             List<Integer> firstIndex = thingy.get(lastRow - 2);
-            firstIndex.add(secondRow.get(thingy.get(lastRow - 1).size() - 1)  + firstIndex.get(firstIndex.size() - 1));
+            firstIndex.add(secondRow.get(thingy.get(lastRow - 1).size() - 1) + firstIndex.get(firstIndex.size() - 1));
         }
 
         return firstRow.get(firstRow.size() - 1);
