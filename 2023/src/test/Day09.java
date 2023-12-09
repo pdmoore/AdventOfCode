@@ -15,7 +15,12 @@ public class Day09 {
                 "1 3 6 10 15 21",
                 "10 13 16 21 30 45");
 
-        assertEquals(114, 1);
+        int actual_1 = part1_solveSingleLine(input.get(0));
+        int actual_2 = part1_solveSingleLine(input.get(1));
+        int actual_3 = part1_solveSingleLine(input.get(2));
+
+
+        assertEquals(114, actual_1 + actual_2 + actual_3);
     }
 
     @Test
@@ -24,39 +29,38 @@ public class Day09 {
 
         int actual = part1_solveSingleLine(input);
 
-        assertEquals(18,actual);
-
+        assertEquals(18, actual);
     }
 
     private int part1_solveSingleLine(String input) {
         Map<Integer, List<Integer>> thingy = new HashMap<>();
         String[] s = input.split(" ");
 
-        List<Integer> topRow = new ArrayList<>();
+        List<Integer> firstRow = new ArrayList<>();
         for (String number :
                 s) {
-            topRow.add(Integer.valueOf(number));
+            firstRow.add(Integer.valueOf(number));
         }
-        thingy.put(0, topRow);
+        thingy.put(0, firstRow);
 
         List<Integer> secondRow = new ArrayList<>();
-        for (int i = 1; i < topRow.size(); i++) {
-            secondRow.add(topRow.get(i) - topRow.get(i - 1));
+        for (int i = 1; i < firstRow.size(); i++) {
+            secondRow.add(firstRow.get(i) - firstRow.get(i - 1));
         }
 
         List<Integer> thirdRow = new ArrayList<>();
         for (int i = 1; i < secondRow.size(); i++) {
-            secondRow.add(secondRow.get(i) - secondRow.get(i - 1));
+            thirdRow.add(secondRow.get(i) - secondRow.get(i - 1));
         }
 
         if (allZeros(thirdRow)) {
             // build back up to top row, and return last element
             thirdRow.add(0);
-            secondRow.add(secondRow.get(secondRow.size()));
-            topRow.add(secondRow.get(secondRow.size() + topRow.get(topRow.size())));
+            secondRow.add(secondRow.get(secondRow.size() - 1));
+            firstRow.add(secondRow.get(secondRow.size() - 1)  + firstRow.get(firstRow.size() - 1));
         }
 
-        return topRow.size();
+        return firstRow.get(firstRow.size() - 1);
     }
 
     private boolean allZeros(List<Integer> row) {
