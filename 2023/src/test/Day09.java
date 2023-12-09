@@ -16,7 +16,6 @@ class Day09 {
 
         int actual = actuallySolvePart1(input);
 
-
         assertEquals(114, actual);
     }
 
@@ -28,7 +27,6 @@ class Day09 {
 
         int actual = actuallySolvePart2(input);
 
-
         assertEquals(2, actual);
     }
 
@@ -37,6 +35,13 @@ class Day09 {
         List<String> input = PuzzleInput.asStringListFrom("./data/day09");
         int actual = actuallySolvePart1(input);
         assertEquals(1798691765, actual);
+    }
+
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day09");
+        int actual = actuallySolvePart2(input);
+        assertEquals(1104, actual);
     }
 
     private int actuallySolvePart1(List<String> input) {
@@ -129,7 +134,6 @@ class Day09 {
         return solvePart1(firstRow);
     }
 
-
     private int part1_solveSingleLine(String input) {
         String[] s = input.split(" ");
 
@@ -163,7 +167,6 @@ class Day09 {
             histories.add(nextHistory);
         }
 
-
         // Now go backwards and add up to the top
         for (int i = histories.size() - 1; i > 0; i--) {
             List<Integer> bottomHistory = histories.get(i);
@@ -171,7 +174,6 @@ class Day09 {
             int newEnd = bottomHistory.get(bottomHistory.size() - 1) + historyOneAbove.get(historyOneAbove.size() - 1);
             historyOneAbove.add(newEnd);
         }
-
 
         return histories.get(0).get(histories.get(0).size() - 1);
     }
