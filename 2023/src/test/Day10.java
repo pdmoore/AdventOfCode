@@ -19,15 +19,23 @@ public class Day10 {
 
         map = as2dCharArray("./data/day10_part1_example2");
         actual = locateStartingPoint(map);
-        assertEquals(new Point(0, 2), actual);
+        assertEquals(new Point(2, 0), actual);
     }
 
     @Test
-    void distance_clockwise() {
+    void distance_clockwise_example1() {
         char[][] map = as2dCharArray("./data/day10_part1_example1");
         int actual = getClockwiseDistance(map);
 
         assertEquals(8, actual);
+    }
+
+    @Test
+    void distance_clockwise_example2() {
+        char[][] map = as2dCharArray("./data/day10_part1_example2");
+        int actual = getClockwiseDistance(map);
+
+        assertEquals(16, actual);
     }
 
     private int getClockwiseDistance(char[][] map) {
@@ -85,15 +93,22 @@ public class Day10 {
         if ('J' == currentChar) {
             switch (_heading) {
                 case down -> { _heading = directions.left; return new Point(currentLocation.x, currentLocation.y - 1); }
-                case right  -> { throw new IllegalArgumentException("handle J RIGHT"); }
+                case right  -> { _heading = directions.up; return new Point(currentLocation.x - 1, currentLocation.y);}
             }
 
         }
 
         if ('L' == currentChar) {
             switch (_heading) {
-                case left -> { _heading = directions.up; return new Point(currentLocation.x - 1, currentLocation.y); }
-                case down -> { throw new IllegalArgumentException("handle L DOWN"); }
+                case left -> { _heading = directions.up;    return new Point(currentLocation.x - 1, currentLocation.y); }
+                case down -> { _heading = directions.right; return new Point(currentLocation.x, currentLocation.y + 1);  }
+            }
+        }
+
+        if ('F' == currentChar) {
+            switch (_heading) {
+                case up ->   { _heading = directions.right; return new Point(currentLocation.x, currentLocation.y + 1); }
+                case left -> { _heading = directions.down;  return new Point(currentLocation.x + 1, currentLocation.y); }
             }
         }
 
@@ -105,7 +120,7 @@ public class Day10 {
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[0].length; col++) {
                 if (map[row][col] == 'S') {
-                    return new Point(col, row);
+                    return new Point(row, col);
                 }
             }
         }
