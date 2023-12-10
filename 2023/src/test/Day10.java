@@ -10,25 +10,22 @@ public class Day10 {
 
     @Test
     void find_starting_point() {
-        /*
-.....
-.S-7.
-.|.|.
-.L-J.
-.....
-         */
-
         char[][] map = as2dCharArray("./data/day10_part1_example1");
         Point actual = locateStartingPoint(map);
-
         assertEquals(new Point(1, 1), actual);
+
+        map = as2dCharArray("./data/day10_part1_example2");
+        actual = locateStartingPoint(map);
+        assertEquals(new Point(0, 2), actual);
+
+
     }
 
     private Point locateStartingPoint(char[][] map) {
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[0].length; x++) {
-                if (map[x][y] == 'S') {
-                    return new Point(x, y);
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[0].length; col++) {
+                if (map[row][col] == 'S') {
+                    return new Point(col, row);
                 }
             }
         }
