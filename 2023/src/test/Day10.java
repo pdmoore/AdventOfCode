@@ -42,7 +42,53 @@ public class Day10 {
     void distance_clockwise_solution() {
         char[][] map = as2dCharArray("./data/day10");
         int actual = getClockwiseDistance(map);
+//        dumpMap(map);
         assertEquals(6909, actual / 2);
+    }
+
+    @Test
+    void part2_eaxmple1() {
+        char[][] map = as2dCharArray("./data/day10_part2_example1");
+        getClockwiseDistance(map);
+
+dumpMap(map);
+        int actual = countEnclosedSpaces(map);
+        assertEquals(4, actual);
+    }
+
+
+    @Test
+    void part2_solution() {
+        char[][] map = as2dCharArray("./data/day10");
+        getClockwiseDistance(map);
+
+        int actual = countEnclosedSpaces(map);
+
+        assertEquals(-99, actual);
+    }
+
+    private int countEnclosedSpaces(char[][] map) {
+        int result = 0;
+        for (int row = 0; row < map.length; row++) {
+            boolean inside = false;
+            for (int col = 1; col < map[0].length; col++) {
+                if (map[row][col] == '*' && !inside && map[row][col - 1] != '*') {
+                    inside = true;
+                } else if (map[row][col] == '.' && inside) {
+                    result++;
+                } else {
+                    inside = false;
+                }
+            }
+        }
+
+        return  result;
+    }
+
+    private void dumpMap(char[][] map) {
+        for (int row = 0; row < map.length; row++) {
+                    System.out.println(map[row]);
+        }
     }
 
     private int getClockwiseDistance(char[][] map) {
@@ -62,6 +108,7 @@ public class Day10 {
         // we can read the character at the current location, except S
         char currentChar = map[currentLocation.x][currentLocation.y];
 //        System.out.print(currentChar);
+        map[currentLocation.x][currentLocation.y] = '*';
 
         if ('S' == currentChar) {
             if (map[currentLocation.x - 1][currentLocation.y] != '.') {
