@@ -38,10 +38,15 @@ public class Day10 {
         assertEquals(16, actual);
     }
 
+    @Test
+    void distance_clockwise_solution() {
+        char[][] map = as2dCharArray("./data/day10");
+        int actual = getClockwiseDistance(map);
+        assertEquals(6909, actual / 2);
+    }
+
     private int getClockwiseDistance(char[][] map) {
         Point startingPoint = locateStartingPoint(map);
-
-        // TODO - need to find up, right, down, left pipe of the right type
 
         Point currentLocation = moveFrom(map, startingPoint);
         int distance = 1;
@@ -56,12 +61,12 @@ public class Day10 {
     private Point moveFrom(char[][] map, Point currentLocation) {
         // we can read the character at the current location, except S
         char currentChar = map[currentLocation.x][currentLocation.y];
-        System.out.print(currentChar);
+//        System.out.print(currentChar);
 
         if ('S' == currentChar) {
             if (map[currentLocation.x - 1][currentLocation.y] != '.') {
                 _heading = directions.up;
-                throw new IllegalArgumentException("TODO - implement move up from start");
+                return new Point(currentLocation.x - 1, currentLocation.y);
             }
             if (map[currentLocation.x][currentLocation.y + 1] != '.') {
                 _heading = directions.right;
@@ -79,7 +84,7 @@ public class Day10 {
         if ('7' == currentChar) {
             switch (_heading) {
                 case right -> { _heading = directions.down; return new Point(currentLocation.x + 1, currentLocation.y); }
-                case up  -> { throw new IllegalArgumentException("handle 7 UP"); }
+                case up  ->   { _heading = directions.left; return new Point(currentLocation.x, currentLocation.y - 1); }
             }
         }
 
