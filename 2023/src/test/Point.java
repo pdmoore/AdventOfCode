@@ -8,4 +8,10 @@ class Point {
         this.x = x;
         this.y = y;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Point other = (Point)obj;
+        return x == other.x && y == other.y;
+    }
 }
