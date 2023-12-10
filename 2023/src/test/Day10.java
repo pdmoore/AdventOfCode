@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day10 {
 
-    enum directions { up, right, down, left };
+    enum directions { up, right, down, left }
     directions _heading;
 
     @Test
