@@ -42,20 +42,27 @@ public class Day10 {
     void distance_clockwise_solution() {
         char[][] map = as2dCharArray("./data/day10");
         int actual = getClockwiseDistance(map);
-//        dumpMap(map);
         assertEquals(6909, actual / 2);
     }
 
     @Test
-    void part2_eaxmple1() {
+    void part2_example1() {
         char[][] map = as2dCharArray("./data/day10_part2_example1");
         getClockwiseDistance(map);
 
-dumpMap(map);
         int actual = countEnclosedSpaces(map);
         assertEquals(4, actual);
     }
 
+    @Test
+    void part2_eaxmple2() {
+        char[][] map = as2dCharArray("./data/day10_part2_example2");
+        getClockwiseDistance(map);
+        dumpMap(map);
+
+        int actual = countEnclosedSpaces(map);
+        assertEquals(8, actual);
+    }
 
     @Test
     void part2_solution() {
@@ -85,12 +92,6 @@ dumpMap(map);
         return  result;
     }
 
-    private void dumpMap(char[][] map) {
-        for (int row = 0; row < map.length; row++) {
-                    System.out.println(map[row]);
-        }
-    }
-
     private int getClockwiseDistance(char[][] map) {
         Point startingPoint = locateStartingPoint(map);
 
@@ -107,11 +108,11 @@ dumpMap(map);
     private Point moveFrom(char[][] map, Point currentLocation) {
         // we can read the character at the current location, except S
         char currentChar = map[currentLocation.x][currentLocation.y];
-//        System.out.print(currentChar);
         map[currentLocation.x][currentLocation.y] = '*';
 
         if ('S' == currentChar) {
-            if (map[currentLocation.x - 1][currentLocation.y] != '.') {
+            char charAbove = map[currentLocation.x - 1][currentLocation.y];
+            if (charAbove == '7' || charAbove == 'F' || charAbove == '|') {
                 _heading = directions.up;
                 return new Point(currentLocation.x - 1, currentLocation.y);
             }
@@ -196,4 +197,12 @@ dumpMap(map);
         }
         return map;
     }
+
+
+    private void dumpMap(char[][] map) {
+        for (int row = 0; row < map.length; row++) {
+            System.out.println(map[row]);
+        }
+    }
+
 }
