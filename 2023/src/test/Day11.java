@@ -58,6 +58,31 @@ public class Day11 {
         assertEquals(5, new GalaxyPair(new Point(11, 0), galaxy9).distance());
     }
 
+    @Test
+    void part1_example() {
+        char[][] input = as2dCharArray("./data/day11_part1_example");
+
+        int actual = solvePart1(input);
+
+        assertEquals(374, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        char[][] input = as2dCharArray("./data/day11");
+
+        int actual = solvePart1(input);
+
+        assertEquals(9974721, actual);
+    }
+
+    private int solvePart1(char[][] input) {
+        char[][] expanded = expand(input);
+        List<Point> galaxies = findGalaxies(expanded);
+
+        List<GalaxyPair> pairs = generateGalaxyPairs(galaxies);
+        return pairs.stream().mapToInt(GalaxyPair::distance).sum();
+    }
 
     private List<GalaxyPair> generateGalaxyPairs(List<Point> galaxies) {
         List<GalaxyPair> result = new ArrayList<>();
