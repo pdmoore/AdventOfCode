@@ -44,6 +44,21 @@ public class Day11 {
         assertEquals(36, pairs.size());
     }
 
+    @Test
+    void distance_between_galaxies() {
+        Point galaxy5 = new Point(6, 2);
+        Point galaxy9 = new Point(11, 5);
+
+        GalaxyPair sut = new GalaxyPair(galaxy5, galaxy9);
+
+        assertEquals(9, sut.distance());
+
+        assertEquals(15, new GalaxyPair(new Point(0, 4), new Point(10, 9)));
+        assertEquals(17, new GalaxyPair(new Point(2, 0), new Point(6, 12)));
+        assertEquals(5, new GalaxyPair(new Point(11, 5), galaxy9));
+    }
+
+
     private List<GalaxyPair> generateGalaxyPairs(List<Point> galaxies) {
         List<GalaxyPair> result = new ArrayList<>();
         for (int i = 0; i < galaxies.size(); i++) {
@@ -63,6 +78,10 @@ public class Day11 {
         public GalaxyPair(Point g1, Point g2) {
             this.galaxy_1 = g1;
             this.galaxy_2 = g2;
+        }
+
+        public int distance() {
+            return Math.abs(galaxy_2.x - galaxy_1.x) + Math.abs(galaxy_2.y - galaxy_1.y);
         }
     }
 
