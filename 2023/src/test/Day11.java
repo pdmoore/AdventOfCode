@@ -105,6 +105,7 @@ public class Day11 {
             for (int col = 0; col < input[row].length; col++) {
                 if (input[row][col] != '.') {
                     emptySpace = false;
+                    break;
                 }
             }
             if (emptySpace) {
@@ -117,6 +118,7 @@ public class Day11 {
             for (char[] chars : input) {
                 if (chars[col] != '.') {
                     emptySpace = false;
+                    break;
                 }
             }
             if (emptySpace) {
@@ -202,6 +204,7 @@ public class Day11 {
             for (int col = 0; col < input[row].length; col++) {
                 if (input[row][col] != '.') {
                     emptySpace = false;
+                    break;
                 }
             }
             if (emptySpace) {
@@ -215,6 +218,7 @@ public class Day11 {
             for (char[] chars : input) {
                 if (chars[col] != '.') {
                     emptySpace = false;
+                    break;
                 }
             }
             if (emptySpace) {
