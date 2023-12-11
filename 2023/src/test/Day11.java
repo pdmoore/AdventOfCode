@@ -61,12 +61,36 @@ public class Day11 {
                 copyToRow++;
             }
 
-            for (int col = 0; col < input[0].length; col++) {
-                expanded[copyToRow][col] = input[copyFromRow][col];
+            // Left off trying to insert the empty columns at same timme as build out rows
+
+
+            int copyFromCol = 0;
+            int copyToCol   = 0;
+            while (copyToCol < input[0].length + emptyCols.size()) {
+                if (emptyCols.contains(copyFromCol)) {
+                    expanded[copyToRow][copyToCol] = '.';
+                    copyToCol++;
+                    expanded[copyToRow][copyToCol] = '.';
+                } else {
+                    expanded[copyToRow][copyToCol] = input[copyFromRow][copyFromCol];
+                }
+
+                copyFromCol++;
+                copyToCol++;
             }
-            for (int col = input[0].length; col < input[0].length + emptyCols.size(); col++) {
-                expanded[copyToRow][col] = '.';
-            }
+//            for (int col = 0; col < input[0].length + emptyCols.size(); col++) {
+//                if (col >= input[0].length) {
+//                    expanded[copyToRow][col] = '.';
+////                } else if (emptyCols.contains(col)) {
+////                    expanded[copyToRow][col] = '.';
+//                } else {
+//                    expanded[copyToRow][col] = input[copyFromRow][copyFromCol];
+//                    copyFromCol++;
+//                }
+//            }
+//            for (int col = input[0].length; col < input[0].length + emptyCols.size(); col++) {
+//                expanded[copyToRow][col] = '.';
+//            }
             copyFromRow++;
             copyToRow++;
         }
