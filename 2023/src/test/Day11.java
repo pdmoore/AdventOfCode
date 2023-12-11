@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,81 @@ public class Day11 {
         assertEquals(9974721, actual);
     }
 
+    @Test
+    void part2_example() {
+        char[][] input = as2dCharArray("./data/day11_part1_example");
+
+        BigInteger actual = solvePart2(input, 1);
+
+        assertEquals(BigInteger.valueOf(374), actual);
+    }
+
+    private BigInteger solvePart2(char[][] input, int expansionDelta) {
+        // TODO - copied from below
+        List<Integer> emptyRows = new ArrayList<>();
+        for (int row = 0; row < input.length; row++) {
+            boolean emptySpace = true;
+            for (int col = 0; col < input[row].length; col++) {
+                if (input[row][col] != '.') {
+                    emptySpace = false;
+                }
+            }
+            if (emptySpace) {
+                emptyRows.add(row);
+            }
+        }
+        List<Integer> emptyCols = new ArrayList<>();
+        for (int col = 0; col < input[0].length; col++) {
+            boolean emptySpace = true;
+            for (int row = 0; row < input.length; row++) {
+                if (input[row][col] != '.') {
+                    emptySpace = false;
+                }
+            }
+            if (emptySpace) {
+                emptyCols.add(col);
+            }
+        }
+
+        List<Point> galaxies = findGalaxies(input);
+        List<GalaxyPair> pairs = generateGalaxyPairs(galaxies);
+
+        BigInteger totalDistance = BigInteger.ZERO;
+        for (GalaxyPair gp :
+                pairs) {
+            BigInteger distance = computeDistance(gp, emptyRows, emptyCols, expansionDelta);
+            totalDistance = totalDistance.add(distance);
+        }
+
+        return totalDistance;
+    }
+
+    private BigInteger computeDistance(GalaxyPair gp, List<Integer> emptyRows, List<Integer> emptyCols, int expansionDelta) {
+        BigInteger delta = BigInteger.valueOf(expansionDelta);
+        BigInteger result = BigInteger.valueOf(gp.distance());
+
+        // add in the rows crossed over
+        int startX = Math.min(gp.galaxy_1.x, gp.galaxy_2.x);
+        int endX = Math.max(gp.galaxy_1.x, gp.galaxy_2.x);
+        for (int i = startX; i < endX; i++) {
+            if (emptyRows.contains(i)) {
+                result = result.add(delta);
+            }
+        }
+
+        // add in the columns crossed over
+        int startY = Math.min(gp.galaxy_1.y, gp.galaxy_2.y);
+        int endY = Math.max(gp.galaxy_1.y, gp.galaxy_2.y);
+        for (int i = startY; i < endY; i++) {
+            if (emptyCols.contains(i)) {
+                result = result.add(delta);
+            }
+        }
+
+        return result;
+    }
+
+
     private int solvePart1(char[][] input) {
         char[][] expanded = expand(input);
         List<Point> galaxies = findGalaxies(expanded);
@@ -90,8 +166,6 @@ public class Day11 {
             for (int j = i + 1; j < galaxies.size(); j++) {
                 result.add(new GalaxyPair(galaxies.get(i), galaxies.get(j)));
             }
-
-
         }
         return result;
     }
