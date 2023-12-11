@@ -181,7 +181,7 @@ public class Day11 {
         return result;
     }
 
-    class GalaxyPair {
+    static class GalaxyPair {
         Point galaxy_1;
         Point galaxy_2;
 
