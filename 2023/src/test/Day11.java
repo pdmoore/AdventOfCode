@@ -98,7 +98,22 @@ public class Day11 {
 
 
     private BigInteger solvePart2(char[][] input, int expansionDelta) {
-        // TODO - copied from below
+        List<Integer> emptyRows = emptyRowsIn(input);
+        List<Integer> emptyCols = emptyColumnsIn(input);
+        List<Point> galaxies = findGalaxies(input);
+        List<GalaxyPair> pairs = generateGalaxyPairs(galaxies);
+
+        BigInteger totalDistance = BigInteger.ZERO;
+        for (GalaxyPair gp :
+                pairs) {
+            BigInteger distance = computeDistance(gp, emptyRows, emptyCols, expansionDelta);
+            totalDistance = totalDistance.add(distance);
+        }
+
+        return totalDistance;
+    }
+
+    private static List<Integer> emptyRowsIn(char[][] input) {
         List<Integer> emptyRows = new ArrayList<>();
         for (int row = 0; row < input.length; row++) {
             boolean emptySpace = true;
@@ -112,31 +127,7 @@ public class Day11 {
                 emptyRows.add(row);
             }
         }
-        List<Integer> emptyCols = new ArrayList<>();
-        for (int col = 0; col < input[0].length; col++) {
-            boolean emptySpace = true;
-            for (char[] chars : input) {
-                if (chars[col] != '.') {
-                    emptySpace = false;
-                    break;
-                }
-            }
-            if (emptySpace) {
-                emptyCols.add(col);
-            }
-        }
-
-        List<Point> galaxies = findGalaxies(input);
-        List<GalaxyPair> pairs = generateGalaxyPairs(galaxies);
-
-        BigInteger totalDistance = BigInteger.ZERO;
-        for (GalaxyPair gp :
-                pairs) {
-            BigInteger distance = computeDistance(gp, emptyRows, emptyCols, expansionDelta);
-            totalDistance = totalDistance.add(distance);
-        }
-
-        return totalDistance;
+        return emptyRows;
     }
 
     private BigInteger computeDistance(GalaxyPair gp, List<Integer> emptyRows, List<Integer> emptyCols, int expansionDelta) {
@@ -198,33 +189,9 @@ public class Day11 {
     }
 
     private char[][] expand(char[][] input) {
-        List<Integer> emptyRows = new ArrayList<>();
-        for (int row = 0; row < input.length; row++) {
-            boolean emptySpace = true;
-            for (int col = 0; col < input[row].length; col++) {
-                if (input[row][col] != '.') {
-                    emptySpace = false;
-                    break;
-                }
-            }
-            if (emptySpace) {
-                emptyRows.add(row);
-            }
-        }
+        List<Integer> emptyRows = emptyRowsIn(input);
 
-        List<Integer> emptyCols = new ArrayList<>();
-        for (int col = 0; col < input[0].length; col++) {
-            boolean emptySpace = true;
-            for (char[] chars : input) {
-                if (chars[col] != '.') {
-                    emptySpace = false;
-                    break;
-                }
-            }
-            if (emptySpace) {
-                emptyCols.add(col);
-            }
-        }
+        List<Integer> emptyCols = emptyColumnsIn(input);
 
         char[][] expanded = new char[input.length + emptyRows.size()][input[0].length + emptyCols.size()];
 
@@ -257,6 +224,23 @@ public class Day11 {
         }
 
         return expanded;
+    }
+
+    private static List<Integer> emptyColumnsIn(char[][] input) {
+        List<Integer> emptyCols = new ArrayList<>();
+        for (int col = 0; col < input[0].length; col++) {
+            boolean emptySpace = true;
+            for (char[] chars : input) {
+                if (chars[col] != '.') {
+                    emptySpace = false;
+                    break;
+                }
+            }
+            if (emptySpace) {
+                emptyCols.add(col);
+            }
+        }
+        return emptyCols;
     }
 
     private List<Point> findGalaxies(char[][] space) {
