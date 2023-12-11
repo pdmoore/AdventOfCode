@@ -15,11 +15,9 @@ public class Day11 {
         char[][] expected = as2dCharArray("./data/day11_part1_example_expanded");
 
         char[][] actual = expand(input);
-        dumpMap(actual);
 
         assertEquals(expected.length, actual.length);
         assertEquals(expected[0].length, actual[0].length);
-
     }
 
     private char[][] expand(char[][] input) {
@@ -61,9 +59,6 @@ public class Day11 {
                 copyToRow++;
             }
 
-            // Left off trying to insert the empty columns at same timme as build out rows
-
-
             int copyFromCol = 0;
             int copyToCol   = 0;
             while (copyToCol < input[0].length + emptyCols.size()) {
@@ -78,19 +73,6 @@ public class Day11 {
                 copyFromCol++;
                 copyToCol++;
             }
-//            for (int col = 0; col < input[0].length + emptyCols.size(); col++) {
-//                if (col >= input[0].length) {
-//                    expanded[copyToRow][col] = '.';
-////                } else if (emptyCols.contains(col)) {
-////                    expanded[copyToRow][col] = '.';
-//                } else {
-//                    expanded[copyToRow][col] = input[copyFromRow][copyFromCol];
-//                    copyFromCol++;
-//                }
-//            }
-//            for (int col = input[0].length; col < input[0].length + emptyCols.size(); col++) {
-//                expanded[copyToRow][col] = '.';
-//            }
             copyFromRow++;
             copyToRow++;
         }
