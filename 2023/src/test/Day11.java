@@ -20,6 +20,16 @@ public class Day11 {
         assertEquals(expected[0].length, actual[0].length);
     }
 
+    @Test
+    void find_galaxies() {
+        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] expanded = expand(input);
+
+        List<Point> galaxies = findGalaxies(expanded);
+
+        assertEquals(9, galaxies.size());
+    }
+
     private char[][] expand(char[][] input) {
         List<Integer> emptyRows = new ArrayList<>();
         for (int row = 0; row < input.length; row++) {
@@ -79,6 +89,22 @@ public class Day11 {
 
         return expanded;
     }
+
+    private List<Point> findGalaxies(char[][] space) {
+        List<Point> galaxies = new ArrayList<>();
+
+        for (int row = 0; row < space.length; row++) {
+            for (int col = 0; col < space[0].length; col++) {
+                if (space[row][col] == '#') {
+                    galaxies.add(new Point(row, col));
+                }
+            }
+        }
+
+        return galaxies;
+    }
+
+
 
     // TODO - move to PuzzleInput
     public static char[][] as2dCharArray(String filename) {
