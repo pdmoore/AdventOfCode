@@ -82,9 +82,20 @@ public class Day11 {
         char[][] input = as2dCharArray("./data/day11_part1_example");
 
         assertEquals(BigInteger.valueOf(374), solvePart2(input, 1));
+        // TODO - didn't bother to figure out why the larger examples are 1 less than distance
         assertEquals(BigInteger.valueOf(1030), solvePart2(input, 9));
         assertEquals(BigInteger.valueOf(8410), solvePart2(input, 99));
     }
+
+    @Test
+    void part2_solution() {
+        char[][] input = as2dCharArray("./data/day11");
+
+        // TODO - didn't bother to figure out why the larger examples are 1 less than distance
+        assertEquals(BigInteger.valueOf(702770569197L), solvePart2(input, 999_999));
+    }
+
+
 
     private BigInteger solvePart2(char[][] input, int expansionDelta) {
         // TODO - copied from below
