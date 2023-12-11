@@ -78,12 +78,12 @@ public class Day11 {
     }
 
     @Test
-    void part2_example() {
+    void part2_examples() {
         char[][] input = as2dCharArray("./data/day11_part1_example");
 
-        BigInteger actual = solvePart2(input, 1);
-
-        assertEquals(BigInteger.valueOf(374), actual);
+        assertEquals(BigInteger.valueOf(374), solvePart2(input, 1));
+        assertEquals(BigInteger.valueOf(1030), solvePart2(input, 9));
+        assertEquals(BigInteger.valueOf(8410), solvePart2(input, 99));
     }
 
     private BigInteger solvePart2(char[][] input, int expansionDelta) {
