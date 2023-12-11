@@ -23,9 +23,6 @@ public class Day11 {
     }
 
     private char[][] expand(char[][] input) {
-        // how many rows to add?
-        // how many cols to add?
-        // ID empty rows as list, then insert them when copying
         List<Integer> emptyRows = new ArrayList<>();
         for (int row = 0; row < input.length; row++) {
             boolean emptySpace = true;
@@ -39,7 +36,6 @@ public class Day11 {
             }
         }
 
-        // ID empty cols and insert when copying
         List<Integer> emptyCols = new ArrayList<>();
         for (int col = 0; col < input[0].length; col++) {
             boolean emptySpace = true;
@@ -55,8 +51,25 @@ public class Day11 {
 
         char[][] expanded = new char[input.length + emptyRows.size()][input[0].length + emptyCols.size()];
 
+        int copyFromRow = 0;
+        int copyToRow   = 0;
+        while (copyToRow < input.length + emptyRows.size()) {
+            if (emptyRows.contains(copyFromRow)) {
+                for (int col = 0; col < input[0].length + emptyCols.size(); col++) {
+                    expanded[copyToRow][col] = '.';
+                }
+                copyToRow++;
+            }
 
-
+            for (int col = 0; col < input[0].length; col++) {
+                expanded[copyToRow][col] = input[copyFromRow][col];
+            }
+            for (int col = input[0].length; col < input[0].length + emptyCols.size(); col++) {
+                expanded[copyToRow][col] = '.';
+            }
+            copyFromRow++;
+            copyToRow++;
+        }
 
         return expanded;
     }
