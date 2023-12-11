@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Day11 {
 
@@ -28,6 +29,41 @@ public class Day11 {
         List<Point> galaxies = findGalaxies(expanded);
 
         assertEquals(9, galaxies.size());
+        assertTrue(galaxies.contains(new Point(0, 4)));
+        assertTrue(galaxies.contains(new Point(11, 0)));
+    }
+
+    @Test
+    void generate_galaxy_pairs() {
+        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] expanded = expand(input);
+        List<Point> galaxies = findGalaxies(expanded);
+
+        List<GalaxyPair> pairs = generateGalaxyPairs(galaxies);
+
+        assertEquals(36, pairs.size());
+    }
+
+    private List<GalaxyPair> generateGalaxyPairs(List<Point> galaxies) {
+        List<GalaxyPair> result = new ArrayList<>();
+        for (int i = 0; i < galaxies.size(); i++) {
+            for (int j = i + 1; j < galaxies.size(); j++) {
+                result.add(new GalaxyPair(galaxies.get(i), galaxies.get(j)));
+            }
+
+
+        }
+        return result;
+    }
+
+    class GalaxyPair {
+        Point galaxy_1;
+        Point galaxy_2;
+
+        public GalaxyPair(Point g1, Point g2) {
+            this.galaxy_1 = g1;
+            this.galaxy_2 = g2;
+        }
     }
 
     private char[][] expand(char[][] input) {
