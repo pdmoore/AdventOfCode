@@ -114,8 +114,8 @@ public class Day11 {
         List<Integer> emptyCols = new ArrayList<>();
         for (int col = 0; col < input[0].length; col++) {
             boolean emptySpace = true;
-            for (int row = 0; row < input.length; row++) {
-                if (input[row][col] != '.') {
+            for (char[] chars : input) {
+                if (chars[col] != '.') {
                     emptySpace = false;
                 }
             }
@@ -212,8 +212,8 @@ public class Day11 {
         List<Integer> emptyCols = new ArrayList<>();
         for (int col = 0; col < input[0].length; col++) {
             boolean emptySpace = true;
-            for (int row = 0; row < input.length; row++) {
-                if (input[row][col] != '.') {
+            for (char[] chars : input) {
+                if (chars[col] != '.') {
                     emptySpace = false;
                 }
             }
@@ -288,8 +288,8 @@ public class Day11 {
 
 
     private void dumpMap(char[][] map) {
-        for (int row = 0; row < map.length; row++) {
-            System.out.println(map[row]);
+        for (char[] chars : map) {
+            System.out.println(chars);
         }
     }
 
