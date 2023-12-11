@@ -46,16 +46,16 @@ public class Day11 {
 
     @Test
     void distance_between_galaxies() {
-        Point galaxy5 = new Point(6, 2);
+        Point galaxy5 = new Point(6, 1);
         Point galaxy9 = new Point(11, 5);
 
         GalaxyPair sut = new GalaxyPair(galaxy5, galaxy9);
 
         assertEquals(9, sut.distance());
 
-        assertEquals(15, new GalaxyPair(new Point(0, 4), new Point(10, 9)));
-        assertEquals(17, new GalaxyPair(new Point(2, 0), new Point(6, 12)));
-        assertEquals(5, new GalaxyPair(new Point(11, 5), galaxy9));
+        assertEquals(15, new GalaxyPair(new Point(0, 4), new Point(10, 9)).distance());
+        assertEquals(17, new GalaxyPair(new Point(2, 0), new Point(7, 12)).distance());
+        assertEquals(5, new GalaxyPair(new Point(11, 0), galaxy9).distance());
     }
 
 
