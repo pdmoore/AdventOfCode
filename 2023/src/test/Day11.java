@@ -13,8 +13,8 @@ public class Day11 {
 
     @Test
     void expand_space() {
-        char[][] input = as2dCharArray("./data/day11_part1_example");
-        char[][] expected = as2dCharArray("./data/day11_part1_example_expanded");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11_part1_example");
+        char[][] expected = PuzzleInput.as2dCharArray("./data/day11_part1_example_expanded");
 
         char[][] actual = expand(input);
 
@@ -24,7 +24,7 @@ public class Day11 {
 
     @Test
     void find_galaxies() {
-        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11_part1_example");
         char[][] expanded = expand(input);
 
         List<Point> galaxies = findGalaxies(expanded);
@@ -36,7 +36,7 @@ public class Day11 {
 
     @Test
     void generate_galaxy_pairs() {
-        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11_part1_example");
         char[][] expanded = expand(input);
         List<Point> galaxies = findGalaxies(expanded);
 
@@ -61,7 +61,7 @@ public class Day11 {
 
     @Test
     void part1_example() {
-        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11_part1_example");
 
         int actual = solvePart1(input);
 
@@ -70,7 +70,7 @@ public class Day11 {
 
     @Test
     void part1_solution() {
-        char[][] input = as2dCharArray("./data/day11");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11");
 
         int actual = solvePart1(input);
 
@@ -79,7 +79,7 @@ public class Day11 {
 
     @Test
     void part2_examples() {
-        char[][] input = as2dCharArray("./data/day11_part1_example");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11_part1_example");
 
         assertEquals(BigInteger.valueOf(374), solvePart2(input, 1));
         // TODO - didn't bother to figure out why the larger examples are 1 less than distance
@@ -89,7 +89,7 @@ public class Day11 {
 
     @Test
     void part2_solution() {
-        char[][] input = as2dCharArray("./data/day11");
+        char[][] input = PuzzleInput.as2dCharArray("./data/day11");
 
         // TODO - didn't bother to figure out why the larger examples are 1 less than distance
         assertEquals(BigInteger.valueOf(702770569197L), solvePart2(input, 999_999));
@@ -255,23 +255,6 @@ public class Day11 {
         }
 
         return galaxies;
-    }
-
-
-
-    // TODO - move to PuzzleInput
-    public static char[][] as2dCharArray(String filename) {
-        List<String> inputAsStrings = PuzzleInput.asStringListFrom(filename);
-        int rowCount = inputAsStrings.size();
-        int colCount = inputAsStrings.get(0).length();
-        char[][] map = new char[rowCount][colCount];
-        int i = 0;
-        for (String line :
-                inputAsStrings) {
-            map[i] = line.toCharArray();
-            i++;
-        }
-        return map;
     }
 
 
