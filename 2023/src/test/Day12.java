@@ -12,12 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Day12 {
 
-
-    // parsing/counting
-    // permutations of each "?"
-    // determine if permutation is ok or not
-    // count valid permutations
-
     @Test
     void single_line_condition_record() {
         assertTrue(isPossibleArrangement("#.#.### 1,1,3"));
@@ -88,6 +82,26 @@ class Day12 {
         String actual = unfold(input);
         assertEquals(expected, actual);
     }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day12_part1_example");
+
+        BigInteger actual = solve_part2(input);
+
+        assertEquals(BigInteger.valueOf(525152), actual);
+    }
+
+    private BigInteger solve_part2(List<String> input) {
+        List<String> unfoldedInput = new ArrayList<>();
+        for (String inputLine :
+                input) {
+            unfoldedInput.add(unfold(inputLine));
+        }
+
+        return solve_part1(unfoldedInput);
+    }
+
 
     private String unfold(String inputLine) {
         String[] s = inputLine.split(" ");
