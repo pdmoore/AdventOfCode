@@ -9,8 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class Day12 {
 
@@ -28,6 +27,14 @@ class Day12 {
         assertTrue(isPossibleArrangement("####.#...#... 4,1,1"));
         assertTrue(isPossibleArrangement("#....######..#####. 1,6,5"));
         assertTrue(isPossibleArrangement(".###.##....# 3,2,1"));
+
+        assertFalse(isPossibleArrangement("#.#.#.# 1,1,3"));
+        assertFalse(isPossibleArrangement(".######....# 3,2,1"));
+    }
+
+    @Test
+    void single_line_more_damaged_than_recorded_is_not_valid() {
+        assertFalse(isPossibleArrangement(".###.##.#..# 3,2,1"));
     }
 
     private boolean isPossibleArrangement(String inputLine) {
@@ -54,6 +61,17 @@ class Day12 {
                 }
             }
         }
+
+        if (damagedSpringCount > 0) {
+            if (damagedSpringGroupings.isEmpty()) {
+                return false;
+            }
+            Integer expected = damagedSpringGroupings.remove(0);
+            if (damagedSpringCount != expected) {
+                return false;
+            }
+        }
+        // Feels like I may be missing cases where damaged grouping is a superset of what's been found
 
         return true;
     }
