@@ -1,9 +1,7 @@
 package com.pdmoore.aoc;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +16,6 @@ class Day12 {
     // permutations of each "?"
     // determine if permutation is ok or not
     // count valid permutations
-
 
     @Test
     void single_line_condition_record() {
@@ -41,6 +38,16 @@ class Day12 {
     void single_line_more_recorded_than_damaged_is_not_valid() {
         assertFalse(isPossibleArrangement(".###.##.#... 3,2,1,1"));
     }
+
+    @Test
+    void permutations_of_unknown_conditions() {
+        String inputLine = "???.### 1,1,3";
+
+        List<String> actual = generatePermutations(inputLine);
+
+        assertEquals(8, actual.size());
+    }
+
 
     private boolean isPossibleArrangement(String inputLine) {
         String[] s = inputLine.split(" ");
@@ -80,4 +87,32 @@ class Day12 {
 
         return damagedSpringGroupings.isEmpty();
     }
+
+    private List<String> generatePermutations(String inputLine) {
+        if (inputLine.indexOf('?') < 0) {
+            throw new IllegalArgumentException("found input with no unknowns: " + inputLine);
+        }
+
+        List<String> allPermutations = permuteUnknowns(inputLine);
+
+        return allPermutations;
+    }
+
+    private List<String> permuteUnknowns(String s) {
+        List<String> both = new ArrayList<>();
+        String b1 = s.replaceFirst("\\?", ".");
+        String b2 = s.replaceFirst("\\?", "#");
+        if (b1.contains("?")) {
+            both.addAll(permuteUnknowns(b1));
+        } else {
+            both.add(b1);
+        }
+        if (b2.contains("?")) {
+            both.addAll(permuteUnknowns(b2));
+        } else {
+            both.add(b2);
+        }
+        return both;
+    }
+
 }
