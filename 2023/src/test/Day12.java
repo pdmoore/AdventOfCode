@@ -62,6 +62,24 @@ class Day12 {
         assertEquals(10, countValidPermutations("?###???????? 3,2,1"));
     }
 
+    @Test
+    void part1_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day12_part1_example");
+
+        int actual = solve_part1(input);
+
+        assertEquals(21, actual);
+    }
+
+    private int solve_part1(List<String> input) {
+        int result = 0;
+        for (String inputLine :
+                input) {
+            result += countValidPermutations(inputLine);
+        }
+        return result;
+    }
+
     private int countValidPermutations(String inputLine) {
         List<String> permutations = generatePermutations(inputLine);
 
