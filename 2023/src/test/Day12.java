@@ -81,6 +81,37 @@ class Day12 {
         assertEquals(BigInteger.valueOf(7032), actual);
     }
 
+    @Test
+    void part2_unfold_single_line() {
+        String input = ".# 1";
+        String expected = ".#?.#?.#?.#?.# 1,1,1,1,1";
+        String actual = unfold(input);
+        assertEquals(expected, actual);
+    }
+
+    private String unfold(String inputLine) {
+        String[] s = inputLine.split(" ");
+        String springs = s[0];
+        String nums = s[1];
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            sb.append(springs);
+            sb.append("?");
+        }
+        sb.append(springs);
+
+        sb.append(" ");
+        for (int i = 0; i < 4; i++) {
+            sb.append(nums);
+            sb.append(",");
+        }
+        sb.append(nums);
+
+        return  sb.toString();
+    }
+
+
     private BigInteger solve_part1(List<String> input) {
         BigInteger result = BigInteger.ZERO;
         for (String inputLine :
