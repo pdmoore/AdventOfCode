@@ -14,4 +14,8 @@ class Point {
         Point other = (Point)obj;
         return x == other.x && y == other.y;
     }
+
+    public int manhattanDistanceTo(Point other) {
+        return Math.abs(other.x - x) + Math.abs(other.y - y);
+    }
 }

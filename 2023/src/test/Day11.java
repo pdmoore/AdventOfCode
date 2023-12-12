@@ -184,7 +184,7 @@ public class Day11 {
         }
 
         public int distance() {
-            return Math.abs(galaxy_2.x - galaxy_1.x) + Math.abs(galaxy_2.y - galaxy_1.y);
+            return galaxy_1.manhattanDistanceTo(galaxy_2);
         }
     }
 
