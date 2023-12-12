@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,45 +51,54 @@ class Day12 {
 
     @Test
     void count_valid_permutations() {
-        assertEquals(1, countValidPermutations("???.### 1,1,3"));
-        assertEquals(4, countValidPermutations(".??..??...?##. 1,1,3"));
-        assertEquals(1, countValidPermutations("?#?#?#?#?#?#?#? 1,3,1,6"));
-        assertEquals(1, countValidPermutations("????.#...#... 4,1,1"));
-        assertEquals(4, countValidPermutations("????.######..#####. 1,6,5"));
+        assertEquals(BigInteger.ONE, countValidPermutations("???.### 1,1,3"));
+        assertEquals(BigInteger.valueOf(4), countValidPermutations(".??..??...?##. 1,1,3"));
+        assertEquals(BigInteger.ONE, countValidPermutations("?#?#?#?#?#?#?#? 1,3,1,6"));
+        assertEquals(BigInteger.ONE, countValidPermutations("????.#...#... 4,1,1"));
+        assertEquals(BigInteger.valueOf(4), countValidPermutations("????.######..#####. 1,6,5"));
     }
 
     @Test
     void count_valid_lots_of_unknowns() {
-        assertEquals(10, countValidPermutations("?###???????? 3,2,1"));
+        assertEquals(BigInteger.valueOf(10), countValidPermutations("?###???????? 3,2,1"));
     }
 
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day12_part1_example");
 
-        int actual = solve_part1(input);
+        BigInteger actual = solve_part1(input);
 
-        assertEquals(21, actual);
+        assertEquals(BigInteger.valueOf(21), actual);
     }
 
-    private int solve_part1(List<String> input) {
-        int result = 0;
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day12");
+
+        BigInteger actual = solve_part1(input);
+
+        assertEquals(BigInteger.valueOf(7032), actual);
+    }
+
+    private BigInteger solve_part1(List<String> input) {
+        BigInteger result = BigInteger.ZERO;
         for (String inputLine :
                 input) {
-            result += countValidPermutations(inputLine);
+            result = result.add(countValidPermutations(inputLine));
         }
         return result;
     }
 
-    private int countValidPermutations(String inputLine) {
+    private BigInteger countValidPermutations(String inputLine) {
         List<String> permutations = generatePermutations(inputLine);
 
-        int validCount = 0;
+        BigInteger validCount = BigInteger.ZERO;
 
         for (String permutation :
                 permutations) {
             if (isPossibleArrangement(permutation)) {
-                validCount++;
+                validCount = validCount.add(BigInteger.ONE);
             }
         }
 
