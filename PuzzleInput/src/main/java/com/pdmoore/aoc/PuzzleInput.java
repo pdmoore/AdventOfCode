@@ -127,6 +127,22 @@ public class PuzzleInput {
         return locations;
     }
 
+    // File represents a map of some sort
+    public static char[][] as2dCharArray(String filename) {
+        List<String> inputAsStrings = PuzzleInput.asStringListFrom(filename);
+        int rowCount = inputAsStrings.size();
+        int colCount = inputAsStrings.get(0).length();
+        char[][] map = new char[rowCount][colCount];
+        int i = 0;
+        for (String line :
+                inputAsStrings) {
+            map[i] = line.toCharArray();
+            i++;
+        }
+        return map;
+    }
+
+
 
     // AoC18 has
     // public static char[][] convertInputToMap(List<String> inputAsStrings)

@@ -2,8 +2,6 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day10 {
@@ -13,18 +11,18 @@ public class Day10 {
 
     @Test
     void find_starting_point() {
-        char[][] map = as2dCharArray("./data/day10_part1_example1");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10_part1_example1");
         Point actual = locateStartingPoint(map);
         assertEquals(new Point(1, 1), actual);
 
-        map = as2dCharArray("./data/day10_part1_example2");
+        map = PuzzleInput.as2dCharArray("./data/day10_part1_example2");
         actual = locateStartingPoint(map);
         assertEquals(new Point(2, 0), actual);
     }
 
     @Test
     void distance_clockwise_example1() {
-        char[][] map = as2dCharArray("./data/day10_part1_example1");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10_part1_example1");
         int actual = getClockwiseDistance(map);
 
         assertEquals(8, actual);
@@ -32,7 +30,7 @@ public class Day10 {
 
     @Test
     void distance_clockwise_example2() {
-        char[][] map = as2dCharArray("./data/day10_part1_example2");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10_part1_example2");
         int actual = getClockwiseDistance(map);
 
         assertEquals(16, actual);
@@ -40,14 +38,14 @@ public class Day10 {
 
     @Test
     void distance_clockwise_solution() {
-        char[][] map = as2dCharArray("./data/day10");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10");
         int actual = getClockwiseDistance(map);
         assertEquals(6909, actual / 2);
     }
 
     @Test
     void part2_example1() {
-        char[][] map = as2dCharArray("./data/day10_part2_example1");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10_part2_example1");
         getClockwiseDistance(map);
 
         int actual = countEnclosedSpaces(map);
@@ -56,7 +54,7 @@ public class Day10 {
 
     @Test
     void part2_eaxmple2() {
-        char[][] map = as2dCharArray("./data/day10_part2_example2");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10_part2_example2");
         getClockwiseDistance(map);
         dumpMap(map);
 
@@ -66,7 +64,7 @@ public class Day10 {
 
     @Test
     void part2_solution() {
-        char[][] map = as2dCharArray("./data/day10");
+        char[][] map = PuzzleInput.as2dCharArray("./data/day10");
         getClockwiseDistance(map);
 
         int actual = countEnclosedSpaces(map);
@@ -181,22 +179,6 @@ public class Day10 {
         throw new IllegalArgumentException("Could not locate starting point in map");
     }
 
-
-
-// TODO - move to PuzzleInput
-    public static char[][] as2dCharArray(String filename) {
-        List<String> inputAsStrings = PuzzleInput.asStringListFrom(filename);
-        int rowCount = inputAsStrings.size();
-        int colCount = inputAsStrings.get(0).length();
-        char[][] map = new char[rowCount][colCount];
-        int i = 0;
-        for (String line :
-                inputAsStrings) {
-            map[i] = line.toCharArray();
-            i++;
-        }
-        return map;
-    }
 
 
     private void dumpMap(char[][] map) {
