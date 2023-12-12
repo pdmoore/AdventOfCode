@@ -23,11 +23,11 @@ class Day12 {
 
     @Test
     void single_line_condition_record() {
-        String inputLine = "#.#.### 1,1,3";
-
-        boolean actual = isPossibleArrangement(inputLine);
-
-        assertTrue(actual);
+        assertTrue(isPossibleArrangement("#.#.### 1,1,3"));
+        assertTrue(isPossibleArrangement(".#.###.#.###### 1,3,1,6"));
+        assertTrue(isPossibleArrangement("####.#...#... 4,1,1"));
+        assertTrue(isPossibleArrangement("#....######..#####. 1,6,5"));
+        assertTrue(isPossibleArrangement(".###.##....# 3,2,1"));
     }
 
     private boolean isPossibleArrangement(String inputLine) {
