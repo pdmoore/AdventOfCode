@@ -41,11 +41,40 @@ class Day12 {
 
     @Test
     void permutations_of_unknown_conditions() {
-        String inputLine = "???.### 1,1,3";
-
-        List<String> actual = generatePermutations(inputLine);
-
+        List<String> actual = generatePermutations("???.### 1,1,3");
         assertEquals(8, actual.size());
+
+        actual = generatePermutations("?###???????? 3,2,1");
+        assertEquals(512, actual.size());  // assuming this is correct
+    }
+
+    @Test
+    void count_valid_permutations() {
+        assertEquals(1, countValidPermutations("???.### 1,1,3"));
+        assertEquals(4, countValidPermutations(".??..??...?##. 1,1,3"));
+        assertEquals(1, countValidPermutations("?#?#?#?#?#?#?#? 1,3,1,6"));
+        assertEquals(1, countValidPermutations("????.#...#... 4,1,1"));
+        assertEquals(4, countValidPermutations("????.######..#####. 1,6,5"));
+    }
+
+    @Test
+    void count_valid_lots_of_unknowns() {
+        assertEquals(10, countValidPermutations("?###???????? 3,2,1"));
+    }
+
+    private int countValidPermutations(String inputLine) {
+        List<String> permutations = generatePermutations(inputLine);
+
+        int validCount = 0;
+
+        for (String permutation :
+                permutations) {
+            if (isPossibleArrangement(permutation)) {
+                validCount++;
+            }
+        }
+
+        return validCount;
     }
 
 
@@ -65,6 +94,10 @@ class Day12 {
                 damagedSpringCount++;
             } else {
                 if (damagedSpringCount > 0) {
+                    if (damagedSpringGroupings.isEmpty()) {
+                        return false;
+                    }
+
                     Integer expected = damagedSpringGroupings.remove(0);
                     if (damagedSpringCount != expected) {
                         return false;
