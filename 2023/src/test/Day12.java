@@ -37,6 +37,11 @@ class Day12 {
         assertFalse(isPossibleArrangement(".###.##.#..# 3,2,1"));
     }
 
+    @Test
+    void single_line_more_recorded_than_damaged_is_not_valid() {
+        assertFalse(isPossibleArrangement(".###.##.#... 3,2,1,1"));
+    }
+
     private boolean isPossibleArrangement(String inputLine) {
         String[] s = inputLine.split(" ");
         String springs = s[0];
@@ -73,6 +78,6 @@ class Day12 {
         }
         // Feels like I may be missing cases where damaged grouping is a superset of what's been found
 
-        return true;
+        return damagedSpringGroupings.isEmpty();
     }
 }
