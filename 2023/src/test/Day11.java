@@ -256,12 +256,4 @@ public class Day11 {
 
         return galaxies;
     }
-
-
-    private void dumpMap(char[][] map) {
-        for (char[] chars : map) {
-            System.out.println(chars);
-        }
-    }
-
 }

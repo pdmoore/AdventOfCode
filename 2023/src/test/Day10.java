@@ -179,8 +179,7 @@ public class Day10 {
         throw new IllegalArgumentException("Could not locate starting point in map");
     }
 
-
-
+    // TODO - make a new jar for helper things like this?
     private void dumpMap(char[][] map) {
         for (int row = 0; row < map.length; row++) {
             System.out.println(map[row]);
