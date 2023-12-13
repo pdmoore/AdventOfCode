@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.LinkPermission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class Day13 {
         // Chunk the input via blank lines
         // determine if a chunk is vertical or horizontal reflected
         // sum num of vertical + (100 * num of horizontal)
+
+        // Reflections need to match rows above and below the two lines that match,
+        // not just the two lines that match
 
         int numColumns = 0;
         int numRows = 0;
@@ -56,23 +60,52 @@ public class Day13 {
     }
 
     private int checkForHorizontalReflection(List<String> nextPattern) {
-        // convert to 2d array
-        // starting with column 1, check if column 2 is the same
-        // if it is, return column 1
         for (int i = 1; i < nextPattern.size(); i++) {
             if (nextPattern.get(i - 1).equals(nextPattern.get(i))) {
                 return i;
             }
         }
 
-        return -99;
+        throw new IllegalArgumentException("couldn't find horizontal reflection");
     }
 
     private int checkForVerticalReflection(List<String> nextPattern) {
         // convert to 2d array
         // start with row 1
         // if row 2 is the same, return row 1
-        if (nextPattern.get(0).charAt(8) =='.') return 5;
-        return 0;
+        char[][] twoDChars = as2dCharArray(nextPattern);
+        String previousColumn = getColumn(0, twoDChars);
+        for (int i = 1; i < twoDChars.length; i++) {
+            String currentColumn = getColumn(i, twoDChars);
+            if (previousColumn.equals(currentColumn)) {
+                return i;
+            }
+            previousColumn = currentColumn;
+        }
+
+        return -1;
     }
+
+    private String getColumn(int i, char[][] map) {
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < map.length; j++) {
+            sb.append(map[j][i]);
+        }
+        return sb.toString();
+    }
+
+
+    public static char[][] as2dCharArray(List<String> inputAsStrings) {
+        int rowCount = inputAsStrings.size();
+        int colCount = inputAsStrings.get(0).length();
+        char[][] map = new char[rowCount][colCount];
+        int i = 0;
+        for (String line :
+                inputAsStrings) {
+            map[i] = line.toCharArray();
+            i++;
+        }
+        return map;
+    }
+
 }
