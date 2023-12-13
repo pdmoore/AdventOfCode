@@ -59,7 +59,13 @@ public class Day13 {
         // convert to 2d array
         // starting with column 1, check if column 2 is the same
         // if it is, return column 1
-        return 4;
+        for (int i = 1; i < nextPattern.size(); i++) {
+            if (nextPattern.get(i - 1).equals(nextPattern.get(i))) {
+                return i;
+            }
+        }
+
+        return -99;
     }
 
     private int checkForVerticalReflection(List<String> nextPattern) {
