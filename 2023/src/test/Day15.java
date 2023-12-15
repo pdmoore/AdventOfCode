@@ -30,6 +30,27 @@ class Day15 {
         assertEquals(11, inputLines.size());
     }
 
+    @Test
+    void part1_example() {
+        String input = PuzzleInput.asStringFrom("./data/day15_part1_example");
+
+        int actual = part1_sumAllSteps(input);
+
+        assertEquals(1320, actual);
+    }
+
+    private int part1_sumAllSteps(String input) {
+        List<String> stepsFrom = getStepsFrom(input);
+
+        int result = 0;
+        for (String step:
+        stepsFrom) {
+            result += currentValueOf(step);
+        }
+
+        return result;
+    }
+
     private List<String> getStepsFrom(String input) {
         String[] split = input.split(",");
         return Arrays.asList(split);
