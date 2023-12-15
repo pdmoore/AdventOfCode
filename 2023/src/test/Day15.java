@@ -31,6 +31,15 @@ class Day15 {
     }
 
     @Test
+    void part1_solution_convert_input_to_steps() {
+        String input = PuzzleInput.asStringFrom("./data/day15");
+
+        List<String> inputLines = getStepsFrom(input);
+
+        assertEquals(4000, inputLines.size());
+    }
+
+    @Test
     void part1_example() {
         String input = PuzzleInput.asStringFrom("./data/day15_part1_example");
 
@@ -39,12 +48,21 @@ class Day15 {
         assertEquals(1320, actual);
     }
 
+    @Test
+    void part1_solution() {
+        String input = PuzzleInput.asStringFrom("./data/day15");
+
+        int actual = part1_sumAllSteps(input);
+
+        assertEquals(505379, actual);
+    }
+
     private int part1_sumAllSteps(String input) {
         List<String> stepsFrom = getStepsFrom(input);
 
         int result = 0;
-        for (String step:
-        stepsFrom) {
+        for (String step :
+                stepsFrom) {
             result += currentValueOf(step);
         }
 
@@ -61,7 +79,7 @@ class Day15 {
         int currentValue = 0;
 
         for (char c : input.toCharArray()) {
-            int ascii = (int)c;
+            int ascii = (int) c;
             currentValue += ascii;
             currentValue *= 17;
             currentValue %= 256;
