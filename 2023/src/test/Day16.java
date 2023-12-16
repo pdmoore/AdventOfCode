@@ -15,10 +15,19 @@ class Day16 {
         assertEquals(46, actual);
     }
 
+    @Test
+    void part1_solution() {
+        char[][] input = PuzzleInput.as2dCharArray("./data/day16");
+        int actual = countEnergizedTiles(input);
+
+        // 216 way too small
+        assertEquals(7199, actual);
+    }
+
     private int countEnergizedTiles(char[][] map) {
         Set<Point> energizedTiles = new HashSet<>();
 
-        Beam startingBeam = new Beam(0, 0, Beam.directions.right);
+        Beam startingBeam = new Beam(0, -1, Beam.directions.right);
         List<Beam> activeBeams = new ArrayList<>();
         activeBeams.add(startingBeam);
 
@@ -28,7 +37,7 @@ class Day16 {
 
             // remove active beam
             Beam activeBeam = activeBeams.remove(0);
-
+//            System.out.println("processing " + activeBeam.toString() + " -- " + map[activeBeam.currentlocation.x][activeBeam.currentlocation.y]);
             // visit
             if (!visited.containsKey(activeBeam.currentlocation)) {
                 Set<Beam.directions> d = new HashSet<>();
@@ -37,6 +46,12 @@ class Day16 {
             } else {
                 visited.get(activeBeam.currentlocation).add((activeBeam.heading));
             }
+
+            // TODO answerr is much too low
+            // Tracing the visited beams it seems like x is off by 1 and then splits up/down too early
+            // maybe track the exact locations
+
+
 
             // process a beam
             energizedTiles.add(activeBeam.currentlocation);
@@ -51,35 +66,39 @@ class Day16 {
                     Set<Beam.directions> directions = visited.get(b.currentlocation);
                     if (!directions.contains(b.heading)) {
                         activeBeams.add(b);
+                    } else {
+                        System.out.println(" just rejected " + b);
                     }
                 }
-
             }
-
-            // The right answer is coming up but the beam set keeps growing
-            // Seems like I may need to track if a beam location & heading pair have already been
-            // processed and only process new ones
-            // Beam will need isEquals and hashCode
-
-            // there are loops in the input
         }
 
+        energizedTiles.remove(startingBeam.currentlocation);
         return energizedTiles.size();
     }
 
     static class Beam {
-//        @Override
-//        public int hashCode() {
-//            int hash = this.currentlocation.hashCode();
-//            hash = hash + heading.ordinal();
-//            return hash;
-//        }
+        @Override
+        public int hashCode() {
+            int hash = this.currentlocation.hashCode();
+            hash = hash + heading.ordinal();
+            return hash;
+        }
 
         @Override
         public boolean equals(Object obj) {
             Beam other = (Beam)obj;
             return this.currentlocation == other.currentlocation &&
                     this.heading == other.heading;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("x: " + currentlocation.x);
+            sb.append("  y: " + currentlocation.y);
+            sb.append("  " + heading);
+            return sb.toString();
         }
 
         enum directions {up, right, down, left}
@@ -100,30 +119,31 @@ class Day16 {
             List<Beam> result = new ArrayList<>();
 
             Point nextLocation = new Point(-1, -1);
-            switch (heading) {
-                case up -> {
-                    nextLocation.x = this.currentlocation.x - 1;
-                    nextLocation.y = this.currentlocation.y;
-                }
-                case down -> {
-                    nextLocation.x = this.currentlocation.x + 1;
-                    nextLocation.y = this.currentlocation.y;
-                    if (nextLocation.x >= 9) {
-                        int breakpoint = 0;
+                switch (heading) {
+                    case up -> {
+                        nextLocation.x = this.currentlocation.x - 1;
+                        nextLocation.y = this.currentlocation.y;
+                    }
+                    case down -> {
+                        nextLocation.x = this.currentlocation.x + 1;
+                        nextLocation.y = this.currentlocation.y;
+                        if (nextLocation.x >= 9) {
+                            int breakpoint = 0;
+                        }
+                    }
+                    case left -> {
+                        nextLocation.x = this.currentlocation.x;
+                        nextLocation.y = this.currentlocation.y - 1;
+                    }
+                    case right -> {
+                        nextLocation.x = this.currentlocation.x;
+                        nextLocation.y = this.currentlocation.y + 1;
+                        if (nextLocation.y >= 9) {
+                            int breakpoint2 = 0;
+                        }
                     }
                 }
-                case left -> {
-                    nextLocation.x = this.currentlocation.x;
-                    nextLocation.y = this.currentlocation.y - 1;
-                }
-                case right -> {
-                    nextLocation.x = this.currentlocation.x;
-                    nextLocation.y = this.currentlocation.y + 1;
-                    if (nextLocation.y >= 9) {
-                        int breakpoint2 = 0;
-                    }
-                }
-            }
+
 
             if (nextLocation.y < 0 || nextLocation.x < 0) {
                 return Collections.EMPTY_LIST;
@@ -160,6 +180,8 @@ class Day16 {
                     result.add(new Beam(nextLocation, directions.left));
                 } else if (heading == directions.up) {
                     result.add(new Beam(nextLocation, directions.right));
+                } else if (heading == directions.left) {
+                    result.add(new Beam(nextLocation, directions.down));
                 } else {
                     throw new IllegalArgumentException("unhandled heading at / " + heading);
                 }
@@ -171,8 +193,10 @@ class Day16 {
                     result.add(new Beam(nextLocation, directions.left));
                 } else if (heading == directions.left) {
                     result.add(new Beam(nextLocation, directions.up));
+                } else if (heading == directions.down) {
+                    result.add(new Beam(nextLocation, directions.right));
                 } else {
-                    throw new IllegalArgumentException("unhandled heading at \\ " + heading);
+                        throw new IllegalArgumentException("unhandled heading at \\ " + heading);
                 }
             } else {
                 throw new IllegalArgumentException("unhandled char " + map[nextLocation.x][nextLocation.y]);
