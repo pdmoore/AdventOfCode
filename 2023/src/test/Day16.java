@@ -20,7 +20,6 @@ class Day16 {
         char[][] input = PuzzleInput.as2dCharArray("./data/day16");
         int actual = countEnergizedTiles(input);
 
-        // 216 way too small
         assertEquals(7199, actual);
     }
 
@@ -35,10 +34,7 @@ class Day16 {
 
         while (!activeBeams.isEmpty()) {
 
-            // remove active beam
             Beam activeBeam = activeBeams.remove(0);
-//            System.out.println("processing " + activeBeam.toString() + " -- " + map[activeBeam.currentlocation.x][activeBeam.currentlocation.y]);
-            // visit
             if (!visited.containsKey(activeBeam.currentlocation)) {
                 Set<Beam.directions> d = new HashSet<>();
                 d.add(activeBeam.heading);
@@ -47,16 +43,8 @@ class Day16 {
                 visited.get(activeBeam.currentlocation).add((activeBeam.heading));
             }
 
-            // TODO answerr is much too low
-            // Tracing the visited beams it seems like x is off by 1 and then splits up/down too early
-            // maybe track the exact locations
-
-
-
-            // process a beam
             energizedTiles.add(activeBeam.currentlocation);
             List<Beam> next = activeBeam.move(map);
-            // add any splits as a result
             for (Beam b :
                     next) {
 
@@ -66,8 +54,6 @@ class Day16 {
                     Set<Beam.directions> directions = visited.get(b.currentlocation);
                     if (!directions.contains(b.heading)) {
                         activeBeams.add(b);
-                    } else {
-                        System.out.println(" just rejected " + b);
                     }
                 }
             }
@@ -87,6 +73,7 @@ class Day16 {
 
         @Override
         public boolean equals(Object obj) {
+            if (obj instanceof Beam) return false;
             Beam other = (Beam)obj;
             return this.currentlocation == other.currentlocation &&
                     this.heading == other.heading;
@@ -94,11 +81,10 @@ class Day16 {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("x: " + currentlocation.x);
-            sb.append("  y: " + currentlocation.y);
-            sb.append("  " + heading);
-            return sb.toString();
+            String sb = "x: " + currentlocation.x +
+                    "  y: " + currentlocation.y +
+                    "  " + heading;
+            return sb;
         }
 
         enum directions {up, right, down, left}
