@@ -3,6 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,7 +66,34 @@ class Day15 {
     }
 
     private int getFocusingPower(String input) {
-        return 0;
+
+        HashMap<Integer, List<String>> boxes = new HashMap<>();
+        List<String> box0_contents = Arrays.asList("rn=1", "cm=2");
+        boxes.put(0, box0_contents);
+        List<String> box3_contents = Arrays.asList("ot=7", "ab=5", "pc=6");
+        boxes.put(3, box3_contents);
+        int result = 0;
+        for (Integer boxKey :
+                boxes.keySet()) {
+            List<String> box_contents = boxes.get(boxKey);
+            result += calcFocusingPowerOf(box_contents, boxKey + 1);
+        }
+
+        return result;
+    }
+
+    private int calcFocusingPowerOf(List<String> boxContents, int boxNumber) {
+        if (boxContents.isEmpty()) return 0;
+
+        int result = 0;
+        for (int i = 0; i < boxContents.size(); i++) {
+            String lens = boxContents.get(i);
+            int focalLength = Integer.parseInt(lens.split("=")[1]);
+            int focusingPower = boxNumber * (i+1) * focalLength;
+            result += focusingPower;
+        }
+
+        return result;
     }
 
 
