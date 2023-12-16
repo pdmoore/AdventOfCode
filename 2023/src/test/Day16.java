@@ -73,7 +73,7 @@ class Day16 {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof Beam) return false;
+            if ((obj == null) || (obj instanceof Beam)) return false;
             Beam other = (Beam)obj;
             return this.currentlocation == other.currentlocation &&
                     this.heading == other.heading;
@@ -81,10 +81,9 @@ class Day16 {
 
         @Override
         public String toString() {
-            String sb = "x: " + currentlocation.x +
+            return "x: " + currentlocation.x +
                     "  y: " + currentlocation.y +
                     "  " + heading;
-            return sb;
         }
 
         enum directions {up, right, down, left}
