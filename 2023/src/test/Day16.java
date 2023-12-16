@@ -35,23 +35,23 @@ class Day16 {
         while (!activeBeams.isEmpty()) {
 
             Beam activeBeam = activeBeams.remove(0);
-            if (!visited.containsKey(activeBeam.currentlocation)) {
+            if (!visited.containsKey(activeBeam.currentLocation)) {
                 Set<Beam.directions> d = new HashSet<>();
                 d.add(activeBeam.heading);
-                visited.put(activeBeam.currentlocation, d);
+                visited.put(activeBeam.currentLocation, d);
             } else {
-                visited.get(activeBeam.currentlocation).add((activeBeam.heading));
+                visited.get(activeBeam.currentLocation).add((activeBeam.heading));
             }
 
-            energizedTiles.add(activeBeam.currentlocation);
+            energizedTiles.add(activeBeam.currentLocation);
             List<Beam> next = activeBeam.move(map);
             for (Beam b :
                     next) {
 
-                if (!visited.containsKey(b.currentlocation)) {
+                if (!visited.containsKey(b.currentLocation)) {
                     activeBeams.add(b);
                 } else {
-                    Set<Beam.directions> directions = visited.get(b.currentlocation);
+                    Set<Beam.directions> directions = visited.get(b.currentLocation);
                     if (!directions.contains(b.heading)) {
                         activeBeams.add(b);
                     }
@@ -59,40 +59,40 @@ class Day16 {
             }
         }
 
-        energizedTiles.remove(startingBeam.currentlocation);
+        energizedTiles.remove(startingBeam.currentLocation);
         return energizedTiles.size();
     }
 
     static class Beam {
         @Override
         public int hashCode() {
-            int hash = this.currentlocation.hashCode();
+            int hash = this.currentLocation.hashCode();
             hash = hash + heading.ordinal();
             return hash;
         }
 
         @Override
         public boolean equals(Object obj) {
-            if ((obj == null) || (obj instanceof Beam)) return false;
+            if (!(obj instanceof Beam)) return false;
             Beam other = (Beam)obj;
-            return this.currentlocation == other.currentlocation &&
+            return this.currentLocation == other.currentLocation &&
                     this.heading == other.heading;
         }
 
         @Override
         public String toString() {
-            return "x: " + currentlocation.x +
-                    "  y: " + currentlocation.y +
+            return "x: " + currentLocation.x +
+                    "  y: " + currentLocation.y +
                     "  " + heading;
         }
 
         enum directions {up, right, down, left}
 
         directions heading;
-        Point currentlocation;
+        Point currentLocation;
 
         public Beam(Point nextLocation, directions direction) {
-            this.currentlocation = nextLocation;
+            this.currentLocation = nextLocation;
             this.heading = direction;
         }
 
@@ -106,30 +106,30 @@ class Day16 {
             Point nextLocation = new Point(-1, -1);
                 switch (heading) {
                     case up -> {
-                        nextLocation.x = this.currentlocation.x - 1;
-                        nextLocation.y = this.currentlocation.y;
+                        nextLocation.x = this.currentLocation.x - 1;
+                        nextLocation.y = this.currentLocation.y;
                     }
                     case down -> {
-                        nextLocation.x = this.currentlocation.x + 1;
-                        nextLocation.y = this.currentlocation.y;
+                        nextLocation.x = this.currentLocation.x + 1;
+                        nextLocation.y = this.currentLocation.y;
                     }
                     case left -> {
-                        nextLocation.x = this.currentlocation.x;
-                        nextLocation.y = this.currentlocation.y - 1;
+                        nextLocation.x = this.currentLocation.x;
+                        nextLocation.y = this.currentLocation.y - 1;
                     }
                     case right -> {
-                        nextLocation.x = this.currentlocation.x;
-                        nextLocation.y = this.currentlocation.y + 1;
+                        nextLocation.x = this.currentLocation.x;
+                        nextLocation.y = this.currentLocation.y + 1;
                     }
                 }
 
 
             if (nextLocation.y < 0 || nextLocation.x < 0) {
-                return Collections.EMPTY_LIST;
+                return List.of();
             }
 
             if (nextLocation.x >= map.length || nextLocation.y >= map[0].length) {
-                return Collections.EMPTY_LIST;
+                return List.of();
             }
 
             if (map[nextLocation.x][nextLocation.y] == '.') {
