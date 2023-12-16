@@ -1,7 +1,9 @@
 package com.pdmoore.aoc;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -66,12 +68,8 @@ class Day15 {
     }
 
     private int getFocusingPower(String input) {
+        HashMap<Integer, List<String>> boxes = fillBoxes(input);
 
-        HashMap<Integer, List<String>> boxes = new HashMap<>();
-        List<String> box0_contents = Arrays.asList("rn=1", "cm=2");
-        boxes.put(0, box0_contents);
-        List<String> box3_contents = Arrays.asList("ot=7", "ab=5", "pc=6");
-        boxes.put(3, box3_contents);
         int result = 0;
         for (Integer boxKey :
                 boxes.keySet()) {
@@ -82,6 +80,48 @@ class Day15 {
         return result;
     }
 
+    private HashMap<Integer, List<String>> fillBoxes(String input) {
+        List<String> stepsFrom = getStepsFrom(input);
+
+        HashMap<Integer, List<String>> boxes = new HashMap<>();
+        for (String step :
+                stepsFrom) {
+
+            // TODO - boxNumber is 30 for the first thing
+            // but the example wants it in box 0
+            // does it mean just put in the first available empty box?
+            // Need to read instructions more carefully
+            int boxNumber = currentValueOf(step);
+
+            // check for = or -
+            // remove, replace, or add to box contents
+            // shift empty boxes forward per instructions (example may not require this)
+
+            if (step.contains("=")) {
+                List<String> lenses = boxes.get(boxNumber);
+                if (lenses == null) {
+                    lenses = new ArrayList<>();
+                }
+                lenses.add(step);
+                boxes.put(boxNumber, lenses);
+            } else if (step.contains("-")){
+
+
+
+            } else {
+                throw new IllegalArgumentException("couldn't find = or - in " + step);
+            }
+
+        }
+
+        List<String> box0_contents = Arrays.asList("rn=1", "cm=2");
+        boxes.put(0, box0_contents);
+        List<String> box3_contents = Arrays.asList("ot=7", "ab=5", "pc=6");
+        boxes.put(3, box3_contents);
+
+        return boxes;
+    }
+
     private int calcFocusingPowerOf(List<String> boxContents, int boxNumber) {
         if (boxContents.isEmpty()) return 0;
 
@@ -89,7 +129,7 @@ class Day15 {
         for (int i = 0; i < boxContents.size(); i++) {
             String lens = boxContents.get(i);
             int focalLength = Integer.parseInt(lens.split("=")[1]);
-            int focusingPower = boxNumber * (i+1) * focalLength;
+            int focusingPower = boxNumber * (i + 1) * focalLength;
             result += focusingPower;
         }
 
