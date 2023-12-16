@@ -112,9 +112,6 @@ class Day16 {
                     case down -> {
                         nextLocation.x = this.currentlocation.x + 1;
                         nextLocation.y = this.currentlocation.y;
-                        if (nextLocation.x >= 9) {
-                            int breakpoint = 0;
-                        }
                     }
                     case left -> {
                         nextLocation.x = this.currentlocation.x;
@@ -123,9 +120,6 @@ class Day16 {
                     case right -> {
                         nextLocation.x = this.currentlocation.x;
                         nextLocation.y = this.currentlocation.y + 1;
-                        if (nextLocation.y >= 9) {
-                            int breakpoint2 = 0;
-                        }
                     }
                 }
 
