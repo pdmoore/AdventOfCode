@@ -57,6 +57,18 @@ class Day15 {
         assertEquals(505379, actual);
     }
 
+    @Test
+    void part2_example() {
+        String input = PuzzleInput.asStringFrom("./data/day15_part1_example");
+        int actual = getFocusingPower(input);
+        assertEquals(145, actual);
+    }
+
+    private int getFocusingPower(String input) {
+        return 0;
+    }
+
+
     private int part1_sumAllSteps(String input) {
         List<String> stepsFrom = getStepsFrom(input);
 
