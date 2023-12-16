@@ -15,6 +15,13 @@ class Point {
         return x == other.x && y == other.y;
     }
 
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
+
     public int manhattanDistanceTo(Point other) {
         return Math.abs(other.x - x) + Math.abs(other.y - y);
     }
