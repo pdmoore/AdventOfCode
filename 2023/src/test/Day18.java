@@ -2,7 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,16 +11,64 @@ class Day18 {
     @Test
     void dig_trench() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day18_part1_example");
-        char[][] grid = digTrench(input, 11);
-
+        char[][] grid = digTrench(input, 17);
         int actual = countHoles(grid);
 
         assertEquals(38, actual);
     }
 
+    @Test
+    void part1_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day18_part1_example");
+        char[][] grid = digTrench(input, 20);
+        digOutInterior(grid);
+        int actual = countHoles(grid);
+        assertEquals(62, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day18");
+        char[][] grid = digTrench(input, 600);
+
+        digOutInterior(grid);
+//        dumpMap(grid);
+        int actual = countHoles(grid);
+        assertEquals(49061, actual);
+    }
+
+    private void digOutInterior(char[][] grid) {
+
+        // Randomly grabbed a poiint in the middle, assuming it was INSIDE
+        // works ok for bigger input, failing on example
+
+        int start_x = grid.length / 2;
+        if (grid.length < 100) {
+            start_x = 14;
+        }
+        Point start = new Point(start_x, start_x);
+
+        Stack<Point> q = new Stack<>();
+        q.add(start);
+
+        while (!q.isEmpty()) {
+            Point p = q.pop();
+            grid[p.x][p.y] = '#';
+
+            if (grid[p.x][p.y - 1] == '.') q.push(new Point(p.x, p.y-1));
+            if (grid[p.x][p.y + 1] == '.') q.push(new Point(p.x, p.y+1));
+            if (grid[p.x-1][p.y] == '.') q.push(new Point(p.x-1, p.y));
+            if (grid[p.x+1][p.y] == '.') q.push(new Point(p.x+1, p.y));
+
+        }
+    }
+
     private char[][] digTrench(List<String> input, int gridSize) {
         char[][] grid = new char[gridSize][gridSize];
-        Point curPos = new Point(0, 0);
+        for (char[] row: grid) {
+            Arrays.fill(row, '.');
+        }
+        Point curPos = new Point(gridSize / 2, gridSize / 2);
         for (String inputLine :
                 input) {
             String[] split = inputLine.split(" ");
@@ -36,8 +84,6 @@ class Day18 {
                 default ->  throw new IllegalArgumentException("bad direction " + direction);
             }
         }
-
-            dumpMap(grid);
 
         return grid;
     }
