@@ -62,7 +62,9 @@ public class Day13 {
     private int checkForHorizontalReflection(List<String> nextPattern) {
         for (int i = 1; i < nextPattern.size(); i++) {
             if (nextPattern.get(i - 1).equals(nextPattern.get(i))) {
-                return i;
+                if (confirmHorizontalReflectAt(nextPattern, i)) {
+                    return i;
+                }
             }
         }
 
@@ -78,12 +80,35 @@ public class Day13 {
         for (int i = 1; i < twoDChars.length; i++) {
             String currentColumn = getColumn(i, twoDChars);
             if (previousColumn.equals(currentColumn)) {
-                return i;
+                // if row matches previous, then have to check above and below!
+                if (confirmVerticalReflectionAt(twoDChars, i)) {
+                    return i;
+                }
             }
             previousColumn = currentColumn;
         }
 
         return -1;
+    }
+
+    private boolean confirmVerticalReflectionAt(char[][] pattern, int colIndex) {
+        int leftIndex = colIndex - 1;
+        int rightIndex = colIndex;
+
+        // TODO - not sure if length is correct or pattern[0].length
+        while (leftIndex >= 0 && rightIndex < pattern.length) {
+            String rightColumn = getColumn(rightIndex, pattern);
+            String leftColumn  = getColumn(leftIndex, pattern);
+            if (!leftColumn.equals(rightColumn)) {
+                return false;
+            }
+
+            leftIndex--;
+            rightIndex++;
+        }
+
+
+        return true;
     }
 
     private String getColumn(int i, char[][] map) {
@@ -107,5 +132,22 @@ public class Day13 {
         }
         return map;
     }
+
+    private boolean confirmHorizontalReflectAt(List<String> pattern, int rowIndex) {
+        int upwardIndex = rowIndex - 1;
+        int downwardIndex = rowIndex;
+
+        while (upwardIndex >= 0 && downwardIndex < pattern.size()) {
+            if (!pattern.get(upwardIndex).equals(pattern.get(downwardIndex))) {
+                return false;
+            }
+
+            upwardIndex--;
+            downwardIndex++;
+        }
+
+        return true;
+    }
+
 
 }
