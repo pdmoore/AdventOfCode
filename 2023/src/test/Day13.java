@@ -19,6 +19,15 @@ public class Day13 {
         assertEquals(405, actual);
     }
 
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day13");
+
+        int actual = solvePart1(input);
+
+        assertEquals(29130, actual);
+    }
+
     private int solvePart1(List<String> input) {
         // Chunk the input via blank lines
         // determine if a chunk is vertical or horizontal reflected
@@ -77,15 +86,22 @@ public class Day13 {
         // if row 2 is the same, return row 1
         char[][] twoDChars = as2dCharArray(nextPattern);
         String previousColumn = getColumn(0, twoDChars);
-        for (int i = 1; i < twoDChars.length; i++) {
-            String currentColumn = getColumn(i, twoDChars);
-            if (previousColumn.equals(currentColumn)) {
-                // if row matches previous, then have to check above and below!
-                if (confirmVerticalReflectionAt(twoDChars, i)) {
-                    return i;
+        int loopLimit1 = twoDChars.length;
+        int loopLimit2 = twoDChars[0].length;
+        for (int i = 1; i < twoDChars[0].length; i++) {
+            try {
+                String currentColumn = getColumn(i, twoDChars);
+                if (previousColumn.equals(currentColumn)) {
+                    // if row matches previous, then have to check above and below!
+                    if (confirmVerticalReflectionAt(twoDChars, i)) {
+                        return i;
+                    }
                 }
+                previousColumn = currentColumn;
+            } catch (Exception x) {
+                int breakpoint = 1;
+                breakpoint++;
             }
-            previousColumn = currentColumn;
         }
 
         return -1;
@@ -95,8 +111,7 @@ public class Day13 {
         int leftIndex = colIndex - 1;
         int rightIndex = colIndex;
 
-        // TODO - not sure if length is correct or pattern[0].length
-        while (leftIndex >= 0 && rightIndex < pattern.length) {
+        while (leftIndex >= 0 && rightIndex < pattern[0].length) {
             String rightColumn = getColumn(rightIndex, pattern);
             String leftColumn  = getColumn(leftIndex, pattern);
             if (!leftColumn.equals(rightColumn)) {
@@ -106,7 +121,6 @@ public class Day13 {
             leftIndex--;
             rightIndex++;
         }
-
 
         return true;
     }
@@ -148,6 +162,4 @@ public class Day13 {
 
         return true;
     }
-
-
 }
