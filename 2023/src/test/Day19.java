@@ -13,6 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class Day19 {
 
     @Test
+    void create_possibility_from_another() {
+        Range xRange = new Range(1, 4000);
+        Range mRange = new Range(1, 4000);
+        Range aRange = new Range(1, 4000);
+        Range sRange = new Range(1, 4000);
+        Possibility p1 = new Possibility("in", xRange, mRange, aRange, sRange);
+        Possibility p2 = new Possibility("qqz", p1);
+        p2.sRange.end = 1350;
+
+        assertEquals(4000, p1.sRange.end);
+
+    }
+
+
+    @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day19_part1_example");
 
@@ -55,8 +70,10 @@ class Day19 {
 
         private final Map<String, String> _workflows;
         private final ArrayList<Possibility> _wip;
+        private List<Possibility> _acceptedPossibilites;
 
         public Part2(List<String> input, Possibility start) {
+            _acceptedPossibilites = new ArrayList<>();
             // From input, build just the workflows, ignore anything after white space
             _workflows = grabWorkflowsFrom(input);
 
@@ -71,6 +88,12 @@ class Day19 {
         }
 
         private void processPossibility(Possibility possibility) {
+            if (possibility.workflowID.equals("A")) {
+                _acceptedPossibilites.add(possibility);
+                return;
+            } else if (possibility.workflowID.equals("R")) {
+                return;
+            }
             // workflow ID in possibility
             // get workflow from map
             // cycle over steps
@@ -82,19 +105,135 @@ class Day19 {
             String[] steps = justSteps.split(",");
 
             for (int i = 0; i < steps.length; i++) {
+                if (!steps[i].contains(":")) {
+                    if (steps[i].equals("R")) {
+                        return;
+                    } else if (steps[i].equals("A")) {
+                        _acceptedPossibilites.add(possibility);
+                    } else {
+                        // jump to another step with same ranges
+                        String nextWorkflowID = steps[i];
+                        Possibility newPossibility = new Possibility(nextWorkflowID, possibility);
+                        _wip.add(newPossibility);
+                    }
+                } else {
+                    // add new possibility on any > or < and split the range appropriately
 
-                // HANDLE STEPS
+                    // need to split ranges
+                    // Handle conditional step (contains ":"
+                    String[] step = steps[i].split(":");
+                    String condition = step[0];
+                    String jumpToID  = step[1];
+                    Range var;
+                    switch (condition.charAt(0)) {
+                        case 'x' -> var = possibility.xRange;
+                        case 'm' -> var = possibility.mRange;
+                        case 'a' -> var = possibility.aRange;
+                        case 's' -> var = possibility.sRange;
+                        default -> throw new IllegalArgumentException("bad part ID " + step);
+                    }
+                    int rhs = Integer.parseInt(condition.substring(2));
 
+                    switch (condition.charAt(1)) {
+                        case '<' -> {
+                            if (var.end < rhs) {
+                                throw new IllegalArgumentException("everything in range fits");
+                            } else if (var.start > rhs) {
+                                throw new IllegalArgumentException("everything in range does not fit");
+                            } else {
+                                Possibility newP = new Possibility(jumpToID, possibility);
+                                switch (condition.charAt(0)) {
+                                    case 'x' -> newP.xRange.end = rhs - 1;
+                                    case 'm' -> newP.mRange.end = rhs - 1;
+                                    case 'a' -> newP.aRange.end = rhs - 1;
+                                    case 's' -> newP.sRange.end = rhs - 1;
+                                    default -> throw new IllegalArgumentException("bad part ID " + step);
+                                }
+                                _wip.add(newP);
+//                                throw new IllegalArgumentException("need to split range ");
+                            }
+                        }
+                        case '>' -> {
+
+                            if (var.start > rhs) {
+                                throw new IllegalArgumentException("nothing in range fits");
+                            } else if (var.end < rhs) {
+                                throw new IllegalArgumentException("everything in range fits");
+                            } else {
+                                Possibility newP = new Possibility(jumpToID, possibility);
+                                switch (condition.charAt(0)) {
+                                    case 'x' -> newP.xRange.start = rhs + 1;
+                                    case 'm' -> newP.mRange.start = rhs + 1;
+                                    case 'a' -> newP.aRange.start = rhs + 1;
+                                    case 's' -> newP.sRange.start = rhs + 1;
+                                    default -> throw new IllegalArgumentException("bad part ID " + step);
+                                }
+                                _wip.add(newP);
+
+                                //                            if (var > rhs) {
+//                                if (jumpTo.equals("A")) {
+//                                    return true;
+//                                }
+//                                if (jumpTo.equals("R")) {
+//                                    return false;
+//                                }
+//
+//                                String nextStep = workflows.get(jumpTo);
+//                                return process(workflows, nextStep, x, m, a, s);
+                            }
+                        }
+                        //default -> throw new IllegalArgumentException("unhandled condition " + condition);
+                    }
+
+
+                }
+
+//                if (steps[i].contains(":")) {
+//                    String[] step = steps[i].split(":");
+//                    String condition = step[0];
+//                    String jumpTo = step[1];
+//                    int var = -1;
+//                    switch (condition.charAt(0)) {
+//                        case 'x' -> var = x;
+//                        case 'm' -> var = m;
+//                        case 'a' -> var = a;
+//                        case 's' -> var = s;
+//                        default -> throw new IllegalArgumentException("bad part ID " + step);
+//                    }
+//                    int rhs = Integer.parseInt(condition.substring(2));
+//                    switch (condition.charAt(1)) {
+//                        case '<' -> {
+//                            if (var < rhs) {
+//                                if (jumpTo.equals("A")) {
+//                                    return true;
+//                                }
+//                                if (jumpTo.equals("R")) {
+//                                    return false;
+//                                }
+//                                String nextStep = workflows.get(jumpTo);
+//                                return process(workflows, nextStep, x, m, a, s);
+//                            }
+//                            break;
+//                        }
+//                        case '>' -> {
+//                            if (var > rhs) {
+//                                if (jumpTo.equals("A")) {
+//                                    return true;
+//                                }
+//                                if (jumpTo.equals("R")) {
+//                                    return false;
+//                                }
+//
+//                                String nextStep = workflows.get(jumpTo);
+//                                return process(workflows, nextStep, x, m, a, s);
+//                            }
+//                        }
+//                        default -> throw new IllegalArgumentException("unhandled condition " + condition);
+//                    }
+//                }
 
 
             }
-
-            // end when A, and add to Accepted Range list
-            // end when runs out, Add to Accepted Range list
-            // end when R, do nothing
-            // add new possibility on any > or < and split the range appropriately
-
-
 
 
         }
@@ -118,17 +257,25 @@ class Day19 {
             // iterate across Possibilities that match and return
             // range.end-range-start + 1 * x/m/a/s
             // call it range.span
+            // TODO continue here
+            // need to process _acceptedPossibilites
+            // and use the end-start+1 x/m/a/s formula with a BigInteger sum
             return null;
         }
     }
 
     static class Range {
-        final int start;
-        final int end;
+        int start;
+        int end;
 
         public Range(int start, int end) {
             this.start = start;
             this.end = end;
+        }
+
+        public Range(Range other) {
+            this.start = other.start;
+            this.end = other.end;
         }
     }
 
@@ -145,6 +292,14 @@ class Day19 {
             this.aRange = aRange;
             this.sRange = sRange;
             this.workflowID = in;
+        }
+
+        public Possibility(String workflowID, Possibility rangesFrom) {
+            this.workflowID = workflowID;
+            this.xRange = new Range(rangesFrom.xRange);
+            this.mRange = new Range(rangesFrom.mRange);
+            this.aRange = new Range(rangesFrom.aRange);
+            this.sRange = new Range(rangesFrom.sRange);
         }
     }
 
