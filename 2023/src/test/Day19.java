@@ -53,6 +53,14 @@ class Day19 {
         assertEquals(BigInteger.valueOf(167409079868000L), actual);
     }
 
+    @Test
+    void part2_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day19");
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(BigInteger.valueOf(132557544578569L), actual);
+    }
+
     private BigInteger solvePart2(List<String> input) {
         List<Possibility> paths = new ArrayList<>();
         Range xRange = new Range(1, 4000);
