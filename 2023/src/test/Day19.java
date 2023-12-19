@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,6 +18,15 @@ class Day19 {
         int actual = solvePart1(input);
 
         assertEquals(19114, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day19");
+
+        int actual = solvePart1(input);
+
+        assertEquals(432434, actual);
     }
 
     private int solvePart1(List<String> input) {
