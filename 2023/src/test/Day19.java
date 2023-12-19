@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,124 @@ class Day19 {
         int actual = solvePart1(input);
 
         assertEquals(432434, actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day19_part1_example");
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(BigInteger.valueOf(167409079868000L), actual);
+    }
+
+    private BigInteger solvePart2(List<String> input) {
+        List<Possibility> paths = new ArrayList<>();
+        Range xRange = new Range(1, 4000);
+        Range mRange = new Range(1, 4000);
+        Range aRange = new Range(1, 4000);
+        Range sRange = new Range(1, 4000);
+        Possibility start = new Possibility("in", xRange, mRange, aRange, sRange);
+
+        Part2 sut = new Part2(input, start);
+
+        return sut.allAcceptedCombinations();
+    }
+
+    static class Part2 {
+
+        private final Map<String, String> _workflows;
+        private final ArrayList<Possibility> _wip;
+
+        public Part2(List<String> input, Possibility start) {
+            // From input, build just the workflows, ignore anything after white space
+            _workflows = grabWorkflowsFrom(input);
+
+            // Then add start to List of wip, and begin processing
+            _wip = new ArrayList<>();
+            _wip.add(start);
+
+            while (!_wip.isEmpty()) {
+                processPossibility(_wip.remove(0));
+            }
+
+        }
+
+        private void processPossibility(Possibility possibility) {
+            // workflow ID in possibility
+            // get workflow from map
+            // cycle over steps
+            // add to _wip as needed, splitting ranges
+            String currentWorkflow = _workflows.get(possibility.workflowID);
+
+            int curlyIndex = currentWorkflow.indexOf("{");
+            String justSteps = currentWorkflow.substring(curlyIndex + 1, currentWorkflow.length() - 1);
+            String[] steps = justSteps.split(",");
+
+            for (int i = 0; i < steps.length; i++) {
+
+                // HANDLE STEPS
+
+
+
+            }
+
+            // end when A, and add to Accepted Range list
+            // end when runs out, Add to Accepted Range list
+            // end when R, do nothing
+            // add new possibility on any > or < and split the range appropriately
+
+
+
+
+        }
+
+        private Map<String, String> grabWorkflowsFrom(List<String> input) {
+            Map<String, String> workflows = new HashMap<>();
+            for (String inputLine : input) {
+                if (inputLine.isEmpty()) {
+                    break;
+                }
+                int curlyIndex = inputLine.indexOf("{");
+                String name = inputLine.substring(0, curlyIndex);
+                String rules = inputLine.substring(curlyIndex);
+                workflows.put(name, rules);
+            }
+
+            return workflows;
+        }
+
+        public BigInteger allAcceptedCombinations() {
+            // iterate across Possibilities that match and return
+            // range.end-range-start + 1 * x/m/a/s
+            // call it range.span
+            return null;
+        }
+    }
+
+    static class Range {
+        final int start;
+        final int end;
+
+        public Range(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    static class Possibility {
+        private final Range xRange;
+        private final Range mRange;
+        private final Range aRange;
+        private final Range sRange;
+        private final String workflowID;
+
+        public Possibility(String in, Range xRange, Range mRange, Range aRange, Range sRange) {
+            this.xRange = xRange;
+            this.mRange = mRange;
+            this.aRange = aRange;
+            this.sRange = sRange;
+            this.workflowID = in;
+        }
     }
 
     private int solvePart1(List<String> input) {
@@ -88,7 +207,6 @@ class Day19 {
     }
 
     private boolean process(Map<String, String> workflows, String currentWorkflow, int x, int m, int a, int s) {
-//            qqz{s>2770:qs,m<1801:hdj,R}
         int curlyIndex = currentWorkflow.indexOf("{");
         String justSteps = currentWorkflow.substring(curlyIndex + 1, currentWorkflow.length() - 1);
         String[] steps = justSteps.split(",");
@@ -144,18 +262,9 @@ class Day19 {
                     return false;
                 }
                 String nextStep = workflows.get(steps[i]);
-                return process(workflows, nextStep, x, m , a, s);
+                return process(workflows, nextStep, x, m, a, s);
             }
-
-
         }
-
-        // process each steps, maybe jumping to a new workflow
-
-
-//        if (rating.contains("787") || rating.contains("2036") || rating.contains("2127")) {
-//            return true;
-//        }
 
         return true;
     }
