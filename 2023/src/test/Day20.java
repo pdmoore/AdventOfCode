@@ -1,11 +1,9 @@
 package com.pdmoore.aoc;
 
+import com.google.common.base.MoreObjects;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,40 +21,70 @@ class Day20 {
 
         ModuleConfiguration sut = new ModuleConfiguration(input);
 
+
         List<String> broadcasterModules = Arrays.asList("a", "b", "c");
         assertEquals(broadcasterModules, sut.getBroadcasterModules());
+
+        Set<String> moduleIDs = sut.getModules().keySet();
+        assertEquals(5, moduleIDs.size());
     }
 
     private class ModuleConfiguration {
         List<String> _broadcasterModules = new ArrayList<>();
+        Map<String, Module> _modules = new HashMap<>();
 
         public ModuleConfiguration(List<String> input) {
             for (String inputLine: input) {
                 String[] split = inputLine.split(" -> ");
                 if (split[0].startsWith("broadcaster")) {
-                    String[] modules = split[1].split(", ");
-                    for (String module: modules) {
-                        _broadcasterModules.add(module.trim());
-                    }
+                    Module m = new Module("broadcaster", ModuleType.broadcaster, split[1]);
+                    _modules.put("broadcaster", m);
                 } else if (split[0].charAt(0) == '%') {
                     // handle FLipFLop
+                    String ID = split[0].substring(1).trim();
+                    Module m = new Module(ID, ModuleType.flipflop, split[1]);
+                    _modules.put(ID, m);
                 } else if (split[0].charAt(0) == '&') {
-                    // handle Conjunction
+                    String ID = split[0].substring(1).trim();
+                    Module m = new Module(ID, ModuleType.conjunction, split[1]);
+                    _modules.put(ID, m);
                 } else {
                     throw new IllegalArgumentException("unknown module "  + inputLine);
                 }
-                /*
-                broadcaster -> a, b, c
-%a -> b
-%b -> c
-%c -> inv
-&inv -> a
-                 */
             }
         }
 
         public List<String> getBroadcasterModules() {
-            return _broadcasterModules;
+            return _modules.get("broadcaster")._destinationModules;
+        }
+
+        public Map<String, Module> getModules() {
+            return _modules;
+        }
+    }
+
+    enum ModuleType { broadcaster, flipflop, conjunction };
+
+
+    class Module {
+
+        private final String ID;
+        private final ModuleType type;
+        private final String something;
+        private final List<String> _destinationModules;
+
+        public Module(String id, ModuleType type, String s) {
+            this.ID = id;
+            this.type = type;
+            this.something = s;
+
+            _destinationModules = new ArrayList<>();
+            String[] modules = s.split(", ");
+            for (String module: modules) {
+                _destinationModules.add(module.trim());
+            }
+
+
         }
     }
 }
