@@ -20,12 +20,9 @@ class Day21 {
 
     @Test
     void part1_solution() {
-
-        // Impl runs out of memory....
-
         char[][] map = PuzzleInput.as2dCharArray("./data/day21");
 
-        assertEquals(99, solvePart1(map, 64).size());
+        assertEquals(3816, solvePart1(map, 64).size());
     }
 
     private Set<Point> solvePart1(char[][] map, int targetStepCount) {
@@ -35,13 +32,13 @@ class Day21 {
         Point start = locateStartingPoint(map);
         map[start.x][start.y] = '.';
         // add start to current
-        List<Point> toProcess = new ArrayList<>();
+        Set<Point> toProcess = new HashSet<>();
         toProcess.add(start);
 
 
         int currentStep = 1;
         while (currentStep <= targetStepCount) {
-            List<Point> nextProcess = new ArrayList<>();
+            Set<Point> nextProcess = new HashSet<>();
             visited = new HashSet<>();
             for (Point thisP: toProcess) {
                 List<Point> stepsFrom = validStepsFrom(map, thisP);
