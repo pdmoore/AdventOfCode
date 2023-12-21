@@ -6,12 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day14 {
 
-    // Read map
-    // Tilt north
-    // ech column, start form bottom and move O up until it can't
-    // some load calculation
-
-    enum Direction {north, south, east, west}
     final char ROUND_ROCK = 'O';
     final char CUBE_ROCK = '#';
     final char SPACE = '.';
@@ -21,9 +15,9 @@ class Day14 {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
         char[][] expected = PuzzleInput.as2dCharArray("./data/day14_part1_example_expected");
 
-        char[][] actual = tilt(input, Direction.north);
+        tiltNorth(input);
 
-        assertEquals(new String(expected[0]), new String(actual[0]));
+        assertEquals(new String(expected[0]), new String(input[0]));
     }
 
     @Test
@@ -39,8 +33,8 @@ class Day14 {
     void part1_solution() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14");
 
-        char[][] tilted = tilt(input, Direction.north);
-        int actual = computeLoad(tilted);
+        tiltNorth(input);
+        int actual = computeLoad(input);
 
         assertEquals(110821, actual);
     }
@@ -56,13 +50,11 @@ class Day14 {
             }
         }
 
-
-
         return result;
     }
 
 
-    private char[][] tilt(char[][] map, Direction direction) {
+    private void tiltNorth(char[][] map) {
 
         int max_row = map.length;
 
@@ -79,9 +71,6 @@ class Day14 {
                 }
             }
         }
-
-
-        return map;
     }
 
 
