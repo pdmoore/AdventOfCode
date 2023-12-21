@@ -10,6 +10,8 @@ class Day14 {
     final char CUBE_ROCK = '#';
     final char SPACE = '.';
 
+    final int CYCLE_COUNT = 1_000_000_000;
+
     @Test
     void part1_example_tilt_north() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
@@ -25,7 +27,7 @@ class Day14 {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
         char[][] expected = PuzzleInput.as2dCharArray("./data/day14_part1_cycle1");
 
-        spinCycle(input);
+        spinCycle(input, 1);
 
         assertEquals(new String(expected[0]), new String(input[0]));
         assertEquals(new String(expected[1]), new String(input[1]));
@@ -52,6 +54,17 @@ class Day14 {
         assertEquals(110821, actual);
     }
 
+    @Test
+    void part2_example() {
+        char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
+
+        spinCycle(input, CYCLE_COUNT);
+
+        int actual = computeLoad(input);
+
+        assertEquals(64, actual);
+    }
+
     private int computeLoad(char[][] map) {
         int result = 0;
         int max = map.length;
@@ -66,11 +79,16 @@ class Day14 {
         return result;
     }
 
-    private void spinCycle(char[][] map) {
-        tiltNorth(map);
-        tiltWest(map);
-        tiltSouth(map);
-        tiltEast(map);
+    private void spinCycle(char[][] map, int cycle_count) {
+        for (int i = 0; i < cycle_count; i++) {
+            tiltNorth(map);
+            tiltWest(map);
+            tiltSouth(map);
+            tiltEast(map);
+            if (i % 1_000_000 == 0) {
+                System.out.println("# cycles " + i + "  " + (cycle_count - i) + " to go");
+            }
+        }
     }
 
 
