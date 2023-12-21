@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import com.google.common.base.MoreObjects;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -21,7 +20,6 @@ class Day20 {
 
         ModuleConfiguration sut = new ModuleConfiguration(input);
 
-
         List<String> broadcasterModules = Arrays.asList("a", "b", "c");
         assertEquals(broadcasterModules, sut.getBroadcasterModules());
 
@@ -30,7 +28,6 @@ class Day20 {
     }
 
     private class ModuleConfiguration {
-        List<String> _broadcasterModules = new ArrayList<>();
         Map<String, Module> _modules = new HashMap<>();
 
         public ModuleConfiguration(List<String> input) {
@@ -40,7 +37,6 @@ class Day20 {
                     Module m = new Module("broadcaster", ModuleType.broadcaster, split[1]);
                     _modules.put("broadcaster", m);
                 } else if (split[0].charAt(0) == '%') {
-                    // handle FLipFLop
                     String ID = split[0].substring(1).trim();
                     Module m = new Module(ID, ModuleType.flipflop, split[1]);
                     _modules.put(ID, m);
@@ -70,21 +66,17 @@ class Day20 {
 
         private final String ID;
         private final ModuleType type;
-        private final String something;
         private final List<String> _destinationModules;
 
         public Module(String id, ModuleType type, String s) {
             this.ID = id;
             this.type = type;
-            this.something = s;
 
             _destinationModules = new ArrayList<>();
             String[] modules = s.split(", ");
             for (String module: modules) {
                 _destinationModules.add(module.trim());
             }
-
-
         }
     }
 }
