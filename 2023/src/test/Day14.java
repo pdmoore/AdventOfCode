@@ -3,7 +3,6 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class Day14 {
 
@@ -13,6 +12,9 @@ class Day14 {
     // some load calculation
 
     enum Direction {north, south, east, west}
+    final char ROUND_ROCK = 'O';
+    final char CUBE_ROCK = '#';
+    final char SPACE = '.';
 
     @Test
     void part1_example_tilt_north() {
@@ -25,11 +27,33 @@ class Day14 {
         assertEquals(new String(expected[0]), new String(actual[0]));
     }
 
-    private char[][] tilt(char[][] map, Direction direction) {
+    @Test
+    void part1_compute_load() {
+        char[][] tilted = PuzzleInput.as2dCharArray("./data/day14_part1_example_expected");
 
-        char ROUND_ROCK = 'O';
-        char CUBE_ROCK = '#';
-        char SPACE = '.';
+        int actual = computeLoad(tilted);
+
+        assertEquals(136, actual);
+    }
+
+    private int computeLoad(char[][] map) {
+        int result = 0;
+        int max = map.length;
+        for (int row = 0; row < max; row++) {
+            for (int col = 0; col < max; col++) {
+                if (map[row][col] == ROUND_ROCK) {
+                    result += max - row;
+                }
+            }
+        }
+
+
+
+        return result;
+    }
+
+
+    private char[][] tilt(char[][] map, Direction direction) {
 
         int max_row = map.length;
 
