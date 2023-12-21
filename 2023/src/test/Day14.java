@@ -18,7 +18,6 @@ class Day14 {
 
     @Test
     void part1_example_tilt_north() {
-
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
         char[][] expected = PuzzleInput.as2dCharArray("./data/day14_part1_example_expected");
 
@@ -34,6 +33,16 @@ class Day14 {
         int actual = computeLoad(tilted);
 
         assertEquals(136, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        char[][] input = PuzzleInput.as2dCharArray("./data/day14");
+
+        char[][] tilted = tilt(input, Direction.north);
+        int actual = computeLoad(tilted);
+
+        assertEquals(110821, actual);
     }
 
     private int computeLoad(char[][] map) {
