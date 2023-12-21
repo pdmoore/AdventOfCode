@@ -14,8 +14,18 @@ class Day21 {
         assertEquals(2, solvePart1(map, 1).size());
         assertEquals(4, solvePart1(map, 2).size());
 
-//        Collection<Point> p = solvePart1(map, 6);
-//        assertEquals(16, p.size());
+        Collection<Point> p = solvePart1(map, 6);
+        assertEquals(16, p.size());
+    }
+
+    @Test
+    void part1_solution() {
+
+        // Impl runs out of memory....
+
+        char[][] map = PuzzleInput.as2dCharArray("./data/day21");
+
+        assertEquals(99, solvePart1(map, 64).size());
     }
 
     private Set<Point> solvePart1(char[][] map, int targetStepCount) {
