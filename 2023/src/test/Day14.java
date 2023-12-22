@@ -64,7 +64,8 @@ class Day14 {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
 
         _totalLoadValues = new ArrayList<>();
-        int index = spinCycle(input, CYCLE_COUNT);
+        int index = spinCycle(input, 1000);
+//        int index = spinCycle(input, CYCLE_COUNT);
 
         assertEquals(64, _totalLoadValues.get(index));
     }
@@ -112,9 +113,14 @@ class Day14 {
     }
 
     private int foundTotalLoadCycle() {
-        if (_totalLoadValues.size() <= 15000) return -1;
         int searchFromIndex = 800;
-        while (searchFromIndex < 15000) {
+        int cap = 150000;
+
+        // if map is smaller, use
+
+
+        if (_totalLoadValues.size() <= cap) return -1;
+        while (searchFromIndex < cap) {
             int seed = _totalLoadValues.get(searchFromIndex);
             int nextRepeatIndex = searchFromIndex + 1;
             while (seed != _totalLoadValues.get(nextRepeatIndex)) {
