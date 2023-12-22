@@ -65,11 +65,11 @@ class Day14 {
 
         _totalLoadValues = new ArrayList<>();
 //        spinCycle(input, CYCLE_COUNT);
-        spinCycle(input, 1000);
+        int index = spinCycle(input, 1000);
 
-        int actual = computeLoad(input);
+//        int actual = computeLoad(input);
 
-        assertEquals(64, actual);
+        assertEquals(64, _totalLoadValues.get(index));
     }
 
     @Test
@@ -97,20 +97,23 @@ class Day14 {
         return result;
     }
 
-    private void spinCycle(char[][] map, int cycle_count) {
+    private int spinCycle(char[][] map, int cycle_count) {
         for (int i = 0; i < cycle_count; i++) {
             tiltNorth(map);
             tiltWest(map);
             tiltSouth(map);
             tiltEast(map);
             _totalLoadValues.add(computeLoad(map));
-            if (foundTotalLoadCycle() != -1) {
-                return;
+            int cycleFoundAt = foundTotalLoadCycle();
+            if (cycleFoundAt != -1) {
+
+                return cycleFoundAt;
             }
             if (i % 1_000_000 == 0) {
                 System.out.println("# cycles " + i + "  " + (cycle_count - i) + " to go");
             }
         }
+        return cycle_count;
     }
 
     private int foundTotalLoadCycle() {
@@ -118,19 +121,33 @@ class Day14 {
         int searchFromIndex = 81;
         while (searchFromIndex < 150) {
             int seed = _totalLoadValues.get(searchFromIndex);
-            int nextSeedIndex = searchFromIndex + 1;
-            while (seed != _totalLoadValues.get(nextSeedIndex)) {
-                nextSeedIndex++;
+            int nextRepeatIndex = searchFromIndex + 1;
+            while (seed != _totalLoadValues.get(nextRepeatIndex)) {
+                nextRepeatIndex++;
             };
 
-            for (int i = searchFromIndex; i < nextSeedIndex - 1; i++) {
-                int fromSeed = _totalLoadValues.get(i);
-                int fromNextSeed = _totalLoadValues.get(nextSeedIndex - searchFromIndex + i);
-                if (fromSeed != fromNextSeed) {
-                    break;
+            // sublist
+            // searchFromIndex to nextSeedIndex
+            // matches nextSeedIndex + 1 to
+            int cycleSize = nextRepeatIndex - searchFromIndex;
+            List<Integer> firstCycle = _totalLoadValues.subList(searchFromIndex, searchFromIndex + cycleSize);
+            List<Integer> secondCycle = _totalLoadValues.subList(nextRepeatIndex, nextRepeatIndex + cycleSize);
+            if (firstCycle.equals(secondCycle)) {
+
+
+                System.out.println("found a cycle starting at " + searchFromIndex);
+
+                int answer = searchFromIndex;
+                while (answer < (CYCLE_COUNT - cycleSize)) {
+                    answer += cycleSize;
                 }
-                return searchFromIndex;
+
+
+                int couldBe = CYCLE_COUNT- answer + searchFromIndex - 1;
+                return couldBe;
             }
+
+
             searchFromIndex++;
         }
 
