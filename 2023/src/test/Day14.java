@@ -2,6 +2,9 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day14 {
@@ -11,6 +14,8 @@ class Day14 {
     final char SPACE = '.';
 
     final int CYCLE_COUNT = 1_000_000_000;
+
+    List<Integer> _totalLoadValues = new ArrayList<>();
 
     @Test
     void part1_example_tilt_north() {
@@ -58,11 +63,24 @@ class Day14 {
     void part2_example() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
 
-        spinCycle(input, CYCLE_COUNT);
+        _totalLoadValues = new ArrayList<>();
+//        spinCycle(input, CYCLE_COUNT);
+        spinCycle(input, 1000);
 
         int actual = computeLoad(input);
 
         assertEquals(64, actual);
+    }
+
+    @Test
+    void part2_solution() {
+        char[][] input = PuzzleInput.as2dCharArray("./data/day14");
+
+        spinCycle(input, CYCLE_COUNT);
+
+        int actual = computeLoad(input);
+
+        assertEquals(999, actual);
     }
 
     private int computeLoad(char[][] map) {
@@ -85,12 +103,39 @@ class Day14 {
             tiltWest(map);
             tiltSouth(map);
             tiltEast(map);
+            _totalLoadValues.add(computeLoad(map));
+            if (foundTotalLoadCycle() != -1) {
+                return;
+            }
             if (i % 1_000_000 == 0) {
                 System.out.println("# cycles " + i + "  " + (cycle_count - i) + " to go");
             }
         }
     }
 
+    private int foundTotalLoadCycle() {
+        if (_totalLoadValues.size() <= 150) return -1;
+        int searchFromIndex = 81;
+        while (searchFromIndex < 150) {
+            int seed = _totalLoadValues.get(searchFromIndex);
+            int nextSeedIndex = searchFromIndex + 1;
+            while (seed != _totalLoadValues.get(nextSeedIndex)) {
+                nextSeedIndex++;
+            };
+
+            for (int i = searchFromIndex; i < nextSeedIndex - 1; i++) {
+                int fromSeed = _totalLoadValues.get(i);
+                int fromNextSeed = _totalLoadValues.get(nextSeedIndex - searchFromIndex + i);
+                if (fromSeed != fromNextSeed) {
+                    break;
+                }
+                return searchFromIndex;
+            }
+            searchFromIndex++;
+        }
+
+        return searchFromIndex;
+    }
 
 
     private void tiltNorth(char[][] map) {
