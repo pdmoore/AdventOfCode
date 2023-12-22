@@ -111,7 +111,7 @@ class Day14 {
 
     // TODO - this is a helper function, could be pulled out
     // Given  list of integers, find a cycle within the list
-    // ALTHO - on the full solution the cycle size is 1 (!) but passes the test
+    // ALTHOUGH - on the full solution the cycle size is 1 (!) but passes the test
     private int foundTotalLoadCycle() {
         int searchFromIndex = 55;
         int cap = 150;
@@ -135,7 +135,7 @@ class Day14 {
                 }
                 System.out.println("found a cycle starting at " + searchFromIndex + " with size " + cycleSize);
 
-                return CYCLE_COUNT- answer + searchFromIndex - 1;
+                return CYCLE_COUNT - answer + searchFromIndex - 1;
             }
 
             searchFromIndex++;
