@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day14 {
 
+    public static final int CYCLE_NOT_FOUND = -1;
     final char ROUND_ROCK = 'O';
 //    final char CUBE_ROCK = '#';
     final char SPACE = '.';
@@ -100,7 +101,7 @@ class Day14 {
             tiltEast(map);
             _totalLoadValues.add(computeLoad(map));
             int cycleFoundAt = foundTotalLoadCycle();
-            if (cycleFoundAt != -1) {
+            if (cycleFoundAt != CYCLE_NOT_FOUND) {
 
                 return cycleFoundAt;
             }
@@ -108,11 +109,14 @@ class Day14 {
         return cycle_count;
     }
 
+    // TODO - this is a helper function, could be pulled out
+    // Given  list of integers, find a cycle within the list
+    // ALTHO - on the full solution the cycle size is 1 (!) but passes the test
     private int foundTotalLoadCycle() {
         int searchFromIndex = 55;
         int cap = 150;
 
-        if (_totalLoadValues.size() <= cap) return -1;
+        if (_totalLoadValues.size() <= cap) return CYCLE_NOT_FOUND;
         while (searchFromIndex < cap) {
             int seed = _totalLoadValues.get(searchFromIndex);
             int nextRepeatIndex = searchFromIndex + 1;
@@ -124,12 +128,12 @@ class Day14 {
             List<Integer> firstCycle = _totalLoadValues.subList(searchFromIndex, searchFromIndex + cycleSize);
             List<Integer> secondCycle = _totalLoadValues.subList(nextRepeatIndex, nextRepeatIndex + cycleSize);
             if (firstCycle.equals(secondCycle)) {
-                System.out.println("found a cycle starting at " + searchFromIndex);
 
                 int answer = searchFromIndex;
                 while (answer < (CYCLE_COUNT - cycleSize)) {
                     answer += cycleSize;
                 }
+                System.out.println("found a cycle starting at " + searchFromIndex + " with size " + cycleSize);
 
                 return CYCLE_COUNT- answer + searchFromIndex - 1;
             }
@@ -137,7 +141,7 @@ class Day14 {
             searchFromIndex++;
         }
 
-        return -1;
+        return CYCLE_NOT_FOUND;
     }
 
 
