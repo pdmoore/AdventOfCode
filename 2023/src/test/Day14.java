@@ -64,10 +64,7 @@ class Day14 {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
 
         _totalLoadValues = new ArrayList<>();
-//        spinCycle(input, CYCLE_COUNT);
-        int index = spinCycle(input, 1000);
-
-//        int actual = computeLoad(input);
+        int index = spinCycle(input, CYCLE_COUNT);
 
         assertEquals(64, _totalLoadValues.get(index));
     }
@@ -76,11 +73,9 @@ class Day14 {
     void part2_solution() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14");
 
-        spinCycle(input, CYCLE_COUNT);
+        int index = spinCycle(input, CYCLE_COUNT);
 
-        int actual = computeLoad(input);
-
-        assertEquals(999, actual);
+        assertEquals(83516, _totalLoadValues.get(index));
     }
 
     private int computeLoad(char[][] map) {
@@ -117,31 +112,25 @@ class Day14 {
     }
 
     private int foundTotalLoadCycle() {
-        if (_totalLoadValues.size() <= 150) return -1;
-        int searchFromIndex = 81;
-        while (searchFromIndex < 150) {
+        if (_totalLoadValues.size() <= 15000) return -1;
+        int searchFromIndex = 800;
+        while (searchFromIndex < 15000) {
             int seed = _totalLoadValues.get(searchFromIndex);
             int nextRepeatIndex = searchFromIndex + 1;
             while (seed != _totalLoadValues.get(nextRepeatIndex)) {
                 nextRepeatIndex++;
             };
 
-            // sublist
-            // searchFromIndex to nextSeedIndex
-            // matches nextSeedIndex + 1 to
             int cycleSize = nextRepeatIndex - searchFromIndex;
             List<Integer> firstCycle = _totalLoadValues.subList(searchFromIndex, searchFromIndex + cycleSize);
             List<Integer> secondCycle = _totalLoadValues.subList(nextRepeatIndex, nextRepeatIndex + cycleSize);
             if (firstCycle.equals(secondCycle)) {
-
-
                 System.out.println("found a cycle starting at " + searchFromIndex);
 
                 int answer = searchFromIndex;
                 while (answer < (CYCLE_COUNT - cycleSize)) {
                     answer += cycleSize;
                 }
-
 
                 int couldBe = CYCLE_COUNT- answer + searchFromIndex - 1;
                 return couldBe;
