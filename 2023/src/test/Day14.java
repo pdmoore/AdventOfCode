@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class Day14 {
 
     final char ROUND_ROCK = 'O';
-    final char CUBE_ROCK = '#';
+//    final char CUBE_ROCK = '#';
     final char SPACE = '.';
 
     final int CYCLE_COUNT = 1_000_000_000;
@@ -28,7 +28,7 @@ class Day14 {
     }
 
     @Test
-    void part1_eample_cycle_once() {
+    void part1_example_cycle_once() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day14_part1_example");
         char[][] expected = PuzzleInput.as2dCharArray("./data/day14_part1_cycle1");
 
@@ -118,7 +118,7 @@ class Day14 {
             int nextRepeatIndex = searchFromIndex + 1;
             while (seed != _totalLoadValues.get(nextRepeatIndex) && seed < _totalLoadValues.size()) {
                 nextRepeatIndex++;
-            };
+            }
 
             int cycleSize = nextRepeatIndex - searchFromIndex;
             List<Integer> firstCycle = _totalLoadValues.subList(searchFromIndex, searchFromIndex + cycleSize);
@@ -131,15 +131,13 @@ class Day14 {
                     answer += cycleSize;
                 }
 
-                int couldBe = CYCLE_COUNT- answer + searchFromIndex - 1;
-                return couldBe;
+                return CYCLE_COUNT- answer + searchFromIndex - 1;
             }
-
 
             searchFromIndex++;
         }
 
-        return searchFromIndex;
+        return -1;
     }
 
 
