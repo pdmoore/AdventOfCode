@@ -41,8 +41,12 @@ class Day22 {
         assertEquals(2, bricks.get(2).start.z, "C was falling, settles on A");
     }
 
-    private void settleAllBricks(List<Brick> bricks) {
 
+    private void settleAllBricks(List<Brick> bricks) {
+//TODO -more work or tests around this, maybe have an outer loop that adds all non z==1 bricks,
+        // then process each trying to fall one. If it falls, add it again
+        // if it doesn't fall then maybe it's done?
+        // Also maybe sort into a z-ordered map so that bottom ones don't get re-evaluated?
         for (Brick maybeFalling: bricks) {
             // is it already on the ground?
             if (maybeFalling.start.z == 1 || maybeFalling.end.z == 1) {
@@ -122,6 +126,7 @@ class Day22 {
         private boolean isAtop(Brick other) {
             if (this.start.z != other.start.z + 1) return false;
 
+            // TODO - API seems to indicate x/x, y/y but test passes for x/y, x/y
             Line2D thisBrick  = new Line2D.Float(start.x, start.y, end.x, end.y);
             Line2D otherBrick = new Line2D.Float(other.start.x, other.start.y, other.end.x, other.end.y);
 
