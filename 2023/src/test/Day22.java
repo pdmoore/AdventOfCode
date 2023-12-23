@@ -1,8 +1,8 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +13,19 @@ class Day22 {
     // FALLING STUFF
     // brick span, brick supports
     // anything below brick
+    @Test
+    void example1_brick_creation() {
+        List<String> allBricksInput = PuzzleInput.asStringListFrom("./data/day22_part1_example");
+        List<String> justABC = allBricksInput.subList(0, 3);
+
+        List<Brick> bricks = createBricksFrom(justABC);
+        Brick brickB = bricks.get(1);
+        assertEquals(0, brickB.start.x);
+        assertEquals(0, brickB.start.y);
+        assertEquals(2, brickB.end.x);
+        assertEquals(0, brickB.end.y);
+    }
+
     @Test
     void falling_brick() {
         List<String> allBricksInput = PuzzleInput.asStringListFrom("./data/day22_part1_example");
@@ -107,13 +120,12 @@ class Day22 {
         }
 
         private boolean isAtop(Brick other) {
-            // TODO -
-            // If this.z != other.z - 1, return false
-            // then check the x/y spans are somehow aligned
-            if (this.start.z != 3)             return true;
+            if (this.start.z != other.start.z + 1) return false;
 
+            Line2D thisBrick  = new Line2D.Float(start.x, start.y, end.x, end.y);
+            Line2D otherBrick = new Line2D.Float(other.start.x, other.start.y, other.end.x, other.end.y);
 
-            return false;
+            return thisBrick.intersectsLine(otherBrick);
         }
     }
 
