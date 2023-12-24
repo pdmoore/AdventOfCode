@@ -14,6 +14,7 @@ class Day23 {
     final String slopes = "^>v<";
 
     boolean _slippery = false;
+    int _maxHike = 0;
 
     @Test
     void part1_example() {
@@ -39,6 +40,7 @@ class Day23 {
     void part1_solution() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day23");
 
+        _slippery = true;
         int actual = findLongestHike(input);
 
         assertEquals(2162, actual);
@@ -59,27 +61,23 @@ class Day23 {
         int lastRow = map.length - 1;
         Point end = new Point(lastRow, findPoint(map[lastRow], PATH));
 
-        List<List<Point>> allCompleteHikes = new ArrayList<>();
         List<Point> currentHike = new ArrayList<>();
 
-        takeAHike(map, currentHike, start, allCompleteHikes, end);
+        takeAHike(map, currentHike, start, end);
 
-        int max = 0;
-        for (List<Point> allCompleteHike : allCompleteHikes) {
-            max = Math.max(max, allCompleteHike.size());
-        }
-
-        return max - 1;
+        return _maxHike - 1;
     }
 
-    private void takeAHike(char[][] map, List<Point> currentHike, Point thisStep, List<List<Point>> allCompleteHikes, Point end) {
+    private void takeAHike(char[][] map, List<Point> currentHike, Point thisStep, Point end) {
         if (currentHike.contains(thisStep)) {
             return;
         }
 
         currentHike.add(thisStep);
         if (thisStep.equals(end)) {
-            allCompleteHikes.add(currentHike);
+            if (currentHike.size() > _maxHike) {
+                _maxHike = currentHike.size();
+            }
             return;
         }
 
@@ -116,11 +114,11 @@ class Day23 {
         }
 
         if (stepsFromHere.size() == 1) {
-            takeAHike(map, currentHike, stepsFromHere.get(0), allCompleteHikes, end);
+            takeAHike(map, currentHike, stepsFromHere.get(0), end);
         } else {
             for (int i = 0; i < stepsFromHere.size(); i++) {
                 List<Point> splitHike = new ArrayList<>(currentHike);
-                takeAHike(map, splitHike, stepsFromHere.get(i), allCompleteHikes, end);
+                takeAHike(map, splitHike, stepsFromHere.get(i), end);
             }
         }
     }
