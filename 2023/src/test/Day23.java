@@ -69,10 +69,6 @@ class Day23 {
     }
 
     private void takeAHike(char[][] map, List<Point> currentHike, Point thisStep, Point end) {
-        if (currentHike.contains(thisStep)) {
-            return;
-        }
-
         currentHike.add(thisStep);
         if (thisStep.equals(end)) {
             if (currentHike.size() > _maxHike) {
