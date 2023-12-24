@@ -65,58 +65,66 @@ class Day23 {
 
         takeAHike(map, currentHike, start, end);
 
+        // New approach
+        // Find nodes and edges, keep list of them, then find longest path from start to end
+
         return _maxHike - 1;
     }
 
     private void takeAHike(char[][] map, List<Point> currentHike, Point thisStep, Point end) {
-        currentHike.add(thisStep);
-        if (thisStep.equals(end)) {
-            if (currentHike.size() > _maxHike) {
-                _maxHike = currentHike.size();
-            }
-            return;
-        }
 
-        List<Point> stepsFromHere = new ArrayList<>();
-        char tryLeft = map[thisStep.x][thisStep.y - 1];
-        if (tryLeft == PATH || tryLeft == '<' || (!_slippery && tryLeft == '>')) {
-            Point nextStep = new Point(thisStep.x, thisStep.y - 1);
-            if (!currentHike.contains(nextStep)) {
-                stepsFromHere.add(nextStep);
+        while (thisStep != null) {
+            currentHike.add(thisStep);
+            if (thisStep.equals(end)) {
+                if (currentHike.size() > _maxHike) {
+                    _maxHike = currentHike.size();
+                    System.out.println("new max " + _maxHike);
+                }
+                return;
             }
-        }
-        if (thisStep.x > 0) {
-            char tryUp = map[thisStep.x - 1][thisStep.y];
-            if (tryUp == PATH || tryUp == '^' || (!_slippery && tryUp == 'v')) {
-                Point nextStep = new Point(thisStep.x - 1, thisStep.y);
+
+            List<Point> stepsFromHere = new ArrayList<>();
+            char tryLeft = map[thisStep.x][thisStep.y - 1];
+            if (tryLeft == PATH || tryLeft == '<' || (!_slippery && tryLeft == '>')) {
+                Point nextStep = new Point(thisStep.x, thisStep.y - 1);
                 if (!currentHike.contains(nextStep)) {
                     stepsFromHere.add(nextStep);
                 }
             }
-        }
-        char tryRight = map[thisStep.x][thisStep.y + 1];
-        if (tryRight == PATH || tryRight == '>' || (!_slippery && tryRight == '<')) {
-            Point nextStep = new Point(thisStep.x, thisStep.y + 1);
-            if (!currentHike.contains(nextStep)) {
-                stepsFromHere.add(nextStep);
+            if (thisStep.x > 0) {
+                char tryUp = map[thisStep.x - 1][thisStep.y];
+                if (tryUp == PATH || tryUp == '^' || (!_slippery && tryUp == 'v')) {
+                    Point nextStep = new Point(thisStep.x - 1, thisStep.y);
+                    if (!currentHike.contains(nextStep)) {
+                        stepsFromHere.add(nextStep);
+                    }
+                }
             }
-        }
-        char tryDown = map[thisStep.x + 1][thisStep.y];
-        if (tryDown == PATH || tryDown == 'v' || (!_slippery && tryDown == '^')) {
-            Point nextStep = new Point(thisStep.x + 1, thisStep.y);
-            if (!currentHike.contains(nextStep)) {
-                stepsFromHere.add(nextStep);
+            char tryRight = map[thisStep.x][thisStep.y + 1];
+            if (tryRight == PATH || tryRight == '>' || (!_slippery && tryRight == '<')) {
+                Point nextStep = new Point(thisStep.x, thisStep.y + 1);
+                if (!currentHike.contains(nextStep)) {
+                    stepsFromHere.add(nextStep);
+                }
             }
-        }
+            char tryDown = map[thisStep.x + 1][thisStep.y];
+            if (tryDown == PATH || tryDown == 'v' || (!_slippery && tryDown == '^')) {
+                Point nextStep = new Point(thisStep.x + 1, thisStep.y);
+                if (!currentHike.contains(nextStep)) {
+                    stepsFromHere.add(nextStep);
+                }
+            }
 
-//        if (stepsFromHere.size() == 1) {
-//            takeAHike(map, currentHike, stepsFromHere.get(0), end);
-//        } else {
-            for (int i = 0; i < stepsFromHere.size(); i++) {
-                List<Point> splitHike = new ArrayList<>(currentHike);
-                takeAHike(map, splitHike, stepsFromHere.get(i), end);
+            thisStep = null;
+            if (stepsFromHere.size() == 1) {
+                thisStep = stepsFromHere.get(0);
+            } else {
+                for (int i = 0; i < stepsFromHere.size(); i++) {
+                    List<Point> splitHike = new ArrayList<>(currentHike);
+                    takeAHike(map, splitHike, stepsFromHere.get(i), end);
+                }
             }
-//        }
+        }
     }
 
     private int findPoint(char[] chars, char path) {
