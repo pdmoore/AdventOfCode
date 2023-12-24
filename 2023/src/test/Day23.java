@@ -113,14 +113,14 @@ class Day23 {
             }
         }
 
-        if (stepsFromHere.size() == 1) {
-            takeAHike(map, currentHike, stepsFromHere.get(0), end);
-        } else {
+//        if (stepsFromHere.size() == 1) {
+//            takeAHike(map, currentHike, stepsFromHere.get(0), end);
+//        } else {
             for (int i = 0; i < stepsFromHere.size(); i++) {
                 List<Point> splitHike = new ArrayList<>(currentHike);
                 takeAHike(map, splitHike, stepsFromHere.get(i), end);
             }
-        }
+//        }
     }
 
     private int findPoint(char[] chars, char path) {
