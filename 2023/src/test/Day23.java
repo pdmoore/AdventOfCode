@@ -3,7 +3,6 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +14,7 @@ class Day23 {
     final String slopes = "^>v<";
 
     @Test
-    void something() {
+    void part1_example() {
         char[][] input = PuzzleInput.as2dCharArray("./data/day23_part1_example");
 
         int actual = findLongestHike(input);
@@ -23,9 +22,16 @@ class Day23 {
         assertEquals(94, actual);
     }
 
-    private int findLongestHike(char[][] map) {
-        //94 steps. (The other possible hikes you could have taken were 90, 86, 82, 82, and 74
+    @Test
+    void part1_solution() {
+        char[][] input = PuzzleInput.as2dCharArray("./data/day23");
 
+        int actual = findLongestHike(input);
+
+        assertEquals(2162, actual);
+    }
+
+    private int findLongestHike(char[][] map) {
         Point start = new Point(0, findPoint(map[0], PATH));
         int lastRow = map.length - 1;
         Point end = new Point(lastRow, findPoint(map[lastRow], PATH));
@@ -35,11 +41,9 @@ class Day23 {
 
         takeAHike(map, currentHike, start, allCompleteHikes, end);
 
-        // find max of all complete hikes and return that
-        // minus 1, to remove the start point
         int max = 0;
-        for (int i = 0; i < allCompleteHikes.size(); i++) {
-            max = Math.max(max, allCompleteHikes.get(i).size());
+        for (List<Point> allCompleteHike : allCompleteHikes) {
+            max = Math.max(max, allCompleteHike.size());
         }
 
         return max - 1;
