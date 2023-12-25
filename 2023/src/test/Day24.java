@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,12 +21,46 @@ public class Day24 {
 
 
     @Test
-    void something() {
+    void parseInput() {
         List<String> input = PuzzleInput.asStringListFrom("./data/day24_part1_example");
 
         Map<PointBigInt, Velocity> map = parseInput(input);
 
         assertEquals(5, map.size());
+    }
+
+    @Test
+    void part1_example() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day24_part1_example");
+
+        Map<PointBigInt, Velocity> map = parseInput(input);
+
+        int actual = findCollisions(map, BigInteger.valueOf(7), BigInteger.valueOf(27));
+
+        assertEquals(2, actual);
+    }
+
+    private int findCollisions(Map<PointBigInt, Velocity> map, BigInteger boxLower, BigInteger boxUpper) {
+        int result = 0;
+
+        Set<PointBigInt> pointBigInts = map.keySet();
+        for (PointBigInt a: pointBigInts) {
+            for (PointBigInt b: pointBigInts) {
+                if (a == b) continue;
+
+                // create line from a to deltaA
+                // create line from b to deltaB
+
+                // do they collide?
+
+                // is that point inside box?
+
+
+
+            }
+        }
+
+        return result;
     }
 
     private Map<PointBigInt, Velocity> parseInput(List<String> input) {
