@@ -21,10 +21,12 @@ class Day01 {
 
     @Test
     fun part1_solution() {
-        val input = File("./data/day01").readLines().get(0);
+        val input = asSingleLine("./data/day01");
         Assertions.assertEquals(232, solvePart1(input))
 
     }
+
+    private fun asSingleLine(filename: String) = File(filename).readLines().get(0)
 
     private fun solvePart1(inputLine: String): Int {
         var floor = 0
