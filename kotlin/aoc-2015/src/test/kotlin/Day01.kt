@@ -21,12 +21,10 @@ class Day01 {
 
     @Test
     fun part1_solution() {
-        val input = asSingleLine("./data/day01")
+        val input = KotlinInput.asSingleLine("./data/day01")
         Assertions.assertEquals(232, solvePart1(input))
 
     }
-
-    private fun asSingleLine(filename: String) = File(filename).readLines()[0]
 
     private fun solvePart1(inputLine: String): Int {
         var floor = 0
@@ -39,5 +37,11 @@ class Day01 {
     private fun upOrDown(c: Char): Int {
         if ('(' == c) return 1
         return -1
+    }
+
+    class KotlinInput {
+        companion object {
+            fun asSingleLine(filename: String): String  =  File(filename).readLines()[0]
+        }
     }
 }
