@@ -21,16 +21,16 @@ class Day01 {
 
     @Test
     fun part1_solution() {
-        val input = asSingleLine("./data/day01");
+        val input = asSingleLine("./data/day01")
         Assertions.assertEquals(232, solvePart1(input))
 
     }
 
-    private fun asSingleLine(filename: String) = File(filename).readLines().get(0)
+    private fun asSingleLine(filename: String) = File(filename).readLines()[0]
 
     private fun solvePart1(inputLine: String): Int {
         var floor = 0
-        for (c in inputLine) {
+        inputLine.forEach { c ->
             floor += upOrDown(c)
         }
         return floor
