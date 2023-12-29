@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class Day01 {
 
@@ -11,6 +12,18 @@ class Day01 {
         Assertions.assertEquals(0, solvePart1("()()"))
         Assertions.assertEquals(3, solvePart1("((("))
         Assertions.assertEquals(3, solvePart1("(()(()("))
+        Assertions.assertEquals(3, solvePart1("))((((("))
+        Assertions.assertEquals(-1, solvePart1("())"))
+        Assertions.assertEquals(-1, solvePart1("())"))
+        Assertions.assertEquals(-3, solvePart1(")))"))
+        Assertions.assertEquals(-3, solvePart1(")())())"))
+    }
+
+    @Test
+    fun part1_solution() {
+        val input = File("./data/day01").readLines().get(0);
+        Assertions.assertEquals(232, solvePart1(input))
+
     }
 
     private fun solvePart1(inputLine: String): Int {
