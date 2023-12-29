@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day25 {
@@ -16,6 +15,15 @@ class Day25 {
         int actual = solvePart1_take2(input);
 
         assertEquals(54, actual);
+    }
+
+    @Test
+    void part1_solution() {
+        List<String> input = PuzzleInput.asStringListFrom("./data/day25");
+
+        int actual = solvePart1_take2(input);
+
+        assertEquals(99, actual);
     }
 
     private int solvePart1_take2(List<String> input) {
@@ -37,8 +45,11 @@ class Day25 {
 
         List<Connection> connections = grabConnectionsFrom(wiringDiagram);
         for (int i = 0; i < connections.size(); i++) {
+            System.out.println("outer loop " + i);
             for (int j = i + 1; j < connections.size(); j++) {
+                System.out.println("        second loop " + j);
                 for (int k = j + 1; k < connections.size(); k++) {
+//                    System.out.println("                inner  loop " + k);
 
                     List<Connection> attempt = new ArrayList<>(connections);
 
