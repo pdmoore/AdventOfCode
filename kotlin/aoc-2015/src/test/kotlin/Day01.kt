@@ -4,8 +4,9 @@ import java.io.File
 
 class Day01 {
 
-    //TODO take a look at Kotest
 
+
+    // TODO parameterize this
     @Test
     fun part1_examples_count_floors() {
         Assertions.assertEquals(0, solvePart1("(())"))
@@ -39,6 +40,7 @@ class Day01 {
         return -1
     }
 
+    // TODO - move to it's own class
     class KotlinInput {
         companion object {
             fun asSingleLine(filename: String): String  =  File(filename).readLines()[0]
