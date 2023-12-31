@@ -9,7 +9,7 @@ class Day01 {
 
     @ParameterizedTest(name = "Balanced parens should end up on ground floor {0}")
     @ValueSource(strings = ["(())", "()()"])
-    fun `Confirm balanced parens end on grounnd floor` (inputLine: String) {
+    fun `Confirm balanced parens end on ground floor` (inputLine: String) {
         assertEquals(0, solvePart1(inputLine))
     }
 
