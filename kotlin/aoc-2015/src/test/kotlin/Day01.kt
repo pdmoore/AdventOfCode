@@ -55,7 +55,7 @@ class Day01 {
 
     private fun solvePart2(inputLine: String): Int {
         var floor = 0
-        for (i in 0..inputLine.length - 1) {
+        for (i in inputLine.indices) {
             floor += upOrDown(inputLine.get(i))
             if (floor < 0) return i + 1
         }
