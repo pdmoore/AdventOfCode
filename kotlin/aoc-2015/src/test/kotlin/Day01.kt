@@ -59,7 +59,7 @@ class Day01 {
             floor += upOrDown(inputLine[i])
             if (floor < 0) return i + 1
         }
-        throw IllegalArgumentException("Never entered basement for " + inputLine)
+        throw IllegalArgumentException("Never entered basement for $inputLine")
     }
 
     private fun solvePart1(inputLine: String): Int {
