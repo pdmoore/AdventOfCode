@@ -56,7 +56,7 @@ class Day01 {
     private fun solvePart2(inputLine: String): Int {
         var floor = 0
         for (i in inputLine.indices) {
-            floor += upOrDown(inputLine.get(i))
+            floor += upOrDown(inputLine[i])
             if (floor < 0) return i + 1
         }
         throw IllegalArgumentException("Never entered basement for " + inputLine)
