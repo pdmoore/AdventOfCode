@@ -4,7 +4,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class Day01 {
 
@@ -32,12 +31,35 @@ class Day01 {
         assertEquals(-3, solvePart1(inputLine))
     }
 
-
+    // TODO - convert to kotest style testing
+    // Does test class need to be separate from Impl?
     @Test
     fun part1_solution() {
         val input = KotlinInput.asSingleLine("./data/day01")
         Assertions.assertEquals(232, solvePart1(input))
 
+    }
+
+    @Test
+    fun part2_examples() {
+        assertEquals(1, solvePart2(")"))
+        assertEquals(5, solvePart2("()())"))
+    }
+
+    @Test
+    fun part2_solution() {
+        val input = KotlinInput.asSingleLine("./data/day01")
+        Assertions.assertEquals(1783, solvePart2(input))
+
+    }
+
+    private fun solvePart2(inputLine: String): Int {
+        var floor = 0
+        for (i in 0..inputLine.length - 1) {
+            floor += upOrDown(inputLine.get(i))
+            if (floor < 0) return i + 1
+        }
+        throw IllegalArgumentException("Never entered basement for " + inputLine)
     }
 
     private fun solvePart1(inputLine: String): Int {
