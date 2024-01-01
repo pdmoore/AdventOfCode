@@ -1,10 +1,12 @@
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.assertEquals
 
-class Day01 {
+class Day01 : FunSpec({
 
     @ParameterizedTest(name = "Balanced parens should end up on ground floor {0}")
     @ValueSource(strings = ["(())", "()()"])
@@ -30,27 +32,24 @@ class Day01 {
         assertEquals(-3, solvePart1(inputLine))
     }
 
-    // TODO - convert to kotest style testing
-    // Does test class need to be separate from Impl?
-    @Test
-    fun part1_solution() {
+    test("part 1 solution") {
         val input = PuzzleInput.asSingleLine("./data/day01")
-        Assertions.assertEquals(232, solvePart1(input))
-
+        solvePart1(input) shouldBe 232
     }
 
-    @Test
-    fun part2_examples() {
-        assertEquals(1, solvePart2(")"))
-        assertEquals(5, solvePart2("()())"))
+    test("part 2 examples, detect when basement is first entered") {
+        solvePart2(")") shouldBe  1
+        solvePart2("()())") shouldBe 5
     }
 
-    @Test
-    fun part2_solution() {
+    test("part 2 solution") {
         val input = PuzzleInput.asSingleLine("./data/day01")
-        Assertions.assertEquals(1783, solvePart2(input))
-
+        solvePart2(input) shouldBe 1783
     }
+
+
+
+})
 
     private fun solvePart2(inputLine: String): Int {
         var floor = 0
@@ -73,4 +72,4 @@ class Day01 {
         if ('(' == c) return 1
         return -1
     }
-}
+
