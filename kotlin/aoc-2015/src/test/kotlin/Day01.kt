@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import java.io.File
 import kotlin.test.assertEquals
 
 class Day01 {
@@ -35,7 +34,7 @@ class Day01 {
     // Does test class need to be separate from Impl?
     @Test
     fun part1_solution() {
-        val input = KotlinInput.asSingleLine("./data/day01")
+        val input = PuzzleInput.asSingleLine("./data/day01")
         Assertions.assertEquals(232, solvePart1(input))
 
     }
@@ -48,7 +47,7 @@ class Day01 {
 
     @Test
     fun part2_solution() {
-        val input = KotlinInput.asSingleLine("./data/day01")
+        val input = PuzzleInput.asSingleLine("./data/day01")
         Assertions.assertEquals(1783, solvePart2(input))
 
     }
@@ -73,12 +72,5 @@ class Day01 {
     private fun upOrDown(c: Char): Int {
         if ('(' == c) return 1
         return -1
-    }
-
-    // TODO - move to it's own class
-    class KotlinInput {
-        companion object {
-            fun asSingleLine(filename: String): String  =  File(filename).readLines()[0]
-        }
     }
 }
