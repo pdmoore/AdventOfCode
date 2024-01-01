@@ -1,17 +1,20 @@
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.assertEquals
 
 class Day01 : FunSpec({
 
-    @ParameterizedTest(name = "Balanced parens should end up on ground floor {0}")
-    @ValueSource(strings = ["(())", "()()"])
-    fun `Confirm balanced parens end on ground floor` (inputLine: String) {
-        assertEquals(0, solvePart1(inputLine))
+    data class FloorDirections(val input: String)
+    context("Balanced parens should end up on ground floor {0}") {
+        withData(
+            FloorDirections("(())"),
+            FloorDirections("()")
+        ) { (input) ->
+            solvePart1(input) shouldBe 0
+        }
     }
 
     @ParameterizedTest(name = "Excess left parens end up above ground {0}")
