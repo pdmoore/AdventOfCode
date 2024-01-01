@@ -17,10 +17,14 @@ class Day01 : FunSpec({
         }
     }
 
-    @ParameterizedTest(name = "Excess left parens end up above ground {0}")
-    @ValueSource(strings = ["(((", "(()(()(", "))((((("])
-    fun `Confirm more left than right parens end up on positive floor {0}` (inputLine: String) {
-        assertEquals(3, solvePart1(inputLine))
+    context("Excess left parens end up above ground {0}") {
+        withData(
+            FloorDirections("((("),
+            FloorDirections("(()(()("),
+            FloorDirections("))(((((")
+        ) { (input) ->
+            solvePart1(input) shouldBe 3
+        }
     }
 
     @ParameterizedTest(name = "Excess right paren ends up below ground {0}")
