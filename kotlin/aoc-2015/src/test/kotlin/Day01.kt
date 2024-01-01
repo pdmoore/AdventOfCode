@@ -1,9 +1,6 @@
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
-import kotlin.test.assertEquals
 
 class Day01 : FunSpec({
 
@@ -27,16 +24,22 @@ class Day01 : FunSpec({
         }
     }
 
-    @ParameterizedTest(name = "Excess right paren ends up below ground {0}")
-    @ValueSource(strings = ["())", "))("])
-    fun `Confirm one extra right paren ends up on negative floor {0}` (inputLine: String) {
-        assertEquals(-1, solvePart1(inputLine))
+    context("Excess right paren ends up below ground {0}") {
+        withData(
+            FloorDirections("())"),
+            FloorDirections("))("),
+        ) { (input) ->
+            solvePart1(input) shouldBe -1
+        }
     }
 
-    @ParameterizedTest(name = "Many excess right parens ends up further below ground {0}")
-    @ValueSource(strings = [")))", ")())())"])
-    fun `Confirm many extra right parens end up further negative {0}` (inputLine: String) {
-        assertEquals(-3, solvePart1(inputLine))
+    context("Many excess right parens ends up further below ground {0}") {
+        withData(
+            FloorDirections(")))"),
+            FloorDirections(")())())"),
+        ) { (input) ->
+            solvePart1(input) shouldBe -3
+        }
     }
 
     test("part 1 solution") {
@@ -79,4 +82,3 @@ class Day01 : FunSpec({
         if ('(' == c) return 1
         return -1
     }
-
