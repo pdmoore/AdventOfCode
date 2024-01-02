@@ -1,6 +1,7 @@
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
+import kotlin.math.min
 
 class Day02 : FunSpec( {
 
@@ -48,7 +49,7 @@ fun AreaOfSmallestSide(inputLine: String): Int {
     val lByw = l*w
     val wByh = w*h
     val lByh = l*h
-    return Math.min(lByw, Math.min(wByh, lByh))
+    return min(lByw, min(wByh, lByh))
 }
 
 fun surfaceAreaOf(inputLine: String): Int {
