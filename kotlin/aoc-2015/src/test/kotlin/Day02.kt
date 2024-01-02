@@ -32,7 +32,6 @@ class Day02 : FunSpec( {
         val input = PuzzleInput.asListOfStrings("./data/day02")
         solvePart21(input) shouldBe 1586300
     }
-
 })
 
 fun solvePart21(inputLine: List<String>): Int {

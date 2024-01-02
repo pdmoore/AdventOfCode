@@ -2,7 +2,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
 
-class Day01 : FunSpec({
+class Day01Tests : FunSpec({
 
     data class FloorDirections(val input: String)
     context("Balanced parens should end up on ground floor {0}") {
@@ -10,7 +10,7 @@ class Day01 : FunSpec({
             FloorDirections("(())"),
             FloorDirections("()")
         ) { (input) ->
-            solvePart1(input) shouldBe 0
+            Day01.solvePart1(input) shouldBe 0
         }
     }
 
@@ -20,7 +20,7 @@ class Day01 : FunSpec({
             FloorDirections("(()(()("),
             FloorDirections("))(((((")
         ) { (input) ->
-            solvePart1(input) shouldBe 3
+            Day01.solvePart1(input) shouldBe 3
         }
     }
 
@@ -29,7 +29,7 @@ class Day01 : FunSpec({
             FloorDirections("())"),
             FloorDirections("))("),
         ) { (input) ->
-            solvePart1(input) shouldBe -1
+            Day01.solvePart1(input) shouldBe -1
         }
     }
 
@@ -38,13 +38,13 @@ class Day01 : FunSpec({
             FloorDirections(")))"),
             FloorDirections(")())())"),
         ) { (input) ->
-            solvePart1(input) shouldBe -3
+            Day01.solvePart1(input) shouldBe -3
         }
     }
 
     test("part 1 solution") {
         val input = PuzzleInput.asSingleLine("./data/day01")
-        solvePart1(input) shouldBe 232
+        Day01.solvePart1(input) shouldBe 232
     }
 
     test("part 2 examples, detect when basement is first entered") {
@@ -56,9 +56,6 @@ class Day01 : FunSpec({
         val input = PuzzleInput.asSingleLine("./data/day01")
         solvePart2(input) shouldBe 1783
     }
-
-
-
 })
 
     private fun solvePart2(inputLine: String): Int {
@@ -70,15 +67,7 @@ class Day01 : FunSpec({
         throw IllegalArgumentException("Never entered basement for $inputLine")
     }
 
-    private fun solvePart1(inputLine: String): Int {
-        var floor = 0
-        inputLine.forEach { c ->
-            floor += upOrDown(c)
-        }
-        return floor
-    }
-
-    private fun upOrDown(c: Char): Int {
-        if ('(' == c) return 1
-        return -1
-    }
+private fun upOrDown(c: Char): Int {
+    if ('(' == c) return 1
+    return -1
+}
