@@ -48,26 +48,12 @@ class Day01Tests : FunSpec({
     }
 
     test("part 2 examples, detect when basement is first entered") {
-        solvePart2(")") shouldBe  1
-        solvePart2("()())") shouldBe 5
+        Day01.solvePart2(")") shouldBe  1
+        Day01.solvePart2("()())") shouldBe 5
     }
 
     test("part 2 solution") {
         val input = PuzzleInput.asSingleLine("./data/day01")
-        solvePart2(input) shouldBe 1783
+        Day01.solvePart2(input) shouldBe 1783
     }
 })
-
-    private fun solvePart2(inputLine: String): Int {
-        var floor = 0
-        for (i in inputLine.indices) {
-            floor += upOrDown(inputLine[i])
-            if (floor < 0) return i + 1
-        }
-        throw IllegalArgumentException("Never entered basement for $inputLine")
-    }
-
-private fun upOrDown(c: Char): Int {
-    if ('(' == c) return 1
-    return -1
-}
