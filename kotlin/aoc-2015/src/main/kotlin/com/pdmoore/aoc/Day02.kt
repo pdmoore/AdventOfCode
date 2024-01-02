@@ -1,3 +1,5 @@
+package com.pdmoore.aoc
+
 import kotlin.math.min
 
 class Day02 {
@@ -29,14 +31,14 @@ class Day02 {
             return Triple(l, w, h)
         }
 
-        fun areaOfSmallestSide(l: Int, w: Int, h: Int): Int {
+        private fun areaOfSmallestSide(l: Int, w: Int, h: Int): Int {
             val lByw = l * w
             val wByh = w * h
             val lByh = l * h
             return min(lByw, min(wByh, lByh))
         }
 
-        fun surfaceAreaOf(l: Int, w: Int, h: Int): Int {
+        private fun surfaceAreaOf(l: Int, w: Int, h: Int): Int {
             return (2 * l * w) + (2 * w * h) + (2 * h * l)
         }
     }

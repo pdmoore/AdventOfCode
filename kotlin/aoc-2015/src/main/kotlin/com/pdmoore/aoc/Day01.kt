@@ -1,3 +1,5 @@
+package com.pdmoore.aoc
+
 class Day01 {
     companion object {
         fun solvePart1(inputLine: String): Int {

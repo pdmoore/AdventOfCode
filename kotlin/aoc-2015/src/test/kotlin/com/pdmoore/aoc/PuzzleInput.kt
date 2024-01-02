@@ -1,3 +1,5 @@
+package com.pdmoore.aoc
+
 import java.io.File
 
 class PuzzleInput {

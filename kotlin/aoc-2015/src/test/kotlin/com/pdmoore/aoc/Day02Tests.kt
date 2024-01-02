@@ -1,3 +1,5 @@
+package com.pdmoore.aoc
+
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
