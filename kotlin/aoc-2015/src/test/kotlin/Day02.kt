@@ -17,7 +17,7 @@ class Day02 : FunSpec( {
 
     test("Smallest side of l*w*h rectangle") {
         val inputLine = "2x3x4"
-        AreaOfSmallestSide(inputLine) shouldBe 6
+        areaOfSmallestSide(inputLine) shouldBe 6
     }
 
     data class SideLengths(val inputLine: String, val expected: Int)
@@ -41,7 +41,7 @@ fun solvePart21(inputLine: List<String>): Int {
     return inputLine.sumOf { i -> solvePart21(i) }
 }
 
-fun AreaOfSmallestSide(inputLine: String): Int {
+fun areaOfSmallestSide(inputLine: String): Int {
     val split = inputLine.split("x")
     val l = split[0].toInt()
     val w = split[1].toInt()
@@ -63,5 +63,5 @@ fun surfaceAreaOf(inputLine: String): Int {
 //TODO calling this solvePart1 collides with Day01 - need to figure out
 // whether to dump this in a class or have better naming
 fun solvePart21(inputLine: String): Int {
-    return surfaceAreaOf(inputLine) + AreaOfSmallestSide(inputLine)
+    return surfaceAreaOf(inputLine) + areaOfSmallestSide(inputLine)
 }
