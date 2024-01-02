@@ -6,9 +6,7 @@ import kotlin.math.min
 class Day02 : FunSpec( {
 
     // TODO -
-    // Check problems and Sonar
-    // Parsing the input twice, instead parse once and pass around new Sides data object
-    // THat part1/part21 collision
+    // That part1/part21 collision
 
     test("Surface area is 2*l*w + 2*w*h + 2*h*l") {
         val inputLine = "2x3x4"
@@ -42,26 +40,37 @@ fun solvePart21(inputLine: List<String>): Int {
 }
 
 fun areaOfSmallestSide(inputLine: String): Int {
+    val (l, w, h) = extractLengthWidthHeight(inputLine)
+    return areaOfSmallestSide(l, w, h)
+}
+
+fun surfaceAreaOf(inputLine: String): Int {
+    val (l, w, h) = extractLengthWidthHeight(inputLine)
+    return surfaceAreaOf(l, w, h)
+}
+
+private fun extractLengthWidthHeight(inputLine: String): Triple<Int, Int, Int> {
     val split = inputLine.split("x")
     val l = split[0].toInt()
     val w = split[1].toInt()
     val h = split[2].toInt()
+    return Triple(l, w, h)
+}
+
+//TODO calling this solvePart1 collides with Day01 - need to figure out
+// whether to dump this in a class or have better naming
+fun solvePart21(inputLine: String): Int {
+    val (l, w, h) = extractLengthWidthHeight(inputLine)
+    return surfaceAreaOf(l, w, h) + areaOfSmallestSide(l, w, h)
+}
+
+fun areaOfSmallestSide(l: Int, w: Int, h: Int): Int {
     val lByw = l*w
     val wByh = w*h
     val lByh = l*h
     return min(lByw, min(wByh, lByh))
 }
 
-fun surfaceAreaOf(inputLine: String): Int {
-    val split = inputLine.split("x")
-    val l = split[0].toInt()
-    val w = split[1].toInt()
-    val h = split[2].toInt()
+fun surfaceAreaOf(l: Int, w: Int, h: Int): Int {
     return (2*l*w) + (2*w*h) + (2*h*l)
-}
-
-//TODO calling this solvePart1 collides with Day01 - need to figure out
-// whether to dump this in a class or have better naming
-fun solvePart21(inputLine: String): Int {
-    return surfaceAreaOf(inputLine) + areaOfSmallestSide(inputLine)
 }
