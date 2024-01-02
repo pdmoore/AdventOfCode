@@ -4,6 +4,11 @@ import io.kotest.matchers.shouldBe
 
 class Day02 : FunSpec( {
 
+    // TODO -
+    // Check problems and Sonar
+    // Parsing the input twice, instead parse once and pass around new Sides data object
+    // THat part1/part21 collision
+
     test("Surface area is 2*l*w + 2*w*h + 2*h*l") {
         val inputLine = "2x3x4"
         surfaceAreaOf(inputLine) shouldBe 52
@@ -32,11 +37,7 @@ class Day02 : FunSpec( {
 })
 
 fun solvePart21(inputLine: List<String>): Int {
-    var result = 0
-    for (i in inputLine.indices) {
-        result += solvePart21(inputLine[i])
-    }
-    return result
+    return inputLine.sumOf { i -> solvePart21(i) }
 }
 
 fun AreaOfSmallestSide(inputLine: String): Int {
