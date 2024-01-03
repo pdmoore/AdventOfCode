@@ -61,7 +61,7 @@ class Day02 {
             val smallest = min(min(l, w), h)
             val secondSmallest = max(min(l, w), min(max(l, w), h))
 
-            return 2*smallest + 2*secondSmallest
+            return smallest.times(2) + secondSmallest.times(2)
         }
     }
 }
