@@ -41,5 +41,10 @@ class Day02 {
         private fun surfaceAreaOf(l: Int, w: Int, h: Int): Int {
             return (2 * l * w) + (2 * w * h) + (2 * h * l)
         }
+
+        fun volumeOf(inputLine: String): Any {
+            val (l, w, h) = extractLengthWidthHeight(inputLine)
+            return l*w*h
+        }
     }
 }

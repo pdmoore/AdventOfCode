@@ -30,5 +30,12 @@ class Day02Tests : FunSpec( {
         val input = PuzzleInput.asListOfStrings("./data/day02")
         Day02.solvePart21(input) shouldBe 1586300
     }
+
+    test("Volume is l*w*h") {
+        val inputLine = "2x3x4"
+        Day02.volumeOf(inputLine) shouldBe 24
+    }
+
+
 })
 
