@@ -10,9 +10,18 @@ class Day02 {
             return surfaceAreaOf(l, w, h) + areaOfSmallestSide(l, w, h)
         }
 
+        fun solvePart2(inputLine: String): Int {
+            return smallestPerimeterOf(inputLine) + volumeOf(inputLine)
+        }
+
         fun solvePart21(inputLine: List<String>): Int {
             return inputLine.sumOf { i -> solvePart21(i) }
         }
+
+        fun solvePart2(inputLine: List<String>): Int {
+            return inputLine.sumOf { i -> solvePart2(i) }
+        }
+
 
         fun areaOfSmallestSide(inputLine: String): Int {
             val (l, w, h) = extractLengthWidthHeight(inputLine)

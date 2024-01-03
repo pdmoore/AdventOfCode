@@ -45,6 +45,18 @@ class Day02Tests : FunSpec( {
         }
     }
 
+    context("Amount of ribbon needed is smallest perimeter plus volume") {
+        withData(
+            SideLengths("2x3x4", 34),
+            SideLengths("1x1x10", 14)
+        ) { (inputLine, expected) ->
+            Day02.solvePart2(inputLine) shouldBe expected
+        }
+    }
 
+    test("Solve part 2") {
+        val input = PuzzleInput.asListOfStrings("./data/day02")
+        Day02.solvePart2(input) shouldBe 3737498
+    }
 })
 
