@@ -41,10 +41,7 @@ class Day02 {
         }
 
         private fun areaOfSmallestSide(l: Int, w: Int, h: Int): Int {
-            val lByw = l * w
-            val wByh = w * h
-            val lByh = l * h
-            return min(lByw, min(wByh, lByh))
+            return min(l.times(w), min(w.times(h), l.times(h)))
         }
 
         private fun surfaceAreaOf(l: Int, w: Int, h: Int): Int {
