@@ -22,13 +22,13 @@ class Day02Tests : FunSpec( {
             SideLengths("2x3x4", 58),
             SideLengths("1x1x10", 43)
         ) { (inputLine, expected) ->
-            Day02.solvePart21(inputLine) shouldBe expected
+            Day02.solvePart1(inputLine) shouldBe expected
         }
     }
 
     test("Solve part 1") {
         val input = PuzzleInput.asListOfStrings("./data/day02")
-        Day02.solvePart21(input) shouldBe 1586300
+        Day02.solvePart1(input) shouldBe 1586300
     }
 
     test("Volume is l*w*h") {

@@ -5,7 +5,7 @@ import kotlin.math.min
 
 class Day02 {
     companion object {
-        fun solvePart21(inputLine: String): Int {
+        fun solvePart1(inputLine: String): Int {
             val (l, w, h) = extractLengthWidthHeight(inputLine)
             return surfaceAreaOf(l, w, h) + areaOfSmallestSide(l, w, h)
         }
@@ -14,14 +14,13 @@ class Day02 {
             return smallestPerimeterOf(inputLine) + volumeOf(inputLine)
         }
 
-        fun solvePart21(inputLine: List<String>): Int {
-            return inputLine.sumOf { i -> solvePart21(i) }
+        fun solvePart1(inputLine: List<String>): Int {
+            return inputLine.sumOf { i -> solvePart1(i) }
         }
 
         fun solvePart2(inputLine: List<String>): Int {
             return inputLine.sumOf { i -> solvePart2(i) }
         }
-
 
         fun areaOfSmallestSide(inputLine: String): Int {
             val (l, w, h) = extractLengthWidthHeight(inputLine)
