@@ -1,5 +1,6 @@
 package com.pdmoore.aoc
 
+import kotlin.math.max
 import kotlin.math.min
 
 class Day02 {
@@ -42,9 +43,17 @@ class Day02 {
             return (2 * l * w) + (2 * w * h) + (2 * h * l)
         }
 
-        fun volumeOf(inputLine: String): Any {
+        fun volumeOf(inputLine: String): Int {
             val (l, w, h) = extractLengthWidthHeight(inputLine)
             return l*w*h
+        }
+
+        fun smallestPerimeterOf(inputLine: String): Int {
+            val (l, w, h) = extractLengthWidthHeight(inputLine)
+            val smallest = min(min(l, w), h)
+            val secondSmallest = max(min(l, w), min(max(l, w), h))
+
+            return 2*smallest + 2*secondSmallest
         }
     }
 }

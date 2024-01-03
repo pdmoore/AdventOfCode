@@ -32,8 +32,17 @@ class Day02Tests : FunSpec( {
     }
 
     test("Volume is l*w*h") {
-        val inputLine = "2x3x4"
-        Day02.volumeOf(inputLine) shouldBe 24
+        Day02.volumeOf("2x3x4") shouldBe 24
+        Day02.volumeOf("1x1x10") shouldBe 10
+    }
+
+    context("Smallest perimeter of any face") {
+        withData(
+            SideLengths("2x3x4", 10),
+            SideLengths("1x1x10", 4)
+        ) { (inputLine, expected) ->
+            Day02.smallestPerimeterOf(inputLine) shouldBe expected
+        }
     }
 
 
