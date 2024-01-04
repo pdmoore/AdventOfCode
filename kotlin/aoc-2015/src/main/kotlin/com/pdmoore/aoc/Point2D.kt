@@ -18,4 +18,12 @@ class Point2D(val _x: Int, val _y: Int) {
 
         return true
     }
+
+    override fun hashCode(): Int {
+        val prime = 31
+        var result = 1
+        result = prime * result + x
+        result = prime * result + y
+        return result
+    }
 }
