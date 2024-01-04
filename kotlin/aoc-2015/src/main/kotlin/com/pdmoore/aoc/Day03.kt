@@ -9,7 +9,10 @@ class Day03 {
             for (c in input) {
                 when (c) {
                     '>' -> current = current.right()
-                    else -> { throw IllegalArgumentException("unknown character %c")}
+                    '<' -> current = current.left()
+                    '^' -> current = current.up()
+                    'v' -> current = current.down()
+                    else -> { throw IllegalArgumentException("unknown character " + c)}
                 }
                 housesVisited.add(current)
             }

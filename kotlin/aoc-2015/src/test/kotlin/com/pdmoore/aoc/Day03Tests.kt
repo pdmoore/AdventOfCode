@@ -15,5 +15,10 @@ class Day03Tests : FunSpec( {
         val input = ">"
         Day03.housesThatReceiveAtLeastOnePresent(input) shouldBe 2
     }
+
+    test("Non-repeating sequence delivers to each location") {
+        val input = "^>v<"
+        Day03.housesThatReceiveAtLeastOnePresent(input) shouldBe 4
+    }
 })
 
