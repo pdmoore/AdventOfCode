@@ -12,7 +12,7 @@ class Day03 {
                     '<' -> current = current.left()
                     '^' -> current = current.up()
                     'v' -> current = current.down()
-                    else -> { throw IllegalArgumentException("unknown character " + c)}
+                    else -> { throw IllegalArgumentException("unknown character $c")}
                 }
                 housesVisited.add(current)
             }
