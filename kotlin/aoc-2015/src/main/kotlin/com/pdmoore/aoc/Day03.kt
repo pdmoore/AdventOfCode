@@ -8,7 +8,7 @@ class Day03 {
             val housesVisited = mutableSetOf(current)
             for (c in input) {
                 when (c) {
-                    '>' -> current = Point2D.right()
+                    '>' -> current = current.right()
                     else -> { throw IllegalArgumentException("unknown character %c")}
                 }
                 housesVisited.add(current)
