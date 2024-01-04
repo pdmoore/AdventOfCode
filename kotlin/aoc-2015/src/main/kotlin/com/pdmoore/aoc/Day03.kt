@@ -7,11 +7,11 @@ class Day03 {
 
             val housesVisited = mutableSetOf(current)
             for (c in input) {
-                when (c) {
-                    '>' -> current = current.right()
-                    '<' -> current = current.left()
-                    '^' -> current = current.up()
-                    'v' -> current = current.down()
+                current = when (c) {
+                    '>' -> current.right()
+                    '<' -> current.left()
+                    '^' -> current.up()
+                    'v' -> current.down()
                     else -> { throw IllegalArgumentException("unknown character $c")}
                 }
                 housesVisited.add(current)
