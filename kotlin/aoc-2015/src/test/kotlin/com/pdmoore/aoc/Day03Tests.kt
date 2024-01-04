@@ -5,9 +5,6 @@ import io.kotest.matchers.shouldBe
 
 class Day03Tests : FunSpec( {
 
-
-    // input comes as single very long string
-
     test("Single move delivers to two unique locations") {
         val input = ">"
         Day03.housesThatReceiveAtLeastOnePresent(input) shouldBe 2
