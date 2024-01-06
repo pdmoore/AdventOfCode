@@ -5,15 +5,7 @@ class Day03 {
         const val DO_NOT_USE_ROBO_SANTA = false
         const val USE_ROBO_SANTA = true
 
-        fun houseCountSantaDeliversTo(input: String): Int {
-            return countHousesVisited(input, DO_NOT_USE_ROBO_SANTA)
-        }
-
-        fun houseCountWithRoboSantaDeliveries(input: String): Int {
-            return countHousesVisited(input, USE_ROBO_SANTA)
-        }
-
-        private fun countHousesVisited(input: String, useRoboSanta: Boolean): Int {
+        fun countHousesVisited(input: String, useRoboSanta: Boolean): Int {
             var santaPosition = Point2D(0, 0)
             var roboSantaPosition = Point2D(0, 0)
 
