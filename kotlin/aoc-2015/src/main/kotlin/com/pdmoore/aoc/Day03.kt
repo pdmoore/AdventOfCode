@@ -13,7 +13,8 @@ class Day03 {
 
             val housesVisited = mutableSetOf(santaPosition, roboSantaPosition)
             for (c in input) {
-                if (!useRoboSanta || santaMovesOnEven++ % 2 == 0) {
+                santaMovesOnEven++
+                if (!useRoboSanta || (santaMovesOnEven % 2) == 0) {
                     santaPosition = moveTo(c, santaPosition)
                     housesVisited.add(santaPosition)
                 } else {
