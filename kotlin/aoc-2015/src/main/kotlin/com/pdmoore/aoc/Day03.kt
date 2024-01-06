@@ -7,15 +7,7 @@ class Day03 {
 
             val housesVisited = mutableSetOf(current)
             for (c in input) {
-                current = when (c) {
-                    '>' -> current.right()
-                    '<' -> current.left()
-                    '^' -> current.up()
-                    'v' -> current.down()
-                    else -> {
-                        throw IllegalArgumentException("unknown character $c")
-                    }
-                }
+                current = moveTo(c, current)
                 housesVisited.add(current)
             }
 
@@ -31,36 +23,25 @@ class Day03 {
             val housesVisited = mutableSetOf(currentSanta, currentRoboSanta)
             for (c in input) {
                 if (santaMovesOnEven++ % 2 == 0) {
-
-                    currentSanta = when (c) {
-                        '>' -> currentSanta.right()
-                        '<' -> currentSanta.left()
-                        '^' -> currentSanta.up()
-                        'v' -> currentSanta.down()
-                        else -> {
-                            throw IllegalArgumentException("unknown character $c")
-                        }
-                    }
+                    currentSanta = moveTo(c, currentSanta)
                     housesVisited.add(currentSanta)
                 } else {
-
-                    currentRoboSanta = when (c) {
-                        '>' -> currentRoboSanta.right()
-                        '<' -> currentRoboSanta.left()
-                        '^' -> currentRoboSanta.up()
-                        'v' -> currentRoboSanta.down()
-                        else -> {
-                            throw IllegalArgumentException("unknown character $c")
-                        }
-                    }
+                    currentRoboSanta = moveTo(c, currentRoboSanta)
                     housesVisited.add(currentRoboSanta)
                 }
-
-
             }
 
             return housesVisited.size
+        }
 
+        private fun moveTo(c: Char, currentSanta: Point2D) = when (c) {
+            '>' -> currentSanta.right()
+            '<' -> currentSanta.left()
+            '^' -> currentSanta.up()
+            'v' -> currentSanta.down()
+            else -> {
+                throw IllegalArgumentException("Cannot moveTo unknown character $c")
+            }
         }
     }
 }
