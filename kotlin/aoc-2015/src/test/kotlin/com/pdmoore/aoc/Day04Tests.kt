@@ -43,6 +43,7 @@ class Day04Tests : FunSpec( {
         actual shouldBe 117946
     }
 
+    // TODO - takes about 3 seconds - kotlin multicore?
     test("Part 2 - find lowest number that hashes to start with 6 zeros") {
         val actual = Day04.solvePart2(PUZZLE_INPUT)
         actual shouldBe 3938038

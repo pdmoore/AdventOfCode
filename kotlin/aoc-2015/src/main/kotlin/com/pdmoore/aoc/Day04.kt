@@ -20,22 +20,18 @@ class Day04 {
         }
 
         fun solvePart1(secret: String): Int {
-            var i = 0
-            while (i < Int.MAX_VALUE) {
-                val hash = generateMD5(secret + i)
-                if (startsWithZeros(hash, 5)) return i
-                i++;
-            }
-
-            throw IllegalArgumentException("no answer found for $secret")
+            return solve(secret, 5)
         }
 
         fun solvePart2(secret: String): Any {
+            return solve(secret, 6)
+        }
+
+        private fun solve(secret: String, zerosInPrefix: Int): Int {
             var i = 0
-            while (i < Int.MAX_VALUE) {
+            repeat(Int.MAX_VALUE) {i ->
                 val hash = generateMD5(secret + i)
-                if (startsWithZeros(hash, 6)) return i
-                i++;
+                if (startsWithZeros(hash, zerosInPrefix)) return i
             }
 
             throw IllegalArgumentException("no answer found for $secret")
