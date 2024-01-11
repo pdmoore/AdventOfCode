@@ -22,6 +22,21 @@ class Day04Tests : FunSpec( {
         firstN shouldBe "000001dbbfa"
     }
 
+    test("Generate MD5 hash given a different key and value") {
+        val hashed = Day04.generateMD5("pqrstuv1048970")
+        val firstN = hashed.substring(0, 11)
+        firstN shouldBe "000006136ef"
+    }
+
+    test("Can tell a given secret + number starts with 5 zeros") {
+        Day04.startsWithZeros(Day04.generateMD5("abcdef609043")) shouldBe true
+        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048970")) shouldBe true
+    }
+
+    test("Can tell a given secret + number does not start with 5 zeros") {
+        Day04.startsWithZeros(Day04.generateMD5("abcdef609403")) shouldBe false
+        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048790")) shouldBe false
+    }
 
 
 

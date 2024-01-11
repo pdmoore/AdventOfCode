@@ -13,6 +13,10 @@ class Day04 {
             val bi = BigInteger(1, hash)
             return bi.toString(16).padStart(32, '0')
         }
+
+        fun startsWithZeros(input: String): Boolean {
+            return input.startsWith("00000")
+        }
     }
 
 }
