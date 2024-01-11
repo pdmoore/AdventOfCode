@@ -14,20 +14,33 @@ class Day04 {
             return bi.toString(16).padStart(32, '0')
         }
 
-        fun startsWithZeros(input: String): Boolean {
-            return input.startsWith("00000")
+        fun startsWithZeros(input: String, zeroCount: Int): Boolean {
+            val targetPrefix = "0".repeat(zeroCount)
+            return input.startsWith(targetPrefix)
         }
 
         fun solvePart1(secret: String): Int {
             var i = 0
             while (i < Int.MAX_VALUE) {
                 val hash = generateMD5(secret + i)
-                if (startsWithZeros(hash)) return i
+                if (startsWithZeros(hash, 5)) return i
                 i++;
             }
 
             throw IllegalArgumentException("no answer found for $secret")
         }
+
+        fun solvePart2(secret: String): Any {
+            var i = 0
+            while (i < Int.MAX_VALUE) {
+                val hash = generateMD5(secret + i)
+                if (startsWithZeros(hash, 6)) return i
+                i++;
+            }
+
+            throw IllegalArgumentException("no answer found for $secret")
+        }
+
     }
 
 }

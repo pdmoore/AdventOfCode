@@ -29,18 +29,23 @@ class Day04Tests : FunSpec( {
     }
 
     test("Can tell a given secret + number starts with 5 zeros") {
-        Day04.startsWithZeros(Day04.generateMD5("abcdef609043")) shouldBe true
-        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048970")) shouldBe true
+        Day04.startsWithZeros(Day04.generateMD5("abcdef609043"), 5) shouldBe true
+        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048970"), 5) shouldBe true
     }
 
     test("Can tell a given secret + number does not start with 5 zeros") {
-        Day04.startsWithZeros(Day04.generateMD5("abcdef609403")) shouldBe false
-        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048790")) shouldBe false
+        Day04.startsWithZeros(Day04.generateMD5("abcdef609403"), 5) shouldBe false
+        Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048790"), 5) shouldBe false
     }
 
     test("Part 1 - find lowest number that hashes to start with 5 zeros") {
         val actual = Day04.solvePart1(PUZZLE_INPUT)
         actual shouldBe 117946
+    }
+
+    test("Part 2 - find lowest number that hashes to start with 6 zeros") {
+        val actual = Day04.solvePart2(PUZZLE_INPUT)
+        actual shouldBe 3938038
     }
 
 
