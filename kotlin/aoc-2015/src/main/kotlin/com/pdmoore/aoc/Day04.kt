@@ -17,6 +17,17 @@ class Day04 {
         fun startsWithZeros(input: String): Boolean {
             return input.startsWith("00000")
         }
+
+        fun solvePart1(secret: String): Int {
+            var i = 0
+            while (i < Int.MAX_VALUE) {
+                val hash = generateMD5(secret + i)
+                if (startsWithZeros(hash)) return i
+                i++;
+            }
+
+            throw IllegalArgumentException("no answer found for $secret")
+        }
     }
 
 }

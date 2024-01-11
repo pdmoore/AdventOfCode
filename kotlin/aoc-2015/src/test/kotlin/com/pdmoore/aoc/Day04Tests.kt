@@ -38,6 +38,10 @@ class Day04Tests : FunSpec( {
         Day04.startsWithZeros(Day04.generateMD5("pqrstuv1048790")) shouldBe false
     }
 
+    test("Part 1 - find lowest number that hashes to start with 5 zeros") {
+        val actual = Day04.solvePart1(PUZZLE_INPUT)
+        actual shouldBe 117946
+    }
 
 
 })
