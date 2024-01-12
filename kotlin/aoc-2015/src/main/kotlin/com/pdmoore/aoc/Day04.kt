@@ -6,10 +6,12 @@ import kotlin.text.Charsets.UTF_8
 
 class Day04 {
     companion object {
+        val MD5_DIGEST = MessageDigest.getInstance("MD5")
+        val ZERO_BYTE = 0.toByte()
+
         fun generateMD5(input: String): String {
-            val md = MessageDigest.getInstance("MD5")
             val toByteArray = input.toByteArray(UTF_8)
-            val hash = md.digest(toByteArray)
+            val hash = MD5_DIGEST.digest(toByteArray)
             val bi = BigInteger(1, hash)
             return bi.toString(16).padStart(32, '0')
         }
@@ -24,7 +26,7 @@ class Day04 {
         }
 
         fun solvePart2(secret: String): Any {
-            return solveButCheckBytesBeforeStrings(secret, 6)
+            return solveButCheckBytesBeforeStrings(secret)
         }
 
         private fun solve(secret: String, zerosInPrefix: Int): Int {
@@ -47,20 +49,16 @@ class Day04 {
         }
 
 
-        private fun solveButCheckBytesBeforeStrings(secret: String, zerosInPrefix: Int): Int {
-            val md = MessageDigest.getInstance("MD5")
-            val zeroByte = 0.toByte()
+        private fun solveButCheckBytesBeforeStrings(secret: String): Int {
             repeat(Int.MAX_VALUE) {i ->
-
                 val input = secret + i
                 val toByteArray = input.toByteArray(UTF_8)
-                val hash = md.digest(toByteArray)
-                if (hash[0] == zeroByte &&
-                    hash[1] == zeroByte &&
-                    hash[2] == zeroByte) {
-                    val bi = BigInteger(1, hash)
-                    val hashed = bi.toString(16).padStart(32, '0')
-                    if (startsWithZeros(hashed, zerosInPrefix)) return i
+                val hash = MD5_DIGEST.digest(toByteArray)
+                // 6 zeros are represented in 3 half-bytes
+                if (hash[0] == ZERO_BYTE &&
+                    hash[1] == ZERO_BYTE &&
+                    hash[2] == ZERO_BYTE) {
+                    return i
                 }
             }
 
