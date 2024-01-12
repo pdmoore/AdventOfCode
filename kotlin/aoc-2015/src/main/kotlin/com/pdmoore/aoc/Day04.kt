@@ -24,13 +24,10 @@ class Day04 {
         }
 
         fun solvePart2(secret: String): Any {
-            return solve(secret, 6)
+            return solveButCheckBytesBeforeStrings(secret, 6)
         }
 
         private fun solve(secret: String, zerosInPrefix: Int): Int {
-            // Potential improvement -
-            // instead of converting hash to BI and String, check if hash itself starts with
-            // zeros
             repeat(Int.MAX_VALUE) {i ->
                 val hash = generateMD5(secret + i)
                 if (startsWithZeros(hash, zerosInPrefix)) return i
@@ -49,6 +46,25 @@ class Day04 {
             throw IllegalArgumentException("no answer found for $secret")
         }
 
-    }
 
+        private fun solveButCheckBytesBeforeStrings(secret: String, zerosInPrefix: Int): Int {
+            val md = MessageDigest.getInstance("MD5")
+            val zeroByte = 0.toByte()
+            repeat(Int.MAX_VALUE) {i ->
+
+                val input = secret + i
+                val toByteArray = input.toByteArray(UTF_8)
+                val hash = md.digest(toByteArray)
+                if (hash[0] == zeroByte &&
+                    hash[1] == zeroByte &&
+                    hash[2] == zeroByte) {
+                    val bi = BigInteger(1, hash)
+                    val hashed = bi.toString(16).padStart(32, '0')
+                    if (startsWithZeros(hashed, zerosInPrefix)) return i
+                }
+            }
+
+            throw IllegalArgumentException("no answer found for $secret")
+        }
+    }
 }

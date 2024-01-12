@@ -2,10 +2,13 @@ package com.pdmoore.aoc
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 const val PUZZLE_INPUT = "ckczppom"
 
 class Day04Tests : FunSpec( {
+
     test("Generate MD5 hash given a key and value") {
         val hashed = Day04.generateMD5("abcdef609043")
         val firstN = hashed.substring(0, 11)
@@ -33,8 +36,9 @@ class Day04Tests : FunSpec( {
         actual shouldBe 117946
     }
 
-    // This takes 3-4 seconds. Probably not enough computation each number to warrant multithreading
-    test("Part 2 - find lowest number that hashes to start with 6 zeros") {
+    // Was taking 4+ seconds, arbitrarily picked a 1 second timeout
+    test("Part 2 - find lowest number that hashes to start with 6 zeros")
+        .config(timeout = 1000.milliseconds) {
         val actual = Day04.solvePart2(PUZZLE_INPUT)
         actual shouldBe 3938038
     }
