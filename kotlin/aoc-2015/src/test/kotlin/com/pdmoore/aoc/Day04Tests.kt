@@ -6,16 +6,6 @@ import io.kotest.matchers.shouldBe
 const val PUZZLE_INPUT = "ckczppom"
 
 class Day04Tests : FunSpec( {
-
-
-    // MD5 hash, without hex
-    // with hex
-    // find via searching, from 0 on up (or backwards?)
-    // secret key (puzzle input)
-    // hexadecimal hash
-    // result has 5 leading zeros
-    // start with 00000_000000 and see if it matches secret?
-
     test("Generate MD5 hash given a key and value") {
         val hashed = Day04.generateMD5("abcdef609043")
         val firstN = hashed.substring(0, 11)
@@ -43,11 +33,13 @@ class Day04Tests : FunSpec( {
         actual shouldBe 117946
     }
 
-    // TODO - takes about 3 seconds - kotlin multicore?
+    // This takes 3-4 seconds. Probably not enough computation each number to warrant multithreading
     test("Part 2 - find lowest number that hashes to start with 6 zeros") {
         val actual = Day04.solvePart2(PUZZLE_INPUT)
         actual shouldBe 3938038
     }
 
-
+    test("how many processors") {
+        Runtime.getRuntime().availableProcessors() shouldBe 16
+    }
 })

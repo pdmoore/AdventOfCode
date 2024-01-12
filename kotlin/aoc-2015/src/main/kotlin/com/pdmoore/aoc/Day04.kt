@@ -28,11 +28,23 @@ class Day04 {
         }
 
         private fun solve(secret: String, zerosInPrefix: Int): Int {
-            var i = 0
+            // Potential improvement -
+            // instead of converting hash to BI and String, check if hash itself starts with
+            // zeros
             repeat(Int.MAX_VALUE) {i ->
                 val hash = generateMD5(secret + i)
                 if (startsWithZeros(hash, zerosInPrefix)) return i
             }
+
+// Started to look at multiprocessor attack of the problem
+// following code finds the answer, but returns the hash, not the number that
+// generated it.
+// Could have generateMD5 return a pair (it, hash) and then
+// have startsWith return it
+// Brief reading led me to believe there's not much improvement opportunity
+//            val found = (1..Int.MAX_VALUE).asSequence()
+//                .map { generateMD5(secret + it) }
+//                .find { startsWithZeros(it, zerosInPrefix) }
 
             throw IllegalArgumentException("no answer found for $secret")
         }
