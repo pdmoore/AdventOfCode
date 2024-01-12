@@ -48,7 +48,6 @@ class Day04 {
             throw IllegalArgumentException("no answer found for $secret")
         }
 
-
         private fun solveButCheckBytesBeforeStrings(secret: String): Int {
             repeat(Int.MAX_VALUE) {i ->
                 val input = secret + i
