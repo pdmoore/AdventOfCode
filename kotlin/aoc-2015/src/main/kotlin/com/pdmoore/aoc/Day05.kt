@@ -27,6 +27,14 @@ class Day05 {
         fun isNice(s: String): Boolean {
             return atLeastThreeVowels(s) && atLeastOneLetterTwiceInARow(s) && !containsUnwantedCharacterPair(s)
         }
+
+        fun solvePart1(input: List<String>): Int {
+            var count = 0
+            for (inputLine in input) {
+                if (isNice(inputLine)) count++
+            }
+            return count
+        }
     }
 
 }

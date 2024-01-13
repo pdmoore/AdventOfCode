@@ -50,9 +50,12 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
     }
 
 
-    test("Solve part 1").config(enabled = false) {
+    test("Solve part 1") {
         // read in List<String>
         // count number that are nice
+        val input = PuzzleInput.asListOfStrings("./data/day05")
+        val actual = Day05.solvePart1(input)
+        actual shouldBe 255
     }
 
 
