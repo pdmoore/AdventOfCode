@@ -23,6 +23,10 @@ class Day05 {
             }
             return false
         }
+
+        fun isNice(s: String): Boolean {
+            return atLeastThreeVowels(s) && atLeastOneLetterTwiceInARow(s) && !containsUnwantedCharacterPair(s)
+        }
     }
 
 }

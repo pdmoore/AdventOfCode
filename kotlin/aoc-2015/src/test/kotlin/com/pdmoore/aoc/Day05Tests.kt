@@ -1,5 +1,6 @@
 package com.pdmoore.aoc
 
+import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -38,5 +39,21 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
         Day05.containsUnwantedCharacterPair("cbd") shouldBe false
         Day05.containsUnwantedCharacterPair("poq") shouldBe false
     }
+
+    test("Can detect nice strings") {
+        Day05.isNice("ugknbfddgicrmopn") shouldBe true
+        Day05.isNice("aaa") shouldBe true
+
+        Day05.isNice("jchzalrnumimnmhp") shouldBe false
+        Day05.isNice("haegwjzuvuyypxyu") shouldBe false
+        Day05.isNice("dvszwmarrgswjxmb") shouldBe false
+    }
+
+
+    test("Solve part 1").config(enabled = false) {
+        // read in List<String>
+        // count number that are nice
+    }
+
 
 })
