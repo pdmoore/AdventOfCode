@@ -7,7 +7,6 @@ class Day05Tests : FunSpec( {
 
     /*
     A nice string is one with all of the following properties:
-It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
 It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
 It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
      */
@@ -20,5 +19,13 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
         Day05.atLeastThreeVowels("aeiouaeiouaeiou") shouldBe true
     }
 
+    test("Can detect one letter appears twice in a row") {
+        Day05.atLeastOneletterTwiceInARow("abc") shouldBe false
+        Day05.atLeastOneletterTwiceInARow("aba") shouldBe false
+
+        Day05.atLeastOneletterTwiceInARow("xx") shouldBe true
+        Day05.atLeastOneletterTwiceInARow("abcdde") shouldBe true
+        Day05.atLeastOneletterTwiceInARow("aabbccdd") shouldBe true
+    }
 
 })
