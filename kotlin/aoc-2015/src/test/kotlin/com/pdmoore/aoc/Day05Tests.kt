@@ -7,7 +7,6 @@ class Day05Tests : FunSpec( {
 
     /*
     A nice string is one with all of the following properties:
-It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
 It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
      */
     test("Can detect string with at least three vowels") {
@@ -20,12 +19,24 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
     }
 
     test("Can detect one letter appears twice in a row") {
-        Day05.atLeastOneletterTwiceInARow("abc") shouldBe false
-        Day05.atLeastOneletterTwiceInARow("aba") shouldBe false
+        Day05.atLeastOneLetterTwiceInARow("abc") shouldBe false
+        Day05.atLeastOneLetterTwiceInARow("aba") shouldBe false
 
-        Day05.atLeastOneletterTwiceInARow("xx") shouldBe true
-        Day05.atLeastOneletterTwiceInARow("abcdde") shouldBe true
-        Day05.atLeastOneletterTwiceInARow("aabbccdd") shouldBe true
+        Day05.atLeastOneLetterTwiceInARow("xx") shouldBe true
+        Day05.atLeastOneLetterTwiceInARow("abcdde") shouldBe true
+        Day05.atLeastOneLetterTwiceInARow("aabbccdd") shouldBe true
+    }
+
+    test("Can detect unwanted character pairs") {
+        //ab, cd, pq, or xy
+        Day05.containsUnwantedCharacterPair("abc") shouldBe true
+        Day05.containsUnwantedCharacterPair("bcd") shouldBe true
+        Day05.containsUnwantedCharacterPair("mnopqr") shouldBe true
+        Day05.containsUnwantedCharacterPair("xyz") shouldBe true
+
+        Day05.containsUnwantedCharacterPair("ace") shouldBe false
+        Day05.containsUnwantedCharacterPair("cbd") shouldBe false
+        Day05.containsUnwantedCharacterPair("poq") shouldBe false
     }
 
 })
