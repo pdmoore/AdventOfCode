@@ -1,7 +1,11 @@
 package com.pdmoore.aoc
 
 class Day05 {
+
+
     companion object {
+        val UNWANTED_PAIRS = listOf("ab", "cd", "pq", "xy")
+
         fun atLeastThreeVowels(s: String): Boolean {
             val filter = s.filter { it in listOf('a', 'e', 'i', 'o', 'u') }
             return filter.length >= 3
@@ -15,9 +19,8 @@ class Day05 {
         }
 
         fun containsUnwantedCharacterPair(s: String): Boolean {
-            val unwantedPairs = listOf("ab", "cd", "pq", "xy")
             (0..s.length - 2).forEach { i ->
-                if (Character.toString(s[i]).plus(s[i + 1]) in unwantedPairs) return true
+                if (Character.toString(s[i]).plus(s[i + 1]) in UNWANTED_PAIRS) return true
             }
             return false
         }
@@ -29,11 +32,7 @@ class Day05 {
         }
 
         fun solvePart1(input: List<String>): Int {
-            var count = 0
-            for (inputLine in input) {
-                if (isNice(inputLine)) count++
-            }
-            return count
+            return input.count { isNice(it) }
         }
     }
 
