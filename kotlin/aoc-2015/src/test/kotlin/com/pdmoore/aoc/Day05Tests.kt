@@ -48,17 +48,19 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
         Day05.isPart1Nice("dvszwmarrgswjxmb") shouldBe false
     }
 
-    /*
-    It contains a pair of any two letters that appears at least twice in the string without overlapping,
-    like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
-It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
-     */
-
     test("Can detect pair of any two letters that appears at least twice") {
         Day05.atLeastOnePairAppearingTwice("xyxy") shouldBe true
         Day05.atLeastOnePairAppearingTwice("aabcdefgaa") shouldBe true
 
         Day05.atLeastOnePairAppearingTwice("aaa") shouldBe false
+    }
+
+    test("Can detect letter repeat with exactly one letter between the two") {
+        Day05.atLeastOneLetterRepeatWithOneLetterBetween("xyx") shouldBe true
+        Day05.atLeastOneLetterRepeatWithOneLetterBetween("abcdefeghi") shouldBe true
+        Day05.atLeastOneLetterRepeatWithOneLetterBetween("aaa") shouldBe true
+
+        Day05.atLeastOneLetterRepeatWithOneLetterBetween("abc") shouldBe false
     }
 
     test("Solve part 1") {

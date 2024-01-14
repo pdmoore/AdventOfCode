@@ -43,6 +43,13 @@ class Day05 {
             }
             return false
         }
+
+        fun atLeastOneLetterRepeatWithOneLetterBetween(s: String): Boolean {
+            (0..s.length - 3).forEach { i ->
+                if (s[i] == s[i+2]) return true
+            }
+            return false
+        }
     }
 
 }
