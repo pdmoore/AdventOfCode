@@ -26,16 +26,6 @@ class Day05 {
             return false
         }
 
-        fun isPart1Nice(s: String): Boolean {
-            return atLeastThreeVowels(s) &&
-                    atLeastOneLetterTwiceInARow(s) &&
-                    !containsUnwantedCharacterPair(s)
-        }
-
-        fun solvePart1(input: List<String>): Int {
-            return input.count { isPart1Nice(it) }
-        }
-
         fun atLeastOnePairAppearingTwice(s: String): Boolean {
             (0..s.length - 2).forEach { i ->
                 val thisPair = s.substring(i, i+2)
@@ -50,6 +40,23 @@ class Day05 {
             }
             return false
         }
-    }
+        fun isPart1Nice(s: String): Boolean {
+            return atLeastThreeVowels(s) &&
+                    atLeastOneLetterTwiceInARow(s) &&
+                    !containsUnwantedCharacterPair(s)
+        }
 
+        fun isPart2Nice(s: String): Boolean {
+            return atLeastOnePairAppearingTwice(s) &&
+                    atLeastOneLetterRepeatWithOneLetterBetween(s)
+        }
+
+        fun solvePart1(input: List<String>): Int {
+            return input.count { isPart1Nice(it) }
+        }
+
+        fun solvePart2(input: List<String>): Int {
+            return input.count { isPart2Nice(it) }
+        }
+    }
 }
