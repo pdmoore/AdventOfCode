@@ -5,10 +5,6 @@ import io.kotest.matchers.shouldBe
 
 class Day05Tests : FunSpec( {
 
-    /*
-    A nice string is one with all of the following properties:
-It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
-     */
     test("Can detect string with at least three vowels") {
         Day05.atLeastThreeVowels("abc") shouldBe false
         Day05.atLeastThreeVowels("aec") shouldBe false
@@ -39,13 +35,21 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
         Day05.containsUnwantedCharacterPair("poq") shouldBe false
     }
 
-    test("Can detect nice strings") {
+    test("Can detect Part 1 nice strings") {
         Day05.isPart1Nice("ugknbfddgicrmopn") shouldBe true
         Day05.isPart1Nice("aaa") shouldBe true
 
         Day05.isPart1Nice("jchzalrnumimnmhp") shouldBe false
         Day05.isPart1Nice("haegwjzuvuyypxyu") shouldBe false
         Day05.isPart1Nice("dvszwmarrgswjxmb") shouldBe false
+    }
+
+    test("can detect Part 2 nice strings") {
+        Day05.Companion.isPart2Nice("qjhvhtzxzqqjkmpb") shouldBe true
+        Day05.Companion.isPart2Nice("xxyxx") shouldBe true
+
+        Day05.Companion.isPart2Nice("uurcxstgmygtbstg") shouldBe false
+        Day05.Companion.isPart2Nice("ieodomkazucvgmuy") shouldBe false
     }
 
     test("Can detect pair of any two letters that appears at least twice") {
@@ -74,6 +78,4 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
         val actual = Day05.solvePart2(input)
         actual shouldBe 55
     }
-
-
 })
