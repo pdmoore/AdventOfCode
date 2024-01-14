@@ -26,14 +26,22 @@ class Day05 {
             return false
         }
 
-        fun isNice(s: String): Boolean {
+        fun isPart1Nice(s: String): Boolean {
             return atLeastThreeVowels(s) &&
                     atLeastOneLetterTwiceInARow(s) &&
                     !containsUnwantedCharacterPair(s)
         }
 
         fun solvePart1(input: List<String>): Int {
-            return input.count { isNice(it) }
+            return input.count { isPart1Nice(it) }
+        }
+
+        fun atLeastOnePairAppearingTwice(s: String): Boolean {
+            (0..s.length - 2).forEach { i ->
+                val thisPair = s.substring(i, i+2)
+                if (s.substring(i + 2).contains(thisPair)) return true
+            }
+            return false
         }
     }
 

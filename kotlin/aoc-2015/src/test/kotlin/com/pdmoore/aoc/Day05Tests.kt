@@ -1,6 +1,5 @@
 package com.pdmoore.aoc
 
-import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -41,14 +40,26 @@ It does not contain the strings ab, cd, pq, or xy, even if they are part of one 
     }
 
     test("Can detect nice strings") {
-        Day05.isNice("ugknbfddgicrmopn") shouldBe true
-        Day05.isNice("aaa") shouldBe true
+        Day05.isPart1Nice("ugknbfddgicrmopn") shouldBe true
+        Day05.isPart1Nice("aaa") shouldBe true
 
-        Day05.isNice("jchzalrnumimnmhp") shouldBe false
-        Day05.isNice("haegwjzuvuyypxyu") shouldBe false
-        Day05.isNice("dvszwmarrgswjxmb") shouldBe false
+        Day05.isPart1Nice("jchzalrnumimnmhp") shouldBe false
+        Day05.isPart1Nice("haegwjzuvuyypxyu") shouldBe false
+        Day05.isPart1Nice("dvszwmarrgswjxmb") shouldBe false
     }
 
+    /*
+    It contains a pair of any two letters that appears at least twice in the string without overlapping,
+    like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
+It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
+     */
+
+    test("Can detect pair of any two letters that appears at least twice") {
+        Day05.atLeastOnePairAppearingTwice("xyxy") shouldBe true
+        Day05.atLeastOnePairAppearingTwice("aabcdefgaa") shouldBe true
+
+        Day05.atLeastOnePairAppearingTwice("aaa") shouldBe false
+    }
 
     test("Solve part 1") {
         // read in List<String>
