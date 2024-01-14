@@ -21,7 +21,7 @@ class Day05 {
 
         fun containsUnwantedCharacterPair(s: String): Boolean {
             (0..s.length - 2).forEach { i ->
-                if (Character.toString(s[i]).plus(s[i + 1]) in UNWANTED_PAIRS) return true
+                if (s[i].toString().plus(s[i + 1]) in UNWANTED_PAIRS) return true
             }
             return false
         }
