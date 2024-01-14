@@ -4,8 +4,8 @@ class Day05 {
 
 
     companion object {
-        val UNWANTED_PAIRS = listOf("ab", "cd", "pq", "xy")
-        val VOWELS = listOf('a', 'e', 'i', 'o', 'u')
+        private val UNWANTED_PAIRS = listOf("ab", "cd", "pq", "xy")
+        private val VOWELS = listOf('a', 'e', 'i', 'o', 'u')
 
         fun atLeastThreeVowels(s: String): Boolean {
             val filter = s.filter { it in VOWELS }
