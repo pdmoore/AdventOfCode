@@ -41,11 +41,7 @@ class Day06(maxX: Int, maxY: Int) {
                     }
                 }
             }
-
-
         }
-
-
     }
 
     private fun parseRectangle(rhs: String): Rectangle {
@@ -62,6 +58,12 @@ class Day06(maxX: Int, maxY: Int) {
 
     fun countOfLitLights(): Int {
         return litLights.size
+    }
+
+    fun followInstructions(input: List<String>) {
+        for (inputLine in input) {
+            followInstruction(inputLine)
+        }
     }
 
 

@@ -36,9 +36,26 @@ class Day06Tests: FunSpec( {
         var sut = Day06(1000, 1000)
         sut.followInstruction(toggleOn)
         sut.countOfLitLights() shouldBe 9
-
     }
 
+    test("Toggle command will turn lights off that are on") {
+        val turnOn = "turn on 0,0 through 2,2"
+        val toggleOff = "toggle 0,0 through 2,2"
+
+        var sut = Day06(1000, 1000)
+        sut.followInstruction(turnOn)
+        sut.followInstruction(toggleOff)
+        sut.countOfLitLights() shouldBe 0
+    }
+
+    test("Part 1 solved") {
+        val input = PuzzleInput.asListOfStrings("./data/day06")
+        var sut = Day06(1000, 1000)
+
+        sut.followInstructions(input)
+
+        sut.countOfLitLights() shouldBe 377891
+    }
 
 
 })
