@@ -7,8 +7,8 @@ class Day06Tests: FunSpec( {
 
     // how to track lit lights?
     // grid off all locations or just Coord of lit ones?
-    // turn on command
-    // turn off command
+    // DONE turn on command
+    // DONE turn off command
     // toggle command
     // Part 1 loop to solve List<String> input
     test("Turn on command will turn on all lights in the rectangle") {
