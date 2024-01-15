@@ -9,7 +9,8 @@ class Day06Tests: FunSpec( {
     // grid off all locations or just Coord of lit ones?
     // DONE turn on command
     // DONE turn off command
-    // toggle command
+    // toggle command when off to on
+    // toggle command when on to off
     // Part 1 loop to solve List<String> input
     test("Turn on command will turn on all lights in the rectangle") {
         val input = "turn on 0,0 through 2,2"
@@ -29,6 +30,14 @@ class Day06Tests: FunSpec( {
         sut.countOfLitLights() shouldBe 0
     }
 
+    test("Toggle command will turn lights on that are off") {
+        val toggleOn = "toggle 0,0 through 2,2"
+
+        var sut = Day06(1000, 1000)
+        sut.followInstruction(toggleOn)
+        sut.countOfLitLights() shouldBe 9
+
+    }
 
 
 

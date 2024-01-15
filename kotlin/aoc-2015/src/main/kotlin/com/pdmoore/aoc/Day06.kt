@@ -11,7 +11,7 @@ class Day06(maxX: Int, maxY: Int) {
     fun followInstruction(input: String) {
 
         if (input.startsWith("turn on")) {
-            val cornersString = input.substring(input.indexOf("on") + 3)
+            val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
             val rectangle = parseRectangle(cornersString)
 
             for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
@@ -19,14 +19,26 @@ class Day06(maxX: Int, maxY: Int) {
                     litLights.add(Pair(x, y))
                 }
             }
-        } else {
-            // TURN OFF
-
-            val cornersString = input.substring(input.indexOf("off") + 4)
+        } else if (input.startsWith("turn off")) {
+            val cornersString = input.substring(input.indexOf("off") + "off".length + 1)
             val rectangle = parseRectangle(cornersString)
             for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
                 for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
                     litLights.remove(Pair(x, y))
+                }
+            }
+        } else {
+            // TOGGLE
+            val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    val thisLight = Pair(x, y)
+                    if (litLights.contains(thisLight)) {
+                        litLights.remove(thisLight)
+                    } else {
+                        litLights.add(Pair(x, y))
+                    }
                 }
             }
 
