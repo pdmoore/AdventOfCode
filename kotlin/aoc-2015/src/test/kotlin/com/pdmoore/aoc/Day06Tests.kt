@@ -17,7 +17,16 @@ class Day06Tests: FunSpec( {
         var sut = Day06(1000, 1000)
         sut.followInstruction(input)
         sut.countOfLitLights() shouldBe 9
+    }
 
+    test("Turn off comand will turn off all lights in the rectangle") {
+        val turnOn = "turn on 0,0 through 2,2"
+        val turnOff = "turn off 0,0 through 2,2"
+
+        var sut = Day06(1000, 1000)
+        sut.followInstruction(turnOn)
+        sut.followInstruction(turnOff)
+        sut.countOfLitLights() shouldBe 0
     }
 
 
