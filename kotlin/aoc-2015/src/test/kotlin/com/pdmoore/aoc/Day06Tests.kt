@@ -5,13 +5,6 @@ import io.kotest.matchers.shouldBe
 
 class Day06Tests: FunSpec( {
 
-    // how to track lit lights?
-    // grid off all locations or just Coord of lit ones?
-    // DONE turn on command
-    // DONE turn off command
-    // toggle command when off to on
-    // toggle command when on to off
-    // Part 1 loop to solve List<String> input
     test("Turn on command will turn on all lights in the rectangle") {
         val input = "turn on 0,0 through 2,2"
 
@@ -28,7 +21,7 @@ class Day06Tests: FunSpec( {
         sut.countOfLitLightsUsingArray() shouldBe 9
     }
 
-    test("Turn off comand will turn off all lights in the rectangle") {
+    test("Turn off command will turn off all lights in the rectangle") {
         val turnOn = "turn on 0,0 through 2,2"
         val turnOff = "turn off 0,0 through 2,2"
 
@@ -38,7 +31,7 @@ class Day06Tests: FunSpec( {
         sut.countOfLitLightsUsingSet() shouldBe 0
     }
 
-    test("Turn off comand will turn off all lights in the rectangle - 2D array impl") {
+    test("Turn off command will turn off all lights in the rectangle - 2D array impl") {
         val turnOn = "turn on 0,0 through 2,2"
         val turnOff = "turn off 0,0 through 2,2"
 
@@ -90,7 +83,7 @@ class Day06Tests: FunSpec( {
 
         sut.followInstructionsUsingSet(input)
 
-        sut.countOfLitLightsUsingArray() shouldBe 377891
+        sut.countOfLitLightsUsingSet() shouldBe 377891
     }
 
     test("Part 1 solved using 2D Array takes less than 1/2 second") {
