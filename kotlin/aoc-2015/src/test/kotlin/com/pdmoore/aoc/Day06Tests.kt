@@ -95,12 +95,21 @@ class Day06Tests: FunSpec( {
         sut.countOfLitLightsUsingArray() shouldBe 377891
     }
 
-    test("Part2 example turn on should increase brightness of all by 2") {
+    test("Part2 example turn on should increase brightness of one light to 1") {
         val turnOnOneLight = "turn on 0,0 through 0,0"
 
         val sut = Day06()
         sut.followInstructionsWithBrightness(turnOnOneLight)
         sut.countOfBrightness() shouldBe 1
+    }
+
+    test("Part2 example turn has a floor of 0") {
+        val turnOff = "turn off 0,0 through 2,2"
+
+        val sut = Day06()
+        sut.followInstructionsWithBrightness(turnOff)
+        sut.followInstructionsWithBrightness(turnOff)
+        sut.countOfBrightness() shouldBe 0
     }
 
     test("Part2 example toggle should increase brightness of all by 2") {

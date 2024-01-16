@@ -1,5 +1,7 @@
 package com.pdmoore.aoc
 
+import kotlin.math.max
+
 private const val ARRAY_SIZE = 1000
 
 class Day06 {
@@ -56,7 +58,7 @@ class Day06 {
             val rectangle = parseRectangle(cornersString)
             for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
                 for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                    litLights2D[x][y] -= 0
+                    litLights2D[x][y] = max(0, litLights2D[x][y] - 1)
                 }
             }
         }else {
@@ -137,7 +139,6 @@ class Day06 {
         (0..<ARRAY_SIZE).forEach { x ->
             (0..<ARRAY_SIZE)
                 .asSequence()
-                .filter { litLights2D[x][it] > 0 }
                 .forEach { result += litLights2D[x][it] }
         }
         return result
