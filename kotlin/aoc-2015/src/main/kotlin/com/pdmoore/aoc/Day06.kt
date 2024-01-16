@@ -44,8 +44,6 @@ class Day06 {
         }
     }
 
-
-
     fun followInstructionUsingSet(input: String) {
 
         if (input.startsWith("turn on")) {
@@ -96,10 +94,11 @@ class Day06 {
 
     fun countOfLitLightsUsingArray(): Int {
         var result = 0
-        for (x in 0..999) {
-            for (y in 0..999) {
-                if (litLights2D[x][y] == 1) result++
-            }
+        (0..<ARRAY_SIZE).forEach { x ->
+            (0..<ARRAY_SIZE)
+                .asSequence()
+                .filter { litLights2D[x][it] > 0 }
+                .forEach { result++ }
         }
         return result
     }
