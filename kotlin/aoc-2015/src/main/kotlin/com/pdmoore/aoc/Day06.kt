@@ -33,12 +33,7 @@ class Day06 {
             val rectangle = parseRectangle(cornersString)
             for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
                 for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                    val thisLight = Pair(x, y)
-                    if (litLights2D[x][y] == 1) {
-                        litLights2D[x][y] = 0
-                    } else {
-                        litLights2D[x][y] = 1
-                    }
+                    litLights2D[x][y] = 1 - litLights2D[x][y]
                 }
             }
         }
