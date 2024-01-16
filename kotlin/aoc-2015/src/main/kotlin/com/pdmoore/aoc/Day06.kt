@@ -39,6 +39,37 @@ class Day06 {
         }
     }
 
+    private fun followInstructionsWithBrightness(input: String) {
+        if (input.startsWith("turn on")) {
+            val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
+            val rectangle = parseRectangle(cornersString)
+
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    litLights2D[x][y] += 1
+                }
+            }
+        } else if (input.startsWith("turn off")) {
+            val cornersString = input.substring(input.indexOf("off") + "off".length + 1)
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    litLights2D[x][y] -= 0
+                }
+            }
+        }else {
+            // TOGGLE
+            val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    litLights2D[x][y] += 2
+                }
+            }
+        }
+
+    }
+
     fun followInstructionUsingSet(input: String) {
 
         if (input.startsWith("turn on")) {
@@ -111,6 +142,12 @@ class Day06 {
     fun followInstructionsUsingArray(input: List<String>) {
         for (inputLine in input) {
             followInstructionUsingArray(inputLine)
+        }
+    }
+
+    fun part2(input: List<String>) {
+        for (inputLine in input) {
+            followInstructionsWithBrightness(inputLine)
         }
     }
 }

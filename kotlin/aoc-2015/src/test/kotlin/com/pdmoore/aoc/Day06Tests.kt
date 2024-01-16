@@ -94,4 +94,13 @@ class Day06Tests: FunSpec( {
 
         sut.countOfLitLightsUsingArray() shouldBe 377891
     }
+
+    test("Part 2 solved using 2D Array") {
+        val input = PuzzleInput.asListOfStrings("./data/day06")
+        val sut = Day06()
+
+        sut.part2(input)
+
+        sut.countOfLitLightsUsingArray() shouldBe 14_110_788
+    }
 })
