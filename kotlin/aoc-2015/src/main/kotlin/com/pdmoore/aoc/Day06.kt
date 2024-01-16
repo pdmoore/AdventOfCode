@@ -1,6 +1,6 @@
 package com.pdmoore.aoc
 
-class Day06(maxX: Int, maxY: Int) {
+class Day06 {
 
     val litLights = HashSet<Pair<Int, Int>>()
     val litLights2D: Array<Array<Int>> = Array(1000) { Array(1000) { 0 } }
