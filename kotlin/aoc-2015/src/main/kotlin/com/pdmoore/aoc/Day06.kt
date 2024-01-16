@@ -3,12 +3,49 @@ package com.pdmoore.aoc
 class Day06(maxX: Int, maxY: Int) {
 
     val litLights = HashSet<Pair<Int, Int>>()
+    val litLights2D: Array<Array<Int>> = Array(1000) { Array(1000) { 0 } }
 
     class Rectangle(val upperLeft: Pair<Int, Int>, val lowerRight: Pair<Int, Int>) {
     }
 
+    fun followInstructionUsingArray(input: String) {
+        if (input.startsWith("turn on")) {
+            val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
+            val rectangle = parseRectangle(cornersString)
 
-    fun followInstruction(input: String) {
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    litLights2D[x][y] = 1
+                }
+            }
+        } else if (input.startsWith("turn off")) {
+            val cornersString = input.substring(input.indexOf("off") + "off".length + 1)
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    litLights2D[x][y] = 0
+                }
+            }
+        }else {
+            // TOGGLE
+            val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    val thisLight = Pair(x, y)
+                    if (litLights2D[x][y] == 1) {
+                        litLights2D[x][y] = 0
+                    } else {
+                        litLights2D[x][y] = 1
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    fun followInstructionUsingSet(input: String) {
 
         if (input.startsWith("turn on")) {
             val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
@@ -56,15 +93,29 @@ class Day06(maxX: Int, maxY: Int) {
         return rectangle
     }
 
-    fun countOfLitLights(): Int {
+    fun countOfLitLightsUsingArray(): Int {
+        var result = 0
+        for (x in 0..999) {
+            for (y in 0..999) {
+                if (litLights2D[x][y] == 1) result++
+            }
+        }
+        return result
+    }
+
+    fun countOfLitLightsUsingSet(): Int {
         return litLights.size
     }
 
-    fun followInstructions(input: List<String>) {
+    fun followInstructionsUsingSet(input: List<String>) {
         for (inputLine in input) {
-            followInstruction(inputLine)
+            followInstructionUsingSet(inputLine)
         }
     }
 
-
+    fun followInstructionsUsingArray(input: List<String>) {
+        for (inputLine in input) {
+            followInstructionUsingArray(inputLine)
+        }
+    }
 }
