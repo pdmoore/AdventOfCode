@@ -27,7 +27,7 @@ class Day06 {
                     litLights2D[x][y] = 0
                 }
             }
-        }else {
+        } else {
             // TOGGLE
             val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
             val rectangle = parseRectangle(cornersString)
@@ -39,7 +39,9 @@ class Day06 {
         }
     }
 
-    private fun followInstructionsWithBrightness(input: String) {
+    // TODO - use a CTOR flag when constructing which changes toggle behavior
+    // then combine this and the above
+    fun followInstructionsWithBrightness(input: String) {
         if (input.startsWith("turn on")) {
             val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
             val rectangle = parseRectangle(cornersString)
@@ -125,6 +127,18 @@ class Day06 {
                 .asSequence()
                 .filter { litLights2D[x][it] > 0 }
                 .forEach { result++ }
+        }
+        return result
+    }
+
+
+    fun countOfBrightness(): Int {
+        var result = 0
+        (0..<ARRAY_SIZE).forEach { x ->
+            (0..<ARRAY_SIZE)
+                .asSequence()
+                .filter { litLights2D[x][it] > 0 }
+                .forEach { result += litLights2D[x][it] }
         }
         return result
     }

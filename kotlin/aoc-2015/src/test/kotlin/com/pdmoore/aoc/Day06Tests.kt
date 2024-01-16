@@ -95,12 +95,28 @@ class Day06Tests: FunSpec( {
         sut.countOfLitLightsUsingArray() shouldBe 377891
     }
 
+    test("Part2 example turn on should increase brightness of all by 2") {
+        val turnOnOneLight = "turn on 0,0 through 0,0"
+
+        val sut = Day06()
+        sut.followInstructionsWithBrightness(turnOnOneLight)
+        sut.countOfBrightness() shouldBe 1
+    }
+
+    test("Part2 example toggle should increase brightness of all by 2") {
+        val toggle = "toggle 0,0 through 999,999"
+
+        val sut = Day06()
+        sut.followInstructionsWithBrightness(toggle)
+        sut.countOfBrightness() shouldBe 2_000_000
+    }
+
     test("Part 2 solved using 2D Array") {
         val input = PuzzleInput.asListOfStrings("./data/day06")
         val sut = Day06()
 
         sut.part2(input)
 
-        sut.countOfLitLightsUsingArray() shouldBe 14_110_788
+        sut.countOfBrightness() shouldBe 14_110_788
     }
 })
