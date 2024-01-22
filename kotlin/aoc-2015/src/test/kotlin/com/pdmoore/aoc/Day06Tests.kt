@@ -17,7 +17,7 @@ class Day06Tests: FunSpec( {
         val input = "turn on 0,0 through 2,2"
 
         val sut = Day06.ProcessVia2DArray()
-        sut.processEachInstruction(input)
+        sut.processSingleInstruction(input)
         sut.countOfLitLightsUsingArray() shouldBe 9
     }
 
@@ -36,8 +36,8 @@ class Day06Tests: FunSpec( {
         val turnOff = "turn off 0,0 through 2,2"
 
         val sut = Day06.ProcessVia2DArray(listOf<String>())
-        sut.processEachInstruction(turnOn)
-        sut.processEachInstruction(turnOff)
+        sut.processSingleInstruction(turnOn)
+        sut.processSingleInstruction(turnOff)
         sut.countOfLitLightsUsingArray() shouldBe 0
     }
 
@@ -53,7 +53,7 @@ class Day06Tests: FunSpec( {
         val toggleOn = "toggle 0,0 through 2,2"
 
         val sut = Day06.ProcessVia2DArray()
-        sut.processEachInstruction(toggleOn)
+        sut.processSingleInstruction(toggleOn)
 
         sut.countOfLitLightsUsingArray() shouldBe 9
     }
@@ -73,8 +73,8 @@ class Day06Tests: FunSpec( {
         val toggleOff = "toggle 0,0 through 2,2"
 
         val sut = Day06.ProcessVia2DArray()
-        sut.processEachInstruction(turnOn)
-        sut.processEachInstruction(toggleOff)
+        sut.processSingleInstruction(turnOn)
+        sut.processSingleInstruction(toggleOff)
         sut.countOfLitLightsUsingArray() shouldBe 0
     }
 
@@ -91,7 +91,7 @@ class Day06Tests: FunSpec( {
         val input = PuzzleInput.asListOfStrings("./data/day06")
         val sut = Day06.ProcessVia2DArray(input)
 
-        sut.processInstructions()
+        sut.processAllInstructions()
 
         sut.countOfLitLightsUsingArray() shouldBe 377891
     }

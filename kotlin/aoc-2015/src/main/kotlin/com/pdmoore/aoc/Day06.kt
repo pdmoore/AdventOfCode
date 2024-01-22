@@ -11,20 +11,14 @@ class Day06 {
 
     class Rectangle(val upperLeft: Pair<Int, Int>, val lowerRight: Pair<Int, Int>)
 
-    abstract class AbstractProcessor() {
-        private fun parseRectangle(rhs: String): Rectangle {
-            val split = rhs.split(" through ")
-            val startCoords = split[0].split(",")
-            val xFrom = startCoords[0].trim().toInt()
-            val yFrom = startCoords[1].trim().toInt()
-            val endCoords = split[1].split(",")
-            val xTo = endCoords[0].trim().toInt()
-            val yTo = endCoords[1].trim().toInt()
-            val rectangle = Rectangle(Pair(xFrom, yFrom), Pair(xTo, yTo))
-            return rectangle
+    abstract class AbstractProcessor(val input: List<String>) {
+        fun processAllInstructions() {
+            for (inputLine in input) {
+                processSingleInstruction(inputLine)
+            }
         }
 
-        fun processEachInstruction(input: String) {
+        fun processSingleInstruction(input: String) {
             if (input.startsWith("turn on")) {
                 val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
                 val rectangle = parseRectangle(cornersString)
@@ -56,9 +50,22 @@ class Day06 {
         abstract fun turnOnAction(x: Int, y: Int)
         abstract fun turnOffAction(x: Int, y: Int)
         abstract fun toggleAction(x: Int, y: Int)
+
+        private fun parseRectangle(rhs: String): Rectangle {
+            val split = rhs.split(" through ")
+            val startCoords = split[0].split(",")
+            val xFrom = startCoords[0].trim().toInt()
+            val yFrom = startCoords[1].trim().toInt()
+            val endCoords = split[1].split(",")
+            val xTo = endCoords[0].trim().toInt()
+            val yTo = endCoords[1].trim().toInt()
+            val rectangle = Rectangle(Pair(xFrom, yFrom), Pair(xTo, yTo))
+            return rectangle
+        }
+
     }
 
-    class ProcessVia2DArray(val input: List<String>) : AbstractProcessor() {
+    class ProcessVia2DArray(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
         val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
@@ -85,19 +92,8 @@ class Day06 {
             }
             return result
         }
-
-        fun processInstructions() {
-            for (inputLine in input) {
-                processEachInstruction(inputLine)
-            }
-        }
     }
 
-
-//    fun followInstructionUsing2DArray(input: String) {
-//        // TODO push param to Abstract ctor
-//        val processor = ProcessVia2DArray(input)
-//    }
 
     // TODO - use a CTOR flag when constructing which changes toggle behavior
     // then combine this and the above
@@ -211,12 +207,6 @@ class Day06 {
             followInstructionUsingSet(inputLine)
         }
     }
-
-//    fun followInstructionsUsingArray(input: List<String>) {
-//        for (inputLine in input) {
-//            followInstructionUsing2DArray(inputLine)
-//        }
-//    }
 
     fun part2(input: List<String>) {
         for (inputLine in input) {
