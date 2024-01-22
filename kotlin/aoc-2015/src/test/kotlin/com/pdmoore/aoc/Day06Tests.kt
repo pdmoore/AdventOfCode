@@ -99,33 +99,33 @@ class Day06Tests: FunSpec( {
     test("Part2 example turn on should increase brightness of one light to 1") {
         val turnOnOneLight = "turn on 0,0 through 0,0"
 
-        val sut = Day06()
-        sut.followInstructionsWithBrightness(turnOnOneLight)
+        val sut = Day06.ProcessViaBrightness()
+        sut.processSingleInstruction(turnOnOneLight)
         sut.countOfBrightness() shouldBe 1
     }
 
     test("Part2 example turn has a floor of 0") {
         val turnOff = "turn off 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionsWithBrightness(turnOff)
-        sut.followInstructionsWithBrightness(turnOff)
+        val sut = Day06.ProcessViaBrightness()
+        sut.processSingleInstruction(turnOff)
+        sut.processSingleInstruction(turnOff)
         sut.countOfBrightness() shouldBe 0
     }
 
     test("Part2 example toggle should increase brightness of all by 2") {
         val toggle = "toggle 0,0 through 999,999"
 
-        val sut = Day06()
-        sut.followInstructionsWithBrightness(toggle)
+        val sut = Day06.ProcessViaBrightness()
+        sut.processSingleInstruction(toggle)
         sut.countOfBrightness() shouldBe 2_000_000
     }
 
     test("Part 2 solved using 2D Array") {
         val input = PuzzleInput.asListOfStrings("./data/day06")
-        val sut = Day06()
+        val sut = Day06.ProcessViaBrightness(input)
 
-        sut.part2(input)
+        sut.processAllInstructions()
 
         sut.countOfBrightness() shouldBe 14_110_788
     }

@@ -62,9 +62,9 @@ class Day06 {
             val rectangle = Rectangle(Pair(xFrom, yFrom), Pair(xTo, yTo))
             return rectangle
         }
-
     }
 
+    // TODO combine 2D and Brightness into one, just different turn on/off toggle behaviors
     class ProcessVia2DArray(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
@@ -94,38 +94,32 @@ class Day06 {
         }
     }
 
+    class ProcessViaBrightness(input: List<String>) : AbstractProcessor(input) {
+        constructor() : this(emptyList())
 
-    // TODO - use a CTOR flag when constructing which changes toggle behavior
-    // then combine this and the above
-    fun followInstructionsWithBrightness(input: String) {
-        if (input.startsWith("turn on")) {
-            val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
-            val rectangle = parseRectangle(cornersString)
+        val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
 
-            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                    litLights2D[x][y] += 1
-                }
-            }
-        } else if (input.startsWith("turn off")) {
-            val cornersString = input.substring(input.indexOf("off") + "off".length + 1)
-            val rectangle = parseRectangle(cornersString)
-            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                    litLights2D[x][y] = max(0, litLights2D[x][y] - 1)
-                }
-            }
-        }else {
-            // TOGGLE
-            val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
-            val rectangle = parseRectangle(cornersString)
-            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                    litLights2D[x][y] += 2
-                }
-            }
+        override fun turnOnAction(x: Int, y: Int) {
+            litLights2D[x][y] += 1
         }
 
+        override fun turnOffAction(x: Int, y: Int) {
+            litLights2D[x][y] = max(0, litLights2D[x][y] - 1)
+        }
+
+        override fun toggleAction(x: Int, y: Int) {
+            litLights2D[x][y] += 2
+        }
+
+        fun countOfBrightness(): Int {
+            var result = 0
+            (0..<ARRAY_SIZE).forEach { x ->
+                (0..<ARRAY_SIZE)
+                    .asSequence()
+                    .forEach { result += litLights2D[x][it] }
+            }
+            return result
+        }
     }
 
     fun followInstructionUsingSet(input: String) {
@@ -176,16 +170,6 @@ class Day06 {
         return rectangle
     }
 
-    fun countOfBrightness(): Int {
-        var result = 0
-        (0..<ARRAY_SIZE).forEach { x ->
-            (0..<ARRAY_SIZE)
-                .asSequence()
-                .forEach { result += litLights2D[x][it] }
-        }
-        return result
-    }
-
     fun countOfLitLightsUsingSet(): Int {
         return litLights.size
     }
@@ -193,12 +177,6 @@ class Day06 {
     fun followInstructionsUsingSet(input: List<String>) {
         for (inputLine in input) {
             followInstructionUsingSet(inputLine)
-        }
-    }
-
-    fun part2(input: List<String>) {
-        for (inputLine in input) {
-            followInstructionsWithBrightness(inputLine)
         }
     }
 }
