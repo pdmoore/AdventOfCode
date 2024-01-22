@@ -176,18 +176,6 @@ class Day06 {
         return rectangle
     }
 
-    fun countOfLitLightsUsingArray(): Int {
-        var result = 0
-        (0..<ARRAY_SIZE).forEach { x ->
-            (0..<ARRAY_SIZE)
-                .asSequence()
-                .filter { litLights2D[x][it] > 0 }
-                .forEach { result++ }
-        }
-        return result
-    }
-
-
     fun countOfBrightness(): Int {
         var result = 0
         (0..<ARRAY_SIZE).forEach { x ->
