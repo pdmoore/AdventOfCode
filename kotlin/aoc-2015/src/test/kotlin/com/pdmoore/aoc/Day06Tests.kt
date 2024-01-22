@@ -7,9 +7,10 @@ class Day06Tests: FunSpec( {
 
     test("Turn on command will turn on all lights in the rectangle") {
         val input = "turn on 0,0 through 2,2"
+        val sut = Day06.ProcessViaSet()
 
-        val sut = Day06()
-        sut.followInstructionUsingSet(input)
+        sut.processSingleInstruction(input)
+
         sut.countOfLitLightsUsingSet() shouldBe 9
     }
 
@@ -24,28 +25,31 @@ class Day06Tests: FunSpec( {
     test("Turn off command will turn off all lights in the rectangle") {
         val turnOn = "turn on 0,0 through 2,2"
         val turnOff = "turn off 0,0 through 2,2"
+        val sut = Day06.ProcessViaSet()
 
-        val sut = Day06()
-        sut.followInstructionUsingSet(turnOn)
-        sut.followInstructionUsingSet(turnOff)
+        sut.processSingleInstruction(turnOn)
+        sut.processSingleInstruction(turnOff)
+
         sut.countOfLitLightsUsingSet() shouldBe 0
     }
 
     test("Turn off command will turn off all lights in the rectangle - 2D array impl") {
         val turnOn = "turn on 0,0 through 2,2"
         val turnOff = "turn off 0,0 through 2,2"
+        val sut = Day06.ProcessVia2DArray()
 
-        val sut = Day06.ProcessVia2DArray(listOf<String>())
         sut.processSingleInstruction(turnOn)
         sut.processSingleInstruction(turnOff)
+
         sut.countOfLitLightsUsingArray() shouldBe 0
     }
 
     test("Toggle command will turn lights on that are off") {
         val toggleOn = "toggle 0,0 through 2,2"
+        val sut = Day06.ProcessViaSet()
 
-        val sut = Day06()
-        sut.followInstructionUsingSet(toggleOn)
+        sut.processSingleInstruction(toggleOn)
+
         sut.countOfLitLightsUsingSet() shouldBe 9
     }
 
@@ -62,9 +66,11 @@ class Day06Tests: FunSpec( {
         val turnOn = "turn on 0,0 through 2,2"
         val toggleOff = "toggle 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionUsingSet(turnOn)
-        sut.followInstructionUsingSet(toggleOff)
+        val sut = Day06.ProcessViaSet()
+
+        sut.processSingleInstruction(turnOn)
+        sut.processSingleInstruction(toggleOff)
+
         sut.countOfLitLightsUsingSet() shouldBe 0
     }
 
@@ -80,9 +86,9 @@ class Day06Tests: FunSpec( {
 
     test("Part 1 solved using a Set takes 7 seconds") {
         val input = PuzzleInput.asListOfStrings("./data/day06")
-        val sut = Day06()
+        val sut = Day06.ProcessViaSet(input)
 
-        sut.followInstructionsUsingSet(input)
+        sut.processAllInstructions()
 
         sut.countOfLitLightsUsingSet() shouldBe 377891
     }
