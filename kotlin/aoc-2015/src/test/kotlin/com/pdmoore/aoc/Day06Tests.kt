@@ -16,8 +16,8 @@ class Day06Tests: FunSpec( {
     test("Turn on command will turn on all lights in the rectangle - 2D int array impl") {
         val input = "turn on 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionUsingArray(input)
+        val sut = Day06.ProcessVia2DArray()
+        sut.processEachInstruction(input)
         sut.countOfLitLightsUsingArray() shouldBe 9
     }
 
@@ -35,9 +35,9 @@ class Day06Tests: FunSpec( {
         val turnOn = "turn on 0,0 through 2,2"
         val turnOff = "turn off 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionUsingArray(turnOn)
-        sut.followInstructionUsingArray(turnOff)
+        val sut = Day06.ProcessVia2DArray(listOf<String>())
+        sut.processEachInstruction(turnOn)
+        sut.processEachInstruction(turnOff)
         sut.countOfLitLightsUsingArray() shouldBe 0
     }
 
@@ -52,8 +52,9 @@ class Day06Tests: FunSpec( {
     test("Toggle command will turn lights on that are off - 2D array impl") {
         val toggleOn = "toggle 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionUsingArray(toggleOn)
+        val sut = Day06.ProcessVia2DArray()
+        sut.processEachInstruction(toggleOn)
+
         sut.countOfLitLightsUsingArray() shouldBe 9
     }
 
@@ -71,9 +72,9 @@ class Day06Tests: FunSpec( {
         val turnOn = "turn on 0,0 through 2,2"
         val toggleOff = "toggle 0,0 through 2,2"
 
-        val sut = Day06()
-        sut.followInstructionUsingArray(turnOn)
-        sut.followInstructionUsingArray(toggleOff)
+        val sut = Day06.ProcessVia2DArray()
+        sut.processEachInstruction(turnOn)
+        sut.processEachInstruction(toggleOff)
         sut.countOfLitLightsUsingArray() shouldBe 0
     }
 
@@ -88,9 +89,9 @@ class Day06Tests: FunSpec( {
 
     test("Part 1 solved using 2D Array takes less than 1/2 second") {
         val input = PuzzleInput.asListOfStrings("./data/day06")
-        val sut = Day06()
+        val sut = Day06.ProcessVia2DArray(input)
 
-        sut.followInstructionsUsingArray(input)
+        sut.processInstructions()
 
         sut.countOfLitLightsUsingArray() shouldBe 377891
     }
