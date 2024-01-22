@@ -7,7 +7,6 @@ private const val ARRAY_SIZE = 1000
 class Day06 {
 
     val litLights = HashSet<Pair<Int, Int>>()
-    val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
 
     class Rectangle(val upperLeft: Pair<Int, Int>, val lowerRight: Pair<Int, Int>)
 
