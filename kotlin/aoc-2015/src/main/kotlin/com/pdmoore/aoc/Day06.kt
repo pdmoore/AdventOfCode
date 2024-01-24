@@ -64,7 +64,6 @@ class Day06 {
         }
     }
 
-    // TODO combine 2D and Brightness into one, just different turn on/off toggle behaviors
     class ProcessVia2DArray(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
