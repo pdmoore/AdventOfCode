@@ -16,17 +16,21 @@ class Day06 {
         enum class Command { ON, OFF, TOGGLE }
 
         fun processSingleInstruction(input: String) {
-            var command = Command.OFF
             var cornersString = ""
-            if (input.contains("on")) {
-                command = Command.ON
-                cornersString = input.substring(input.indexOf("on") + "on".length + 1)
-            } else if (input.contains("off")) {
-                command = Command.OFF
-                cornersString = input.substring(input.indexOf("off") + "off".length + 1)
-            } else if (input.contains("toggle")) {
-                command = Command.TOGGLE
-                cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+            var command = Command.OFF
+            when {
+                input.contains("on") -> {
+                    command = Command.ON
+                    cornersString = input.substring(input.indexOf("on") + "on".length + 1)
+                }
+                input.contains("off") -> {
+                    command = Command.OFF
+                    cornersString = input.substring(input.indexOf("off") + "off".length + 1)
+                }
+                input.contains("toggle") -> {
+                    command = Command.TOGGLE
+                    cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+                }
             }
 
             val rectangle = parseRectangle(cornersString)
