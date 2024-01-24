@@ -6,37 +6,36 @@ private const val ARRAY_SIZE = 1000
 
 class Day06 {
 
-    abstract class AbstractProcessor(val input: List<String>) {
+    abstract class AbstractProcessor(private val input: List<String>) {
         fun processAllInstructions() {
             for (inputLine in input) {
                 processSingleInstruction(inputLine)
             }
         }
 
+        enum class Command { ON, OFF, TOGGLE }
+
         fun processSingleInstruction(input: String) {
-            if (input.startsWith("turn on")) {
-                val cornersString = input.substring(input.indexOf("on") + "on".length + 1)
-                val rectangle = parseRectangle(cornersString)
-                for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                    for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                        turnOnAction(x, y)
-                    }
-                }
-            } else if (input.startsWith("turn off")) {
-                val cornersString = input.substring(input.indexOf("off") + "off".length + 1)
-                val rectangle = parseRectangle(cornersString)
-                for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                    for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                        turnOffAction(x, y)
-                    }
-                }
-            } else {
-                // TOGGLE
-                val cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
-                val rectangle = parseRectangle(cornersString)
-                for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
-                    for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
-                        toggleAction(x, y)
+            var command = Command.OFF
+            var cornersString = ""
+            if (input.contains("on")) {
+                command = Command.ON
+                cornersString = input.substring(input.indexOf("on") + "on".length + 1)
+            } else if (input.contains("off")) {
+                command = Command.OFF
+                cornersString = input.substring(input.indexOf("off") + "off".length + 1)
+            } else if (input.contains("toggle")) {
+                command = Command.TOGGLE
+                cornersString = input.substring(input.indexOf("toggle") + "toggle".length + 1)
+            }
+
+            val rectangle = parseRectangle(cornersString)
+            for (x in rectangle.upperLeft.first..rectangle.lowerRight.first) {
+                for (y in rectangle.upperLeft.second..rectangle.lowerRight.second) {
+                    when (command) {
+                        Command.ON -> turnOnAction(x, y)
+                        Command.OFF -> turnOffAction(x, y)
+                        Command.TOGGLE -> toggleAction(x, y)
                     }
                 }
             }
@@ -65,7 +64,7 @@ class Day06 {
     class ProcessVia2DArray(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
-        val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
+        private val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
 
         override fun turnOnAction(x: Int, y: Int) {
             litLights2D[x][y] = 1
@@ -94,7 +93,7 @@ class Day06 {
     class ProcessViaBrightness(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
-        val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
+        private val litLights2D: Array<Array<Int>> = Array(ARRAY_SIZE) { Array(ARRAY_SIZE) { 0 } }
 
         override fun turnOnAction(x: Int, y: Int) {
             litLights2D[x][y] += 1
@@ -122,7 +121,7 @@ class Day06 {
     class ProcessViaSet(input: List<String>) : AbstractProcessor(input) {
         constructor() : this(emptyList())
 
-        val litLights = HashSet<Pair<Int, Int>>()
+        private val litLights = HashSet<Pair<Int, Int>>()
 
         override fun turnOnAction(x: Int, y: Int) {
             litLights.add(Pair(x, y))
