@@ -81,10 +81,10 @@ class Day06 {
         fun countOfLitLightsUsingArray(): Int {
             var result = 0
             (0..<ARRAY_SIZE).forEach { x ->
-                (0..<ARRAY_SIZE)
+                repeat((0..<ARRAY_SIZE)
                     .asSequence()
-                    .filter { litLights2D[x][it] > 0 }
-                    .forEach { result++ }
+                    .filter { litLights2D[x][it] > 0 }.count()
+                ) { result++ }
             }
             return result
         }
