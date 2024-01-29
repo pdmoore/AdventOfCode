@@ -7,7 +7,7 @@ class Day07Tests: FunSpec( {
 
     /*
 DONE    signal to ID    123 -> x
-    AND gate        x AND y -> d
+DONE    AND gate        x AND y -> d
     OR gate         x OR y -> e
     LSHIFT gate     x LSHIFT 2 -> f
     RSHIFT gate     y RSHIFT 2 -> g
@@ -34,14 +34,10 @@ y: 456
     }
 
     test("AND gate") {
-        val inAssignX = "123 -> x"
-        val inAssignY = "456 -> y"
-        val input = "x AND y -> d"
+        val input = listOf("123 -> x", "456 -> y", "x AND y -> d")
 
         val sut = Day07()
-        sut.processInputLine(inAssignX)
-        sut.processInputLine(inAssignY)
-        sut.processInputLine(input)
+        sut.processInput(input)
 
         sut.valueOf("d") shouldBe 72
 

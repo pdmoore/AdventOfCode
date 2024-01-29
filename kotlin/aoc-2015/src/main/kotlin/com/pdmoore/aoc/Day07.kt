@@ -27,4 +27,8 @@ class Day07 {
         return IDtoSignal.get(identifier)!!
     }
 
+    fun processInput(input: List<String>) {
+        input.forEach { inputLine -> processInputLine(inputLine) }
+    }
+
 }
