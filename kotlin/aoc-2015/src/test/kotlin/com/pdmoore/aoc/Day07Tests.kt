@@ -1,6 +1,7 @@
 package com.pdmoore.aoc
 
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 class Day07Tests: FunSpec( {
 
@@ -22,5 +23,15 @@ i: 65079
 x: 123
 y: 456
      */
+
+    test("signal to ID simplay assigns a value to an identifier") {
+        val input = "123 -> x"
+
+        val sut = Day07()
+        sut.processInputLine(input)
+
+        sut.valueOf("x") shouldBe 123
+    }
+
 
 })
