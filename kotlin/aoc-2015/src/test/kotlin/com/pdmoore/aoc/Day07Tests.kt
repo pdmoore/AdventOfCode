@@ -40,6 +40,15 @@ y: 456
         sut.processInput(input)
 
         sut.valueOf("d") shouldBe 72
+    }
+
+    test("OR gate") {
+        val input = listOf("123 -> x", "456 -> y", "x OR y -> e")
+
+        val sut = Day07()
+        sut.processInput(input)
+
+        sut.valueOf("e") shouldBe 507
 
     }
 
