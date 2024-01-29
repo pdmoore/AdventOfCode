@@ -19,6 +19,15 @@ class Day07 {
             val rhs = identifierToSignal[splitOr[1]]
 
             identifierToSignal[split[1]] = lhs?.or(rhs!!) ?: -88
+        } else if (split[0].contains("LSHIFT")) {
+            //x LSHIFT 2
+            val splitLshift = split[0].split(" LSHIFT ")
+            val lhs = identifierToSignal[splitLshift[0]]
+            val rhs = splitLshift[1].toInt()
+
+            if (lhs != null) {
+                identifierToSignal[split[1]] = lhs shl rhs
+            }
         } else {
             identifierToSignal[split[1]] = split[0].toInt()
         }
