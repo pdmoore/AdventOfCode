@@ -9,8 +9,8 @@ class Day07 {
 
         if (split[0].contains("AND")) {
             val splitAnd = split[0].split(" AND ")
-            val lhs = identifierToSignal.get(splitAnd[0])
-            val rhs = identifierToSignal.get(splitAnd[1])
+            val lhs = identifierToSignal[splitAnd[0]]
+            val rhs = identifierToSignal[splitAnd[1]]
 
             identifierToSignal[split[1]] = lhs?.and(rhs!!) ?: -99
         } else {
@@ -20,7 +20,7 @@ class Day07 {
     }
 
     fun valueOf(identifier: String): Int {
-        return identifierToSignal.get(identifier)!!
+        return identifierToSignal[identifier]!!
     }
 
     fun processInput(input: List<String>) {
