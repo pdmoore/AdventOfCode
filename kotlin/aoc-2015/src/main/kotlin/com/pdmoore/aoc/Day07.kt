@@ -20,7 +20,7 @@ class Day07 {
     }
 
     fun valueOf(identifier: String): Int {
-        return identifierToSignal[identifier]!!
+        return identifierToSignal.getValue(identifier)
     }
 
     fun processInput(input: List<String>) {
