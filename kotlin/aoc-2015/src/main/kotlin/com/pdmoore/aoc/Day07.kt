@@ -22,6 +22,12 @@ class Day07 {
 
                 identifierToSignal[split[1]] = lhs?.or(rhs!!) ?: -88
             }
+            split.contains("NOT") -> {
+                val splitNot = split[0].split("NOT ")
+                val rhs = identifierToSignal[splitNot[0]]
+
+                identifierToSignal[split[1]] = rhs!!.inv()
+            }
             split[0].contains("LSHIFT") -> {
                 val splitLshift = split[0].split(" LSHIFT ")
                 val lhs = identifierToSignal[splitLshift[0]]

@@ -10,7 +10,7 @@ DONE    signal to ID    123 -> x
 DONE    AND gate        x AND y -> d
 DONE    OR gate         x OR y -> e
 DONE    LSHIFT gate     x LSHIFT 2 -> f
-    RSHIFT gate     y RSHIFT 2 -> g
+DONE    RSHIFT gate     y RSHIFT 2 -> g
     NOT gate        NOT x -> h
 
     example final states
@@ -50,6 +50,15 @@ y: 456
 
         sut.valueOf("e") shouldBe 507
 
+    }
+
+    test("NOT gate") {
+        val input = listOf("123 -> x", "NOT x -> h")
+
+        val sut = Day07()
+        sut.processInput(input)
+
+        sut.valueOf("h") shouldBe 65412
     }
 
     test("LSHIFT gate") {
