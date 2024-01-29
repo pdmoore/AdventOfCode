@@ -12,9 +12,9 @@ class Day07 {
             val lhs = identifierToSignal.get(splitAnd[0])
             val rhs = identifierToSignal.get(splitAnd[1])
 
-            identifierToSignal.put(split[1], lhs?.and(rhs!!) ?: -99)
+            identifierToSignal[split[1]] = lhs?.and(rhs!!) ?: -99
         } else {
-            identifierToSignal.put(split[1], split[0].toInt())
+            identifierToSignal[split[1]] = split[0].toInt()
         }
 
     }
