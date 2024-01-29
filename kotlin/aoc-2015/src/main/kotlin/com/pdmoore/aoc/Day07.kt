@@ -13,6 +13,12 @@ class Day07 {
             val rhs = identifierToSignal[splitAnd[1]]
 
             identifierToSignal[split[1]] = lhs?.and(rhs!!) ?: -99
+        } else if (split[0].contains("OR")) {
+            val splitOr = split[0].split(" OR ")
+            val lhs = identifierToSignal[splitOr[0]]
+            val rhs = identifierToSignal[splitOr[1]]
+
+            identifierToSignal[split[1]] = lhs?.or(rhs!!) ?: -88
         } else {
             identifierToSignal[split[1]] = split[0].toInt()
         }

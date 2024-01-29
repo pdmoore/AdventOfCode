@@ -8,7 +8,7 @@ class Day07Tests: FunSpec( {
     /*
 DONE    signal to ID    123 -> x
 DONE    AND gate        x AND y -> d
-    OR gate         x OR y -> e
+DONE    OR gate         x OR y -> e
     LSHIFT gate     x LSHIFT 2 -> f
     RSHIFT gate     y RSHIFT 2 -> g
     NOT gate        NOT x -> h
@@ -50,6 +50,15 @@ y: 456
 
         sut.valueOf("e") shouldBe 507
 
+    }
+
+    test("LSHIFT gate") {
+        val input = listOf("123 -> x", "x LSHIFT 2 -> f")
+
+        val sut = Day07()
+        sut.processInput(input)
+
+        sut.valueOf("f") shouldBe 492
     }
 
 })
