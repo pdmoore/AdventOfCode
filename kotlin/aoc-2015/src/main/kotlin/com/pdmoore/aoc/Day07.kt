@@ -22,16 +22,22 @@ class Day07 {
 
                 identifierToSignal[split[1]] = lhs?.or(rhs!!) ?: -88
             }
-            split.contains("NOT") -> {
+            split[0].contains("NOT") -> {
                 val splitNot = split[0].split("NOT ")
-                val rhs = identifierToSignal[splitNot[0]]
+                val rhs = identifierToSignal[splitNot[1]]
 
-                identifierToSignal[split[1]] = rhs!!.inv()
+                // TODO - expecting 65412 0b1111111110000100
+                // getting            121 0b0000000001111001
+
+//                identifierToSignal[split[1]] = rhs!!.inv()
+                identifierToSignal[split[1]] = 65535 - rhs!!
             }
             split[0].contains("LSHIFT") -> {
                 val splitLshift = split[0].split(" LSHIFT ")
                 val lhs = identifierToSignal[splitLshift[0]]
                 val rhs = splitLshift[1].toInt()
+
+//                identifierToSignal[split[1]] = lhs!! shl rhs
 
                 if (lhs != null) {
                     identifierToSignal[split[1]] = lhs shl rhs
