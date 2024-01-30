@@ -26,10 +26,6 @@ class Day07 {
                 val splitNot = split[0].split("NOT ")
                 val rhs = identifierToSignal[splitNot[1]]
 
-                // TODO - expecting 65412 0b1111111110000100
-                // getting            121 0b0000000001111001
-
-//                identifierToSignal[split[1]] = rhs!!.inv()
                 identifierToSignal[split[1]] = 65535 - rhs!!
             }
             split[0].contains("LSHIFT") -> {
