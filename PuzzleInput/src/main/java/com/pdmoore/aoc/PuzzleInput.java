@@ -17,7 +17,7 @@ public class PuzzleInput {
 
     // To use in a new project
     // File | Project Structure
-    // Project Settings | Libraries
+    // Project Structure | Libraries
     // + | Java
     // Navigate to PuzzleInput project's \out directory and drill down to the jar file
 
