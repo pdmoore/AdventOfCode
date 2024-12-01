@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 class Day01 {
     private void populateIntegerListsFrom(List<String> input, List<Integer> firstList, List<Integer> secondList) {
         for (String s : input) {
-            var s1 = s.split("[ ]{3,}");
+            var s1 = s.split(" {3,}");
             firstList.add(Integer.parseInt(s1[0]));
             secondList.add(Integer.parseInt(s1[1]));
         }
