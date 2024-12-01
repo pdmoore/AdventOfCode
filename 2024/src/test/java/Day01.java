@@ -33,14 +33,10 @@ public class Day01 {
             secondListAppearance.put(integer, secondListAppearance.getOrDefault(integer, 0) + 1);
         }
 
-        int result = 0;
-        for (Integer i : firstList) {
-
-            Integer i1 = secondListAppearance.getOrDefault(i, 0);
-            result += i * i1;
-        }
-
-        return result;
+        return IntStream
+                .range(0, firstList.size())
+                .map(i -> firstList.get(i) * secondListAppearance.getOrDefault(firstList.get(i), 0))
+                .sum();
     }
     @Test
     void part1_example_solved() {
