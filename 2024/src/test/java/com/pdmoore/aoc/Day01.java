@@ -1,4 +1,5 @@
-import com.pdmoore.aoc.PuzzleInput;
+package com.pdmoore.aoc;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class Day01 {
+class Day01 {
     private void populateIntegerListsFrom(List<String> input, List<Integer> firstList, List<Integer> secondList) {
         for (String s : input) {
             var s1 = s.split("   ");
