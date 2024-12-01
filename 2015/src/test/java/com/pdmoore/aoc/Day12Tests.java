@@ -31,7 +31,11 @@ public class Day12Tests {
     }
 
     @Test
-    @Disabled("How to handle array in an array in an array")
+//    @Disabled("How to handle array in an array in an array")
+    // TODO - walk through debugger
+    // there are nested JSON objects (arrays) and need to drill into the innermost
+    // one until a number is found
+    // or is there a JSON way to grab that without recursively drilling in?
     void sumArray_EmbeddedArrays() {
         String input = "[[[3]]]";
 
