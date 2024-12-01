@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Day01 {
     private void populateIntegerListsFrom(List<String> input, List<Integer> firstList, List<Integer> secondList) {
@@ -20,11 +21,10 @@ public class Day01 {
         Collections.sort(firstList);
         Collections.sort(secondList);
 
-        int result = 0;
-        for (int i = 0; i < firstList.size(); i++) {
-            result += Math.abs(firstList.get(i) - secondList.get(i));
-        }
-        return result;
+        return IntStream
+                .range(0, firstList.size())
+                .map(i -> Math.abs(firstList.get(i) - secondList.get(i)))
+                .sum();
     }
 
     private int computeSimilarityScore(List<Integer> firstList, List<Integer> secondList) {
