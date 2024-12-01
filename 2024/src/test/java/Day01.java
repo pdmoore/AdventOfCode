@@ -29,9 +29,9 @@ public class Day01 {
 
     private int computeSimilarityScore(List<Integer> firstList, List<Integer> secondList) {
         HashMap<Integer, Integer> secondListAppearance = new HashMap<>();
-        secondList.forEach(i -> {
-            secondListAppearance.put(i, secondListAppearance.getOrDefault(i, 0) + 1);
-        });
+        for (Integer integer : secondList) {
+            secondListAppearance.put(integer, secondListAppearance.getOrDefault(integer, 0) + 1);
+        }
 
         int result = 0;
         for (Integer i : firstList) {
