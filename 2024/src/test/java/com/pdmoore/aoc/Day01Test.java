@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
-class Day01 {
+class Day01Test {
     private void populateIntegerListsFrom(List<String> input, List<Integer> firstList, List<Integer> secondList) {
         for (String s : input) {
             var s1 = s.split(" {3,}");
