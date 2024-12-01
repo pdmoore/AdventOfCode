@@ -36,8 +36,7 @@ public class Day01 {
         int result = 0;
         for (Integer i : firstList) {
 
-            Integer i1 = secondListAppearance.get(i);
-            if (null == i1) i1 = 0;
+            Integer i1 = secondListAppearance.getOrDefault(i, 0);
             result += i * i1;
         }
 
