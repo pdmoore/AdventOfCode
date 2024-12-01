@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class Day01 {
@@ -30,7 +31,6 @@ public class Day01 {
 
     @Test
     void part1_example_solved() {
-
         List<String> input = PuzzleInput.asStringListFrom("data/day01_example.txt");
         Assertions.assertEquals(6, input.size());
 
@@ -58,5 +58,44 @@ public class Day01 {
 
         int actual = computeDifferenceInListElements(firstList, secondList);
         Assertions.assertEquals(2166959, actual);
+    }
+
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day01_example.txt");
+
+        List<Integer> firstList = new ArrayList<>();
+        List<Integer> secondList = new ArrayList<>();
+
+        populateIntegerListsFrom(input, firstList, secondList);
+
+        int actual = computeSimilarityScore(firstList, secondList);
+        Assertions.assertEquals(31, actual);
+    }
+
+    private int computeSimilarityScore(List<Integer> firstList, List<Integer> secondList) {
+        // second list, create hash count of elements
+        HashMap<Integer, Integer> secondListAppearance = new HashMap<>();
+        for (Integer i : secondList) {
+            if (secondListAppearance.containsKey(i)) {
+                secondListAppearance.put(i, secondListAppearance.get(i) + 1);
+            } else {
+                secondListAppearance.put(i, 1);
+            }
+        }
+
+        int result = 0;
+        for (Integer i : firstList) {
+
+            Integer i1 = secondListAppearance.get(i);
+            if (null == i1) i1 = 0;
+            result += i * i1;
+        }
+
+
+
+
+        return result;
     }
 }
