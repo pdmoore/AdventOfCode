@@ -34,9 +34,9 @@ class Day01 {
             secondListAppearance.put(integer, secondListAppearance.getOrDefault(integer, 0) + 1);
         }
 
-        return IntStream
-                .range(0, firstList.size())
-                .map(i -> firstList.get(i) * secondListAppearance.getOrDefault(firstList.get(i), 0))
+        return firstList
+                .stream()
+                .mapToInt(integer -> integer * secondListAppearance.getOrDefault(integer, 0))
                 .sum();
     }
     @Test
