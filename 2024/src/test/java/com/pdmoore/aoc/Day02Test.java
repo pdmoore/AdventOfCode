@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day02Test {
 
-
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day02_example.txt");
@@ -18,17 +17,32 @@ public class Day02Test {
         assertEquals(2, actual);
     }
 
-
     @Test
     void part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day02.txt");
 
         int actual = countOfSafeReports(input);
 
-        assertEquals(99, actual);
+        assertEquals(369, actual);
     }
 
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day02_example.txt");
 
+        int actual = countOfTolerantSafeReports(input);
+
+        assertEquals(4, actual);
+    }
+
+    @Test
+    void part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day02.txt");
+
+        int actual = countOfTolerantSafeReports(input);
+
+        assertEquals(428, actual);
+    }
 
     private int countOfSafeReports(List<String> input) {
         int result = 0;
@@ -41,7 +55,6 @@ public class Day02Test {
     }
 
     private boolean isSafe(String line) {
-        //7 6 4 2 1
         String[] levels = line.split(" ");
         int current = Integer.parseInt(levels[0]);
         int second = Integer.parseInt(levels[1]);
@@ -70,5 +83,39 @@ public class Day02Test {
             }
             return true;
         }
+    }
+
+    private int countOfTolerantSafeReports(List<String> input) {
+        int result = 0;
+
+        for (String line: input) {
+            if (isTolerantSafe(line)) result++;
+        }
+
+        return result;
+    }
+
+    private boolean isTolerantSafe(String line) {
+        if (isSafe(line)) {
+            return true;
+        }
+
+        // for each line, slice out one number and test if it's good or not
+        String[] levels = line.split(" ");
+
+        for (int i = 0; i < levels.length; i++) {
+
+            String levelSkip = "";
+            for (int j = 0; j < levels.length; j++) {
+                 if (i != j) {
+                     levelSkip += levels[j] + " ";
+                 }
+            }
+            if (isSafe(levelSkip)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
