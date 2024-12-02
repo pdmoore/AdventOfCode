@@ -45,13 +45,10 @@ class Day02Test {
     }
 
     private int countOfSafeReports(List<String> input) {
-        int result = 0;
-
-        for (String line : input) {
-            if (isSafe(line)) result++;
-        }
-
-        return result;
+        return (int) input
+                .stream()
+                .filter(this::isSafe)
+                .count();
     }
 
     private boolean isSafe(String line) {
@@ -74,13 +71,10 @@ class Day02Test {
     }
 
     private int countOfTolerantSafeReports(List<String> input) {
-        int result = 0;
-
-        for (String line : input) {
-            if (isTolerantSafe(line)) result++;
-        }
-
-        return result;
+        return (int) input
+                .stream()
+                .filter(this::isTolerantSafe)
+                .count();
     }
 
     private boolean isTolerantSafe(String line) {
