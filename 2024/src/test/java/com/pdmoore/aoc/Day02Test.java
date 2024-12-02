@@ -6,7 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day02Test {
+class Day02Test {
 
     @Test
     void part1_example() {
@@ -69,7 +69,6 @@ public class Day02Test {
                     return false;
                 }
             }
-            return true;
         } else {
             // increasing
             for (int i = 1; i < levels.length; i++) {
@@ -81,8 +80,9 @@ public class Day02Test {
                     return false;
                 }
             }
-            return true;
         }
+
+        return true;
     }
 
     private int countOfTolerantSafeReports(List<String> input) {
@@ -105,13 +105,13 @@ public class Day02Test {
 
         for (int i = 0; i < levels.length; i++) {
 
-            String levelSkip = "";
+            StringBuilder levelSkip = new StringBuilder();
             for (int j = 0; j < levels.length; j++) {
                  if (i != j) {
-                     levelSkip += levels[j] + " ";
+                     levelSkip.append(levels[j]).append(" ");
                  }
             }
-            if (isSafe(levelSkip)) {
+            if (isSafe(levelSkip.toString())) {
                 return true;
             }
         }
