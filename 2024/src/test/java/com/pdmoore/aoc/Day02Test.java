@@ -47,7 +47,7 @@ class Day02Test {
     private int countOfSafeReports(List<String> input) {
         int result = 0;
 
-        for (String line: input) {
+        for (String line : input) {
             if (isSafe(line)) result++;
         }
 
@@ -56,29 +56,17 @@ class Day02Test {
 
     private boolean isSafe(String line) {
         String[] levels = line.split(" ");
-        int current = Integer.parseInt(levels[0]);
-        int second = Integer.parseInt(levels[1]);
-        if (current > second) {
-            // decreasing
-            for (int i = 1; i < levels.length; i++) {
-                int next = Integer.parseInt(levels[i]);
-                int delta = current - next;
-                if (delta > 0 && delta <= 3) {
-                    current = next;
-                } else {
-                    return false;
-                }
+        boolean decreasing = Integer.parseInt(levels[0]) > Integer.parseInt(levels[1]);
+        for (int i = 1; i < levels.length; i++) {
+            int next = Integer.parseInt(levels[i]);
+            int delta;
+            if (decreasing) {
+                delta = Integer.parseInt(levels[i - 1]) - next;
+            } else {
+                delta = next - Integer.parseInt(levels[i - 1]);
             }
-        } else {
-            // increasing
-            for (int i = 1; i < levels.length; i++) {
-                int next = Integer.parseInt(levels[i]);
-                int delta = next  - current;
-                if (delta > 0 && delta <= 3) {
-                    current = next;
-                } else {
-                    return false;
-                }
+            if (delta <= 0 || delta > 3) {
+                return false;
             }
         }
 
@@ -88,7 +76,7 @@ class Day02Test {
     private int countOfTolerantSafeReports(List<String> input) {
         int result = 0;
 
-        for (String line: input) {
+        for (String line : input) {
             if (isTolerantSafe(line)) result++;
         }
 
@@ -107,9 +95,9 @@ class Day02Test {
 
             StringBuilder levelSkip = new StringBuilder();
             for (int j = 0; j < levels.length; j++) {
-                 if (i != j) {
-                     levelSkip.append(levels[j]).append(" ");
-                 }
+                if (i != j) {
+                    levelSkip.append(levels[j]).append(" ");
+                }
             }
             if (isSafe(levelSkip.toString())) {
                 return true;
