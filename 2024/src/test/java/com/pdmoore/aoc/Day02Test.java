@@ -51,6 +51,13 @@ class Day02Test {
                 .count();
     }
 
+    private int countOfTolerantSafeReports(List<String> input) {
+        return (int) input
+                .stream()
+                .filter(this::isTolerantSafe)
+                .count();
+    }
+
     private boolean isSafe(String line) {
         String[] levels = line.split(" ");
         boolean decreasing = Integer.parseInt(levels[0]) > Integer.parseInt(levels[1]);
@@ -70,30 +77,18 @@ class Day02Test {
         return true;
     }
 
-    private int countOfTolerantSafeReports(List<String> input) {
-        return (int) input
-                .stream()
-                .filter(this::isTolerantSafe)
-                .count();
-    }
-
     private boolean isTolerantSafe(String line) {
-        if (isSafe(line)) {
-            return true;
-        }
-
-        // for each line, slice out one number and test if it's good or not
+        // for each line, slice out one level and test if the resulting report is safe or not
         String[] levels = line.split(" ");
 
         for (int i = 0; i < levels.length; i++) {
-
-            StringBuilder levelSkip = new StringBuilder();
+            StringBuilder reportWithOneSkippedLevel = new StringBuilder();
             for (int j = 0; j < levels.length; j++) {
                 if (i != j) {
-                    levelSkip.append(levels[j]).append(" ");
+                    reportWithOneSkippedLevel.append(levels[j]).append(" ");
                 }
             }
-            if (isSafe(levelSkip.toString())) {
+            if (isSafe(reportWithOneSkippedLevel.toString())) {
                 return true;
             }
         }
