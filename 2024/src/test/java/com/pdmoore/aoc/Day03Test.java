@@ -56,7 +56,7 @@ public class Day03Test {
         boolean keepGoing = true;
         while (keepGoing) {
             String substring_1 = input.substring(startFrom, dontIndex);
-            result += solve(substring_1);
+            result += solveWithRegEx(substring_1);
 
             startFrom = input.indexOf("do()", dontIndex + 7);
             if (startFrom == -1) {
@@ -67,7 +67,7 @@ public class Day03Test {
             if (dontIndex == -1) {
                 dontIndex = input.length();
                 substring_1 = input.substring(startFrom, dontIndex);
-                result += solve(substring_1);
+                result += solveWithRegEx(substring_1);
 
                 keepGoing = false;
             }
