@@ -25,9 +25,40 @@ public class Day03Test {
         }
 
         Assertions.assertEquals(178794710, actual);
-
     }
 
+    @Test
+    void part2_example() {
+        String input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
+
+        int actual = solve_part2(input);
+
+        Assertions.assertEquals(48, actual);
+    }
+
+    private int solve_part2(String input) {
+        int result = 0;
+
+        int startFrom = 0;
+        int dontIndex = input.indexOf("don't");
+        boolean keepGoing = true;
+        while (keepGoing) {
+            String substring_1 = input.substring(startFrom, dontIndex);
+            result += solve(substring_1);
+
+            startFrom = input.indexOf("do", dontIndex + 5);
+            dontIndex = input.indexOf("don't", startFrom + 5);
+            if (dontIndex == -1) {
+                dontIndex = input.length();
+                substring_1 = input.substring(startFrom, dontIndex);
+                result += solve(substring_1);
+
+                keepGoing = false;
+            }
+        }
+
+        return result;
+    }
 
     private int solve(String input) {
         int result = 0;
