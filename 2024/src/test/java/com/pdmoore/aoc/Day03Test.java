@@ -36,6 +36,23 @@ public class Day03Test {
         Assertions.assertEquals(48, actual);
     }
 
+    @Test
+    void part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
+        int actual = 0;
+        StringBuilder concated = new StringBuilder();
+        for (String line : input) {
+//            actual += solve_part2(line);
+            concated.append(line);
+        }
+
+        actual = solve_part2(concated.toString());
+
+        // 130081408 not correct, no hint of too big or small
+        //  89846869 not correct - search for do() and don't()
+        Assertions.assertEquals(76729637, actual);
+    }
+
     private int solve_part2(String input) {
         int result = 0;
 
@@ -46,8 +63,12 @@ public class Day03Test {
             String substring_1 = input.substring(startFrom, dontIndex);
             result += solve(substring_1);
 
-            startFrom = input.indexOf("do", dontIndex + 5);
-            dontIndex = input.indexOf("don't", startFrom + 5);
+            startFrom = input.indexOf("do()", dontIndex + 7);
+            if (startFrom == -1) {
+                int something = result + 1;
+                return result;
+            }
+            dontIndex = input.indexOf("don't()", startFrom + 7);
             if (dontIndex == -1) {
                 dontIndex = input.length();
                 substring_1 = input.substring(startFrom, dontIndex);
