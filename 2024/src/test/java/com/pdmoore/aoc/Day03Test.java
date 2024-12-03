@@ -40,20 +40,8 @@ public class Day03Test {
     void part2() {
         // Puzzle Input comes in as separate lines but need to be concatted together to be solved as expected
         // Probably do the same to part 1 and works as expected.
-
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
-        int actual = 0;
-        StringBuilder concated = new StringBuilder();
-        for (String line : input) {
-//            actual += solve_part2(line);
-            concated.append(line);
-        }
-
-        actual = solve_part2(concated.toString());
-
-        // 130081408 not correct, no hint of too big or small
-        //  89846869 not correct - search for do() and don't()
-        Assertions.assertEquals(76729637, actual);
+        Assertions.assertEquals(76729637, solve_part2(String.join("", input)));
     }
 
     private int solve_part2(String input) {
