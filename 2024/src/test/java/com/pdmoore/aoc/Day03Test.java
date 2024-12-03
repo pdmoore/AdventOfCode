@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day03Test {
 
@@ -12,8 +16,10 @@ public class Day03Test {
         String input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
 
         int actual = solve(input);
+        int regex_actual = solveWithRegEx(input);
 
-        Assertions.assertEquals(161, actual);
+        assertEquals(actual, regex_actual);
+        assertEquals(161, actual);
     }
 
     @Test
@@ -23,7 +29,7 @@ public class Day03Test {
 
         int actual = solve(String.join("", input));
 
-        Assertions.assertEquals(178794710, actual);
+        assertEquals(178794710, actual);
     }
 
     @Test
@@ -32,14 +38,14 @@ public class Day03Test {
 
         int actual = solve_part2(input);
 
-        Assertions.assertEquals(48, actual);
+        assertEquals(48, actual);
     }
 
     @Test
     void part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
         int actual = solve_part2(String.join("", input));
-        Assertions.assertEquals(76729637, actual);
+        assertEquals(76729637, actual);
     }
 
     private int solve_part2(String input) {
@@ -94,6 +100,19 @@ public class Day03Test {
             result += firstNumber * secondNumber;
         }
 
+        return result;
+    }
+
+    private int solveWithRegEx(String input) {
+        Pattern pattern = Pattern.compile("mul\\(\\d+,\\d+\\)");
+        Matcher matcher = pattern.matcher(input);
+
+        int result = 0;
+        while (matcher.find()) {
+            String match = matcher.group().replace("mul(", "").replace(")", "");
+            String[] split = match.split(",");
+            result += Integer.parseInt(split[0]) * Integer.parseInt(split[1]);
+        }
         return result;
     }
 }
