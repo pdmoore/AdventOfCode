@@ -38,6 +38,9 @@ public class Day03Test {
 
     @Test
     void part2() {
+        // Puzzle Input comes in as separate lines but need to be concatted together to be solved as expected
+        // Probably do the same to part 1 and works as expected.
+
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
         int actual = 0;
         StringBuilder concated = new StringBuilder();
