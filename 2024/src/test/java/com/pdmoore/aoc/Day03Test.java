@@ -18,11 +18,10 @@ public class Day03Test {
 
     @Test
     void part1() {
+        // input includes \n characters that need to be rejoined to form a single line of input
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
-        int actual = 0;
-        for (String line : input) {
-            actual += solve(line);
-        }
+
+        int actual = solve(String.join("", input));
 
         Assertions.assertEquals(178794710, actual);
     }
@@ -38,10 +37,9 @@ public class Day03Test {
 
     @Test
     void part2() {
-        // Puzzle Input comes in as separate lines but need to be concatted together to be solved as expected
-        // Probably do the same to part 1 and works as expected.
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
-        Assertions.assertEquals(76729637, solve_part2(String.join("", input)));
+        int actual = solve_part2(String.join("", input));
+        Assertions.assertEquals(76729637, actual);
     }
 
     private int solve_part2(String input) {
