@@ -52,7 +52,7 @@ public class Day04Test {
 
     @Test
     void part2_example() {
-        char[][] input = PuzzleInput.as2dCharArray("data/day04_myexample.txt");
+        char[][] input = PuzzleInput.as2dCharArray("data/day04_example.txt");
 
         int actual = find_X_MAS(input);
 
@@ -60,12 +60,12 @@ public class Day04Test {
     }
 
     @Test
-    void part2_myExample() {
+    void part2_crossExample() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_crossexample.txt");
 
         int actual = find_X_MAS(input);
 
-        assertEquals(2, actual);
+        assertEquals(4, actual);
     }
 
     private int findWord(char[][] input, String word) {
@@ -110,8 +110,8 @@ public class Day04Test {
             for (int j = 0; j <= input[0].length; j++) {
                 if (x_MASAt_1(input, i, j)) result++;
                 if (x_MASAt_2(input, i, j)) result++;
-//                if (x_MASAt(input, i, j, 1, -1)) result++;
-//                if (x_MASAt(input, i, j, -1, -1)) result++;
+                if (x_MASAt_3(input, i, j)) result++;
+                if (x_MASAt_4(input, i, j)) result++;
             }
         }
 
@@ -156,8 +156,48 @@ public class Day04Test {
         }
 
         return false;
-
     }
+
+    private boolean x_MASAt_3(char[][] input, int x, int y) {
+        try {
+            char upperleft = input[x][y];
+            char upperright = input[x][y+2];
+            char lowerleft = input[x+2][y];
+            char lowerright = input[x+2][y+2];
+            char middle = input[x+1][y+1];
+
+            if ((upperleft == lowerleft && upperleft == 'M') &&
+                    (middle == 'A') &&
+                    (upperright == lowerright && upperright == 'S'))
+                return true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private boolean x_MASAt_4(char[][] input, int x, int y) {
+        try {
+            char upperleft = input[x][y];
+            char upperright = input[x][y+2];
+            char lowerleft = input[x+2][y];
+            char lowerright = input[x+2][y+2];
+            char middle = input[x+1][y+1];
+
+            if ((upperleft == lowerleft && upperleft == 'S') &&
+                    (middle == 'A') &&
+                    (upperright == lowerright && upperright == 'M'))
+                return true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        return false;
+    }
+
 
 //
 //    private String getWord(char[][] input, int x, int y, int dx, int dy) {
