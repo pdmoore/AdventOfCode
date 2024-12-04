@@ -15,9 +15,9 @@ class Day03Test {
         String input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
 
         int actual = solve(input);
-        int regex_actual = solveWithRegEx(input);
+        int actualViaRegex = solveWithRegEx(input);
 
-        assertEquals(actual, regex_actual);
+        assertEquals(actual, actualViaRegex);
         assertEquals(161, actual);
     }
 
@@ -36,9 +36,9 @@ class Day03Test {
         String input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
 
         int actual = solve_part2(input);
-        int regex_actual = solve_part2_WithRegEx(input);
+        int actualViaRegEx = solve_part2_WithRegEx(input);
 
-        assertEquals(actual, regex_actual);
+        assertEquals(actual, actualViaRegEx);
         assertEquals(48, actual);
     }
 
@@ -52,9 +52,9 @@ class Day03Test {
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
 
         int actual = solve_part2(String.join("", input));
-        int regex_actual = solve_part2_WithRegEx(String.join("", input));
+        int actualViaRegex = solve_part2_WithRegEx(String.join("", input));
 
-        assertEquals(actual, regex_actual);
+        assertEquals(actual, actualViaRegex);
         assertEquals(76729637, actual);
     }
 
@@ -65,8 +65,8 @@ class Day03Test {
         int dontIndex = input.indexOf("don't");
         boolean keepGoing = true;
         while (keepGoing) {
-            String substring_1 = input.substring(startFrom, dontIndex);
-            result += solveWithRegEx(substring_1);
+            String substring = input.substring(startFrom, dontIndex);
+            result += solveWithRegEx(substring);
 
             startFrom = input.indexOf("do()", dontIndex + 7);
             if (startFrom == -1) {
@@ -75,8 +75,8 @@ class Day03Test {
             dontIndex = input.indexOf("don't()", startFrom + 7);
             if (dontIndex == -1) {
                 dontIndex = input.length();
-                substring_1 = input.substring(startFrom, dontIndex);
-                result += solveWithRegEx(substring_1);
+                substring = input.substring(startFrom, dontIndex);
+                result += solveWithRegEx(substring);
 
                 keepGoing = false;
             }
