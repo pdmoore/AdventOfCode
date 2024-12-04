@@ -59,6 +59,14 @@ public class Day04Test {
         assertEquals(9, actual);
     }
 
+    @Test
+    void part2_myExample() {
+        char[][] input = PuzzleInput.as2dCharArray("data/day04_crossexample.txt");
+
+        int actual = find_X_MAS(input);
+
+        assertEquals(2, actual);
+    }
 
     private int findWord(char[][] input, String word) {
 
@@ -93,6 +101,64 @@ public class Day04Test {
 
         return true;
     }
+
+    private int find_X_MAS(char[][] input) {
+        int result = 0;
+
+        List<String> words = new ArrayList<String>();
+        for (int i = 0; i <= input.length; i++) {
+            for (int j = 0; j <= input[0].length; j++) {
+                if (x_MASAt_1(input, i, j)) result++;
+                if (x_MASAt_2(input, i, j)) result++;
+//                if (x_MASAt(input, i, j, 1, -1)) result++;
+//                if (x_MASAt(input, i, j, -1, -1)) result++;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean x_MASAt_1(char[][] input, int x, int y) {
+        try {
+            char upperleft = input[x][y];
+            char upperright = input[x][y+2];
+            char lowerleft = input[x+2][y];
+            char lowerright = input[x+2][y+2];
+            char middle = input[x+1][y+1];
+
+            if ((upperleft == upperright && upperleft == 'M') &&
+                    (middle == 'A') &&
+                    (lowerleft == lowerright && lowerright == 'S'))
+                return true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private boolean x_MASAt_2(char[][] input, int x, int y) {
+        try {
+            char upperleft = input[x][y];
+            char upperright = input[x][y+2];
+            char lowerleft = input[x+2][y];
+            char lowerright = input[x+2][y+2];
+            char middle = input[x+1][y+1];
+
+            if ((lowerleft == lowerright && lowerleft == 'M') &&
+                    (middle == 'A') &&
+                    (upperleft == upperright && upperright == 'S'))
+                return true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        return false;
+
+    }
+
 //
 //    private String getWord(char[][] input, int x, int y, int dx, int dy) {
 //        // should pass in XMAS length
