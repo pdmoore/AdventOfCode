@@ -23,9 +23,9 @@ public class Day03Test {
 
     @Test
     void part1() {
-        // input includes \n characters that need to be rejoined to form a single line of input
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
 
+        // input includes \n characters that need to be rejoined to form a single line of input
         int actual = solve(String.join("", input));
 
         assertEquals(178794710, actual);
@@ -36,14 +36,25 @@ public class Day03Test {
         String input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
 
         int actual = solve_part2(input);
+        int regex_actual = solve_part2_WithRegEx(input);
 
+        assertEquals(actual, regex_actual);
         assertEquals(48, actual);
+    }
+
+    private int solve_part2_WithRegEx(String input) {
+        Pattern pattern = Pattern.compile("don't\\(\\).*?do\\(\\)", Pattern.DOTALL);
+        return solveWithRegEx(String.join("", pattern.split(input)));
     }
 
     @Test
     void part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day03.txt");
+
         int actual = solve_part2(String.join("", input));
+        int regex_actual = solve_part2_WithRegEx(String.join("", input));
+
+        assertEquals(actual, regex_actual);
         assertEquals(76729637, actual);
     }
 
@@ -103,7 +114,7 @@ public class Day03Test {
     }
 
     private int solveWithRegEx(String input) {
-        Pattern pattern = Pattern.compile("mul\\(\\d+,\\d+\\)");
+        Pattern pattern = Pattern.compile("mul\\(\\d{1,3},\\d{1,3}\\)");
         Matcher matcher = pattern.matcher(input);
 
         int result = 0;

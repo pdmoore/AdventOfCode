@@ -206,21 +206,4 @@ public class Day04Test {
 
         return false;
     }
-
-
-//
-//    private String getWord(char[][] input, int x, int y, int dx, int dy) {
-//        // should pass in XMAS length
-//        String word = "";
-//
-//        for (int l = 0; l < 4; l++) {
-//            try {
-//                word += input[x + (dx * l)][y + (dy * l)];
-//            } catch (ArrayIndexOutOfBoundsException e) {
-//                // just ignore it
-//            }
-//        }
-//
-//        return word;
-//    }
 }
