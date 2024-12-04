@@ -47,7 +47,16 @@ public class Day04Test {
 
         int actual = findWord(input, "XMAS");
 
-        assertEquals(99, actual);
+        assertEquals(2549, actual);
+    }
+
+    @Test
+    void part2() {
+        char[][] input = PuzzleInput.as2dCharArray("data/day04.txt");
+
+        int actual = find_X_MAS(input);
+
+        assertEquals(2003, actual);
     }
 
     @Test
