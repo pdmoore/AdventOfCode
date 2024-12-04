@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day03Test {
+class Day03Test {
 
     @Test
     void part1_example() {
@@ -70,7 +70,6 @@ public class Day03Test {
 
             startFrom = input.indexOf("do()", dontIndex + 7);
             if (startFrom == -1) {
-                int something = result + 1;
                 return result;
             }
             dontIndex = input.indexOf("don't()", startFrom + 7);
@@ -90,12 +89,11 @@ public class Day03Test {
         int result = 0;
         // left to right, pattern mul(##,##)
         String[] split = input.split("mul");
-        for (int i = 0; i < split.length; i++) {
-            String each = split[i];
-            if (each.length() > 0 && each.charAt(0) != '(') continue;
+        for (String each : split) {
+            if (!each.isEmpty() && each.charAt(0) != '(') continue;
 
-            int firstNumber = 0;
-            int secondNumber = 0;
+            int firstNumber;
+            int secondNumber;
             try {
                 int commaIx = each.indexOf(',');
                 if (commaIx == -1) continue;
