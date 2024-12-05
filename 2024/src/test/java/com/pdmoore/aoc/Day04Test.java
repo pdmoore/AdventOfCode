@@ -82,11 +82,14 @@ public class Day04Test {
         int result = 0;
 
         List<String> words = new ArrayList<String>();
-        for (int i = 0; i <= input.length; i++) {
-            for (int j = 0; j <= input[0].length; j++) {
+        for (int x = 0; x <= input.length; x++) {
+            for (int y = 0; y <= input[0].length; y++) {
+
+                // check [x,y] as the start of the word, then try all directions
+                // radiating from that point outwards seeing if word is found
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1; dy++) {
-                        if (wordAt(input, i, j, dx, dy)) result++;
+                        if (wordAt(input, x, y, dx, dy)) result++;
                     }
                 }
             }
