@@ -53,7 +53,7 @@ class Day04Test {
     void part2() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04.txt");
 
-        int actual = find_X_MAS(input);
+        int actual = findMasCrossed(input);
 
         assertEquals(2003, actual);
     }
@@ -62,7 +62,7 @@ class Day04Test {
     void part2_example() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_example.txt");
 
-        int actual = find_X_MAS(input);
+        int actual = findMasCrossed(input);
 
         assertEquals(9, actual);
     }
@@ -71,7 +71,7 @@ class Day04Test {
     void part2_crossExample() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_crossexample.txt");
 
-        int actual = find_X_MAS(input);
+        int actual = findMasCrossed(input);
 
         assertEquals(4, actual);
     }
@@ -107,35 +107,32 @@ class Day04Test {
         return true;
     }
 
-    private int find_X_MAS(char[][] input) {
+    private int findMasCrossed(char[][] input) {
         int result = 0;
 
-        for (int i = 0; i < input.length; i++) {
-            for (int j = 0; j < input[0].length; j++) {
-                if (centeredCheck(input, i, j)) result++;
+        for (int x = 0; x < input.length; x++) {
+            for (int y = 0; y < input[0].length; y++) {
+                if ((input[x][y] == 'A') &&
+                    (isMasCrossedAtCenter(input, x, y))) result++;
             }
         }
 
         return result;
     }
 
-    private boolean centeredCheck(char[][] input, int x, int y) {
-        char center = input[x][y];
+    private boolean isMasCrossedAtCenter(char[][] input, int x, int y) {
         try {
-            if (center == 'A') {
-                char upperleft = input[x - 1][y - 1];
-                char upperright = input[x - 1][y + 1];
-                char lowerleft = input[x + 1][y - 1];
-                char lowerright = input[x + 1][y + 1];
+            char upperleft = input[x - 1][y - 1];
+            char upperright = input[x - 1][y + 1];
+            char lowerleft = input[x + 1][y - 1];
+            char lowerright = input[x + 1][y + 1];
 
-                return (upperleft == 'M' && upperright == 'M' && lowerleft == 'S' && lowerright == 'S' ||
+            return (upperleft == 'M' && upperright == 'M' && lowerleft == 'S' && lowerright == 'S' ||
                     upperleft == 'M' && lowerleft == 'M' && upperright == 'S' && lowerright == 'S' ||
                     upperleft == 'S' && upperright == 'S' && lowerleft == 'M' && lowerright == 'M' ||
                     upperleft == 'S' && lowerleft == 'S' && upperright == 'M' && lowerright == 'M');
-            }
         } catch (Exception e) {
             return false;
         }
-        return false;
     }
 }
