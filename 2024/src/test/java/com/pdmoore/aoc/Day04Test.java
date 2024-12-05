@@ -2,12 +2,9 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day04Test {
+class Day04Test {
 
 
     @Test
@@ -16,7 +13,7 @@ public class Day04Test {
         assertEquals(10, input[0].length);
         assertEquals(10, input.length);
 
-        int actual = findWord(input, "XMAS");
+        int actual = findWord(input);
 
         assertEquals(18, actual);
     }
@@ -25,7 +22,7 @@ public class Day04Test {
     void part1_myExample() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_myexample.txt");
 
-        int actual = findWord(input, "XMAS");
+        int actual = findWord(input);
 
         assertEquals(8, actual);
     }
@@ -34,7 +31,7 @@ public class Day04Test {
     void part1_do_not_double_count() {
         char[][] input = {"..XMAS..".toCharArray()};
 
-        int actual = findWord(input, "XMAS");
+        int actual = findWord(input);
 
         assertEquals(1, actual);
     }
@@ -45,7 +42,7 @@ public class Day04Test {
         assertEquals(140, input[0].length);
         assertEquals(140, input.length);
 
-        int actual = findWord(input, "XMAS");
+        int actual = findWord(input);
 
         assertEquals(2549, actual);
     }
@@ -77,11 +74,9 @@ public class Day04Test {
         assertEquals(4, actual);
     }
 
-    private int findWord(char[][] input, String word) {
-
+    private int findWord(char[][] input) {
         int result = 0;
 
-        List<String> words = new ArrayList<String>();
         for (int x = 0; x <= input.length; x++) {
             for (int y = 0; y <= input[0].length; y++) {
 
@@ -114,7 +109,6 @@ public class Day04Test {
     private int find_X_MAS(char[][] input) {
         int result = 0;
 
-        List<String> words = new ArrayList<String>();
         for (int i = 0; i < input.length; i++) {
             for (int j = 0; j < input[0].length; j++) {
                 if (centeredCheck(input, i, j)) result++;
