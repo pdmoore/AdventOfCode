@@ -84,14 +84,11 @@ public class Day04Test {
         List<String> words = new ArrayList<String>();
         for (int i = 0; i <= input.length; i++) {
             for (int j = 0; j <= input[0].length; j++) {
-                if (wordAt(input, i, j, 0, 1)) result++; //s
-                if (wordAt(input, i, j, 1, 1)) result++; //se
-                if (wordAt(input, i, j, 1, 0)) result++; //s
-                if (wordAt(input, i, j, 1, -1)) result++; //sw
-                if (wordAt(input, i, j, 0, -1)) result++; //w
-                if (wordAt(input, i, j, -1, -1)) result++; //nw
-                if (wordAt(input, i, j, -1, 0)) result++; //n
-                if (wordAt(input, i, j, -1, 1)) result++; //ne
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        if (wordAt(input, i, j, dx, dy)) result++;
+                    }
+                }
             }
         }
 
@@ -128,16 +125,15 @@ public class Day04Test {
         char center = input[x][y];
         try {
             if (center == 'A') {
-
                 char upperleft = input[x - 1][y - 1];
                 char upperright = input[x - 1][y + 1];
                 char lowerleft = input[x + 1][y - 1];
                 char lowerright = input[x + 1][y + 1];
 
-                if (upperleft == 'M' && upperright == 'M' && lowerleft == 'S' && lowerright == 'S') return true;
-                if (upperleft == 'M' && lowerleft == 'M' && upperright == 'S' && lowerright == 'S') return true;
-                if (upperleft == 'S' && upperright == 'S' && lowerleft == 'M' && lowerright == 'M') return true;
-                if (upperleft == 'S' && lowerleft == 'S' && upperright == 'M' && lowerright == 'M') return true;
+                return (upperleft == 'M' && upperright == 'M' && lowerleft == 'S' && lowerright == 'S' ||
+                    upperleft == 'M' && lowerleft == 'M' && upperright == 'S' && lowerright == 'S' ||
+                    upperleft == 'S' && upperright == 'S' && lowerleft == 'M' && lowerright == 'M' ||
+                    upperleft == 'S' && lowerleft == 'S' && upperright == 'M' && lowerright == 'M');
             }
         } catch (Exception e) {
             return false;
