@@ -35,10 +35,20 @@ class Day05Test {
         String actual = correctThisOrder(pageOrderingRules, "61,13,29");
         assertEquals("61,29,13", actual);
 
-        //assertEquals("97,75,47,61,53", correctThisOrder(pageOrderingRules, "75,97,47,61,53"));
-//        assertEquals("97,75,47,29,13", correctThisOrder(pageOrderingRules, "97,13,75,29,47"));
+        assertEquals("97,75,47", correctThisOrder(pageOrderingRules, "75,97,47"));
+        assertEquals("97,75,53", correctThisOrder(pageOrderingRules, "75,53,97"));
+        assertEquals("97,75,47,61,53", correctThisOrder(pageOrderingRules, "75,97,47,61,53"));
+        assertEquals("97,75,47,29,13", correctThisOrder(pageOrderingRules, "97,13,75,29,47"));
     }
 
+    @Test
+    void part2_solved() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day05.txt");
+
+        int actual = solvePart2(input);
+
+        assertEquals(5169, actual);
+    }
     private int solvePart2(List<String> input) {
         // get list of incorrectly-ordered updates
         List<String> pageOrderingRulesInput = splitInput(input);
@@ -76,16 +86,32 @@ class Day05Test {
                     continue;
                 }
 
+                // if no dependencies are in pagesToPrint, then it is last
+                boolean dependencyFound = false;
+                for (String dependency : dependencies) {
+                    String[] split1 = dependency.split("\\|");
+                    if (pagesToPrint.contains(split1[1])) dependencyFound = true;
+                }
+                if (!dependencyFound) {
+                    correctOrder.add(pageToPrint);
+                    break;
+                }
+
                 // if all in correct order are in dependencies then add it as next
                 int coveredRules = 0;
+                int uncoveredRules = 0;
                 for (String dependency : dependencies) {
                     String[] split1 = dependency.split("\\|");
                     if (correctOrder.contains(split1[1])) {
                         coveredRules++;
+                    } else if (incorrectUpdate.contains(split1[1])) {
+                        uncoveredRules++;
                     }
                 }
 
-                if (coveredRules != 0 && coveredRules == correctOrder.size()) correctOrder.add(pageToPrint);
+                if (coveredRules != 0 &&
+                        uncoveredRules == 0 &&
+                        coveredRules == correctOrder.size()) correctOrder.add(pageToPrint);
             }
         }
 
@@ -93,16 +119,6 @@ class Day05Test {
         Collections.reverse(correctOrder);
         return String.join(",", correctOrder);
     }
-
-    @Test
-    void part1_solved() {
-        List<String> input = PuzzleInput.asStringListFrom("data/day05.txt");
-
-        int actual = solvePart1(input);
-
-        assertEquals(6242, actual);
-    }
-
 
     private int solvePart1(List<String> input) {
         // split input into rules and updates
