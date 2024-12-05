@@ -20,6 +20,16 @@ public class Day05Test {
         assertEquals(143, actual);
     }
 
+    @Test
+    void part1_solved() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day05.txt");
+
+        int actual = solvePart1(input);
+
+        assertEquals(6242, actual);
+    }
+
+
     private int solvePart1(List<String> input) {
         // split input into rules and updates
         List<String> pageOrderingRulesInput = splitInput(input);
