@@ -57,7 +57,7 @@ class Day05Test {
 
         List<String> incorrectlyOrderedUpdates = new ArrayList<>();
         for (String update : updatePageNumbers) {
-            if (!checksOut(pageOrderingRules, update)) incorrectlyOrderedUpdates.add(update);
+            if (!obeysPageOrderingRules(pageOrderingRules, update)) incorrectlyOrderedUpdates.add(update);
         }
 
         // correct the order of the updates
@@ -66,8 +66,7 @@ class Day05Test {
             updatesInRightOrder.add(correctThisOrder(pageOrderingRules, incorrectUpdate));
         }
 
-        int result = sumMiddleValues(updatesInRightOrder);
-        return result;
+        return sumMiddleValues(updatesInRightOrder);
     }
 
     private String correctThisOrder(Map<Integer, List<String>> pageOrderingRules, String incorrectUpdate) {
@@ -115,7 +114,6 @@ class Day05Test {
             }
         }
 
-        // could double check by calling checksOut on the result
         Collections.reverse(correctOrder);
         return String.join(",", correctOrder);
     }
@@ -125,19 +123,17 @@ class Day05Test {
         List<String> pageOrderingRulesInput = splitInput(input);
         List<String> updatePageNumbers = splitInput2(input);
 
-        // key must be printed before value
-        // Needs to be key, then list of Strings
+        // key must be printed before values
         Map<Integer,List<String>> pageOrderingRules = buildMapFrom(pageOrderingRulesInput);
 
         // validate whether an update obeys rules
         List<String> updatesInRightOrder = new ArrayList<>();
         for (String update : updatePageNumbers) {
-            if (checksOut(pageOrderingRules, update)) updatesInRightOrder.add(update);
+            if (obeysPageOrderingRules(pageOrderingRules, update)) updatesInRightOrder.add(update);
         }
 
         // for those that obey, grab middle element and sum
-        int result = sumMiddleValues(updatesInRightOrder);
-        return result;
+        return sumMiddleValues(updatesInRightOrder);
     }
 
     private int sumMiddleValues(List<String> updates) {
@@ -150,7 +146,7 @@ class Day05Test {
         return result;
     }
 
-    private boolean checksOut(Map<Integer, List<String>> pageOrderingRules, String candidate) {
+    private boolean obeysPageOrderingRules(Map<Integer, List<String>> pageOrderingRules, String candidate) {
         String[] pagesToPrint = candidate.split(",");
         List<String> pagesAlreadyPrinted = new ArrayList<>();
 
