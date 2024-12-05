@@ -88,10 +88,10 @@ public class Day04Test {
                 if (wordAt(input, i, j, 1, 1)) result++; //se
                 if (wordAt(input, i, j, 1, 0)) result++; //s
                 if (wordAt(input, i, j, 1, -1)) result++; //sw
-                if (wordAt(input, i, j, 0,-1)) result++; //w
-                if (wordAt(input, i, j, -1,-1)) result++; //nw
-                if (wordAt(input, i, j, -1,0)) result++; //n
-                if (wordAt(input, i, j, -1,1)) result++; //ne
+                if (wordAt(input, i, j, 0, -1)) result++; //w
+                if (wordAt(input, i, j, -1, -1)) result++; //nw
+                if (wordAt(input, i, j, -1, 0)) result++; //n
+                if (wordAt(input, i, j, -1, 1)) result++; //ne
             }
         }
 
@@ -115,95 +115,33 @@ public class Day04Test {
         int result = 0;
 
         List<String> words = new ArrayList<String>();
-        for (int i = 0; i <= input.length; i++) {
-            for (int j = 0; j <= input[0].length; j++) {
-                if (x_MASAt_1(input, i, j)) result++;
-                if (x_MASAt_2(input, i, j)) result++;
-                if (x_MASAt_3(input, i, j)) result++;
-                if (x_MASAt_4(input, i, j)) result++;
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[0].length; j++) {
+                if (centeredCheck(input, i, j)) result++;
             }
         }
 
         return result;
     }
 
-    private boolean x_MASAt_1(char[][] input, int x, int y) {
+    private boolean centeredCheck(char[][] input, int x, int y) {
+        char center = input[x][y];
         try {
-            char upperleft = input[x][y];
-            char upperright = input[x][y+2];
-            char lowerleft = input[x+2][y];
-            char lowerright = input[x+2][y+2];
-            char middle = input[x+1][y+1];
+            if (center == 'A') {
 
-            if ((upperleft == upperright && upperleft == 'M') &&
-                    (middle == 'A') &&
-                    (lowerleft == lowerright && lowerright == 'S'))
-                return true;
+                char upperleft = input[x - 1][y - 1];
+                char upperright = input[x - 1][y + 1];
+                char lowerleft = input[x + 1][y - 1];
+                char lowerright = input[x + 1][y + 1];
 
-        } catch (ArrayIndexOutOfBoundsException e) {
+                if (upperleft == 'M' && upperright == 'M' && lowerleft == 'S' && lowerright == 'S') return true;
+                if (upperleft == 'M' && lowerleft == 'M' && upperright == 'S' && lowerright == 'S') return true;
+                if (upperleft == 'S' && upperright == 'S' && lowerleft == 'M' && lowerright == 'M') return true;
+                if (upperleft == 'S' && lowerleft == 'S' && upperright == 'M' && lowerright == 'M') return true;
+            }
+        } catch (Exception e) {
             return false;
         }
-
-        return false;
-    }
-
-    private boolean x_MASAt_2(char[][] input, int x, int y) {
-        try {
-            char upperleft = input[x][y];
-            char upperright = input[x][y+2];
-            char lowerleft = input[x+2][y];
-            char lowerright = input[x+2][y+2];
-            char middle = input[x+1][y+1];
-
-            if ((lowerleft == lowerright && lowerleft == 'M') &&
-                    (middle == 'A') &&
-                    (upperleft == upperright && upperright == 'S'))
-                return true;
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-
-        return false;
-    }
-
-    private boolean x_MASAt_3(char[][] input, int x, int y) {
-        try {
-            char upperleft = input[x][y];
-            char upperright = input[x][y+2];
-            char lowerleft = input[x+2][y];
-            char lowerright = input[x+2][y+2];
-            char middle = input[x+1][y+1];
-
-            if ((upperleft == lowerleft && upperleft == 'M') &&
-                    (middle == 'A') &&
-                    (upperright == lowerright && upperright == 'S'))
-                return true;
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-
-        return false;
-    }
-
-    private boolean x_MASAt_4(char[][] input, int x, int y) {
-        try {
-            char upperleft = input[x][y];
-            char upperright = input[x][y+2];
-            char lowerleft = input[x+2][y];
-            char lowerright = input[x+2][y+2];
-            char middle = input[x+1][y+1];
-
-            if ((upperleft == lowerleft && upperleft == 'S') &&
-                    (middle == 'A') &&
-                    (upperright == lowerright && upperright == 'M'))
-                return true;
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-
         return false;
     }
 }
