@@ -7,13 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class Day04Test {
 
 
+    public static final String TARGET = "XMAS";
+
     @Test
     void part1_example() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_example.txt");
         assertEquals(10, input[0].length);
         assertEquals(10, input.length);
 
-        int actual = findWord(input);
+        int actual = countXmasOccurrences(input);
 
         assertEquals(18, actual);
     }
@@ -22,7 +24,7 @@ class Day04Test {
     void part1_myExample() {
         char[][] input = PuzzleInput.as2dCharArray("data/day04_myexample.txt");
 
-        int actual = findWord(input);
+        int actual = countXmasOccurrences(input);
 
         assertEquals(8, actual);
     }
@@ -31,7 +33,7 @@ class Day04Test {
     void part1_do_not_double_count() {
         char[][] input = {"..XMAS..".toCharArray()};
 
-        int actual = findWord(input);
+        int actual = countXmasOccurrences(input);
 
         assertEquals(1, actual);
     }
@@ -42,7 +44,7 @@ class Day04Test {
         assertEquals(140, input[0].length);
         assertEquals(140, input.length);
 
-        int actual = findWord(input);
+        int actual = countXmasOccurrences(input);
 
         assertEquals(2549, actual);
     }
@@ -74,7 +76,7 @@ class Day04Test {
         assertEquals(4, actual);
     }
 
-    private int findWord(char[][] input) {
+    private int countXmasOccurrences(char[][] input) {
         int result = 0;
 
         for (int x = 0; x <= input.length; x++) {
@@ -94,10 +96,9 @@ class Day04Test {
     }
 
     private boolean wordAt(char[][] input, int x, int y, int dx, int dy) {
-        String target = "XMAS";
         for (int l = 0; l < 4; l++) {
             try {
-                if (input[x + (dx * l)][y + (dy * l)] != target.charAt(l)) return false;
+                if (input[x + (dx * l)][y + (dy * l)] != TARGET.charAt(l)) return false;
             } catch (ArrayIndexOutOfBoundsException e) {
                 return false;
             }
