@@ -2,14 +2,11 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day05Test {
+class Day05Test {
 
     @Test
     void part1_example() {
@@ -18,6 +15,83 @@ public class Day05Test {
         int actual = solvePart1(input);
 
         assertEquals(143, actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day05_example.txt");
+
+        int actual = solvePart2(input);
+
+        assertEquals(123, actual);
+    }
+
+    @Test
+    void part2_correctThisOrder() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day05_example.txt");
+        List<String> pageOrderingRulesInput = splitInput(input);
+        Map<Integer,List<String>> pageOrderingRules = buildMapFrom(pageOrderingRulesInput);
+
+        String actual = correctThisOrder(pageOrderingRules, "61,13,29");
+        assertEquals("61,29,13", actual);
+
+        //assertEquals("97,75,47,61,53", correctThisOrder(pageOrderingRules, "75,97,47,61,53"));
+//        assertEquals("97,75,47,29,13", correctThisOrder(pageOrderingRules, "97,13,75,29,47"));
+    }
+
+    private int solvePart2(List<String> input) {
+        // get list of incorrectly-ordered updates
+        List<String> pageOrderingRulesInput = splitInput(input);
+        List<String> updatePageNumbers = splitInput2(input);
+        Map<Integer,List<String>> pageOrderingRules = buildMapFrom(pageOrderingRulesInput);
+
+        List<String> incorrectlyOrderedUpdates = new ArrayList<>();
+        for (String update : updatePageNumbers) {
+            if (!checksOut(pageOrderingRules, update)) incorrectlyOrderedUpdates.add(update);
+        }
+
+        // correct the order of the updates
+        List<String> updatesInRightOrder = new ArrayList<>();
+        for (String incorrectUpdate : incorrectlyOrderedUpdates) {
+            updatesInRightOrder.add(correctThisOrder(pageOrderingRules, incorrectUpdate));
+        }
+
+        int result = sumMiddleValues(updatesInRightOrder);
+        return result;
+    }
+
+    private String correctThisOrder(Map<Integer, List<String>> pageOrderingRules, String incorrectUpdate) {
+        String[] pagesToPrintArray = incorrectUpdate.split(",");
+        List<String> pagesToPrint = Arrays.asList(pagesToPrintArray);
+
+        List<String> correctOrder = new ArrayList<>();
+        while (pagesToPrint.size() != correctOrder.size()) {
+
+            for (String pageToPrint : pagesToPrint) {
+                if (correctOrder.contains(pageToPrint)) continue;
+
+                List<String> dependencies = pageOrderingRules.get(Integer.parseInt(pageToPrint));
+                if (dependencies == null) {
+                    correctOrder.add(pageToPrint);
+                    continue;
+                }
+
+                // if all in correct order are in dependencies then add it as next
+                int coveredRules = 0;
+                for (String dependency : dependencies) {
+                    String[] split1 = dependency.split("\\|");
+                    if (correctOrder.contains(split1[1])) {
+                        coveredRules++;
+                    }
+                }
+
+                if (coveredRules != 0 && coveredRules == correctOrder.size()) correctOrder.add(pageToPrint);
+            }
+        }
+
+        // could double check by calling checksOut on the result
+        Collections.reverse(correctOrder);
+        return String.join(",", correctOrder);
     }
 
     @Test
@@ -61,20 +135,6 @@ public class Day05Test {
     }
 
     private boolean checksOut(Map<Integer, List<String>> pageOrderingRules, String candidate) {
-
-        // TODO Thursday morning
-        // need to walk through the rules logic in description
-        // I have a map with the Page number and a list of all rules related to that page number
-
-        // the input is a given rule from the second half of the problem
-
-
-        // THIS ISN'T WORKING FOR THE 61,13,29 rule
-        // 61 has precedence for 13/29/53
-        // but 29 is supposed to precede 13
-        // so the approach I'm using is not correct
-
-
         String[] pagesToPrint = candidate.split(",");
         List<String> pagesAlreadyPrinted = new ArrayList<>();
 
