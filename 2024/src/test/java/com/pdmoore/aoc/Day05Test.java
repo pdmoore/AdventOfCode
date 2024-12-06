@@ -50,7 +50,6 @@ class Day05Test {
         assertEquals(5169, actual);
     }
     private int solvePart2(List<String> input) {
-        // get list of incorrectly-ordered updates
         List<String> pageOrderingRulesInput = splitInput(input);
         List<String> updatePageNumbers = splitInput2(input);
         Map<Integer,List<String>> pageOrderingRules = buildMapFrom(pageOrderingRulesInput);
@@ -60,13 +59,12 @@ class Day05Test {
             if (!obeysPageOrderingRules(pageOrderingRules, update)) incorrectlyOrderedUpdates.add(update);
         }
 
-        // correct the order of the updates
-        List<String> updatesInRightOrder = new ArrayList<>();
+        List<String> correctlyOrderedUpdates = new ArrayList<>();
         for (String incorrectUpdate : incorrectlyOrderedUpdates) {
-            updatesInRightOrder.add(correctThisOrder(pageOrderingRules, incorrectUpdate));
+            correctlyOrderedUpdates.add(correctThisOrder(pageOrderingRules, incorrectUpdate));
         }
 
-        return sumMiddleValues(updatesInRightOrder);
+        return sumMiddleValues(correctlyOrderedUpdates);
     }
 
     private String correctThisOrder(Map<Integer, List<String>> pageOrderingRules, String incorrectUpdate) {
@@ -89,7 +87,10 @@ class Day05Test {
                 boolean dependencyFound = false;
                 for (String dependency : dependencies) {
                     String[] split1 = dependency.split("\\|");
-                    if (pagesToPrint.contains(split1[1])) dependencyFound = true;
+                    if (pagesToPrint.contains(split1[1])) {
+                        dependencyFound = true;
+                        break;
+                    }
                 }
                 if (!dependencyFound) {
                     correctOrder.add(pageToPrint);
@@ -150,10 +151,10 @@ class Day05Test {
         String[] pagesToPrint = candidate.split(",");
         List<String> pagesAlreadyPrinted = new ArrayList<>();
 
-        for (int i = 0; i < pagesToPrint.length; i++) {
+        for (String pageToPrint : pagesToPrint) {
             //get rules for pages to print
             // for each rule, if rhs is in pages printed then fail
-            List<String> followingRules = pageOrderingRules.get(Integer.parseInt(pagesToPrint[i]));
+            List<String> followingRules = pageOrderingRules.get(Integer.parseInt(pageToPrint));
             if (followingRules != null) {
 
                 for (String rule : followingRules) {
@@ -163,7 +164,7 @@ class Day05Test {
                     }
                 }
             }
-            pagesAlreadyPrinted.add(pagesToPrint[i]);
+            pagesAlreadyPrinted.add(pageToPrint);
         }
 
         return true;
@@ -189,12 +190,13 @@ class Day05Test {
         return result;
     }
 
+    // TODO combine the to splitInput methods into one and return a Pair
     private List<String> splitInput2(List<String> input) {
         boolean append = false;
         List<String> result = new ArrayList<>();
-        for (int i = 0; i < input.size(); i++) {
-            if (append) result.add(input.get(i));
-            if (input.get(i).isEmpty()) append = true;
+        for (String s : input) {
+            if (append) result.add(s);
+            if (s.isEmpty()) append = true;
         }
 
         return result;
