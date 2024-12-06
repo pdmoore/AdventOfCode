@@ -18,6 +18,15 @@ public class Day06Test {
         assertEquals(41, actual);
     }
 
+    @Test
+    void part1() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day06.txt");
+
+        int actual = solvePart1(map);
+
+        assertEquals(5453, actual);
+    }
+
     class Point {
         int x;
         int y;
@@ -68,7 +77,7 @@ public class Day06Test {
                     }
                     break;
                 case right:
-                    if (current.y == map.length) {
+                    if (current.y == map.length - 1) {
                         done = true;
                     } else {
                         if (map[current.x][current.y + 1] == '#') {
