@@ -7,7 +7,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day06Test {
+class Day06Test {
 
     @Test
     void part1_example() {
@@ -27,7 +27,20 @@ public class Day06Test {
         assertEquals(5453, actual);
     }
 
-    class Point {
+    @Test
+    void part2_example() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
+
+        int actual = solvePart2(map);
+
+        assertEquals(6, actual);
+    }
+
+    private int solvePart2(char[][] map) {
+        return 0;
+    }
+
+    static class Point {
         int x;
         int y;
 
@@ -51,7 +64,7 @@ public class Day06Test {
             return result;
         }
     }
-    enum Direction {up, right, down, left}
+    enum Direction {UP, RIGHT, DOWN, LEFT}
 
     private int solvePart1(char[][] map) {
         Set<Point> visited = new HashSet<>();
@@ -59,53 +72,53 @@ public class Day06Test {
         Point current = findGuard(map);
         visited.add(current);
 
-        Direction facing = Direction.up;
+        Direction facing = Direction.UP;
 
         boolean done = false;
         while (!done) {
             switch (facing) {
-                case up:
+                case UP:
                     if (current.x == 0) {
                         done = true;
                     } else {
                         if (map[current.x - 1][current.y] == '#') {
-                            facing = Direction.right;
+                            facing = Direction.RIGHT;
                         } else {
                             current = new Point(current.x - 1, current.y);
                             visited.add(current);
                         }
                     }
                     break;
-                case right:
+                case RIGHT:
                     if (current.y == map.length - 1) {
                         done = true;
                     } else {
                         if (map[current.x][current.y + 1] == '#') {
-                           facing = Direction.down;
+                           facing = Direction.DOWN;
                         } else {
                             current = new Point(current.x, current.y + 1);
                             visited.add(current);
                         }
                     }
                     break;
-                case down:
+                case DOWN:
                     if (current.x == map[0].length - 1) {
                         done = true;
                     } else {
                         if (map[current.x + 1][current.y] == '#') {
-                            facing = Direction.left;
+                            facing = Direction.LEFT;
                         } else {
                             current = new Point(current.x + 1, current.y);
                             visited.add(current);
                         }
                     }
                     break;
-                case left:
+                case LEFT:
                     if (current.y == 0) {
                         done = true;
                     } else {
                         if (map[current.x][current.y - 1] == '#') {
-                            facing = Direction.up;
+                            facing = Direction.UP;
                         } else {
                             current = new Point(current.x, current.y - 1);
                             visited.add(current);
