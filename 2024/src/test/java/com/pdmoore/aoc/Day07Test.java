@@ -48,7 +48,7 @@ class Day07Test {
     }
 
     @Test
-    void part2_simplerExample() {
+    void part2_simplerExamples() {
         List<String> input = Collections.singletonList("156: 15 6");
         BigInteger actual = solvePart2(input);
         assertEquals(new BigInteger("156"), actual);
