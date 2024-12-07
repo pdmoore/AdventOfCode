@@ -81,29 +81,30 @@ class Day07Test {
             }
         }
 
-        return result;}
+        return result;
+    }
 
     private boolean canBeSolved2(String lhs, String[] rhs) {
         BigInteger target = new BigInteger(lhs);
 
         List<BigInteger> bigIntegersRemaining = new ArrayList<>();
-        for (int i = 0; i < rhs.length; i++) {
-            bigIntegersRemaining.add(new BigInteger(rhs[i]));
+        for (String rh : rhs) {
+            bigIntegersRemaining.add(new BigInteger(rh));
         }
 
         return canBeSolved2(target, bigIntegersRemaining);
     }
 
     private boolean canBeSolved2(BigInteger target, List<BigInteger> bigIntegersRemaining) {
-        BigInteger x1 = bigIntegersRemaining.remove(0);
-        BigInteger x2 = bigIntegersRemaining.remove(0);
+        BigInteger x1 = bigIntegersRemaining.removeFirst();
+        BigInteger x2 = bigIntegersRemaining.removeFirst();
 
+        BigInteger concatenation = new BigInteger(x1.toString().concat(x2.toString()));
         if (bigIntegersRemaining.isEmpty()) {
-            BigInteger concatenation = new BigInteger(x1.toString().concat(x2.toString()));
 
             return (target.equals(concatenation)) ||
-                    (target.equals(x1.add(x2)))   ||
-                    (target.equals(x1.multiply(x2))) ;
+                    (target.equals(x1.add(x2))) ||
+                    (target.equals(x1.multiply(x2)));
         } else {
             List<BigInteger> addedList = new ArrayList<>(bigIntegersRemaining);
             addedList.addFirst(x1.add(x2));
@@ -118,25 +119,25 @@ class Day07Test {
             }
 
             List<BigInteger> concatenationList = new ArrayList<>(bigIntegersRemaining);
-            concatenationList.addFirst(new BigInteger(x1.toString().concat(x2.toString())));
+            concatenationList.addFirst(concatenation);
             return canBeSolved2(target, concatenationList);
         }
     }
 
 
     private BigInteger solvePart1(List<String> input) {
-       BigInteger result = BigInteger.ZERO;
+        BigInteger result = BigInteger.ZERO;
 
-       for (String line : input) {
+        for (String line : input) {
 
-           String[] split = line.split(":");
-           String lhs = split[0];
-           String[] rhs = split[1].trim().split(" ");
+            String[] split = line.split(":");
+            String lhs = split[0];
+            String[] rhs = split[1].trim().split(" ");
 
-           if (canBeSolved(lhs, rhs)) {
-               result = result.add(new BigInteger(lhs));
-           }
-       }
+            if (canBeSolved(lhs, rhs)) {
+                result = result.add(new BigInteger(lhs));
+            }
+        }
 
         return result;
     }
@@ -145,20 +146,20 @@ class Day07Test {
         BigInteger target = new BigInteger(lhs);
 
         List<BigInteger> bigIntegersRemaining = new ArrayList<>();
-        for (int i = 0; i < rhs.length; i++) {
-            bigIntegersRemaining.add(new BigInteger(rhs[i]));
+        for (String rh : rhs) {
+            bigIntegersRemaining.add(new BigInteger(rh));
         }
 
         return canBeSolved(target, bigIntegersRemaining);
     }
 
     private boolean canBeSolved(BigInteger target, List<BigInteger> bigIntegersRemaining) {
-        BigInteger x1 = bigIntegersRemaining.remove(0);
-        BigInteger x2 = bigIntegersRemaining.remove(0);
+        BigInteger x1 = bigIntegersRemaining.removeFirst();
+        BigInteger x2 = bigIntegersRemaining.removeFirst();
 
         if (bigIntegersRemaining.isEmpty()) {
             return (target.equals(x1.add(x2))) ||
-                   (target.equals(x1.multiply(x2)));
+                    (target.equals(x1.multiply(x2)));
         } else {
             List<BigInteger> addedList = new ArrayList<>(bigIntegersRemaining);
             addedList.addFirst(x1.add(x2));
