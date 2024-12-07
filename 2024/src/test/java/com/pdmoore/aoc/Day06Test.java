@@ -37,6 +37,19 @@ class Day06Test {
     }
 
     private int solvePart2(char[][] map) {
+
+        // Thought:
+        // Place a block '#' in front of the current position
+        // and then try to see if the new map can be escaped or not
+        // challenge is to figure out whether it gets stuck in a loop
+            // run simulation for 10_000 rounds and if no escape, assume it's a loop
+            // track points visited in order and look for repetition
+        // if stuck in a loop, add the point to a list
+        // remove the block '#', advance the guard one position, and try again
+        // return the size of the list
+
+
+
         return 0;
     }
 
