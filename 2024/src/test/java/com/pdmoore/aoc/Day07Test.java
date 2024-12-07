@@ -38,13 +38,93 @@ class Day07Test {
         assertEquals(new BigInteger("1260333054159"), actual);
     }
 
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day07_example.txt");
+
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(new BigInteger("11387"), actual);
+    }
+
+    @Test
+    void part2_simplerExample() {
+        List<String> input = Collections.singletonList("156: 15 6");
+        BigInteger actual = solvePart2(input);
+        assertEquals(new BigInteger("156"), actual);
+
+        input = Collections.singletonList("7290: 6 8 6 15");
+        actual = solvePart2(input);
+        assertEquals(new BigInteger("7290"), actual);
+    }
+
+    @Test
+    void part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day07.txt");
+
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(new BigInteger("162042343638683"), actual);
+    }
+
+    private BigInteger solvePart2(List<String> input) {
+        BigInteger result = BigInteger.ZERO;
+
+        for (String line : input) {
+
+            String[] split = line.split(":");
+            String lhs = split[0];
+            String[] rhs = split[1].trim().split(" ");
+
+            if (canBeSolved2(lhs, rhs)) {
+                result = result.add(new BigInteger(lhs));
+            }
+        }
+
+        return result;}
+
+    private boolean canBeSolved2(String lhs, String[] rhs) {
+        BigInteger target = new BigInteger(lhs);
+
+        List<BigInteger> bigIntegersRemaining = new ArrayList<>();
+        for (int i = 0; i < rhs.length; i++) {
+            bigIntegersRemaining.add(new BigInteger(rhs[i]));
+        }
+
+        return canBeSolved2(target, bigIntegersRemaining);
+    }
+
+    private boolean canBeSolved2(BigInteger target, List<BigInteger> bigIntegersRemaining) {
+        BigInteger x1 = bigIntegersRemaining.remove(0);
+        BigInteger x2 = bigIntegersRemaining.remove(0);
+
+        if (bigIntegersRemaining.isEmpty()) {
+            BigInteger concatenation = new BigInteger(x1.toString().concat(x2.toString()));
+
+            return (target.equals(concatenation)) ||
+                    (target.equals(x1.add(x2)))   ||
+                    (target.equals(x1.multiply(x2))) ;
+        } else {
+            List<BigInteger> addedList = new ArrayList<>(bigIntegersRemaining);
+            addedList.addFirst(x1.add(x2));
+            if (canBeSolved2(target, addedList)) {
+                return true;
+            }
+
+            List<BigInteger> multipliedList = new ArrayList<>(bigIntegersRemaining);
+            multipliedList.addFirst(x1.multiply(x2));
+            if (canBeSolved2(target, multipliedList)) {
+                return true;
+            }
+
+            List<BigInteger> concatenationList = new ArrayList<>(bigIntegersRemaining);
+            concatenationList.addFirst(new BigInteger(x1.toString().concat(x2.toString())));
+            return canBeSolved2(target, concatenationList);
+        }
+    }
 
 
     private BigInteger solvePart1(List<String> input) {
-
-       // for each line
-       // test combos to see if it can work for + or *
-       // if it works, add to result
        BigInteger result = BigInteger.ZERO;
 
        for (String line : input) {
@@ -56,7 +136,6 @@ class Day07Test {
            if (canBeSolved(lhs, rhs)) {
                result = result.add(new BigInteger(lhs));
            }
-
        }
 
         return result;
@@ -91,7 +170,5 @@ class Day07Test {
             multipliedList.addFirst(x1.multiply(x2));
             return canBeSolved(target, multipliedList);
         }
-
-
     }
 }
