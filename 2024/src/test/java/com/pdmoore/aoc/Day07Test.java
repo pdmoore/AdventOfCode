@@ -11,11 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day07Test {
 
+    public static final boolean TRY_CONCATENATION = true;
+
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day07_example.txt");
 
-        BigInteger actual = solvePart1(input);
+        BigInteger actual = solve(input, !TRY_CONCATENATION);
 
         assertEquals(new BigInteger("3749"), actual);
     }
@@ -24,7 +26,7 @@ class Day07Test {
     void part1_simplerExample() {
         List<String> input = Collections.singletonList("292: 11 6 16 20");
 
-        BigInteger actual = solvePart1(input);
+        BigInteger actual = solve(input, !TRY_CONCATENATION);
 
         assertEquals(new BigInteger("292"), actual);
     }
@@ -33,7 +35,7 @@ class Day07Test {
     void part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day07.txt");
 
-        BigInteger actual = solvePart1(input);
+        BigInteger actual = solve(input, !TRY_CONCATENATION);
 
         assertEquals(new BigInteger("1260333054159"), actual);
     }
@@ -42,7 +44,7 @@ class Day07Test {
     void part2_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day07_example.txt");
 
-        BigInteger actual = solvePart2(input);
+        BigInteger actual = solve(input, TRY_CONCATENATION);
 
         assertEquals(new BigInteger("11387"), actual);
     }
@@ -50,11 +52,11 @@ class Day07Test {
     @Test
     void part2_simplerExamples() {
         List<String> input = Collections.singletonList("156: 15 6");
-        BigInteger actual = solvePart2(input);
+        BigInteger actual = solve(input, TRY_CONCATENATION);
         assertEquals(new BigInteger("156"), actual);
 
         input = Collections.singletonList("7290: 6 8 6 15");
-        actual = solvePart2(input);
+        actual = solve(input, TRY_CONCATENATION);
         assertEquals(new BigInteger("7290"), actual);
     }
 
@@ -62,78 +64,56 @@ class Day07Test {
     void part2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day07.txt");
 
-        BigInteger actual = solvePart2(input);
+        BigInteger actual = solve(input, TRY_CONCATENATION);
 
         assertEquals(new BigInteger("162042343638683"), actual);
     }
 
-    private BigInteger solvePart2(List<String> input) {
-        BigInteger result = BigInteger.ZERO;
-
-        for (String line : input) {
-
-            String[] split = line.split(":");
-            String lhs = split[0];
-            String[] rhs = split[1].trim().split(" ");
-
-            if (canBeSolved2(lhs, rhs)) {
-                result = result.add(new BigInteger(lhs));
-            }
-        }
-
-        return result;
-    }
-
-    private boolean canBeSolved2(String lhs, String[] rhs) {
-        BigInteger target = new BigInteger(lhs);
-
-        List<BigInteger> bigIntegersRemaining = new ArrayList<>();
-        for (String rh : rhs) {
-            bigIntegersRemaining.add(new BigInteger(rh));
-        }
-
-        return canBeSolved2(target, bigIntegersRemaining);
-    }
-
-    private boolean canBeSolved2(BigInteger target, List<BigInteger> bigIntegersRemaining) {
+    private boolean canBeCalibrated(BigInteger target, List<BigInteger> bigIntegersRemaining, boolean tryConcatenation) {
         BigInteger x1 = bigIntegersRemaining.removeFirst();
         BigInteger x2 = bigIntegersRemaining.removeFirst();
 
         BigInteger concatenation = new BigInteger(x1.toString().concat(x2.toString()));
         if (bigIntegersRemaining.isEmpty()) {
 
-            return (target.equals(concatenation)) ||
-                    (target.equals(x1.add(x2))) ||
-                    (target.equals(x1.multiply(x2)));
+            boolean isConcatenated = tryConcatenation && target.equals(concatenation);
+            boolean isAdded = target.equals(x1.add(x2));
+            boolean isMultiplied = target.equals(x1.multiply(x2));
+            return isConcatenated ||
+                    isAdded ||
+                    isMultiplied;
         } else {
             List<BigInteger> addedList = new ArrayList<>(bigIntegersRemaining);
             addedList.addFirst(x1.add(x2));
-            if (canBeSolved2(target, addedList)) {
-                return true;
+            if (canBeCalibrated(target, addedList, tryConcatenation)) {
+                return TRY_CONCATENATION;
             }
 
             List<BigInteger> multipliedList = new ArrayList<>(bigIntegersRemaining);
             multipliedList.addFirst(x1.multiply(x2));
-            if (canBeSolved2(target, multipliedList)) {
-                return true;
+            if (canBeCalibrated(target, multipliedList, tryConcatenation)) {
+                return TRY_CONCATENATION;
             }
 
-            List<BigInteger> concatenationList = new ArrayList<>(bigIntegersRemaining);
-            concatenationList.addFirst(concatenation);
-            return canBeSolved2(target, concatenationList);
+            if (tryConcatenation) {
+                List<BigInteger> concatenationList = new ArrayList<>(bigIntegersRemaining);
+                concatenationList.addFirst(concatenation);
+                return canBeCalibrated(target, concatenationList, tryConcatenation);
+            }
+
+            return false;
         }
     }
 
-    private BigInteger solvePart1(List<String> input) {
+    private BigInteger solve(List<String> input, boolean tryConcatenation) {
         BigInteger result = BigInteger.ZERO;
 
         for (String line : input) {
-
             String[] split = line.split(":");
             String lhs = split[0];
             String[] rhs = split[1].trim().split(" ");
 
-            if (canBeSolved(lhs, rhs)) {
+            if (canBeCalibrated(lhs, rhs, tryConcatenation)) {
                 result = result.add(new BigInteger(lhs));
             }
         }
@@ -141,34 +121,13 @@ class Day07Test {
         return result;
     }
 
-    private boolean canBeSolved(String lhs, String[] rhs) {
+    private boolean canBeCalibrated(String lhs, String[] rhs, boolean tryConcatenation) {
         BigInteger target = new BigInteger(lhs);
 
         List<BigInteger> bigIntegersRemaining = new ArrayList<>();
         for (String rh : rhs) {
             bigIntegersRemaining.add(new BigInteger(rh));
         }
-
-        return canBeSolved(target, bigIntegersRemaining);
-    }
-
-    private boolean canBeSolved(BigInteger target, List<BigInteger> bigIntegersRemaining) {
-        BigInteger x1 = bigIntegersRemaining.removeFirst();
-        BigInteger x2 = bigIntegersRemaining.removeFirst();
-
-        if (bigIntegersRemaining.isEmpty()) {
-            return (target.equals(x1.add(x2))) ||
-                    (target.equals(x1.multiply(x2)));
-        } else {
-            List<BigInteger> addedList = new ArrayList<>(bigIntegersRemaining);
-            addedList.addFirst(x1.add(x2));
-            if (canBeSolved(target, addedList)) {
-                return true;
-            }
-
-            List<BigInteger> multipliedList = new ArrayList<>(bigIntegersRemaining);
-            multipliedList.addFirst(x1.multiply(x2));
-            return canBeSolved(target, multipliedList);
-        }
+        return canBeCalibrated(target, bigIntegersRemaining, tryConcatenation);
     }
 }
