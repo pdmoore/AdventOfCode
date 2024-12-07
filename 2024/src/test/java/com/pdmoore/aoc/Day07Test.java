@@ -29,6 +29,16 @@ class Day07Test {
         assertEquals(new BigInteger("292"), actual);
     }
 
+    @Test
+    void part1() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day07.txt");
+
+        BigInteger actual = solvePart1(input);
+
+        assertEquals(new BigInteger("1260333054159"), actual);
+    }
+
+
 
     private BigInteger solvePart1(List<String> input) {
 
