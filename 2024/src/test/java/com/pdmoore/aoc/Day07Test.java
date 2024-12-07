@@ -124,7 +124,6 @@ class Day07Test {
         }
     }
 
-
     private BigInteger solvePart1(List<String> input) {
         BigInteger result = BigInteger.ZERO;
 
