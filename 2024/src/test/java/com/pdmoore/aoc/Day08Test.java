@@ -6,10 +6,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day08Test {
+class Day08Test {
 
     @Test
-    public void part1_example() {
+    void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day08_example.txt");
 
         int actual = solvePart1(input);
