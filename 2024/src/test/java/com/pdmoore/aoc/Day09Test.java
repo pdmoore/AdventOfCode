@@ -35,22 +35,26 @@ class Day09Test {
         assertEquals("0099811188827773336446555566..............", actual);
     }
 
+    @Test
+    void testCalculateChecksum() {
+        String input = "0099811188827773336446555566..............";
+        int actual = checksumOf(input);
+        assertEquals(1928, actual);
+    }
+
+    private int checksumOf(String input) {
+        int result = 0;
+        for (int position = 0; position < input.length(); position++) {
+            char fileIdNumber = input.charAt(position);
+            if (fileIdNumber == '.') return result;
+            int n = position * Integer.parseInt(String.valueOf(fileIdNumber));
+            result += n;
+        }
+
+        return result;
+    }
+
     private String moveFileBlocks(String input) {
-        // first gap from the left
-        // first gap from the right
-        // if the same, return
-
-        // grab the first non-gap from the right and position it in the gap on the left
-        // repeat
-
-        /*
-0..111....22222
-02.111....2222.
-022111....222..
-0221112...22...
-02211122..2....
-022111222......
-         */
         String result = input;
         int rightIndex = result.length() - 1;
         while (true) {
@@ -60,8 +64,6 @@ class Day09Test {
             }
 
             char rightChar = result.charAt(rightIndex);
-
-
 
             char[] charArray = result.toCharArray();
             charArray[leftIndex] = rightChar;
@@ -75,7 +77,6 @@ class Day09Test {
         }
 
     }
-
 
     private String diskMapToBlock(String input) {
         int idNumber = 0;
