@@ -10,7 +10,7 @@ class Day09Test {
     void part1_example() {
         String input = "2333133121414131402";
         int actual = solvePart1(input);
-        assertEquals(0, actual);
+        assertEquals(1928, actual);
     }
 
     @Test
@@ -104,10 +104,12 @@ class Day09Test {
 
     private int solvePart1(String input) {
 
+        String blocks = diskMapToBlock(input);
+        String x = moveFileBlocks(blocks);
 
+        int checksum = checksumOf(x);
 
-
-        return 0;
+        return checksum;
     }
 
 
