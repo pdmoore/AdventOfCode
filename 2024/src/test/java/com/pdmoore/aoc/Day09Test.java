@@ -23,6 +23,17 @@ class Day09Test {
         assertEquals(BigInteger.valueOf(1928), actual);
     }
 
+    @Test
+    void part1_bugInMoveBlocks() {
+        // Here is the output from this example (based on real input)
+        // before move: 00000000.1111........22222........333333..4444........55555....666666677777777......888...99....0000000.11111..222222.........333333333
+        // after move:  0000000031111333333332222222222211333333114444100000005555599886666666877777777.........................................................
+        // NOTE:L between 6 and 7 there is an 8 being inserted. It should probably be after all the 7's
+        // need to dig into the Move Blocks logic and figure out when a new Node is inserted (should only be at tail)
+        String input = "814858624854708633247152699";
+        BigInteger actual = solvePart1(input);
+        assertEquals(BigInteger.valueOf(99), actual);
+    }
 
     class Node {
         Node next = null;
