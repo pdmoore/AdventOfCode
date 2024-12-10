@@ -14,11 +14,6 @@ class Day10Test {
 
     static Collection<Point> peaksReached = new HashSet<>();
 
-    @BeforeEach
-    void setUp() {
-        peaksReached = new HashSet<>();
-    }
-
     @Test
     void part1_example() {
         int[][] input = PuzzleInput.as2dIntArray("data/day10_example.txt");
@@ -35,16 +30,25 @@ class Day10Test {
         assertEquals(4, actual);
     }
 
+    @Test
+    void part1_largerExample() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day10_largerExample.txt");
+        int actual = solvePart1(input);
+        assertEquals(36, actual);
+    }
 
     private int solvePart1(int[][] input) {
         List<Point> zeros = locateZeros(input);
 
+        int result = 0;
         for (int i = 0; i < zeros.size(); i++) {
+            peaksReached = new HashSet<>();
             Point currentPoint = zeros.get(i);
             move(input, currentPoint);
+            result += peaksReached.size();
         }
 
-        return peaksReached.size();
+        return result;
     }
 
     private void move(int[][] input, Point p) {
