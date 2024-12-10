@@ -28,7 +28,6 @@ class Day09Test {
     }
 
 
-
     @Test
     void part1() {
         String input = PuzzleInput.asStringFrom("data/day09.txt");
@@ -181,13 +180,36 @@ class Day09Test {
 
         Node head = convertDiskMapToNodes(input);
         printLinkedList(head);
-        // find tail
 
         // compact linked list
+        moveFileBlocks(head);
 
         // calculate checksum
+        return calculateChecksum(head);
+    }
 
-        return -99;
+    private int calculateChecksum(Node head) {
+        printLinkedList(head);
+
+        int position = 0;
+        int result = 0;
+        Node current = head;
+        while (current != null) {
+            if (current.idNumber != FREE_SPACE) {
+                int sum = position * current.idNumber;
+                result += sum;
+            }
+            if (current.length > 1) {
+                current.length -= 1;
+            } else {
+                current = current.next;
+
+            }
+
+            position++;
+        }
+
+        return result;
     }
 
     private Node convertDiskMapToNodes(String input) {
@@ -259,5 +281,73 @@ class Day09Test {
         }
 
         System.out.println(sb.toString());
+    }
+
+    private void moveFileBlocks(Node head) {
+        Node tail = null;
+        Node n = head;
+        while (n.next != null) {
+            n = n.next;
+        }
+        tail = n;
+
+        while (true) {
+            // find first free space
+            Node nextFreeSpace = head;
+            while (nextFreeSpace.idNumber != FREE_SPACE) {
+                nextFreeSpace = nextFreeSpace.next;
+                if (nextFreeSpace == null) {
+                    throw new RuntimeException("didn't find any free space!");
+                }
+            }
+
+            if (nextFreeSpace == tail) {
+                return;
+            }
+
+            Node nextIdFromRight = tail;
+            while (nextIdFromRight.idNumber == FREE_SPACE) {
+                nextIdFromRight = nextIdFromRight.prev;
+            }
+            if (nextIdFromRight == null) {
+                throw new RuntimeException("didn't find any non-Free Space");
+            }
+            if (nextIdFromRight.next == nextFreeSpace) {
+                return;
+            }
+
+            int remainingFreeSpace = nextFreeSpace.length - 1;
+
+            nextFreeSpace.idNumber = nextIdFromRight.idNumber;
+            nextFreeSpace.length = 1;
+
+            if (remainingFreeSpace > 0) {
+                Node freeSpace = new Node();
+                freeSpace.idNumber = FREE_SPACE;
+                freeSpace.length = remainingFreeSpace;
+
+                freeSpace.next = nextFreeSpace.next;
+                freeSpace.prev = nextFreeSpace;
+                nextFreeSpace.next = freeSpace;
+                freeSpace.next.prev = freeSpace;
+            }
+
+            if (tail == nextIdFromRight) {
+                Node newTail = new Node();
+                newTail.idNumber = FREE_SPACE;
+                newTail.length = 1;
+
+                newTail.prev = nextIdFromRight;
+                nextIdFromRight.next = newTail;
+                tail = newTail;
+            } else {
+                tail.length = tail.length + 1;
+            }
+
+            nextIdFromRight.length = nextIdFromRight.length - 1;
+            if (nextIdFromRight.length == 0) {
+                nextIdFromRight.idNumber = FREE_SPACE;
+            }
+        }
     }
 }
