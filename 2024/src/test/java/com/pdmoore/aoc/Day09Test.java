@@ -2,9 +2,14 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day09Test {
+
+    public static final int FREE_SPACE = -1;
 
     @Test
     void part1_example() {
@@ -13,27 +18,56 @@ class Day09Test {
         assertEquals(1928, actual);
     }
 
+
+    class Node {
+        Node next = null;
+        Node prev = null;
+
+        int idNumber;
+        int length;
+    }
+
+
+
+    @Test
+    void part1() {
+        String input = PuzzleInput.asStringFrom("data/day09.txt");
+        int actual = solvePart1(input);
+
+        // assuming I'm hitting issues above 9
+        // 756138815 as is
+        // using a string kind of sucks, could I do a linked list with the ID growing?
+        assertEquals(99, actual);
+    }
+
     @Test
     void testDiskMapToBlock() {
         String input = "12345";
-        String actual = diskMapToBlock(input);
-        assertEquals("0..111....22222", actual);
+        List<Thingy> actual = diskMapToBlock(input);
+        StringBuilder sb = new StringBuilder();
+        for (Thingy t : actual) {
+            sb.append(t.toString());
+        }
+        assertEquals("0..111....22222", sb.toString());
 
         input = "2333133121414131402";
         actual = diskMapToBlock(input);
-        assertEquals("00...111...2...333.44.5555.6666.777.888899", actual);
+        for (Thingy t : actual) {
+            sb.append(t.toString());
+        }
+        assertEquals("00...111...2...333.44.5555.6666.777.888899", sb.toString());
     }
 
-    @Test
-    void testMoveFileBlocks() {
-        String input = "0..111....22222";
-        String actual = moveFileBlocks(input);
-        assertEquals("022111222......", actual);
-
-        input = "00...111...2...333.44.5555.6666.777.888899";
-        actual = moveFileBlocks(input);
-        assertEquals("0099811188827773336446555566..............", actual);
-    }
+//    @Test
+//    void testMoveFileBlocks() {
+//        String input = "0..111....22222";
+//        String actual = moveFileBlocks(input);
+//        assertEquals("022111222......", actual);
+//
+//        input = "00...111...2...333.44.5555.6666.777.888899";
+//        actual = moveFileBlocks(input);
+//        assertEquals("0099811188827773336446555566..............", actual);
+//    }
 
     @Test
     void testCalculateChecksum() {
@@ -54,63 +88,176 @@ class Day09Test {
         return result;
     }
 
-    private String moveFileBlocks(String input) {
-        String result = input;
-        int rightIndex = result.length() - 1;
-        while (true) {
-            int leftIndex = result.indexOf('.');
-            if (leftIndex >= rightIndex) {
-                return result.toString();
-            }
+    private List<Thingy> moveFileBlocks(List<Thingy> input) {
+        // parameter has the gaps in it
+        // Do I need a doubly linked list? or traverse whole list each time to find
+        // left and right indices until they cross?
+        // Want to bring IDs that are greater than 9 forward and swap rightmost with a '.'
 
-            char rightChar = result.charAt(rightIndex);
 
-            char[] charArray = result.toCharArray();
-            charArray[leftIndex] = rightChar;
-            charArray[rightIndex] = '.';
+//        String result = input;
+//        int rightIndex = result.length() - 1;
+//        while (true) {
+//            int leftIndex = result.indexOf('.');
+//            if (leftIndex >= rightIndex) {
+//                return result.toString();
+//            }
+//
+//            char rightChar = result.charAt(rightIndex);
+//
+//            char[] charArray = result.toCharArray();
+//            charArray[leftIndex] = rightChar;
+//            charArray[rightIndex] = '.';
+//
+//            while (charArray[rightIndex] == '.') {
+//                rightIndex--;
+//            }
+//
+//            result = new String(charArray);
+//        }
 
-            while (charArray[rightIndex] == '.') {
-                rightIndex--;
-            }
-
-            result = new String(charArray);
-        }
-
+        return null;
     }
 
-    private String diskMapToBlock(String input) {
+    class Thingy {
+
+        final int idNumber;
+        final int count;
+        boolean fileOrFreeSpace;
+
+        public Thingy(boolean fileOrFreeSpace, int idNumber, int count) {
+            this.fileOrFreeSpace = fileOrFreeSpace;
+            this.idNumber = idNumber;
+            this.count = count;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            if (fileOrFreeSpace) {
+                for (int i = 0; i < count; i++) {
+                    sb.append(idNumber);
+                }
+            } else {
+                for (int i = 0; i < count; i++) {
+                    sb.append('.');
+                }
+            }
+
+
+            return sb.toString();
+        }
+    }
+
+    private List<Thingy> diskMapToBlock(String input) {
         int idNumber = 0;
         boolean fileOrFreeSpace = true;
-        StringBuilder result = new StringBuilder();
+        List<Thingy> listOfThingy = new ArrayList<>();
+
         for (Character c : input.toCharArray()) {
             int num = Integer.parseInt(String.valueOf(c));
             if (fileOrFreeSpace) {
-                for (int i = 0; i < num; i++) {
-                    result.append(idNumber);
-                }
+                Thingy t = new Thingy(true, idNumber, num);
+                listOfThingy.add(t);
                 idNumber++;
             } else {
-                for (int i = 0; i < num; i++) {
-                    result.append(".");
-                }
+                Thingy t = new Thingy(false, FREE_SPACE, num);
+                listOfThingy.add(t);
             }
 
             fileOrFreeSpace = !fileOrFreeSpace;
         }
 
-        return result.toString();
+        return listOfThingy;
     }
-
 
     private int solvePart1(String input) {
+//        List<Thingy> thingies = diskMapToBlock(input);
+//        List<Thingy> compacted = moveFileBlocks(thingies);
+//
+//        int checksum = checksumOf(compacted);
+//
+//        return checksum;
 
-        String blocks = diskMapToBlock(input);
-        String x = moveFileBlocks(blocks);
+        Node head = convertDiskMapToNodes(input);
+        printLinkedList(head);
+        // find tail
 
-        int checksum = checksumOf(x);
+        // compact linked list
 
-        return checksum;
+        // calculate checksum
+
+        return -99;
+    }
+
+    private Node convertDiskMapToNodes(String input) {
+        /*
+                boolean fileOrFreeSpace = true;
+        List<Thingy> listOfThingy = new ArrayList<>();
+
+        for (Character c : input.toCharArray()) {
+            int num = Integer.parseInt(String.valueOf(c));
+            if (fileOrFreeSpace) {
+                Thingy t = new Thingy(true, idNumber, num);
+                listOfThingy.add(t);
+                idNumber++;
+            } else {
+                Thingy t = new Thingy(false, -1, num);
+                listOfThingy.add(t);
+            }
+
+            fileOrFreeSpace = !fileOrFreeSpace;
+        }
+
+        return listOfThingy;
+         */
+
+        boolean fileOrFreeSpace = true;
+        int nextIdNumber = 0;
+        Node head = null;
+        Node last = null;
+
+        for (Character c : input.toCharArray()) {
+            int length = Integer.parseInt(String.valueOf(c));
+            Node n = new Node();
+            if (fileOrFreeSpace) {
+                n.idNumber = nextIdNumber;
+                nextIdNumber++;
+            } else {
+                n.idNumber = FREE_SPACE;
+            }
+            n.length = length;
+
+            n.prev = last;
+            if (head == null) {
+                head = n;
+            }
+            if (n.prev != null) {
+                n.prev.next = n;
+            }
+            last = n;
+
+            fileOrFreeSpace = !fileOrFreeSpace;
+        }
+
+        return head;
     }
 
 
+    private void printLinkedList(Node head) {
+        StringBuilder sb = new StringBuilder();
+        Node n = head;
+        while (n != null) {
+            char c = '.';
+            if (n.idNumber != FREE_SPACE) {
+                c = String.valueOf(n.idNumber).charAt(0);
+            }
+            for (int i = 0; i < n.length; i++) {
+                sb.append(c);
+            }
+            n = n.next;
+        }
+
+        System.out.println(sb.toString());
+    }
 }
