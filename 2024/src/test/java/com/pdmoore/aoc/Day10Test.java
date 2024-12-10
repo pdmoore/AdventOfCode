@@ -62,12 +62,10 @@ class Day10Test {
         List<Point> zeros = locateZeros(input);
 
         rating = 0;
-
         int result = 0;
-        for (int i = 0; i < zeros.size(); i++) {
+        for (Point zero : zeros) {
             peaksReached = new HashSet<>();
-            Point currentPoint = zeros.get(i);
-            move(input, currentPoint);
+            move(input, zero);
             result += peaksReached.size();
         }
 
