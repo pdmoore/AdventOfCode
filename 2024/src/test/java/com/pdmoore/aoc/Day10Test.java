@@ -37,6 +37,13 @@ class Day10Test {
         assertEquals(36, actual);
     }
 
+    @Test
+    void part1() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day10.txt");
+        int actual = solvePart1(input);
+        assertEquals(709, actual);
+    }
+
     private int solvePart1(int[][] input) {
         List<Point> zeros = locateZeros(input);
 
