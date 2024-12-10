@@ -1,6 +1,5 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class Day10Test {
 
     static Collection<Point> peaksReached = new HashSet<>();
+    static int rating = 0;
 
     @Test
     void part1_example() {
@@ -44,8 +44,24 @@ class Day10Test {
         assertEquals(709, actual);
     }
 
+    @Test
+    void part2_largerExample() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day10_largerExample.txt");
+        solvePart1(input);
+        assertEquals(81, rating);
+    }
+
+    @Test
+    void part2() {
+        int[][] input = PuzzleInput.as2dIntArray("data/day10.txt");
+        solvePart1(input);
+        assertEquals(1326, rating);
+    }
+
     private int solvePart1(int[][] input) {
         List<Point> zeros = locateZeros(input);
+
+        rating = 0;
 
         int result = 0;
         for (int i = 0; i < zeros.size(); i++) {
@@ -61,6 +77,7 @@ class Day10Test {
     private void move(int[][] input, Point p) {
         if (input[p.x][p.y] == 9) {
             peaksReached.add(p);
+            rating++;
         }
 
         // from current point
