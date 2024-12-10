@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day09Test {
 
+    // TODO - Example is working but real data doesn't
+    // It looks like the MoveBlocks logic is somehow injecting a new block in between (See Notes)
+
+
     public static final int FREE_SPACE = -1;
 
     @Test
     void part1_example() {
         String input = "2333133121414131402";
-        int actual = solvePart1(input);
-        assertEquals(1928, actual);
+        BigInteger actual = solvePart1(input);
+        assertEquals(BigInteger.valueOf(1928), actual);
     }
 
 
@@ -27,64 +32,14 @@ class Day09Test {
         int length;
     }
 
-
     @Test
     void part1() {
         String input = PuzzleInput.asStringFrom("data/day09.txt");
-        int actual = solvePart1(input);
+        BigInteger actual = solvePart1(input);
 
-        // assuming I'm hitting issues above 9
-        // 756138815 as is
-        // using a string kind of sucks, could I do a linked list with the ID growing?
-        assertEquals(99, actual);
-    }
-
-    @Test
-    void testDiskMapToBlock() {
-        String input = "12345";
-        List<Thingy> actual = diskMapToBlock(input);
-        StringBuilder sb = new StringBuilder();
-        for (Thingy t : actual) {
-            sb.append(t.toString());
-        }
-        assertEquals("0..111....22222", sb.toString());
-
-        input = "2333133121414131402";
-        actual = diskMapToBlock(input);
-        for (Thingy t : actual) {
-            sb.append(t.toString());
-        }
-        assertEquals("00...111...2...333.44.5555.6666.777.888899", sb.toString());
-    }
-
-//    @Test
-//    void testMoveFileBlocks() {
-//        String input = "0..111....22222";
-//        String actual = moveFileBlocks(input);
-//        assertEquals("022111222......", actual);
-//
-//        input = "00...111...2...333.44.5555.6666.777.888899";
-//        actual = moveFileBlocks(input);
-//        assertEquals("0099811188827773336446555566..............", actual);
-//    }
-
-    @Test
-    void testCalculateChecksum() {
-        String input = "0099811188827773336446555566..............";
-        int actual = checksumOf(input);
-        assertEquals(1928, actual);
-    }
-
-    private int checksumOf(String input) {
-        int result = 0;
-        for (int position = 0; position < input.length(); position++) {
-            char fileIdNumber = input.charAt(position);
-            if (fileIdNumber == '.') return result;
-            int n = position * Integer.parseInt(String.valueOf(fileIdNumber));
-            result += n;
-        }
-
-        return result;
+        // after LL impl, got 6407066906765  which was too low
+        // goofing with the move logic, got 7696963600441 which is too high
+        assertEquals(BigInteger.valueOf(99), actual);
     }
 
     private List<Thingy> moveFileBlocks(List<Thingy> input) {
@@ -170,14 +125,7 @@ class Day09Test {
         return listOfThingy;
     }
 
-    private int solvePart1(String input) {
-//        List<Thingy> thingies = diskMapToBlock(input);
-//        List<Thingy> compacted = moveFileBlocks(thingies);
-//
-//        int checksum = checksumOf(compacted);
-//
-//        return checksum;
-
+    private BigInteger solvePart1(String input) {
         Node head = convertDiskMapToNodes(input);
         printLinkedList(head);
 
@@ -188,16 +136,19 @@ class Day09Test {
         return calculateChecksum(head);
     }
 
-    private int calculateChecksum(Node head) {
+    private BigInteger calculateChecksum(Node head) {
         printLinkedList(head);
 
         int position = 0;
-        int result = 0;
+        BigInteger result = BigInteger.ZERO;
         Node current = head;
         while (current != null) {
             if (current.idNumber != FREE_SPACE) {
-                int sum = position * current.idNumber;
-                result += sum;
+                BigInteger sum = BigInteger.ZERO;
+                sum = sum.add(BigInteger.valueOf(position));
+                sum = sum.multiply(BigInteger.valueOf(current.idNumber));
+
+                result = result.add(sum);
             }
             if (current.length > 1) {
                 current.length -= 1;
@@ -213,27 +164,6 @@ class Day09Test {
     }
 
     private Node convertDiskMapToNodes(String input) {
-        /*
-                boolean fileOrFreeSpace = true;
-        List<Thingy> listOfThingy = new ArrayList<>();
-
-        for (Character c : input.toCharArray()) {
-            int num = Integer.parseInt(String.valueOf(c));
-            if (fileOrFreeSpace) {
-                Thingy t = new Thingy(true, idNumber, num);
-                listOfThingy.add(t);
-                idNumber++;
-            } else {
-                Thingy t = new Thingy(false, -1, num);
-                listOfThingy.add(t);
-            }
-
-            fileOrFreeSpace = !fileOrFreeSpace;
-        }
-
-        return listOfThingy;
-         */
-
         boolean fileOrFreeSpace = true;
         int nextIdNumber = 0;
         Node head = null;
@@ -272,7 +202,8 @@ class Day09Test {
         while (n != null) {
             char c = '.';
             if (n.idNumber != FREE_SPACE) {
-                c = String.valueOf(n.idNumber).charAt(0);
+                String string = Integer.toString(n.idNumber);
+                c = string.charAt(string.length() - 1);
             }
             for (int i = 0; i < n.length; i++) {
                 sb.append(c);
@@ -322,14 +253,19 @@ class Day09Test {
             nextFreeSpace.length = 1;
 
             if (remainingFreeSpace > 0) {
-                Node freeSpace = new Node();
-                freeSpace.idNumber = FREE_SPACE;
-                freeSpace.length = remainingFreeSpace;
+//                if (tail.idNumber != FREE_SPACE) {
+                    Node freeSpace = new Node();
+                    freeSpace.idNumber = FREE_SPACE;
+                    freeSpace.length = remainingFreeSpace;
 
-                freeSpace.next = nextFreeSpace.next;
-                freeSpace.prev = nextFreeSpace;
-                nextFreeSpace.next = freeSpace;
-                freeSpace.next.prev = freeSpace;
+                    freeSpace.next = nextFreeSpace.next;
+                    freeSpace.prev = nextFreeSpace;
+                    nextFreeSpace.next = freeSpace;
+                    freeSpace.next.prev = freeSpace;
+//                } else {
+                    // something about remaing free space tacked onto existing tail
+//                    int breakpoint = 66;
+//                }
             }
 
             if (tail == nextIdFromRight) {
