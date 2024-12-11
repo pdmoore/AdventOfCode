@@ -132,7 +132,6 @@ class Day10Test {
         return zeros;
     }
 
-
     static class Point {
         int x;
         int y;
