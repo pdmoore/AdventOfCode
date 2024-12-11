@@ -41,13 +41,21 @@ class Day11Test {
         assertEquals(231278, actual);
     }
 
+    @Test
+    void part2() {
+        String input = "1750884 193 866395 7 1158 31 35216 0";
+        int actual = solvePart1(input, 75);
+        assertEquals(99, actual);
+    }
+
 
     private int solvePart1(String input, int blinkCount) {
         String next = input;
         for (int i = 0; i < blinkCount; i++) {
-            StringBuilder sb = new StringBuilder();
-
+            System.out.println("blink " + i);
             String[] split = next.split(" ");
+
+            StringBuilder sb = new StringBuilder();
             for (String s : split) {
                 BigInteger engraving = new BigInteger(s);
 
