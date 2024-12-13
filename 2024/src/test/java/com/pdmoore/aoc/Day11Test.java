@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -54,26 +55,27 @@ class Day11Test {
     @Test
     void part2_longerExample() {
         String input = "125 17";
-        int actual = solvePart2(input, 6);
-        assertEquals(22, actual);
+        BigInteger actual = solvePart2(input, 4);
+        assertEquals(BigInteger.valueOf(9), actual);
+        actual = solvePart2(input, 6);
+        assertEquals(BigInteger.valueOf(22), actual);
 
-//        actual = solvePart2(input, 25);
-//        assertEquals(55312, actual);
-//
-//        actual = solvePart2(input, 75);
-//        assertEquals(99, actual);
+        actual = solvePart2(input, 25);
+        assertEquals(BigInteger.valueOf(55312), actual);
+
+        actual = solvePart2(input, 75);
+        assertEquals(new BigInteger("65601038650482"), actual);
     }
-
 
 
     @Test
     void part2() {
         String input = "1750884 193 866395 7 1158 31 35216 0";
-        int actual = solvePart1(input, 75);
-        assertEquals(99, actual);
+        BigInteger actual = solvePart2(input, 75);
+        assertEquals(BigInteger.ZERO, actual);
     }
 
-    private int solvePart2(String input, int blinkCount) {
+    private BigInteger solvePart2(String input, int blinkCount) {
 
         // INSTEAD OF solving the whole thing as one monolith
         // split it into smaller pieces and sum those small piece counts
@@ -91,22 +93,20 @@ class Day11Test {
         for (int i = 0; i < split.length; i++) {
             stones.add(new BigInteger(split[i]));
         }
-        Map<BigInteger, Integer> engravingByCount = new HashMap<>();
+        Map<BigInteger, BigInteger> engravingByCount = new ConcurrentHashMap<>();
         for (BigInteger stone : stones) {
-//            engravingByCount.put(stone, engravingByCount.getOrDefault(stone, 0) + 1);
-            engravingByCount.put(stone, 1);
+            engravingByCount.put(stone, BigInteger.ONE);
         }
 
         for (int i = 1; i <= blinkCount; i++) {
             System.out.println("blink " + i);
-//            List<BigInteger> nextStones = new ArrayList<>();
 
 
             // TODO - switching to map lost the fact there may be duplicates generated during
             // the processing of all previous.
             // Instead of just blindly doing a put, need to check if key is there already
             // and update by amount or put amount if not there
-            Map<BigInteger, Integer> nextStonesByCount = new HashMap<>();
+            Map<BigInteger, BigInteger> nextStonesByCount = new HashMap<>();
             for (BigInteger stone : engravingByCount.keySet()) {
 
                 if (i == 4) {
@@ -114,44 +114,69 @@ class Day11Test {
                 }
 
                 // Need to track amount and up those counts for the new stones
-                int amount = engravingByCount.get(stone);
-                if (amount == 0) continue;
+                BigInteger amount = engravingByCount.get(stone);
+                if (amount.equals(BigInteger.ZERO)) {
+                    engravingByCount.remove(stone);
+                    continue;
+                }
                 System.out.print(stone + "   ");
 
-                engravingByCount.replace(stone, 0);
+//                engravingByCount.replace(stone, 0);
+                engravingByCount.remove(stone);
 
                 String s = stone.toString();
                 if (stone.equals(BigInteger.ZERO)) {
 //                    nextStones.add(BigInteger.ONE);
-                    nextStonesByCount.put(BigInteger.ONE, amount);
+                    if (nextStonesByCount.containsKey(BigInteger.ONE)) {
+                        nextStonesByCount.put(BigInteger.ONE,
+                                nextStonesByCount.get(BigInteger.ONE).add(amount));
+                    } else {
+                        nextStonesByCount.put(BigInteger.ONE, amount);
+                    }
                 } else if (s.length() % 2 == 0) {
                     int length = s.length();
                     String substring = s.substring(0, length / 2);
+
                     StringBuilder sb = new StringBuilder(substring);
 //                    nextStones.add(new BigInteger(substring));
-                    nextStonesByCount.put(new BigInteger(substring), amount);
+                    BigInteger key = new BigInteger(substring);
+                    if (nextStonesByCount.containsKey(key)) {
+                        nextStonesByCount.put(key, nextStonesByCount.get(key).add(amount));
+                    } else {
+                        nextStonesByCount.put(key, amount);
+                    }
+
                     substring = s.substring(length / 2);
 //                    nextStones.add(new BigInteger(substring));
-                    nextStonesByCount.put(new BigInteger(substring), amount);
+                    key = new BigInteger(substring);
+                    if (nextStonesByCount.containsKey(key)) {
+                        nextStonesByCount.put(key, nextStonesByCount.get(key).add(amount));
+                    } else {
+                        nextStonesByCount.put(key, amount);
+                    }
                 } else {
                     BigInteger multiplyBy2024 = stone.multiply(BigInteger.valueOf(2024));
 //                    nextStones.add(multiplyBy2024);
-                    nextStonesByCount.put(multiplyBy2024, amount);
-
+                    if (nextStonesByCount.containsKey(multiplyBy2024)) {
+                        nextStonesByCount.put(multiplyBy2024,
+                                nextStonesByCount.get(multiplyBy2024).add(amount));
+                    } else {
+                        nextStonesByCount.put(multiplyBy2024, amount);
+                    }
                 }
 
-                System.out.println(" ");
             }
+            System.out.println(" ");
 
-//            for (BigInteger nextStone : nextStones) {
             for (BigInteger nextStone : nextStonesByCount.keySet()) {
-                engravingByCount.put(nextStone, engravingByCount.getOrDefault(nextStone, 0) + nextStonesByCount.get(nextStone));
+                engravingByCount.put(nextStone,
+                        engravingByCount.getOrDefault(nextStone, BigInteger.ZERO).add(nextStonesByCount.get(nextStone)));
             }
         }
 
-        int result = 0;
+        BigInteger result = BigInteger.ZERO;
         for (BigInteger stone : engravingByCount.keySet()) {
-            result += engravingByCount.get(stone);
+            result = result.add(engravingByCount.get(stone));
         }
 
         return result;
