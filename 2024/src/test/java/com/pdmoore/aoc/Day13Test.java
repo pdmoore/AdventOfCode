@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day13Tests {
+class Day13Test {
 
     @Test
     void part1_example() {
