@@ -35,10 +35,17 @@ class Day13Tests {
 
         BigInteger actual = solvePart2(input);
 
-        assertEquals(BigInteger.valueOf(99), actual);
+        assertEquals(new BigInteger("875318608908"), actual);
     }
 
+    @Test
+    void part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13.txt");
 
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(new BigInteger("75200131617108"), actual);
+    }
 
     @Test
     void verifyWinsPrize() {
@@ -178,37 +185,32 @@ class Day13Tests {
         Long longX = Long.parseLong(targets[0].split("=")[1]);
         Long longY = Long.parseLong(targets[1].split("=")[1]);
 
-        BigInteger targetX = BigInteger.valueOf(longX);
-        BigInteger targetY = BigInteger.valueOf(longY);
-//        BigInteger targetX = new BigInteger("10000000000000").add(BigInteger.valueOf(longX));
-//        BigInteger targetY = new BigInteger("10000000000000").add(BigInteger.valueOf(longY));
+//        BigInteger prize0 = BigInteger.valueOf(longX);
+//        BigInteger prize1 = BigInteger.valueOf(longY);
+        BigInteger prize0 = new BigInteger("10000000000000").add(BigInteger.valueOf(longX));
+        BigInteger prize1 = new BigInteger("10000000000000").add(BigInteger.valueOf(longY));
 
-        for (int pushB = 100; pushB >= 0; pushB--) {
+        // ax * by - ay * bx
+        BigInteger det = aXmovement.multiply(bYmovement)
+                .subtract(aYmovement.multiply(bXmovement));
+        //a = prize0 * bY - prize1 * bx) / det
+        //b = prize1 * ax - prize0 * aY) / det
+        BigInteger a = prize0.multiply(bYmovement)
+                .subtract(prize1.multiply(bXmovement))
+                .divide(det);
 
-//            int currentX = pushB * bXmovement;
-            BigInteger currentX = BigInteger.valueOf(pushB).multiply(bXmovement);
-//            if (currentX > targetX) continue;
-            if (currentX.compareTo(targetX) == 1) continue;
+        BigInteger b = prize1.multiply(aXmovement)
+                .subtract(prize0.multiply(aYmovement))
+                .divide(det);
 
-//            if (currentX == targetX) {
-//                throw new RuntimeException("Found a case where b equals x " + input);
-//            }
-
-            // currentX is less than targetX
-//            int remainingX = targetX - currentX;
-            BigInteger remainingX = targetX.subtract(currentX);
-            if (remainingX.mod(aXmovement).equals(BigInteger.ZERO)) {
-                // this pair works for x
-                BigInteger pushA = remainingX.divide(aXmovement);
-                BigInteger pushBBI = BigInteger.valueOf(pushB);
-                BigInteger verifyY = pushBBI.multiply(bYmovement).add(pushA.multiply(aYmovement));
-                if (verifyY.equals(targetY)) {
-                    return new ButtonPushes(pushA, pushBBI);
-                }
-            }
+        BigInteger checkX = a.multiply(aXmovement)
+                .add(b.multiply(bXmovement));
+        BigInteger checkY = a.multiply(aYmovement)
+                .add(b.multiply(bYmovement));
+        if (prize0.equals(checkX) && prize1.equals(checkY)) {
+            return new ButtonPushes(a, b);
         }
 
         return new ButtonPushes(BigInteger.ZERO, BigInteger.ZERO);
-
     }
 }
