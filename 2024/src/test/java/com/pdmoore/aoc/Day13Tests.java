@@ -20,6 +20,15 @@ class Day13Tests {
     }
 
     @Test
+    void part1() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13.txt");
+
+        int actual = solvePart1(input);
+
+        assertEquals(38839, actual);
+    }
+
+    @Test
     void verifyWinsPrize() {
         List<String> input = Stream.of("Button A: X+94, Y+34",
                 "Button B: X+22, Y+67",
@@ -29,15 +38,51 @@ class Day13Tests {
 
         assertEquals(80, actual.a);
         assertEquals(40, actual.b);
+        assertEquals(280, actual.tokenCost);
+
+        input = Stream.of("Button A: X+17, Y+86",
+                "Button B: X+84, Y+37",
+                "Prize: X=7870, Y=6450").collect(Collectors.toList());
+
+        actual = findWinningMoves(input);
+
+        assertEquals(38, actual.a);
+        assertEquals(86, actual.b);
+        assertEquals(200, actual.tokenCost);
+    }
+
+    @Test
+    void verifyNoWinners() {
+        List<String> input = Stream.of("Button A: X+26, Y+66",
+                "Button B: X+67, Y+21",
+                "Prize: X=12748, Y=12176").collect(Collectors.toList());
+
+        ButtonPushes actual = findWinningMoves(input);
+
+        assertEquals(0, actual.a);
+        assertEquals(0, actual.b);
+
+        input = Stream.of("Button A: X+69, Y+23",
+                "Button B: X+27, Y+71",
+                "Prize: X=18641, Y=10279").collect(Collectors.toList());
+
+        actual = findWinningMoves(input);
+
+        assertEquals(0, actual.a);
+        assertEquals(0, actual.b);
+
     }
 
     private class ButtonPushes {
         public int a;
         public int b;
+        public int tokenCost;
 
         public ButtonPushes(int pushA, int pushB) {
             a = pushA;
             b = pushB;
+
+            tokenCost = pushA * 3 + pushB;
         }
     }
 
@@ -63,7 +108,7 @@ class Day13Tests {
             if (currentX > targetX) continue;
 
             if (currentX == targetX) {
-                throw new RuntimeException("Found a case where b equals x " + input);
+//                throw new RuntimeException("Found a case where b equals x " + input);
             }
 
             // currentX is less than targetX
@@ -71,11 +116,6 @@ class Day13Tests {
             if (remainingX % aXmovement == 0) {
                 // this pair works for x
                 int pushA = remainingX / aXmovement;
-
-                // check if it works for Y also
-                // if it does, return that pair (assuming it is smallest)
-                int breakpoint = 99;
-
                 int verifyY = pushB * bYmovement + pushA * aYmovement;
                 if (verifyY == targetY) {
                     return new ButtonPushes(pushA, pushB);
@@ -90,26 +130,12 @@ class Day13Tests {
 
     private int solvePart1(List<String> input) {
         // need to split input by blank lines
+        int tokensNeeded = 0;
+        for (int i = 0; i < input.size(); i += 4) {
+            ButtonPushes bp = findWinningMoves(input.subList(i, i + 3));
+            tokensNeeded += bp.tokenCost;
+        }
 
-        // for each set of three,
-        // button a stats
-        // button b stats
-        // prize target
-        //3 tokens for A button, 1 token for B button
-
-        // solving a single set
-        // would it be x mod a plus x mod b equal to 0
-        // and y mod a plus y mod b equal to 0 for some pair of a and b
-
-        // a or b can be pressed up to 100
-        // so it could be 1 to 100 for each and whether both x and y are met
-        // it is possible there is not solution
-
-
-
-        // solve those for each set of inputs
-
-
-        return 0;
+        return tokensNeeded;
     }
 }
