@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +28,17 @@ class Day13Tests {
 
         assertEquals(38839, actual);
     }
+
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day13_example.txt");
+
+        BigInteger actual = solvePart2(input);
+
+        assertEquals(BigInteger.valueOf(99), actual);
+    }
+
+
 
     @Test
     void verifyWinsPrize() {
@@ -74,6 +86,9 @@ class Day13Tests {
     }
 
     private class ButtonPushes {
+        public BigInteger tokenCostBI;
+        public BigInteger aBI;
+        public BigInteger bBI;
         public int a;
         public int b;
         public int tokenCost;
@@ -83,6 +98,13 @@ class Day13Tests {
             b = pushB;
 
             tokenCost = pushA * 3 + pushB;
+        }
+
+        public ButtonPushes(BigInteger pushA, BigInteger pushB) {
+            aBI = pushA;
+            bBI = pushB;
+
+            tokenCostBI = pushA.multiply(BigInteger.valueOf(3)).add(pushB);
         }
     }
 
@@ -101,15 +123,10 @@ class Day13Tests {
         int targetX = Integer.parseInt(targets[0].split("=")[1]);
         int targetY = Integer.parseInt(targets[1].split("=")[1]);
 
-
         for (int pushB = 100; pushB >= 0; pushB--) {
 
             int currentX = pushB * bXmovement;
             if (currentX > targetX) continue;
-
-            if (currentX == targetX) {
-//                throw new RuntimeException("Found a case where b equals x " + input);
-            }
 
             // currentX is less than targetX
             int remainingX = targetX - currentX;
@@ -126,10 +143,7 @@ class Day13Tests {
         return new ButtonPushes(0, 0);
     }
 
-
-
     private int solvePart1(List<String> input) {
-        // need to split input by blank lines
         int tokensNeeded = 0;
         for (int i = 0; i < input.size(); i += 4) {
             ButtonPushes bp = findWinningMoves(input.subList(i, i + 3));
@@ -137,5 +151,64 @@ class Day13Tests {
         }
 
         return tokensNeeded;
+    }
+
+    private BigInteger solvePart2(List<String> input) {
+        BigInteger tokensNeeded = BigInteger.ZERO;
+        for (int i = 0; i < input.size(); i += 4) {
+            ButtonPushes bp = findWinningMovesPart2(input.subList(i, i + 3));
+            tokensNeeded = tokensNeeded.add(bp.tokenCostBI);
+        }
+
+        return tokensNeeded;
+    }
+
+    private ButtonPushes findWinningMovesPart2(List<String> input) {
+        String[] aValues = input.get(0).replace("Button A:", "").trim().split(",");// a deltas
+        String[] bValues = input.get(1).replace("Button B:", "").trim().split(",");// a deltas
+        String[] targets = input.get(2).replace("Prize:", "").trim().split(",");// a deltas
+
+        BigInteger aXmovement = new BigInteger(aValues[0].split("\\+")[1]);
+        BigInteger aYmovement = new BigInteger(aValues[1].split("\\+")[1]);
+
+        BigInteger bXmovement = new BigInteger(bValues[0].split("\\+")[1]);
+        BigInteger bYmovement = new BigInteger(bValues[1].split("\\+")[1]);
+
+
+        Long longX = Long.parseLong(targets[0].split("=")[1]);
+        Long longY = Long.parseLong(targets[1].split("=")[1]);
+
+        BigInteger targetX = BigInteger.valueOf(longX);
+        BigInteger targetY = BigInteger.valueOf(longY);
+//        BigInteger targetX = new BigInteger("10000000000000").add(BigInteger.valueOf(longX));
+//        BigInteger targetY = new BigInteger("10000000000000").add(BigInteger.valueOf(longY));
+
+        for (int pushB = 100; pushB >= 0; pushB--) {
+
+//            int currentX = pushB * bXmovement;
+            BigInteger currentX = BigInteger.valueOf(pushB).multiply(bXmovement);
+//            if (currentX > targetX) continue;
+            if (currentX.compareTo(targetX) == 1) continue;
+
+//            if (currentX == targetX) {
+//                throw new RuntimeException("Found a case where b equals x " + input);
+//            }
+
+            // currentX is less than targetX
+//            int remainingX = targetX - currentX;
+            BigInteger remainingX = targetX.subtract(currentX);
+            if (remainingX.mod(aXmovement).equals(BigInteger.ZERO)) {
+                // this pair works for x
+                BigInteger pushA = remainingX.divide(aXmovement);
+                BigInteger pushBBI = BigInteger.valueOf(pushB);
+                BigInteger verifyY = pushBBI.multiply(bYmovement).add(pushA.multiply(aYmovement));
+                if (verifyY.equals(targetY)) {
+                    return new ButtonPushes(pushA, pushBBI);
+                }
+            }
+        }
+
+        return new ButtonPushes(BigInteger.ZERO, BigInteger.ZERO);
+
     }
 }
