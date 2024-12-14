@@ -2,6 +2,7 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +40,6 @@ class Day14Test {
         Point velocity;
 
         public Robot(String input) {
-            // p=0,4 v=3,-3
             String[] split = input.split(" ");
             String[] position = split[0].substring(2).split(",");
             location = new Point(Integer.parseInt(position[0]), Integer.parseInt(position[1]));
@@ -52,16 +52,13 @@ class Day14Test {
             int newX = location.x + velocity.x;
             int newY = location.y + velocity.y;
 
-            // newX less than 0?
-            // DONE newY less than 0?
-            // newX > _wide
-            // newY > _yall
-
             if (newX < 0) newX += _wide;
             if (newY < 0) newY += _tall;
+            if (newX >= _wide) newX -= _wide;
+            if (newY >= _tall) newY -= _tall;
 
-            if (newX > _wide) newX -= _wide;
-            if (newY > _tall) newY -= _tall;
+            if (newX < 0) throw new RuntimeException("x went negative");
+            if (newY < 0) throw new RuntimeException("y went negative");
 
             location = new Point(newX, newY);
         }
@@ -70,6 +67,9 @@ class Day14Test {
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example.txt");
+        Robot r = new Robot("p=0,0 v=0,0");
+        r._wide = 11;
+        r._tall = 7;
 
         int actual = solvePart1(input);
 
@@ -109,25 +109,66 @@ class Day14Test {
         assertEquals(new Point(1, 3), actual.location);
     }
 
+    @Test
+    void canMoveRobotsOffEdges() {
+        String input = "p=0,0 v=0,8";
+        Robot actual = parseInputLine(input);
+        actual._wide = 11;
+        actual._tall = 7;
+
+        actual.move();
+        assertEquals(new Point(0, 1), actual.location);
+
+        actual = parseInputLine("p=0,0 v=12,0");
+        actual.move();
+        assertEquals(new Point(1, 0), actual.location);
+
+        actual = parseInputLine("p=0,0 v=-1,0");
+        actual.move();
+        assertEquals(new Point(1, 0), actual.location);
+    }
+
 
     private Robot parseInputLine(String input) {
         return new Robot(input);
     }
 
     private int solvePart1(List<String> input) {
-        // parse single line for robot with position and velocity
+        List<Robot> robots = new ArrayList<>();
+        for (String line : input) {
+            robots.add(new Robot(line));
+        }
 
+        for (int seconds = 1; seconds <= 100; seconds++) {
+            for (Robot robot : robots) {
+                robot.move();
+            }
+        }
 
-        // List of Robots that have Point and Velocity
+        int q1Count = 0;
+        int q2Count = 0;
+        int q3Count = 0;
+        int q4Count = 0;
+        // q1 = 0,0 to 2,4
+        // q2 = 0,6, to 2,10
+        // q3 = 4,0 to 6,4
+        // q4 = 4,6 to 6,10
 
-        // clock tick to move
-        // wrap around the edges correctly
+        // TODO movement seems correct at edges
+        // but after 100 seconds the counts by quadrant are wrong
+        // currently seeing 3/1/3/1 for q1-4
+        //throw new RuntimeException("Left off here, read comment");
 
-        // specify board width/height and then tally points in each quadrant
+        // TODO need to derive edges via the static values _wide and _tall
+        for (Robot robot : robots) {
+            int x = robot.location.x;
+            int y = robot.location.y;
+            if ((0 <= x && x <= 2) && (0 <= y && y <= 4)) q1Count++;
+            if ((0 <= x && x <= 2) && (6 <= y && y <= 10)) q2Count++;
+            if ((4 <= x && x <= 6) && (0 <= y && y <= 4)) q3Count++;
+            if ((4 <= x && x <= 6) && (6 <= y && y <= 10)) q4Count++;
+        }
 
-
-
-
-        return 0;
+        return q1Count * q2Count * q3Count * q4Count;
     }
 }
