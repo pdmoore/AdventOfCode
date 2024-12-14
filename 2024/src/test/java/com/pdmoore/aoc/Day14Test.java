@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class Day14Test {
     static class Point {
@@ -34,6 +33,8 @@ class Day14Test {
     }
 
     static class Robot {
+        public static int _wide;
+        public static int _tall;
         Point location;
         Point velocity;
 
@@ -45,6 +46,24 @@ class Day14Test {
 
             String[] speed = split[1].substring(2).split(",");
             velocity = new Point(Integer.parseInt(speed[0]), Integer.parseInt(speed[1]));
+        }
+
+        public void move() {
+            int newX = location.x + velocity.x;
+            int newY = location.y + velocity.y;
+
+            // newX less than 0?
+            // DONE newY less than 0?
+            // newX > _wide
+            // newY > _yall
+
+            if (newX < 0) newX += _wide;
+            if (newY < 0) newY += _tall;
+
+            if (newX > _wide) newX -= _wide;
+            if (newY > _tall) newY -= _tall;
+
+            location = new Point(newX, newY);
         }
     }
 
@@ -66,6 +85,30 @@ class Day14Test {
         assertEquals(new Point(0, 4), actual.location);
         assertEquals(new Point(3, -3), actual.velocity);
     }
+
+    @Test
+    void canMoveAndWarpRobot() {
+        String input = "p=2,4 v=2,-3";
+        Robot actual = parseInputLine(input);
+        actual._wide = 11;
+        actual._tall = 7;
+
+        actual.move();
+        assertEquals(new Point(4, 1), actual.location);
+
+        actual.move();
+        assertEquals(new Point(6, 5), actual.location);
+
+        actual.move();
+        assertEquals(new Point(8, 2), actual.location);
+
+        actual.move();
+        assertEquals(new Point(10, 6), actual.location);
+
+        actual.move();
+        assertEquals(new Point(1, 3), actual.location);
+    }
+
 
     private Robot parseInputLine(String input) {
         return new Robot(input);
