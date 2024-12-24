@@ -3,6 +3,7 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,19 +58,21 @@ class Day23Test {
         assertEquals(1151, actualCount);
     }
 
+    @Test
+    void part2_example() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day23_example.txt");
+
+        String actual = solvePart2(input);
+
+        assertEquals("co,de,ka,ta", actual);
+    }
+
     private List<Set<String>> findSetsOfThree(List<String> input) {
 
-        Map<String, List<String>> connections = new HashMap<>();
-        for (String connection : input) {
-            String[] split = connection.split("-");
-            String lhs = split[0];
-            String rhs = split[1];
-            addConnection(connections, lhs, rhs);
-            addConnection(connections, rhs, lhs);
-        }
+        Map<String, List<String>> connections = createConnectionsMap(input);
 
         List<Set<String>> threeComputerSets = new ArrayList<>();
-        for (String firstComputer: connections.keySet()) {
+        for (String firstComputer : connections.keySet()) {
             for (String secondComputer : connections.get(firstComputer)) {
                 for (String thirdComputer : connections.get(secondComputer)) {
                     if (connections.get(thirdComputer).contains(firstComputer)) {
@@ -86,6 +89,18 @@ class Day23Test {
         }
 
         return threeComputerSets;
+    }
+
+    private static Map<String, List<String>> createConnectionsMap(List<String> input) {
+        Map<String, List<String>> connections = new HashMap<>();
+        for (String connection : input) {
+            String[] split = connection.split("-");
+            String lhs = split[0];
+            String rhs = split[1];
+            addConnection(connections, lhs, rhs);
+            addConnection(connections, rhs, lhs);
+        }
+        return connections;
     }
 
     private static void addConnection(Map<String, List<String>> connections, String lhs, String rhs) {
@@ -111,4 +126,23 @@ class Day23Test {
 
         return result;
     }
+
+    private String solvePart2(List<String> input) {
+        Map<String, List<String>> connections = createConnectionsMap(input);
+
+        Set<String> connectionsToProcess = connections.keySet();
+        Set<String> connectionsToKeepGrowing = new TreeSet<>();
+        for (String connection : connectionsToProcess) {
+
+
+
+
+            connectionsToProcess = connectionsToKeepGrowing;
+        }
+
+
+        return "";
+    }
+
+
 }
