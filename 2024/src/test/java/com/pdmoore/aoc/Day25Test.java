@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class Day25Test {
 
@@ -17,6 +16,13 @@ class Day25Test {
         int actual = solvePart1(input);
 
         assertEquals(3, actual);
+    }
+
+    @Test
+    void part1() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day25.txt");
+        int actual = solvePart1(input);
+        assertEquals(3291, actual);
     }
 
     @Test
