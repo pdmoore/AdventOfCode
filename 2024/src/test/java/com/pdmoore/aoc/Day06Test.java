@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -113,13 +114,13 @@ class Day06Test {
             visited.add(current);
         }
 
-        // visited may have duplicate positions where the direction differs
-        Set<Point> distinctPositions = new HashSet<>();
-        for (DirectionalPoint dp: visited) {
-            distinctPositions.add(new Point(dp.x, dp.y));
-        }
-
-        return distinctPositions.size();
+        // visited may have duplicate positions where the direction differs,
+        // only return the count of unique positions visited
+        return visited
+                .stream()
+                .map(dp -> new Point(dp.x, dp.y))
+                .collect(Collectors.toSet())
+                .size();
     }
 
     private DirectionalPoint findGuard(char[][] map) {
