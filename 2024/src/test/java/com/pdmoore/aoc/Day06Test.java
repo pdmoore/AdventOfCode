@@ -1,9 +1,10 @@
 package com.pdmoore.aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +58,6 @@ class Day06Test {
     }
 
     @Test
-    @Disabled("Have not started to solve")
     void part2_example() {
         char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
         DirectionalPoint guardPosition = findGuard(map);
@@ -65,6 +65,16 @@ class Day06Test {
         int actual = solvePart2(map, guardPosition);
 
         assertEquals(6, actual);
+    }
+
+    @Test
+    void part2() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day06.txt");
+        DirectionalPoint guardPosition = findGuard(map);
+
+        int actual = solvePart2(map, guardPosition);
+
+        assertEquals(2188, actual);
     }
 
     // collect visited positions
@@ -128,12 +138,33 @@ class Day06Test {
         }
     }
 
-
     private int solvePart2(char[][] map, DirectionalPoint guardPosition) {
+
+        // Brute Force, for every row/col, add a '#' if there isn't one and try all combos....
+        Set<Point> obstructionsCausingLoop = new HashSet<>();
+
+        for (int i = 0; i < map.length; i++) {
+            System.out.println("processing row " + i);
+            for (int j = 0; j < map[i].length; j++) {
+
+                if (map[i][j] != '#') {
+                    char originalChar = map[i][j];
+                    map[i][j] = '#';
+
+                    if (isThereALoop(map, guardPosition)) {
+                        obstructionsCausingLoop.add(new Point(i, j));
+                    }
+
+                    map[i][j] = originalChar;
+                }
+            }
+        }
 
         // Thought:
         // Place a block '#' in front of the current position
         // and then try to see if the new map has a loop or not
+
+
 
         // track points visited in order and look for repetition
         // if stuck in a loop, add the point to a list
@@ -148,12 +179,7 @@ class Day06Test {
         // there can be dupes of the blocking points since they can be approached from 4 sides
 
 
-
-
-
-
-
-        return 0;
+        return obstructionsCausingLoop.size();
     }
 
     private int solvePart1(char[][] map) {
