@@ -241,7 +241,7 @@ class Day08Test {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Day06Test.Point point = (Day06Test.Point) o;
+            Point point = (Point) o;
             return x == point.x && y == point.y;
         }
 

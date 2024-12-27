@@ -1,5 +1,6 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ class Day06Test {
     }
 
     @Test
+    @Disabled("Have not started to solve")
     void part2_example() {
         char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
 
@@ -53,34 +55,10 @@ class Day06Test {
         return 0;
     }
 
-    static class Point {
-        int x;
-        int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Point point = (Point) o;
-            return x == point.x && y == point.y;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = x;
-            result = 31 * result + y;
-            return result;
-        }
-    }
     enum Direction {UP, RIGHT, DOWN, LEFT}
 
     private int solvePart1(char[][] map) {
-        Set<Point> visited = new HashSet<>();
+            Set<Point> visited = new HashSet<>();
 
         Point current = findGuard(map);
         visited.add(current);
