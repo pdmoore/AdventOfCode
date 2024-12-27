@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Day06Test {
 
+    public static final char GUARD = '^';
+    public static final char OBSTRUCTION = '#';
+
     @Test
     void part1_example() {
         char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
@@ -87,10 +90,10 @@ class Day06Test {
         while (true) {
             switch (guardPosition.direction) {
                 case UP:
-                    if (guardPosition.x == 0) {
+                    if (hasGuardLeftArea(guardPosition, map)) {
                         return false;
                     } else {
-                        if (map[guardPosition.x - 1][guardPosition.y] == '#') {
+                        if (map[guardPosition.x - 1][guardPosition.y] == OBSTRUCTION) {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y, Direction.RIGHT);
                         } else {
                             guardPosition = new DirectionalPoint(guardPosition.x - 1, guardPosition.y, Direction.UP);
@@ -98,10 +101,10 @@ class Day06Test {
                     }
                     break;
                 case RIGHT:
-                    if (guardPosition.y == map.length - 1) {
+                    if (hasGuardLeftArea(guardPosition, map)) {
                         return false;
                     } else {
-                        if (map[guardPosition.x][guardPosition.y + 1] == '#') {
+                        if (map[guardPosition.x][guardPosition.y + 1] == OBSTRUCTION) {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y, Direction.DOWN);
                         } else {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y + 1, Direction.RIGHT);
@@ -109,10 +112,10 @@ class Day06Test {
                     }
                     break;
                 case DOWN:
-                    if (guardPosition.x == map[0].length - 1) {
+                    if (hasGuardLeftArea(guardPosition, map)) {
                         return false;
                     } else {
-                        if (map[guardPosition.x + 1][guardPosition.y] == '#') {
+                        if (map[guardPosition.x + 1][guardPosition.y] == OBSTRUCTION) {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y, Direction.LEFT);
                         } else {
                             guardPosition = new DirectionalPoint(guardPosition.x + 1, guardPosition.y, Direction.DOWN);
@@ -120,10 +123,10 @@ class Day06Test {
                     }
                     break;
                 case LEFT:
-                    if (guardPosition.y == 0) {
+                    if (hasGuardLeftArea(guardPosition, map)) {
                         return false;
                     } else {
-                        if (map[guardPosition.x][guardPosition.y - 1] == '#') {
+                        if (map[guardPosition.x][guardPosition.y - 1] == OBSTRUCTION) {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y, Direction.UP);
                         } else {
                             guardPosition = new DirectionalPoint(guardPosition.x, guardPosition.y - 1, Direction.LEFT);
@@ -138,6 +141,12 @@ class Day06Test {
         }
     }
 
+    private static boolean hasGuardLeftArea(DirectionalPoint guardPosition, char[][] map) {
+        return guardPosition.x == 0 || guardPosition.y == 0 ||
+                guardPosition.y == map.length - 1 ||
+                guardPosition.x == map[0].length - 1;
+    }
+
     private int solvePart2(char[][] map, DirectionalPoint guardPosition) {
 
         // Brute Force, for every row/col, add a '#' if there isn't one and try all combos....
@@ -147,9 +156,9 @@ class Day06Test {
             System.out.println("processing row " + i);
             for (int j = 0; j < map[i].length; j++) {
 
-                if (map[i][j] != '#') {
+                if (map[i][j] != OBSTRUCTION) {
                     char originalChar = map[i][j];
-                    map[i][j] = '#';
+                    map[i][j] = OBSTRUCTION;
 
                     if (isThereALoop(map, guardPosition)) {
                         obstructionsCausingLoop.add(new Point(i, j));
@@ -192,10 +201,10 @@ class Day06Test {
         while (!done) {
             switch (current.direction) {
                 case UP:
-                    if (current.x == 0) {
+                    if (hasGuardLeftArea(current, map)) {
                         done = true;
                     } else {
-                        if (map[current.x - 1][current.y] == '#') {
+                        if (map[current.x - 1][current.y] == OBSTRUCTION) {
                             current = new DirectionalPoint(current.x, current.y, Direction.RIGHT);
                         } else {
                             current = new DirectionalPoint(current.x - 1, current.y, Direction.UP);
@@ -206,7 +215,7 @@ class Day06Test {
                     if (current.y == map.length - 1) {
                         done = true;
                     } else {
-                        if (map[current.x][current.y + 1] == '#') {
+                        if (map[current.x][current.y + 1] == OBSTRUCTION) {
                             current = new DirectionalPoint(current.x, current.y, Direction.DOWN);
                         } else {
                             current = new DirectionalPoint(current.x, current.y + 1, Direction.RIGHT);
@@ -217,7 +226,7 @@ class Day06Test {
                     if (current.x == map[0].length - 1) {
                         done = true;
                     } else {
-                        if (map[current.x + 1][current.y] == '#') {
+                        if (map[current.x + 1][current.y] == OBSTRUCTION) {
                             current = new DirectionalPoint(current.x, current.y, Direction.LEFT);
                         } else {
                             current = new DirectionalPoint(current.x + 1, current.y, Direction.DOWN);
@@ -228,7 +237,7 @@ class Day06Test {
                     if (current.y == 0) {
                         done = true;
                     } else {
-                        if (map[current.x][current.y - 1] == '#') {
+                        if (map[current.x][current.y - 1] == OBSTRUCTION) {
                             current = new DirectionalPoint(current.x, current.y, Direction.UP);
                         } else {
                             current = new DirectionalPoint(current.x, current.y - 1, Direction.LEFT);
@@ -251,7 +260,7 @@ class Day06Test {
     private DirectionalPoint findGuard(char[][] map) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y] == '^') {
+                if (map[x][y] == GUARD) {
                     return new DirectionalPoint(x, y, Direction.UP);
                 }
             }
@@ -261,7 +270,6 @@ class Day06Test {
     }
 
     enum Direction {UP, RIGHT, DOWN, LEFT}
-
     static class DirectionalPoint extends Point {
 
         private final Direction direction;
