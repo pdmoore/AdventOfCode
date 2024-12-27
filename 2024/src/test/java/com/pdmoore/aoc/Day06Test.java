@@ -62,16 +62,16 @@ class Day06Test {
         // TODO - can I remove need to have a separate facing variable?
         // current has the direction baked in, and when turning 90 degrees should result
         // in a new directional point added to the Set
-        Direction facing = Direction.UP;
         boolean done = false;
         while (!done) {
-            switch (facing) {
+            switch (current.direction) {
                 case UP:
                     if (current.x == 0) {
                         done = true;
                     } else {
                         if (map[current.x - 1][current.y] == '#') {
-                            facing = Direction.RIGHT;
+                            current = new DirectionalPoint(current.x, current.y, Direction.RIGHT);
+                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x - 1, current.y, Direction.UP);
                             visited.add(current);
@@ -83,7 +83,8 @@ class Day06Test {
                         done = true;
                     } else {
                         if (map[current.x][current.y + 1] == '#') {
-                            facing = Direction.DOWN;
+                            current = new DirectionalPoint(current.x, current.y, Direction.DOWN);
+                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x, current.y + 1, Direction.RIGHT);
                             visited.add(current);
@@ -95,7 +96,8 @@ class Day06Test {
                         done = true;
                     } else {
                         if (map[current.x + 1][current.y] == '#') {
-                            facing = Direction.LEFT;
+                            current = new DirectionalPoint(current.x, current.y, Direction.LEFT);
+                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x + 1, current.y, Direction.DOWN);
                             visited.add(current);
@@ -107,7 +109,8 @@ class Day06Test {
                         done = true;
                     } else {
                         if (map[current.x][current.y - 1] == '#') {
-                            facing = Direction.UP;
+                            current = new DirectionalPoint(current.x, current.y, Direction.UP);
+                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x, current.y - 1, Direction.LEFT);
                             visited.add(current);
