@@ -59,8 +59,10 @@ class Day06Test {
         DirectionalPoint current = findGuard(map);
         visited.add(current);
 
+        // TODO - can I remove need to have a separate facing variable?
+        // current has the direction baked in, and when turning 90 degrees should result
+        // in a new directional point added to the Set
         Direction facing = Direction.UP;
-
         boolean done = false;
         while (!done) {
             switch (facing) {
@@ -120,7 +122,6 @@ class Day06Test {
         for (DirectionalPoint dp: visited) {
             distinctPositions.add(new Point(dp.x, dp.y));
         }
-
 
         return distinctPositions.size();
     }
