@@ -71,10 +71,8 @@ class Day06Test {
                     } else {
                         if (map[current.x - 1][current.y] == '#') {
                             current = new DirectionalPoint(current.x, current.y, Direction.RIGHT);
-                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x - 1, current.y, Direction.UP);
-                            visited.add(current);
                         }
                     }
                     break;
@@ -84,10 +82,8 @@ class Day06Test {
                     } else {
                         if (map[current.x][current.y + 1] == '#') {
                             current = new DirectionalPoint(current.x, current.y, Direction.DOWN);
-                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x, current.y + 1, Direction.RIGHT);
-                            visited.add(current);
                         }
                     }
                     break;
@@ -97,10 +93,8 @@ class Day06Test {
                     } else {
                         if (map[current.x + 1][current.y] == '#') {
                             current = new DirectionalPoint(current.x, current.y, Direction.LEFT);
-                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x + 1, current.y, Direction.DOWN);
-                            visited.add(current);
                         }
                     }
                     break;
@@ -110,14 +104,13 @@ class Day06Test {
                     } else {
                         if (map[current.x][current.y - 1] == '#') {
                             current = new DirectionalPoint(current.x, current.y, Direction.UP);
-                            visited.add(current);
                         } else {
                             current = new DirectionalPoint(current.x, current.y - 1, Direction.LEFT);
-                            visited.add(current);
                         }
                     }
                     break;
             }
+            visited.add(current);
         }
 
         // visited may have duplicate positions where the direction differs
