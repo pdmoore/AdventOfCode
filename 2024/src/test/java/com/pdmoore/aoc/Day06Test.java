@@ -61,21 +61,41 @@ class Day06Test {
     }
 
     @Test
-    void part2_example() {
+    void part2_example_bruteForce() {
         char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
         DirectionalPoint guardPosition = findGuard(map);
 
-        int actual = solvePart2(map, guardPosition);
+        int actual = solvePart2_bruteForce(map, guardPosition);
 
         assertEquals(6, actual);
     }
 
     @Test
-    void part2() {
+    void part2_example_blockGuardsPath() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day06_example.txt");
+        DirectionalPoint guardPosition = findGuard(map);
+
+        int actual = solvePart2_blockGuardsPath(map, guardPosition);
+
+        assertEquals(6, actual);
+    }
+
+    @Test
+    void part2_bruteForce() {
         char[][] map = PuzzleInput.as2dCharArray("data/day06.txt");
         DirectionalPoint guardPosition = findGuard(map);
 
-        int actual = solvePart2(map, guardPosition);
+        int actual = solvePart2_bruteForce(map, guardPosition);
+
+        assertEquals(2188, actual);
+    }
+
+    @Test
+    void part2_blockGuardsPath() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day06.txt");
+        DirectionalPoint guardPosition = findGuard(map);
+
+        int actual = solvePart2_blockGuardsPath(map, guardPosition);
 
         assertEquals(2188, actual);
     }
@@ -147,7 +167,7 @@ class Day06Test {
                 guardPosition.x == map[0].length - 1;
     }
 
-    private int solvePart2(char[][] map, DirectionalPoint guardPosition) {
+    private int solvePart2_bruteForce(char[][] map, DirectionalPoint guardPosition) {
 
         // Brute Force, for every row/col, add a '#' if there isn't one and try all combos....
         Set<Point> obstructionsCausingLoop = new HashSet<>();
@@ -169,16 +189,13 @@ class Day06Test {
             }
         }
 
+        return obstructionsCausingLoop.size();
+    }
+
+    private int solvePart2_blockGuardsPath(char[][] map, DirectionalPoint guardPosition) {
         // Thought:
         // Place a block '#' in front of the current position
         // and then try to see if the new map has a loop or not
-
-
-
-        // track points visited in order and look for repetition
-        // if stuck in a loop, add the point to a list
-        // remove the block '#', advance the guard one position, and try again
-        // return the size of the list
 
         // given the guard position and direction
         // if guard is at edge and moving off board, don't bother
@@ -187,8 +204,47 @@ class Day06Test {
         // if returns true, collect the position of the '#' as a point in a set
         // there can be dupes of the blocking points since they can be approached from 4 sides
 
+        // Tried this from each current Guard Position and wound up with 2287 instead of 2187
+        // by starting guard from initial position checking for loops got the correct answer
+        // faster but still kinda slow
+        DirectionalPoint initialGuardPosition = guardPosition;
+
+        Set<Point> obstructionsCausingLoop = new HashSet<>();
+        while (guardPosition != null) {
+            Point obstructAt = pointInFrontOf(guardPosition);
+            if (obstructAt != null && withinBounds(map, obstructAt)) {
+                char originalChar = map[obstructAt.x][obstructAt.y];
+                map[obstructAt.x][obstructAt.y] = OBSTRUCTION;
+
+                if (isThereALoop(map, initialGuardPosition)) {
+                    if (!obstructionsCausingLoop.contains(obstructAt)) {
+                        obstructionsCausingLoop.add(obstructAt);
+                    }
+                }
+
+                map[obstructAt.x][obstructAt.y] = originalChar;
+            }
+
+            guardPosition = moveGuardForwardOrTurn(map, guardPosition);
+        }
 
         return obstructionsCausingLoop.size();
+    }
+
+    private boolean withinBounds(char[][] map, Point point) {
+        return point.x >= 0 && point.x < map.length && point.y >= 0 && point.y < map[0].length;
+    }
+
+    private Point pointInFrontOf(DirectionalPoint guardPosition) {
+        // return point 1 beyond current position
+        switch (guardPosition.direction) {
+            case UP: return new Point(guardPosition.x - 1, guardPosition.y);
+            case RIGHT: return new Point(guardPosition.x, guardPosition.y + 1);
+            case DOWN: return new Point(guardPosition.x + 1, guardPosition.y);
+            case LEFT: return new Point(guardPosition.x, guardPosition.y - 1);
+        }
+
+        throw new RuntimeException("Invalid guard position " + guardPosition);
     }
 
     private int solvePart1(char[][] map) {
@@ -199,53 +255,12 @@ class Day06Test {
 
         boolean done = false;
         while (!done) {
-            switch (current.direction) {
-                case UP:
-                    if (hasGuardLeftArea(current, map)) {
-                        done = true;
-                    } else {
-                        if (map[current.x - 1][current.y] == OBSTRUCTION) {
-                            current = new DirectionalPoint(current.x, current.y, Direction.RIGHT);
-                        } else {
-                            current = new DirectionalPoint(current.x - 1, current.y, Direction.UP);
-                        }
-                    }
-                    break;
-                case RIGHT:
-                    if (current.y == map.length - 1) {
-                        done = true;
-                    } else {
-                        if (map[current.x][current.y + 1] == OBSTRUCTION) {
-                            current = new DirectionalPoint(current.x, current.y, Direction.DOWN);
-                        } else {
-                            current = new DirectionalPoint(current.x, current.y + 1, Direction.RIGHT);
-                        }
-                    }
-                    break;
-                case DOWN:
-                    if (current.x == map[0].length - 1) {
-                        done = true;
-                    } else {
-                        if (map[current.x + 1][current.y] == OBSTRUCTION) {
-                            current = new DirectionalPoint(current.x, current.y, Direction.LEFT);
-                        } else {
-                            current = new DirectionalPoint(current.x + 1, current.y, Direction.DOWN);
-                        }
-                    }
-                    break;
-                case LEFT:
-                    if (current.y == 0) {
-                        done = true;
-                    } else {
-                        if (map[current.x][current.y - 1] == OBSTRUCTION) {
-                            current = new DirectionalPoint(current.x, current.y, Direction.UP);
-                        } else {
-                            current = new DirectionalPoint(current.x, current.y - 1, Direction.LEFT);
-                        }
-                    }
-                    break;
+            current = moveGuardForwardOrTurn(map, current);
+            if (current == null) {
+                done = true;
+            } else {
+                visited.add(current);
             }
-            visited.add(current);
         }
 
         // visited may have duplicate positions where the direction differs,
@@ -255,6 +270,56 @@ class Day06Test {
                 .map(dp -> new Point(dp.x, dp.y))
                 .collect(Collectors.toSet())
                 .size();
+    }
+
+    private static DirectionalPoint moveGuardForwardOrTurn(char[][] map, DirectionalPoint current) {
+        switch (current.direction) {
+            case UP:
+                if (hasGuardLeftArea(current, map)) {
+                    current = null;
+                } else {
+                    if (map[current.x - 1][current.y] == OBSTRUCTION) {
+                        current = new DirectionalPoint(current.x, current.y, Direction.RIGHT);
+                    } else {
+                        current = new DirectionalPoint(current.x - 1, current.y, Direction.UP);
+                    }
+                }
+                break;
+            case RIGHT:
+                if (current.y == map.length - 1) {
+                    current = null;
+                } else {
+                    if (map[current.x][current.y + 1] == OBSTRUCTION) {
+                        current = new DirectionalPoint(current.x, current.y, Direction.DOWN);
+                    } else {
+                        current = new DirectionalPoint(current.x, current.y + 1, Direction.RIGHT);
+                    }
+                }
+                break;
+            case DOWN:
+                if (current.x == map[0].length - 1) {
+                    current = null;
+                } else {
+                    if (map[current.x + 1][current.y] == OBSTRUCTION) {
+                        current = new DirectionalPoint(current.x, current.y, Direction.LEFT);
+                    } else {
+                        current = new DirectionalPoint(current.x + 1, current.y, Direction.DOWN);
+                    }
+                }
+                break;
+            case LEFT:
+                if (current.y == 0) {
+                    current = null;
+                } else {
+                    if (map[current.x][current.y - 1] == OBSTRUCTION) {
+                        current = new DirectionalPoint(current.x, current.y, Direction.UP);
+                    } else {
+                        current = new DirectionalPoint(current.x, current.y - 1, Direction.LEFT);
+                    }
+                }
+                break;
+        }
+        return current;
     }
 
     private DirectionalPoint findGuard(char[][] map) {
@@ -270,6 +335,7 @@ class Day06Test {
     }
 
     enum Direction {UP, RIGHT, DOWN, LEFT}
+
     static class DirectionalPoint extends Point {
 
         private final Direction direction;
