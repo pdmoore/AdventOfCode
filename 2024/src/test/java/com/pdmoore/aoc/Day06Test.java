@@ -168,7 +168,6 @@ class Day06Test {
     }
 
     private int solvePart2_bruteForce(char[][] map, DirectionalPoint guardPosition) {
-
         // Brute Force, for every row/col, add a '#' if there isn't one and try all combos....
         Set<Point> obstructionsCausingLoop = new HashSet<>();
 
@@ -212,14 +211,12 @@ class Day06Test {
         Set<Point> obstructionsCausingLoop = new HashSet<>();
         while (guardPosition != null) {
             Point obstructAt = pointInFrontOf(guardPosition);
-            if (obstructAt != null && withinBounds(map, obstructAt)) {
+            if (withinBounds(map, obstructAt)) {
                 char originalChar = map[obstructAt.x][obstructAt.y];
                 map[obstructAt.x][obstructAt.y] = OBSTRUCTION;
 
                 if (isThereALoop(map, initialGuardPosition)) {
-                    if (!obstructionsCausingLoop.contains(obstructAt)) {
-                        obstructionsCausingLoop.add(obstructAt);
-                    }
+                    obstructionsCausingLoop.add(obstructAt);
                 }
 
                 map[obstructAt.x][obstructAt.y] = originalChar;
@@ -237,14 +234,12 @@ class Day06Test {
 
     private Point pointInFrontOf(DirectionalPoint guardPosition) {
         // return point 1 beyond current position
-        switch (guardPosition.direction) {
-            case UP: return new Point(guardPosition.x - 1, guardPosition.y);
-            case RIGHT: return new Point(guardPosition.x, guardPosition.y + 1);
-            case DOWN: return new Point(guardPosition.x + 1, guardPosition.y);
-            case LEFT: return new Point(guardPosition.x, guardPosition.y - 1);
-        }
-
-        throw new RuntimeException("Invalid guard position " + guardPosition);
+        return switch (guardPosition.direction) {
+            case UP    -> new Point(guardPosition.x - 1, guardPosition.y);
+            case RIGHT -> new Point(guardPosition.x, guardPosition.y + 1);
+            case DOWN  -> new Point(guardPosition.x + 1, guardPosition.y);
+            case LEFT  -> new Point(guardPosition.x, guardPosition.y - 1);
+        };
     }
 
     private int solvePart1(char[][] map) {
