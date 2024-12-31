@@ -8,11 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day09Test {
 
+    public static final int FREE_SPACE = -1;
+    private static final boolean SUPPRESS_PRINTING = true;
+
     @Test
     void part1_example() {
         String input = "2333133121414131402";
         BigInteger actual = solvePart1(input);
-        assertEquals(BigInteger.valueOf(1928), actual);
+        assertEquals(new BigInteger("1928"), actual);
     }
 
     @Test
@@ -29,11 +32,8 @@ class Day09Test {
     }
 
     private BigInteger solvePart1(String input) {
-
         Block head = null;
 
-        // for each char in input, convert to int and build linked list
-        // need head and tail at the finish
         boolean processFile = true;
         int nextIdNumber = 0;
         Block current = new Block();
@@ -42,25 +42,21 @@ class Day09Test {
             if (head == null) {
                 head = current;
             }
+
+            int useIdNumber = FREE_SPACE;
             if (processFile) {
-                for (int i = 0; i < length; i++) {
-                    current.idNumber = nextIdNumber;
-                    Block prev = current;
-                    current = new Block();
-                    current.prev = prev;
-                    prev.next = current;
-                }
+                useIdNumber = nextIdNumber;
                 nextIdNumber++;
-            } else {
-                for (int i = 0; i < length; i++) {
-                    current.idNumber = -1;
-                    Block prev = current;
-                    current = new Block();
-                    current.prev = prev;
-                    prev.next = current;
-                }
             }
 
+            for (int i = 0; i < length; i++) {
+                current.idNumber = useIdNumber;
+                Block prev = current;
+                current = new Block();
+                current.prev = prev;
+                prev.next = current;
+            }
+            
             processFile = !processFile;
         }
 
@@ -69,12 +65,7 @@ class Day09Test {
         current.prev.next = null;
 
         printBlocks(head);
-
-        // TODO - compress from head forward and tail backward
-        // when head == tail it's done
         moveFileBlocks(head, tail);
-
-        //
         printBlocks(head);
 
         return calculateChecksum(head);
@@ -87,13 +78,13 @@ class Day09Test {
         while (true) {
             if (fromLeft == fromRight) return;
 
-            if (fromLeft.idNumber != -1) {
+            if (fromLeft.idNumber != FREE_SPACE) {
                 fromLeft = fromLeft.next;
-            } else if (fromRight.idNumber == -1) {
+            } else if (fromRight.idNumber == FREE_SPACE) {
                 fromRight = fromRight.prev;
             } else {
                 fromLeft.idNumber = fromRight.idNumber;
-                fromRight.idNumber = -1;
+                fromRight.idNumber = FREE_SPACE;
 
                 printBlocks(head);
             }
@@ -105,7 +96,7 @@ class Day09Test {
         BigInteger result = BigInteger.ZERO;
         Block current = head;
         while (current != null) {
-            if (current.idNumber != -1) {
+            if (current.idNumber != FREE_SPACE) {
                 BigInteger sum = BigInteger.ZERO;
                 sum = sum.add(BigInteger.valueOf(position));
                 sum = sum.multiply(BigInteger.valueOf(current.idNumber));
@@ -122,17 +113,17 @@ class Day09Test {
     }
 
     private void printBlocks(Block head) {
-        return;
-//        StringBuilder sb = new StringBuilder();
-//        Block current = head;
-//        while (current != null) {
-//            if (current.idNumber == -1) {
-//                sb.append(".");
-//            } else {
-//                sb.append(current.idNumber);
-//            }
-//            current = current.next;
-//        }
-//        System.out.println(sb.toString());
+        if (SUPPRESS_PRINTING) return;
+        StringBuilder sb = new StringBuilder();
+        Block current = head;
+        while (current != null) {
+            if (current.idNumber == -1) {
+                sb.append(".");
+            } else {
+                sb.append(current.idNumber);
+            }
+            current = current.next;
+        }
+        System.out.println(sb);
     }
 }
