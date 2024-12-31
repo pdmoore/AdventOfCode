@@ -96,16 +96,14 @@ class Day09Test {
         BigInteger result = BigInteger.ZERO;
         Block current = head;
         while (current != null) {
-            if (current.idNumber != FREE_SPACE) {
-                BigInteger sum = BigInteger.ZERO;
-                sum = sum.add(BigInteger.valueOf(position));
-                sum = sum.multiply(BigInteger.valueOf(current.idNumber));
+            if (current.idNumber == FREE_SPACE) break;
 
-                result = result.add(sum);
-            }
+            BigInteger sum = BigInteger.ZERO
+                    .add(BigInteger.valueOf(position))
+                    .multiply(BigInteger.valueOf(current.idNumber));
+            result = result.add(sum);
 
             current = current.next;
-
             position++;
         }
 
