@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class Day09Test {
 
     public static final int FREE_SPACE = -1;
-    private static boolean SUPPRESS_PRINTING = true;
+    private static final boolean SUPPRESS_PRINTING = true;
 
     @Test
     void part1_example() {
@@ -36,7 +36,6 @@ class Day09Test {
 
     @Test
     void part2_example() {
-        SUPPRESS_PRINTING = false;
         String input = "2333133121414131402";
         BigInteger actual = solvePart2(input);
         assertEquals(new BigInteger("2858"), actual);
@@ -44,7 +43,6 @@ class Day09Test {
 
     @Test
     void part2_example_2() {
-//        SUPPRESS_PRINTING = false;
         String input = "1313165";
         BigInteger actual = solvePart2(input);
         assertEquals(new BigInteger("169"), actual);
@@ -62,7 +60,7 @@ class Day09Test {
         boolean processFile = true;
         int nextIdNumber = 0;
         Block current = new Block();
-        for (Character c: input.toCharArray()) {
+        for (Character c : input.toCharArray()) {
             int length = c - '0';
             if (head == null) {
                 head = current;
@@ -81,7 +79,7 @@ class Day09Test {
                 current.prev = prev;
                 prev.next = current;
             }
-            
+
             processFile = !processFile;
         }
 
@@ -102,7 +100,7 @@ class Day09Test {
         boolean processFile = true;
         int nextIdNumber = 0;
         Block current = new Block();
-        for (Character c: input.toCharArray()) {
+        for (Character c : input.toCharArray()) {
             int length = c - '0';
             if (head == null) {
                 head = current;
@@ -139,52 +137,37 @@ class Day09Test {
     private void moveEntireFiles(Block head, Block tail) {
         List<Integer> idsThatHaveMoved = new ArrayList<>();
 
-        while (true) {
+        Block fromRight = tail;
+        while (fromRight != null) {
 
-            Block fromRight = tail;
-            while (fromRight.prev != null) {
+            Block nextFileToMove = findNextIdToMove(fromRight, idsThatHaveMoved);
+            fromRight = nextFileToMove;
 
-                Block nextFileToMove = findNextIdToMove(fromRight, idsThatHaveMoved);
-                if (nextFileToMove == null) return;
-                fromRight = nextFileToMove;
+            int fileSize = sizeOfFile(head, nextFileToMove);
 
-                int fileSize = sizeOfFile(head, nextFileToMove);
+            Block moveFileTo = findNodeToMoveTo(head, nextFileToMove, fileSize);
+            if (moveFileTo != null) {
+                int idBeingMoved = nextFileToMove.idNumber;
 
-                Block moveFileTo = findNodeToMoveTo(head, nextFileToMove, fileSize);
-                if (moveFileTo != null) {
-                    int idBeingMoved = nextFileToMove.idNumber;
-
-                    Block copyTo = moveFileTo;
-                    for (int i = 0; i < fileSize; i++) {
-                        copyTo.idNumber = idBeingMoved;
-                        copyTo = copyTo.next;
-                    }
-
-                    Block eraseAt = nextFileToMove;
-                    for (int i = 0; i < fileSize; i++) {
-                        eraseAt.idNumber = FREE_SPACE;
-                        eraseAt = eraseAt.next;
-                    }
-
-                    idsThatHaveMoved.add(idBeingMoved);
-                    printBlocks(head);
+                Block copyTo = moveFileTo;
+                for (int i = 0; i < fileSize; i++) {
+                    copyTo.idNumber = idBeingMoved;
+                    copyTo = copyTo.next;
                 }
-//                    fromRight = tail;
-//
-//                if (moveFileTo != null && idsThatHaveMoved.contains(moveFileTo.idNumber)) {
-//                    fromRight = tail;
-//                } else {
-//                    fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
-//                }
-//                if (moveFileTo != null && idsThatHaveMoved.contains(moveFileTo.idNumber)) {
-//                    fromRight = tail;
-//                } else {
-                    fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
-//                }
 
-                if (fromRight == null) {
-                    return;
+                Block eraseAt = nextFileToMove;
+                for (int i = 0; i < fileSize; i++) {
+                    eraseAt.idNumber = FREE_SPACE;
+                    eraseAt = eraseAt.next;
                 }
+
+                idsThatHaveMoved.add(idBeingMoved);
+                printBlocks(head);
+            }
+            fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
+
+            if (fromRight == null) {
+                return;
             }
         }
     }
