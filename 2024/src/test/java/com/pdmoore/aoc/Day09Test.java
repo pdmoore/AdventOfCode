@@ -28,11 +28,26 @@ class Day09Test {
     }
 
     @Test
+    void part2() {
+        String input = PuzzleInput.asStringFrom("data/day09.txt");
+        BigInteger actual = solvePart2(input);
+        assertEquals(new BigInteger("6460170593016"), actual);
+    }
+
+    @Test
     void part2_example() {
         SUPPRESS_PRINTING = false;
         String input = "2333133121414131402";
         BigInteger actual = solvePart2(input);
         assertEquals(new BigInteger("2858"), actual);
+    }
+
+    @Test
+    void part2_example_2() {
+//        SUPPRESS_PRINTING = false;
+        String input = "1313165";
+        BigInteger actual = solvePart2(input);
+        assertEquals(new BigInteger("169"), actual);
     }
 
     static class Block {
@@ -126,37 +141,60 @@ class Day09Test {
 
         while (true) {
 
-            // TODO -
-            // Current impl moves file 8888 to a singel free space location
-            // Probably doesn't try to find the next lower Id 777 that will fit in a free space of ...
+            Block fromRight = tail;
+            while (fromRight.prev != null) {
 
+                Block nextFileToMove = findNextIdToMove(fromRight, idsThatHaveMoved);
+                if (nextFileToMove == null) return;
+                fromRight = nextFileToMove;
 
-            Block nextFileToMove = findNextIdToMove(tail, idsThatHaveMoved);
-            if (nextFileToMove == null) return;
-            
-            int fileSize = sizeOfFile(head, nextFileToMove);
-            
-            Block moveFileTo = findNodeToMoveTo(head, fileSize);
-            if (moveFileTo != null) {
-                int idBeingMoved = nextFileToMove.idNumber;
+                int fileSize = sizeOfFile(head, nextFileToMove);
 
-                Block copyTo = moveFileTo;
-                for (int i = 0; i < fileSize; i++) {
-                    copyTo.idNumber = idBeingMoved;
-                    copyTo = copyTo.next;
+                Block moveFileTo = findNodeToMoveTo(head, nextFileToMove, fileSize);
+                if (moveFileTo != null) {
+                    int idBeingMoved = nextFileToMove.idNumber;
+
+                    Block copyTo = moveFileTo;
+                    for (int i = 0; i < fileSize; i++) {
+                        copyTo.idNumber = idBeingMoved;
+                        copyTo = copyTo.next;
+                    }
+
+                    Block eraseAt = nextFileToMove;
+                    for (int i = 0; i < fileSize; i++) {
+                        eraseAt.idNumber = FREE_SPACE;
+                        eraseAt = eraseAt.next;
+                    }
+
+                    idsThatHaveMoved.add(idBeingMoved);
+                    printBlocks(head);
                 }
+//                    fromRight = tail;
+//
+//                if (moveFileTo != null && idsThatHaveMoved.contains(moveFileTo.idNumber)) {
+//                    fromRight = tail;
+//                } else {
+//                    fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
+//                }
+//                if (moveFileTo != null && idsThatHaveMoved.contains(moveFileTo.idNumber)) {
+//                    fromRight = tail;
+//                } else {
+                    fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
+//                }
 
-                Block eraseAt = nextFileToMove;
-                for (int i = 0; i < fileSize; i++) {
-                    eraseAt.idNumber = FREE_SPACE;
-                    eraseAt = eraseAt.next;
+                if (fromRight == null) {
+                    return;
                 }
-
-                idsThatHaveMoved.add(idBeingMoved);
             }
-            
-            printBlocks(head);
         }
+    }
+
+    private Block blockBeforeCurrentFile(Block start, int idNumber) {
+        Block current = start;
+        while (current != null && current.idNumber == idNumber) {
+            current = current.prev;
+        }
+        return current;
     }
 
     private int sizeOfFile(Block head, Block nextFileToMove) {
@@ -173,11 +211,11 @@ class Day09Test {
         return size;
     }
 
-    private Block findNodeToMoveTo(Block head, int fileSize) {
+    private Block findNodeToMoveTo(Block head, Block limit, int fileSize) {
         Block current = head;
 
         while (true) {
-            current = startOfNextFreeSpace(current);
+            current = startOfNextFreeSpace(current, limit);
             if (current == null) return null;
 
             if (sizeOfFreeSpace(current) >= fileSize) return current;
@@ -189,15 +227,16 @@ class Day09Test {
 
     private int sizeOfFreeSpace(Block current) {
         int size = 0;
-        while (current.idNumber == FREE_SPACE) {
+        while (current != null && current.idNumber == FREE_SPACE) {
             size++;
             current = current.next;
         }
         return size;
     }
 
-    private Block startOfNextFreeSpace(Block current) {
+    private Block startOfNextFreeSpace(Block current, Block limit) {
         while (true) {
+            if (current == limit) return null;
             if (current.idNumber == FREE_SPACE) return current;
 
             current = current.next;
@@ -222,7 +261,7 @@ class Day09Test {
     private Block startOfFile(Block startFrom) {
         Block current = startFrom;
         int targetId = current.idNumber;
-        while (current.prev.idNumber == targetId) {
+        while (current.prev != null && current.prev.idNumber == targetId) {
             current = current.prev;
         }
         return current;
@@ -253,13 +292,13 @@ class Day09Test {
         BigInteger result = BigInteger.ZERO;
         Block current = head;
         while (current != null) {
-            if (current.idNumber == FREE_SPACE) break;
+            if (current.idNumber != FREE_SPACE) {
 
-            BigInteger sum = BigInteger.ZERO
-                    .add(BigInteger.valueOf(position))
-                    .multiply(BigInteger.valueOf(current.idNumber));
-            result = result.add(sum);
-
+                BigInteger sum = BigInteger.ZERO
+                        .add(BigInteger.valueOf(position))
+                        .multiply(BigInteger.valueOf(current.idNumber));
+                result = result.add(sum);
+            }
             current = current.next;
             position++;
         }
