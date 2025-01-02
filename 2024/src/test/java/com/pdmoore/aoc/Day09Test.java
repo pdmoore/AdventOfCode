@@ -55,16 +55,22 @@ class Day09Test {
     }
 
     private BigInteger solvePart1(String input) {
-        Block head = null;
+        LinkedListHeadAndTail llPointers = createLinkedList(input);
+        printBlocks(llPointers.head());
+        moveFileBlocks(llPointers.head(), llPointers.tail());
+        printBlocks(llPointers.head());
 
+        return calculateChecksum(llPointers.head());
+    }
+
+    private static LinkedListHeadAndTail createLinkedList(String input) {
         boolean processFile = true;
         int nextIdNumber = 0;
+
         Block current = new Block();
+        Block head = current;
         for (Character c : input.toCharArray()) {
             int length = c - '0';
-            if (head == null) {
-                head = current;
-            }
 
             int useIdNumber = FREE_SPACE;
             if (processFile) {
@@ -87,51 +93,19 @@ class Day09Test {
         Block tail = current.prev;
         current.prev.next = null;
 
-        printBlocks(head);
-        moveFileBlocks(head, tail);
-        printBlocks(head);
+        return new LinkedListHeadAndTail(head, tail);
+    }
 
-        return calculateChecksum(head);
+    private record LinkedListHeadAndTail(Block head, Block tail) {
     }
 
     private BigInteger solvePart2(String input) {
-        Block head = null;
+        LinkedListHeadAndTail llPointers = createLinkedList(input);
+        printBlocks(llPointers.head());
+        moveEntireFiles(llPointers.head(), llPointers.tail());
+        printBlocks(llPointers.head());
 
-        boolean processFile = true;
-        int nextIdNumber = 0;
-        Block current = new Block();
-        for (Character c : input.toCharArray()) {
-            int length = c - '0';
-            if (head == null) {
-                head = current;
-            }
-
-            int useIdNumber = FREE_SPACE;
-            if (processFile) {
-                useIdNumber = nextIdNumber;
-                nextIdNumber++;
-            }
-
-            for (int i = 0; i < length; i++) {
-                current.idNumber = useIdNumber;
-                Block prev = current;
-                current = new Block();
-                current.prev = prev;
-                prev.next = current;
-            }
-
-            processFile = !processFile;
-        }
-
-        // current was created but not used
-        Block tail = current.prev;
-        current.prev.next = null;
-
-        printBlocks(head);
-        moveEntireFiles(head, tail);
-        printBlocks(head);
-
-        return calculateChecksum(head);
+        return calculateChecksum(llPointers.head());
     }
 
     private void moveEntireFiles(Block head, Block tail) {
@@ -139,7 +113,6 @@ class Day09Test {
 
         Block fromRight = tail;
         while (fromRight != null) {
-
             Block nextFileToMove = findNextIdToMove(fromRight, idsThatHaveMoved);
             fromRight = nextFileToMove;
 
@@ -151,11 +124,8 @@ class Day09Test {
                 idsThatHaveMoved.add(nextFileToMove.idNumber);
                 printBlocks(head);
             }
-            fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
 
-            if (fromRight == null) {
-                return;
-            }
+            fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
         }
     }
 
@@ -263,8 +233,6 @@ class Day09Test {
             } else {
                 fromLeft.idNumber = fromRight.idNumber;
                 fromRight.idNumber = FREE_SPACE;
-
-                printBlocks(head);
             }
         }
     }
@@ -276,10 +244,9 @@ class Day09Test {
         while (current != null) {
             if (current.idNumber != FREE_SPACE) {
 
-                BigInteger sum = BigInteger.ZERO
-                        .add(BigInteger.valueOf(position))
-                        .multiply(BigInteger.valueOf(current.idNumber));
-                result = result.add(sum);
+                result = result
+                        .add(BigInteger.valueOf(position)
+                        .multiply(BigInteger.valueOf(current.idNumber)));
             }
             current = current.next;
             position++;
