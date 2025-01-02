@@ -180,7 +180,7 @@ class Day09Test {
             current = startOfNextFreeSpace(current);
             if (current == null) return null;
 
-            if (sizeOfFreeSpace(current) <= fileSize) return current;
+            if (sizeOfFreeSpace(current) >= fileSize) return current;
 
             current = current.next;
             if (current == null) return null;
@@ -188,8 +188,9 @@ class Day09Test {
     }
 
     private int sizeOfFreeSpace(Block current) {
-        int size = 1;
+        int size = 0;
         while (current.idNumber == FREE_SPACE) {
+            size++;
             current = current.next;
         }
         return size;
