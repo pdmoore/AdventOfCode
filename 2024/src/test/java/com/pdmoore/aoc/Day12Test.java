@@ -15,10 +15,10 @@ class Day12Test {
         int actual = solvePart1(input);
         assertEquals(140, actual);
 
-//        input = PuzzleInput.asStringListFrom("data/day12_example2.txt");
-//        actual = solvePart1(input);
-//        assertEquals(772, actual);
-//
+        input = PuzzleInput.as2dCharArray("data/day12_example2.txt");
+        actual = solvePart1(input);
+        assertEquals(772, actual);
+
 //        input = PuzzleInput.asStringListFrom("data/day12_example3.txt");
 //        actual = solvePart1(input);
 //        assertEquals(1930, actual);
@@ -33,6 +33,15 @@ class Day12Test {
         // then find next untracked letter and begin growing that region out
         // perimeter is not a function of number cells, it needs to trace the outline?
         // perimeter probably needs to track positions and then trace around outside edge?
+
+        // TODO - doesn't work for disjoint regions - need to rethink to track attached regions and then get
+        //  fencing by iterating the points in each region..
+        // List of all points
+        // for first unsolved point, build region from that point (recursive grow up/down/left/right
+        // adding each point to region list and removing from unsolved list
+        // then get fencing needed for that region - # points in region * count fenced sides
+
+
 
         Map<Character, Integer> regionCount = new HashMap<>();
         Map<Character, Integer> fenceCount = new HashMap<>();
@@ -53,7 +62,6 @@ class Day12Test {
             int regionPrice = entry.getValue() * fenceCount.get(entry.getKey());
             result += regionPrice;
         }
-
 
         return result;
     }
