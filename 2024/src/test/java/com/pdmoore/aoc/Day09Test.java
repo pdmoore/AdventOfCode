@@ -147,21 +147,8 @@ class Day09Test {
 
             Block moveFileTo = findNodeToMoveTo(head, nextFileToMove, fileSize);
             if (moveFileTo != null) {
-                int idBeingMoved = nextFileToMove.idNumber;
-
-                Block copyTo = moveFileTo;
-                for (int i = 0; i < fileSize; i++) {
-                    copyTo.idNumber = idBeingMoved;
-                    copyTo = copyTo.next;
-                }
-
-                Block eraseAt = nextFileToMove;
-                for (int i = 0; i < fileSize; i++) {
-                    eraseAt.idNumber = FREE_SPACE;
-                    eraseAt = eraseAt.next;
-                }
-
-                idsThatHaveMoved.add(idBeingMoved);
+                moveFileBlock(moveFileTo, nextFileToMove, fileSize);
+                idsThatHaveMoved.add(nextFileToMove.idNumber);
                 printBlocks(head);
             }
             fromRight = blockBeforeCurrentFile(fromRight, nextFileToMove.idNumber);
@@ -169,6 +156,18 @@ class Day09Test {
             if (fromRight == null) {
                 return;
             }
+        }
+    }
+
+    private static void moveFileBlock(Block moveFileTo, Block nextFileToMove, int fileSize) {
+        Block copyTo = moveFileTo;
+        Block eraseAt = nextFileToMove;
+        int idBeingMoved = nextFileToMove.idNumber;
+        for (int i = 0; i < fileSize; i++) {
+            copyTo.idNumber = idBeingMoved;
+            eraseAt.idNumber = FREE_SPACE;
+            copyTo = copyTo.next;
+            eraseAt = eraseAt.next;
         }
     }
 
