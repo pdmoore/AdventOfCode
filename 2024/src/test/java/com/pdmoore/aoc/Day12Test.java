@@ -46,8 +46,6 @@ class Day12Test {
     }
 
     private int solvePart1ByRegion(char[][] map) {
-
-        // create list of points left to process (all points to start with)
         List<Point> pointsToProcess = new ArrayList<>();
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[row].length; col++) {
@@ -63,12 +61,7 @@ class Day12Test {
             pointsToProcess.removeAll(r.gardenPlots);
         }
 
-        int result = 0;
-        for (Region region : regions) {
-            result += region.price();
-        }
-
-        return result;
+        return regions.stream().mapToInt(Region::price).sum();
     }
 
     private Region growRegionFrom(Point seed, char[][] map) {
