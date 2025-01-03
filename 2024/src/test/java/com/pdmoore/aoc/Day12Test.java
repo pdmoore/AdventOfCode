@@ -27,7 +27,7 @@ class Day12Test {
     void part1() {
         char[][] input = PuzzleInput.as2dCharArray("data/day12.txt");
         int actual = solvePart1ByRegion(input);
-        assertEquals(99, actual);
+        assertEquals(1370258, actual);
     }
 
 
