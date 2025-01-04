@@ -53,6 +53,13 @@ class Day12Test {
         assertEquals(1206, actual);
     }
 
+    @Test
+    void part2() {
+        char[][] input = PuzzleInput.as2dCharArray("data/day12.txt");
+        int actual = solvePart2(input);
+        assertEquals(805814, actual);
+    }
+
     static class Region {
         public Set<Point> gardenPlots;
         public int fencedSides;
