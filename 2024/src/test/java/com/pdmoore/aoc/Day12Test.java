@@ -80,25 +80,20 @@ class Day12Test {
     }
 
     private int solvePart1ByRegion(char[][] map) {
-        List<Point> pointsToProcess = new ArrayList<>();
-        for (int row = 0; row < map.length; row++) {
-            for (int col = 0; col < map[row].length; col++) {
-                pointsToProcess.add(new Point(row, col));
-            }
-        }
-
-        List<Region> regions = new ArrayList<>();
-        while (!pointsToProcess.isEmpty()) {
-            Point seed = pointsToProcess.removeFirst();
-            Region r = growRegionFrom(seed, map);
-            regions.add(r);
-            pointsToProcess.removeAll(r.gardenPlots);
-        }
-
-        return regions.stream().mapToInt(Region::priceByPerimeter).sum();
+        return findRegions(map)
+                .stream()
+                .mapToInt(Region::priceByPerimeter)
+                .sum();
     }
 
     private int solvePart2(char[][] map) {
+        return findRegions(map)
+                .stream()
+                .mapToInt(Region::priceBySides)
+                .sum();
+    }
+
+    private List<Region> findRegions(char[][] map) {
         List<Point> pointsToProcess = new ArrayList<>();
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[row].length; col++) {
@@ -113,10 +108,8 @@ class Day12Test {
             regions.add(r);
             pointsToProcess.removeAll(r.gardenPlots);
         }
-
-        return regions.stream().mapToInt(Region::priceBySides).sum();
+        return regions;
     }
-
 
     private Region growRegionFrom(Point seed, char[][] map) {
         Region region = new Region();
