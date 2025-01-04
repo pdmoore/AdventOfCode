@@ -30,18 +30,45 @@ class Day12Test {
         assertEquals(1370258, actual);
     }
 
+    @Test
+    void part2_examples() {
+        char[][] input = PuzzleInput.as2dCharArray("data/day12_example.txt");
+        int actual = solvePart2(input);
+        assertEquals(80, actual);
+
+        input = PuzzleInput.as2dCharArray("data/day12_example2.txt");
+        actual = solvePart2(input);
+        assertEquals(436, actual);
+
+        input = PuzzleInput.as2dCharArray("data/day12_example4.txt");
+        actual = solvePart2(input);
+        assertEquals(236, actual);
+
+        input = PuzzleInput.as2dCharArray("data/day12_example5.txt");
+        actual = solvePart2(input);
+        assertEquals(368, actual);
+
+        input = PuzzleInput.as2dCharArray("data/day12_example3.txt");
+        actual = solvePart2(input);
+        assertEquals(1206, actual);
+    }
 
     static class Region {
         public Set<Point> gardenPlots;
         public int fencedSides;
         public char type;
+        public int cornerCount;
 
         public Region() {
             this.gardenPlots = new HashSet<>();
         }
 
-        public int price() {
+        public int priceByPerimeter() {
             return gardenPlots.size() * fencedSides;
+        }
+
+        public int priceBySides() {
+            return gardenPlots.size() * cornerCount;
         }
     }
 
@@ -61,8 +88,28 @@ class Day12Test {
             pointsToProcess.removeAll(r.gardenPlots);
         }
 
-        return regions.stream().mapToInt(Region::price).sum();
+        return regions.stream().mapToInt(Region::priceByPerimeter).sum();
     }
+
+    private int solvePart2(char[][] map) {
+        List<Point> pointsToProcess = new ArrayList<>();
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[row].length; col++) {
+                pointsToProcess.add(new Point(row, col));
+            }
+        }
+
+        List<Region> regions = new ArrayList<>();
+        while (!pointsToProcess.isEmpty()) {
+            Point seed = pointsToProcess.removeFirst();
+            Region r = growRegionFrom(seed, map);
+            regions.add(r);
+            pointsToProcess.removeAll(r.gardenPlots);
+        }
+
+        return regions.stream().mapToInt(Region::priceBySides).sum();
+    }
+
 
     private Region growRegionFrom(Point seed, char[][] map) {
         Region region = new Region();
@@ -86,6 +133,7 @@ class Day12Test {
         }
 
         region.fencedSides = computeFencedSides(map, region.gardenPlots);
+        region.cornerCount = computeCorners(map, region.gardenPlots);
         return region;
     }
 
@@ -111,6 +159,14 @@ class Day12Test {
         return result;
     }
 
+    private int computeCorners(char[][] map, Set<Point> gardenPlots) {
+        int result = 0;
+        for (Point gardenPlot : gardenPlots) {
+            result += countCorners(map, gardenPlot.x, gardenPlot.y);
+        }
+
+        return result;
+    }
     private int countFencedSides(char[][] map, int row, int col) {
         int fencedSides = 0;
 
@@ -126,6 +182,33 @@ class Day12Test {
         if (c != down) fencedSides++;
 
         return fencedSides;
+    }
+
+    private int countCorners(char[][] map, int row, int col) {
+        int corners = 0;
+
+        char up    = safeCharGrab(map, row - 1, col);
+        char right = safeCharGrab(map, row, col + 1);
+        char down  = safeCharGrab(map, row + 1,col);
+        char left  = safeCharGrab(map, row, col - 1);
+        char upleft = safeCharGrab(map, row - 1, col - 1);
+        char upright = safeCharGrab(map, row - 1, col + 1);
+        char downright = safeCharGrab(map, row + 1, col + 1);
+        char downleft = safeCharGrab(map, row + 1, col - 1);
+
+        char c = map[row][col];
+
+        if (c != up && c != left) corners++;
+        if (c != up && c != right) corners++;
+        if (c != down && c != left) corners++;
+        if (c != down && c != right) corners++;
+
+        if (c == left && c == up && c != upleft) corners++;
+        if (c == up && c == right && c != upright) corners++;
+        if (c == right && c == down && c != downright) corners++;
+        if (c == down && c == left && c != downleft) corners++;
+
+        return corners;
     }
 
     private char safeCharGrab(char[][] map, int row, int col) {
