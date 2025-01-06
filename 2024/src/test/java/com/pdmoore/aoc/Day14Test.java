@@ -2,7 +2,6 @@ package com.pdmoore.aoc;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // TODO
-// clean up comments
-// reuse external Point class
 // method to display all robots on a grid with the timestamp
 // visually solve part 2 then figure out a way to look for clustering of robots
 
