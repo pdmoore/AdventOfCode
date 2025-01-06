@@ -139,11 +139,10 @@ class Day14Test {
             robots.forEach(Robot::move);
         }
 
-        var quadrantCount = countRobotsByQuadrant(robots);
-        return quadrantCount
+        return countRobotsByQuadrant(robots)
                 .values()
                 .stream()
-                .mapToInt(quadrant -> quadrant).reduce(1, (a, b) -> a * b);
+                .mapToInt(quadrantCount -> quadrantCount).reduce(1, (a, b) -> a * b);
     }
 
     private static Map<Integer, Integer> countRobotsByQuadrant(List<Robot> robots) {
