@@ -3,37 +3,20 @@ package com.pdmoore.aoc;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO
+// clean up comments
+// reuse external Point class
+// method to display all robots on a grid with the timestamp
+// visually solve part 2 then figure out a way to look for clustering of robots
+
 class Day14Test {
-    static class Point {
-        int x;
-        int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Point point = (Point) o;
-            return x == point.x && y == point.y;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = x;
-            result = 31 * result + y;
-            return result;
-        }
-    }
-
     static class Robot {
         public static int _wide;
         public static int _tall;
@@ -85,7 +68,7 @@ class Day14Test {
 
         int actual = solvePart1(input);
 
-        assertEquals(99, actual);
+        assertEquals(220971520, actual);
     }
 
     @Test
@@ -157,21 +140,7 @@ class Day14Test {
             }
         }
 
-        int q1Count = 0;
-        int q2Count = 0;
-        int q3Count = 0;
-        int q4Count = 0;
-        // q1 = 0,0 to 2,4
-        // q2 = 0,6, to 2,10
-        // q3 = 4,0 to 6,4
-        // q4 = 4,6 to 6,10
-
-        // TODO movement seems correct at edges
-        // but after 100 seconds the counts by quadrant are wrong
-        // currently seeing 3/1/3/1 for q1-4
-        //throw new RuntimeException("Left off here, read comment");
-
-        // TODO need to derive edges via the static values _wide and _tall
+        Map<Integer, Integer> quadrantCount = new HashMap<>();
 
         int mid_x = Robot._wide / 2;
         int mid_y = Robot._tall / 2;
@@ -179,13 +148,24 @@ class Day14Test {
         for (Robot robot : robots) {
             int x = robot.location.x;
             int y = robot.location.y;
-            if ((0 <= x && x <= mid_x - 1) && (0 <= y && y <= mid_y - 1)) q1Count++;
-            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (0 <= y && y <= mid_y - 1)) q2Count++;
-            if ((0 <= x && x <= mid_x - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) q3Count++;
-            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) q4Count++;
+            if ((0 <= x && x <= mid_x - 1) && (0 <= y && y <= mid_y - 1)) {
+                quadrantCount.put(1, quadrantCount.getOrDefault(1, 0) + 1);
+            }
+            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (0 <= y && y <= mid_y - 1)) {
+                quadrantCount.put(2, quadrantCount.getOrDefault(2, 0) + 1);
+            }
+            if ((0 <= x && x <= mid_x - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)){
+                quadrantCount.put(3, quadrantCount.getOrDefault(3, 0) + 1);
+            }
+            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) {
+                quadrantCount.put(4, quadrantCount.getOrDefault(4, 0) + 1);
+            }
         }
 
-        return q1Count * q2Count * q3Count * q4Count;
+        return quadrantCount
+                .values()
+                .stream()
+                .mapToInt(quadrant -> quadrant).reduce(1, (a, b) -> a * b);
     }
 
     public void assertPointEquals(Point x, Point o) {
