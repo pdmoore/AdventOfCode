@@ -68,13 +68,24 @@ class Day14Test {
     @Test
     void part1_example() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14_example.txt");
-        Robot r = new Robot("p=0,0 v=0,0");
-        r._wide = 11;
-        r._tall = 7;
+        Robot._wide = 11;
+        Robot._tall = 7;
 
         int actual = solvePart1(input);
 
         assertEquals(12, actual);
+    }
+
+    @Test
+    void part1() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day14.txt");
+        Robot r = new Robot("p=0,0 v=0,0");
+        r._wide = 101;
+        r._tall = 103;
+
+        int actual = solvePart1(input);
+
+        assertEquals(99, actual);
     }
 
     @Test
@@ -162,13 +173,16 @@ class Day14Test {
 
         // TODO need to derive edges via the static values _wide and _tall
 
+        int mid_x = Robot._wide / 2;
+        int mid_y = Robot._tall / 2;
+
         for (Robot robot : robots) {
             int x = robot.location.x;
             int y = robot.location.y;
-            if ((0 <= x && x <= 4) && (0 <= y && y <= 2)) q1Count++;
-            if ((6 <= x && x <= 10) && (0 <= y && y <= 2)) q2Count++;
-            if ((0 <= x && x <= 4) && (4 <= y && y <= 6)) q3Count++;
-            if ((6 <= x && x <= 10) && (4 <= y && y <= 6)) q4Count++;
+            if ((0 <= x && x <= mid_x - 1) && (0 <= y && y <= mid_y - 1)) q1Count++;
+            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (0 <= y && y <= mid_y - 1)) q2Count++;
+            if ((0 <= x && x <= mid_x - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) q3Count++;
+            if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) q4Count++;
         }
 
         return q1Count * q2Count * q3Count * q4Count;
