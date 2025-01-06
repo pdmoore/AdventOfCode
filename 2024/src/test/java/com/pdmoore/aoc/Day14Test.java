@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day14Test {
@@ -82,8 +83,8 @@ class Day14Test {
 
         Robot actual = parseInputLine(input);
 
-        assertEquals(new Point(0, 4), actual.location);
-        assertEquals(new Point(3, -3), actual.velocity);
+        assertPointEquals(new Point(0, 4), actual.location);
+        assertPointEquals(new Point(3, -3), actual.velocity);
     }
 
     @Test
@@ -117,15 +118,15 @@ class Day14Test {
         actual._tall = 7;
 
         actual.move();
-        assertEquals(new Point(0, 1), actual.location);
+        assertPointEquals(new Point(0, 1), actual.location);
 
         actual = parseInputLine("p=0,0 v=12,0");
         actual.move();
-        assertEquals(new Point(1, 0), actual.location);
+        assertPointEquals(new Point(1, 0), actual.location);
 
         actual = parseInputLine("p=0,0 v=-1,0");
         actual.move();
-        assertEquals(new Point(1, 0), actual.location);
+        assertPointEquals(new Point(10, 0), actual.location);
     }
 
 
@@ -160,15 +161,23 @@ class Day14Test {
         //throw new RuntimeException("Left off here, read comment");
 
         // TODO need to derive edges via the static values _wide and _tall
+
         for (Robot robot : robots) {
             int x = robot.location.x;
             int y = robot.location.y;
-            if ((0 <= x && x <= 2) && (0 <= y && y <= 4)) q1Count++;
-            if ((0 <= x && x <= 2) && (6 <= y && y <= 10)) q2Count++;
-            if ((4 <= x && x <= 6) && (0 <= y && y <= 4)) q3Count++;
-            if ((4 <= x && x <= 6) && (6 <= y && y <= 10)) q4Count++;
+            if ((0 <= x && x <= 4) && (0 <= y && y <= 2)) q1Count++;
+            if ((6 <= x && x <= 10) && (0 <= y && y <= 2)) q2Count++;
+            if ((0 <= x && x <= 4) && (4 <= y && y <= 6)) q3Count++;
+            if ((6 <= x && x <= 10) && (4 <= y && y <= 6)) q4Count++;
         }
 
         return q1Count * q2Count * q3Count * q4Count;
+    }
+
+    public void assertPointEquals(Point x, Point o) {
+        assertAll(
+                () -> assertEquals(x.x, o.x, "x value mismatch"),
+                () -> assertEquals(x.y, o.y, "y value mismatch")
+        );
     }
 }
