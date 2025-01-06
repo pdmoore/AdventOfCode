@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -129,22 +130,27 @@ class Day14Test {
     }
 
     private int solvePart1(List<String> input) {
-        List<Robot> robots = new ArrayList<>();
-        for (String line : input) {
-            robots.add(new Robot(line));
-        }
+        List<Robot> robots = input
+                .stream()
+                .map(Robot::new)
+                .collect(Collectors.toList());
 
         for (int seconds = 1; seconds <= 100; seconds++) {
-            for (Robot robot : robots) {
-                robot.move();
-            }
+            robots.forEach(Robot::move);
         }
 
-        Map<Integer, Integer> quadrantCount = new HashMap<>();
+        var quadrantCount = countRobotsByQuadrant(robots);
+        return quadrantCount
+                .values()
+                .stream()
+                .mapToInt(quadrant -> quadrant).reduce(1, (a, b) -> a * b);
+    }
 
+    private static Map<Integer, Integer> countRobotsByQuadrant(List<Robot> robots) {
         int mid_x = Robot._wide / 2;
         int mid_y = Robot._tall / 2;
 
+        Map<Integer, Integer> quadrantCount = new HashMap<>();
         for (Robot robot : robots) {
             int x = robot.location.x;
             int y = robot.location.y;
@@ -161,11 +167,7 @@ class Day14Test {
                 quadrantCount.put(4, quadrantCount.getOrDefault(4, 0) + 1);
             }
         }
-
-        return quadrantCount
-                .values()
-                .stream()
-                .mapToInt(quadrant -> quadrant).reduce(1, (a, b) -> a * b);
+        return quadrantCount;
     }
 
     public void assertPointEquals(Point x, Point o) {
