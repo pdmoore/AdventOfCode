@@ -10,10 +10,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// TODO
-// method to display all robots on a grid with the timestamp
-// visually solve part 2 then figure out a way to look for clustering of robots
-
 class Day14Test {
     static class Robot {
         public static int _wide;
@@ -67,6 +63,15 @@ class Day14Test {
         int actual = solvePart1(input);
 
         assertEquals(220971520, actual);
+    }
+
+    @Test
+    void part2() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day14.txt");
+        Robot._wide = 101;
+        Robot._tall = 103;
+
+        displayRobotsForPart2(input);
     }
 
     @Test
@@ -142,6 +147,66 @@ class Day14Test {
                 .mapToInt(quadrantCount -> quadrantCount).reduce(1, (a, b) -> a * b);
     }
 
+    private void displayRobotsForPart2(List<String> input) {
+        List<Robot> robots = input
+                .stream()
+                .map(Robot::new)
+                .collect(Collectors.toList());
+
+        for (int seconds = 1; seconds <= 10000; seconds++) {
+            robots.forEach(Robot::move);
+
+            Map<Integer, Integer> robotCountByRow = new HashMap<>();
+            for (Robot robot : robots) {
+                robotCountByRow.put(robot.location.x, robotCountByRow.getOrDefault(robot.location.x, 0) + 1);
+            }
+
+            if (seconds == 6355) {
+                System.out.printf("Second: %d\n", seconds);
+                displayRobotPositions(robots);
+            }
+
+//            for (Integer value : robotCountByRow.values()) {
+//                if (value > 33) {
+//                    System.out.printf("Second: %d\n", seconds);
+//                    displayRobotPositions(robots);
+//                    break;
+//                }
+//            }
+
+
+        }
+
+    }
+
+    private void displayRobotPositions(List<Robot> robots) {
+        char[][] map = new char[Robot._wide][Robot._tall];
+
+        for (int x = 0; x < Robot._wide; x++) {
+            for (int y = 0; y < Robot._tall; y++) {
+                map[x][y] = '.';
+            }
+        }
+
+        for (Robot robot : robots) {
+            if (map[robot.location.x][robot.location.y] == '.') {
+                map[robot.location.x][robot.location.y] = '1';
+            } else {
+                map[robot.location.x][robot.location.y] = (char) (map[robot.location.x][robot.location.y] + 1);
+            }
+
+        }
+
+        for (int x = 0; x < Robot._tall; x++) {
+            for (int y = 0; y < Robot._wide; y++) {
+                System.out.print(map[y][x]);
+            }
+            System.out.println();
+        }
+
+    }
+
+
     private static Map<Integer, Integer> countRobotsByQuadrant(List<Robot> robots) {
         int mid_x = Robot._wide / 2;
         int mid_y = Robot._tall / 2;
@@ -156,7 +221,7 @@ class Day14Test {
             if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (0 <= y && y <= mid_y - 1)) {
                 quadrantCount.put(2, quadrantCount.getOrDefault(2, 0) + 1);
             }
-            if ((0 <= x && x <= mid_x - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)){
+            if ((0 <= x && x <= mid_x - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) {
                 quadrantCount.put(3, quadrantCount.getOrDefault(3, 0) + 1);
             }
             if ((mid_x + 1 <= x && x <= Robot._wide - 1) && (mid_y + 1 <= y && y <= Robot._tall - 1)) {
