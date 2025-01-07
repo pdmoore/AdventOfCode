@@ -66,12 +66,15 @@ class Day14Test {
     }
 
     @Test
-    void part2() {
+    void part2_assumeRobotsAreClusteredInOneQuadrant() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14.txt");
         Robot._wide = 101;
         Robot._tall = 103;
 
-        displayRobotsForPart2(input);
+//        displayRobotsForPart2(input);
+        int roundWithLargestSafeArea = findSafestQuadrant(input, 10000);
+
+        assertEquals(6355, roundWithLargestSafeArea);
     }
 
     @Test
@@ -203,7 +206,29 @@ class Day14Test {
             }
             System.out.println();
         }
+    }
 
+    private int findSafestQuadrant(List<String> input, int totalSeconds) {
+        List<Robot> robots = input
+                .stream()
+                .map(Robot::new)
+                .collect(Collectors.toList());
+
+        int safetyCount = 0;
+        int roundSafestQuadrantFound = 0;
+        for (int seconds = 1; seconds <= totalSeconds; seconds++) {
+            robots.forEach(Robot::move);
+
+            Map<Integer, Integer> integerIntegerMap = countRobotsByQuadrant(robots);
+            for (Integer quadrant : integerIntegerMap.keySet()) {
+                if (integerIntegerMap.get(quadrant) > safetyCount) {
+                    safetyCount = integerIntegerMap.get(quadrant);
+                    roundSafestQuadrantFound = seconds;
+                };
+            }
+        }
+
+        return roundSafestQuadrantFound;
     }
 
 
