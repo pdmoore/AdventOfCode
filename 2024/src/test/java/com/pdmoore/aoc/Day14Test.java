@@ -1,7 +1,9 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,9 +58,8 @@ class Day14Test {
     @Test
     void part1() {
         List<String> input = PuzzleInput.asStringListFrom("data/day14.txt");
-        Robot r = new Robot("p=0,0 v=0,0");
-        r._wide = 101;
-        r._tall = 103;
+        Robot._wide = 101;
+        Robot._tall = 103;
 
         int actual = solvePart1(input);
 
@@ -78,6 +79,18 @@ class Day14Test {
     }
 
     @Test
+    @Disabled("Need to check whether points are linear in row with lots of robots")
+    void part2_lookForHorizontalLineOfRobots() {
+        List<String> input = PuzzleInput.asStringListFrom("data/day14.txt");
+        Robot._wide = 101;
+        Robot._tall = 103;
+
+        int roundWithLineOfRobots = findHorizontalLineOfRobots(input, 10000);
+
+        assertEquals(6355, roundWithLineOfRobots);
+    }
+
+    @Test
     void canParseRobotInput() {
         String input = "p=0,4 v=3,-3";
 
@@ -91,8 +104,8 @@ class Day14Test {
     void canMoveAndWarpRobot() {
         String input = "p=2,4 v=2,-3";
         Robot actual = parseInputLine(input);
-        actual._wide = 11;
-        actual._tall = 7;
+        Robot._wide = 11;
+        Robot._tall = 7;
 
         actual.move();
         assertEquals(new Point(4, 1), actual.location);
@@ -114,8 +127,8 @@ class Day14Test {
     void canMoveRobotsOffEdges() {
         String input = "p=0,0 v=0,8";
         Robot actual = parseInputLine(input);
-        actual._wide = 11;
-        actual._tall = 7;
+        Robot._wide = 11;
+        Robot._tall = 7;
 
         actual.move();
         assertPointEquals(new Point(0, 1), actual.location);
@@ -128,7 +141,6 @@ class Day14Test {
         actual.move();
         assertPointEquals(new Point(10, 0), actual.location);
     }
-
 
     private Robot parseInputLine(String input) {
         return new Robot(input);
@@ -168,18 +180,7 @@ class Day14Test {
                 System.out.printf("Second: %d\n", seconds);
                 displayRobotPositions(robots);
             }
-
-//            for (Integer value : robotCountByRow.values()) {
-//                if (value > 33) {
-//                    System.out.printf("Second: %d\n", seconds);
-//                    displayRobotPositions(robots);
-//                    break;
-//                }
-//            }
-
-
         }
-
     }
 
     private void displayRobotPositions(List<Robot> robots) {
@@ -224,13 +225,45 @@ class Day14Test {
                 if (integerIntegerMap.get(quadrant) > safetyCount) {
                     safetyCount = integerIntegerMap.get(quadrant);
                     roundSafestQuadrantFound = seconds;
-                };
+                }
             }
         }
 
         return roundSafestQuadrantFound;
     }
 
+    private int findHorizontalLineOfRobots(List<String> input, int totalSeconds) {
+        List<Robot> robots = input
+                .stream()
+                .map(Robot::new)
+                .toList();
+
+        int roundSafestQuadrantFound = 0;
+        for (int seconds = 1; seconds <= totalSeconds; seconds++) {
+            robots.forEach(Robot::move);
+
+            // need to iterate through robots, create Map of row x position
+            // then look for a list > 10 and the positions are in a line
+            Map<Integer, List<Point>> lookingForLines = new HashMap<>();
+            for (Robot robot : robots) {
+                int row = robot.location.y;
+                if (lookingForLines.containsKey(row)) {
+                    lookingForLines.get(row).add(robot.location);
+                } else {
+                    List<Point> points = new ArrayList<>();
+                    points.add(robot.location);
+                    lookingForLines.put(row, points);
+                }
+            }
+            lookingForLines.forEach((row, points) -> {
+                if (points.size() > 10) {
+                    int breakpoint = 0;
+                }
+            });
+        }
+
+        return roundSafestQuadrantFound;
+    }
 
     private static Map<Integer, Integer> countRobotsByQuadrant(List<Robot> robots) {
         int mid_x = Robot._wide / 2;
