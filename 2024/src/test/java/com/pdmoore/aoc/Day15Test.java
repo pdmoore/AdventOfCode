@@ -104,9 +104,19 @@ class Day15Test {
 
     private int solvePart1(List<List<String>> input) {
         char[][] map = as2dCharArray(input.get(0));
-        String robotMoves = input.get(1).get(0);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.get(1).size(); i++) {
+            sb.append(input.get(1).get(i));
+        }
+
+        String robotMoves = sb.toString();
         Point robotPosition = findCharacter(map, '@');
 
+        // TODO - during movement of the large example 2 boxes are disappearing
+        // Print move, move # and box count
+        // is it one move? one case for all moves?
+        int moveNumber = 1;
         for (char move : robotMoves.toCharArray()) {
             switch (move) {
                 case '^':
@@ -122,9 +132,11 @@ class Day15Test {
                     robotPosition = moveLeft(map, robotPosition);
                     break;
                 default:
-                    throw new RuntimeException("unexpected move chaarcter: " + move);
+                    throw new RuntimeException("unexpected move character: " + move);
             }
+            System.out.println("move number " + moveNumber++ + "move: " + move + "  Box count: " + countBoxes(map));
         }
+
 
         return sumBoxGPScoordinates(map);
     }
@@ -240,7 +252,7 @@ class Day15Test {
         }
         char endOfSearch = safeCharGrab(map, robotPosition.x, searchLeft);
         if (endOfSearch == EMPTY) {
-            map[robotPosition.x][robotPosition.y + 1] = EMPTY;
+            map[robotPosition.x][robotPosition.y - 1] = EMPTY;
             map[robotPosition.x][searchLeft] = BOX;
             return true;
         }
@@ -261,4 +273,18 @@ class Day15Test {
 
         return result;
     }
+
+    private int countBoxes(char[][] map) {
+        int result = 0;
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[x].length; y++) {
+                if (map[x][y] == BOX) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
+
 }
