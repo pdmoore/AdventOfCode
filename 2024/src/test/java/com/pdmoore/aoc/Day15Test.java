@@ -87,6 +87,13 @@ class Day15Test {
     }
 
     @Test
+    void part1() {
+        List<List<String>> input = asListOfStringListFrom("data/day15.txt");
+        int actual = solvePart1(input);
+        assertEquals(1430439, actual);
+    }
+
+    @Test
     void part1_smaller_example_computeGPSscore() {
         char[][] map = PuzzleInput.as2dCharArray("data/day15_smaller_example_final_positions.txt");
         int actual = sumBoxGPScoordinates(map);
@@ -134,9 +141,7 @@ class Day15Test {
                 default:
                     throw new RuntimeException("unexpected move character: " + move);
             }
-            System.out.println("move number " + moveNumber++ + "move: " + move + "  Box count: " + countBoxes(map));
         }
-
 
         return sumBoxGPScoordinates(map);
     }
