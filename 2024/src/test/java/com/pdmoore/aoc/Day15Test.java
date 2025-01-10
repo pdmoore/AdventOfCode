@@ -12,6 +12,11 @@ class Day15Test {
     public static final char BOX = 'O';
     public static final char EMPTY = '.';
 
+    public static Point UP    = new Point(-1, 0);
+    public static Point DOWN  = new Point(1, 0);
+    public static Point LEFT  = new Point(0, -1);
+    public static Point RIGHT = new Point(0, 1);
+
     // TODO - new candidate for PuzzleInput
     // When puzzle input consists of two groups of input
     // typically a map and instructions separated by a blank line
@@ -120,23 +125,20 @@ class Day15Test {
         String robotMoves = sb.toString();
         Point robotPosition = findCharacter(map, '@');
 
-        // TODO - during movement of the large example 2 boxes are disappearing
-        // Print move, move # and box count
-        // is it one move? one case for all moves?
-        int moveNumber = 1;
         for (char move : robotMoves.toCharArray()) {
             switch (move) {
                 case '^':
-                    robotPosition = moveUp(map, robotPosition);
+                    robotPosition = attemptMove(map, robotPosition, UP);
+//                    robotPosition = move(UP, map, robotPosition);
                     break;
                 case '>':
-                    robotPosition = moveRight(map, robotPosition);
+                    robotPosition = attemptMove(map, robotPosition, RIGHT);
                     break;
                 case 'v':
-                    robotPosition = moveDown(map, robotPosition);
+                    robotPosition = attemptMove(map, robotPosition, DOWN);
                     break;
                 case '<':
-                    robotPosition = moveLeft(map, robotPosition);
+                    robotPosition = attemptMove(map, robotPosition, LEFT);
                     break;
                 default:
                     throw new RuntimeException("unexpected move character: " + move);
@@ -156,12 +158,13 @@ class Day15Test {
         return c;
     }
 
-    private Point moveUp(char[][] map, Point robotPosition) {
+    private Point attemptMove(char[][] map, Point robotPosition, Point delta) {
         Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
 
-        char moveTo = safeCharGrab(map, robotPosition.x - 1, robotPosition.y);
-        if (moveTo == EMPTY || canPushBoxesUp(map, robotPosition)) {
-            nextRobotPosition.x = robotPosition.x - 1;
+        char moveTo = safeCharGrab(map, robotPosition.x + delta.x, robotPosition.y + delta.y);
+        if (moveTo == EMPTY || canPushBoxes(map, robotPosition, delta)) {
+            nextRobotPosition.x = robotPosition.x + delta.x;
+            nextRobotPosition.y = robotPosition.y + delta.y;
             map[robotPosition.x][robotPosition.y] = EMPTY;
             map[nextRobotPosition.x][nextRobotPosition.y] = '@';
         }
@@ -169,96 +172,17 @@ class Day15Test {
         return nextRobotPosition;
     }
 
-    private Point moveDown(char[][] map, Point robotPosition) {
-        Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
-        char moveTo = safeCharGrab(map, robotPosition.x + 1, robotPosition.y);
-        if (moveTo == EMPTY || canPushBoxesDown(map, robotPosition)) {
-            nextRobotPosition.x = robotPosition.x + 1;
-            map[robotPosition.x][robotPosition.y] = EMPTY;
-            map[nextRobotPosition.x][nextRobotPosition.y] = '@';
+    private boolean canPushBoxes(char[][] map, Point robotPosition, Point delta) {
+        int searchX = robotPosition.x + delta.x;
+        int searchY = robotPosition.y + delta.y;
+        while (safeCharGrab(map, searchX, searchY) == BOX) {
+            searchX += delta.x;
+            searchY += delta.y;
         }
-
-        return nextRobotPosition;
-    }
-
-    private boolean canPushBoxesUp(char[][] map, Point robotPosition) {
-        int searchUp = robotPosition.x - 1;
-        while (safeCharGrab(map, searchUp, robotPosition.y) == BOX) {
-            searchUp = searchUp - 1;
-        }
-        char endOfSearch = safeCharGrab(map, searchUp, robotPosition.y);
+        char endOfSearch = safeCharGrab(map, searchX, searchY);
         if (endOfSearch == EMPTY) {
-            map[robotPosition.x - 1][robotPosition.y] = EMPTY;
-            map[searchUp][robotPosition.y] = BOX;
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean canPushBoxesDown(char[][] map, Point robotPosition) {
-        int searchDown = robotPosition.x + 1;
-        while (safeCharGrab(map, searchDown, robotPosition.y) == BOX) {
-            searchDown += 1;
-        }
-        char endOfSearch = safeCharGrab(map, searchDown, robotPosition.y);
-        if (endOfSearch == EMPTY) {
-            map[robotPosition.x + 1][robotPosition.y] = EMPTY;
-            map[searchDown][robotPosition.y] = BOX;
-            return true;
-        }
-
-        return false;
-    }
-
-    private Point moveRight(char[][] map, Point robotPosition) {
-        Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
-        char moveTo = safeCharGrab(map, robotPosition.x, robotPosition.y + 1);
-        if (moveTo == EMPTY || canPushBoxesRight(map, robotPosition)) {
-            nextRobotPosition.y = robotPosition.y + 1;
-            map[robotPosition.x][robotPosition.y] = EMPTY;
-            map[nextRobotPosition.x][nextRobotPosition.y] = '@';
-        }
-
-        return nextRobotPosition;
-    }
-
-    private Point moveLeft(char[][] map, Point robotPosition) {
-        Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
-        char moveTo = safeCharGrab(map, robotPosition.x, robotPosition.y - 1);
-        if (moveTo == EMPTY || canPushBoxesLeft(map, robotPosition)) {
-            nextRobotPosition.y = robotPosition.y - 1;
-            map[robotPosition.x][robotPosition.y] = EMPTY;
-            map[nextRobotPosition.x][nextRobotPosition.y] = '@';
-        }
-
-        return nextRobotPosition;
-    }
-
-    private boolean canPushBoxesRight(char[][] map, Point robotPosition) {
-        int searchRight = robotPosition.y + 1;
-        while (safeCharGrab(map, robotPosition.x, searchRight) == BOX) {
-            searchRight += 1;
-        }
-        char endOfSearch = safeCharGrab(map, robotPosition.x, searchRight);
-        if (endOfSearch == EMPTY) {
-            map[robotPosition.x][robotPosition.y + 1] = EMPTY;
-            map[robotPosition.x][searchRight] = BOX;
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean canPushBoxesLeft(char[][] map, Point robotPosition) {
-        int searchLeft = robotPosition.y - 1;
-        while (safeCharGrab(map, robotPosition.x, searchLeft) == BOX) {
-            searchLeft -= 1;
-        }
-        char endOfSearch = safeCharGrab(map, robotPosition.x, searchLeft);
-        if (endOfSearch == EMPTY) {
-            map[robotPosition.x][robotPosition.y - 1] = EMPTY;
-            map[robotPosition.x][searchLeft] = BOX;
+            map[robotPosition.x + delta.x][robotPosition.y + delta.y] = EMPTY;
+            map[searchX][searchY] = BOX;
             return true;
         }
 
@@ -278,18 +202,4 @@ class Day15Test {
 
         return result;
     }
-
-    private int countBoxes(char[][] map) {
-        int result = 0;
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y] == BOX) {
-                    result++;
-                }
-            }
-        }
-        return result;
-    }
-
-
 }
