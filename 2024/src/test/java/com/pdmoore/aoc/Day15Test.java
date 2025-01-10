@@ -47,7 +47,7 @@ class Day15Test {
     // TODO add this to PuzzleInput also,
     private char[][] as2dCharArray(List<String> inputAsStrings) {
         int rowCount = inputAsStrings.size();
-        int colCount = ((String) inputAsStrings.get(0)).length();
+        int colCount = inputAsStrings.getFirst().length();
         char[][] map = new char[rowCount][colCount];
         int i = 0;
 
@@ -126,23 +126,13 @@ class Day15Test {
         Point robotPosition = findCharacter(map, '@');
 
         for (char move : robotMoves.toCharArray()) {
-            switch (move) {
-                case '^':
-                    robotPosition = attemptMove(map, robotPosition, UP);
-//                    robotPosition = move(UP, map, robotPosition);
-                    break;
-                case '>':
-                    robotPosition = attemptMove(map, robotPosition, RIGHT);
-                    break;
-                case 'v':
-                    robotPosition = attemptMove(map, robotPosition, DOWN);
-                    break;
-                case '<':
-                    robotPosition = attemptMove(map, robotPosition, LEFT);
-                    break;
-                default:
-                    throw new RuntimeException("unexpected move character: " + move);
-            }
+            robotPosition = switch (move) {
+                case '^' -> attemptMove(map, robotPosition, UP);
+                case '>' -> attemptMove(map, robotPosition, RIGHT);
+                case 'v' -> attemptMove(map, robotPosition, DOWN);
+                case '<' -> attemptMove(map, robotPosition, LEFT);
+                default -> throw new RuntimeException("unexpected move character: " + move);
+            };
         }
 
         return sumBoxGPScoordinates(map);
