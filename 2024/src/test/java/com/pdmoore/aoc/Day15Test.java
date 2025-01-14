@@ -9,8 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day15Test {
 
-    public static final char BOX = 'O';
     public static final char EMPTY = '.';
+    public static final char BOX = 'O';
+    public static final char BOX_LEFT = '[';
+    public static final char BOX_RIGHT = ']';
 
     public static Point UP    = new Point(-1, 0);
     public static Point DOWN  = new Point(1, 0);
@@ -114,6 +116,38 @@ class Day15Test {
         assertEquals(10092, actual);
     }
 
+    @Test
+    void part2_example_computeGPSscore() {
+        char[][] map = PuzzleInput.as2dCharArray("data/day15_example_scaled_final_positions.txt");
+        int actual = sumBoxGPScoordinates(map);
+        assertEquals(9021, actual);
+    }
+
+    @Test
+    void part2_example() {
+        List<List<String>> input = asListOfStringListFrom("data/day15_example.txt");
+
+        int actual = solvePart2(input);
+
+        assertEquals(9021, actual);
+    }
+
+    private int solvePart2(List<List<String>> input) {
+        // split input into map and moves
+        // scale map up into []
+        // handle moves in a loop
+        // < and > basically work the same, just watch for [] instead of O
+        // but movement needs to shift characters and not swap the adjacent to the end
+        // ^ and v need to recursively check up and down whether character above/below is [ or ]
+        // then the move needs to recursively (from the end?) move things up and down
+        // can use scaled_final_positions to compare against ongoing moves
+
+        // calculate score, can call the same routine
+
+        return 0;
+    }
+
+
     private int solvePart1(List<List<String>> input) {
         char[][] map = as2dCharArray(input.get(0));
 
@@ -183,7 +217,7 @@ class Day15Test {
         int result = 0;
         for (int fromTop = 0; fromTop < map.length; fromTop++) {
             for (int fromLeft = 0; fromLeft < map[fromTop].length; fromLeft++) {
-                if (map[fromTop][fromLeft] == BOX) {
+                if (map[fromTop][fromLeft] == BOX || map[fromTop][fromLeft] == BOX_LEFT) {
                     int gps = 100 * fromTop + fromLeft;
                     result += gps;
                 }
