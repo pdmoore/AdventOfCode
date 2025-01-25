@@ -1,11 +1,13 @@
 package com.pdmoore.aoc;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class Day15Test {
 
@@ -62,6 +64,7 @@ class Day15Test {
     }
 
     //TODO - this is candidate for re-use, but not as puzzleInput
+    // Maybe a TwoDeeMap class?
     private Point findCharacter(char[][] map, char target) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
@@ -124,6 +127,15 @@ class Day15Test {
     }
 
     @Test
+    void part2_smaller_example() {
+        List<List<String>> input = asListOfStringListFrom("data/day15_part2_smaller_example.txt");
+
+        int actual = solvePart2(input);
+
+        fail("Example doesn't give score - visually check results then compute score");
+    }
+
+    @Test
     void part2_example() {
         List<List<String>> input = asListOfStringListFrom("data/day15_example.txt");
 
@@ -133,18 +145,43 @@ class Day15Test {
     }
 
     private int solvePart2(List<List<String>> input) {
-        // split input into map and moves
-        // scale map up into []
-        // handle moves in a loop
-        // < and > basically work the same, just watch for [] instead of O
-        // but movement needs to shift characters and not swap the adjacent to the end
-        // ^ and v need to recursively check up and down whether character above/below is [ or ]
-        // then the move needs to recursively (from the end?) move things up and down
-        // can use scaled_final_positions to compare against ongoing moves
+        List<String> unscaledMapInput = input.get(0);
+        List<String> scaledMapInput = scaleUpMapInput(unscaledMapInput);
+        char[][] map = as2dCharArray(scaledMapInput);
 
-        // calculate score, can call the same routine
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.get(1).size(); i++) {
+            sb.append(input.get(1).get(i));
+        }
+        String robotMoves = sb.toString();
 
-        return 0;
+        Point robotPosition = findCharacter(map, '@');
+
+        for (char move : robotMoves.toCharArray()) {
+            robotPosition = switch (move) {
+                case '^' -> attemptMove2(map, robotPosition, UP);
+                case '>' -> attemptMove2(map, robotPosition, RIGHT);
+                case 'v' -> attemptMove2(map, robotPosition, DOWN);
+                case '<' -> attemptMove2(map, robotPosition, LEFT);
+                default -> throw new RuntimeException("unexpected move character: " + move);
+            };
+        }
+
+        return sumBoxGPScoordinates(map);
+    }
+
+    private List<String> scaleUpMapInput(List<String> unscaledMapInput) {
+        List<String> scaledMapInput = new ArrayList<>();
+
+        for (String line : unscaledMapInput) {
+            scaledMapInput.add(line
+                    .replace("#", "##")
+                    .replace("O", "[]")
+                    .replace(".", "..")
+                    .replace("@", "@."));
+        }
+
+        return scaledMapInput;
     }
 
 
@@ -155,8 +192,8 @@ class Day15Test {
         for (int i = 0; i < input.get(1).size(); i++) {
             sb.append(input.get(1).get(i));
         }
-
         String robotMoves = sb.toString();
+
         Point robotPosition = findCharacter(map, '@');
 
         for (char move : robotMoves.toCharArray()) {
@@ -181,6 +218,73 @@ class Day15Test {
         }
         return c;
     }
+
+    private Point attemptMove2(char[][] map, Point robotPosition, Point delta) {
+        Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
+
+        // TODO - left off here
+
+        // < and > basically work the same, just watch for [] instead of O
+        // but movement needs to shift characters and not swap the adjacent to the end
+        // ^ and v need to recursively check up and down whether character above/below is [ or ]
+        // then the move needs to recursively (from the end?) move things up and down
+        // can use scaled_final_positions to compare against ongoing moves
+
+        // Need a new canPushBoxes2 that handles < > in straightforward manner,
+        // and the ^ or v using the rescursion idea
+
+
+        char moveTo = safeCharGrab(map, robotPosition.x + delta.x, robotPosition.y + delta.y);
+        if (moveTo == EMPTY  || canPushBoxes2(map, robotPosition, delta)) {
+            nextRobotPosition.x = robotPosition.x + delta.x;
+            nextRobotPosition.y = robotPosition.y + delta.y;
+            map[robotPosition.x][robotPosition.y] = EMPTY;
+            map[nextRobotPosition.x][nextRobotPosition.y] = '@';
+        }
+
+        return nextRobotPosition;
+    }
+
+    private boolean canPushBoxes2(char[][] map, Point robotPosition, Point delta) {
+        // left and right won't have overlapping box edges, just shift everything if possible
+        // TODO - have not verified the RIGHT case....
+        if (delta == LEFT || delta == RIGHT) {
+            int searchX = robotPosition.x + delta.x;
+            int searchY = robotPosition.y + delta.y;
+            while ("[]".contains(String.valueOf(safeCharGrab(map, searchX, searchY)))) {
+                searchX += delta.x;
+                searchY += delta.y;
+            }
+            char endOfSearch = safeCharGrab(map, searchX, searchY);
+            if (endOfSearch == EMPTY) {
+                int shiftX = searchX;
+                int shiftY = searchY;
+                while (shiftX != robotPosition.x + delta.x || shiftY != robotPosition.y + delta.y) {
+                    map[shiftX][shiftY] = map[shiftX - delta.x][shiftY - delta.y];
+                    shiftX -= delta.x;
+                    shiftY -= delta.y;
+                }
+                map[shiftX][shiftY] = '.';
+
+                return true;
+            }
+        }
+
+        // TODO - WIP 2025-01-25
+        if (delta == UP) {
+            // check character above current position
+            // when ']' need to check character above and left
+            // when '[' need to check character above and right
+            // need to recurse on both sides - if true for both sides then
+            // shift this box left and right up and return true
+
+
+
+        }
+
+        return false;
+    }
+
 
     private Point attemptMove(char[][] map, Point robotPosition, Point delta) {
         Point nextRobotPosition = new Point(robotPosition.x, robotPosition.y);
