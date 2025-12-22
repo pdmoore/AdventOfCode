@@ -71,6 +71,18 @@ public class Day01Test {
     }
 
     @Test
+    void part2_cornerCase() {
+//        List<String> input = List.of("L75", "R50");
+//        int actual = solve_2(input);
+//        Assertions.assertEquals(2, actual);
+
+        // hmmm, confirm this case
+        Assertions.assertEquals(1, solve_2(List.of("L50", "L50")));
+
+
+    }
+
+    @Test
     void solvePart2() {
         List<String> input = PuzzleInput.asStringListFrom("data/day01.txt");
 
@@ -91,9 +103,6 @@ public class Day01Test {
                     dialPassesZeroCount++;
                     currentPosition += 100;
                 }
-                if (currentPosition == 0) {
-                    dialPassesZeroCount++;
-                }
             } else if (line.charAt(0) == 'R') {
                 currentPosition += value;
                 while (currentPosition >= 100) {
@@ -102,6 +111,9 @@ public class Day01Test {
                 }
             } else {
                 throw new IllegalArgumentException("Invalid input" + line);
+            }
+            if (currentPosition == 0) {
+                dialPassesZeroCount++;
             }
 
             System.out.println(String.format("The dial is rotated %s to point at %d", line, currentPosition));
