@@ -15,7 +15,11 @@ class Day01Tests : FunSpec ({
     // count number of times it stops on 0
 
     test("Right hand rotation, no wrap around") {
-        Dial(50).rotate("R11") shouldBe 61
+        Dial(50).rotate("R11").position shouldBe 61
+    }
+
+    test("Left rotation, no wrap around") {
+        Dial(50).rotate("L11").position shouldBe 39
     }
 
 // Fails with a NoSuchMethodException
@@ -33,8 +37,11 @@ class Day01Tests : FunSpec ({
 
 open class Dial(position: Int) {
     val position = position
-    fun rotate(rotation: String): Int {
-        return position + rotation.substring(1).toInt()
+    fun rotate(rotation: String): Dial {
+        if (rotation.contains("R"))
+            return Dial(position + rotation.substring(1).toInt())
+        else
+            return Dial(position - rotation.substring(1).toInt())
     }
 
 }
