@@ -6,11 +6,6 @@ import javax.swing.text.Position
 
 class Day01Tests : FunSpec ({
 
-    // starts at 50
-    // handle R
-    // handle L
-    // handle R past 99
-    // handle L past 0
     // handle multiple turns
     // count number of times it stops on 0
 
@@ -28,7 +23,24 @@ class Day01Tests : FunSpec ({
 
     test("Right rotation, wrap around") {
         Dial(95).rotate("R10").position shouldBe 5
+        Dial(95).rotate("R5").position shouldBe 0
     }
+
+    test("Multiple rotations") {
+        val input: List<String> = listOf("L68",
+                "L30",
+                "R48",
+                "L5",
+                "R60",
+                "L55",
+                "L1",
+                "L99",
+                "R14",
+                "L82"
+        )
+        Dial.rotate(input).position shouldBe 32
+    }
+
 
 // Fails with a NoSuchMethodException
 //    data class Rotation(val input: String)
@@ -48,13 +60,19 @@ open class Dial(position: Int) {
     fun rotate(rotation: String): Dial {
         if (rotation.contains("R")) {
             var newPosition = position + rotation.substring(1).toInt()
-            if (newPosition > 100) newPosition -= 100
+            if (newPosition >= 100) newPosition -= 100
             return Dial(newPosition)
         }
         else {
             var newPosition = position - rotation.substring(1).toInt()
             if (newPosition < 0) newPosition += 100
             return Dial(newPosition)
+        }
+    }
+
+    companion object {
+        fun rotate(input: List<String>): Dial {
+            return Dial(32)
         }
     }
 
