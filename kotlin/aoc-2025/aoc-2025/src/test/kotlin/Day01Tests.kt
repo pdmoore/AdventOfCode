@@ -43,7 +43,9 @@ class Day01Tests : FunSpec ({
         Dial(50).rotate("L350").position shouldBe 0
     }
 
-
+    test("Right rotation, exceeds 100") {
+        Dial(50).rotate("R250").position shouldBe 0
+    }
 
     test("part 1, example") {
         Day01(sampleInput).solve() shouldBe 3
