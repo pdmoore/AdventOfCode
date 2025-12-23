@@ -22,6 +22,14 @@ class Day01Tests : FunSpec ({
         Dial(50).rotate("L11").position shouldBe 39
     }
 
+    test("Left rotation, wrap around") {
+        Dial(5).rotate("L10").position shouldBe 95
+    }
+
+    test("Right rotation, wrap around") {
+        Dial(95).rotate("R10").position shouldBe 5
+    }
+
 // Fails with a NoSuchMethodException
 //    data class Rotation(val input: String)
 //    context("dial starts at 50, ends at 99, wraps around to 0") {
@@ -38,10 +46,16 @@ class Day01Tests : FunSpec ({
 open class Dial(position: Int) {
     val position = position
     fun rotate(rotation: String): Dial {
-        if (rotation.contains("R"))
-            return Dial(position + rotation.substring(1).toInt())
-        else
-            return Dial(position - rotation.substring(1).toInt())
+        if (rotation.contains("R")) {
+            var newPosition = position + rotation.substring(1).toInt()
+            if (newPosition > 100) newPosition -= 100
+            return Dial(newPosition)
+        }
+        else {
+            var newPosition = position - rotation.substring(1).toInt()
+            if (newPosition < 0) newPosition += 100
+            return Dial(newPosition)
+        }
     }
 
 }
