@@ -38,7 +38,10 @@ class Day01Tests : FunSpec ({
         Dial.rotate(sampleInput).position shouldBe 32
     }
 
-    // rotations can exceed 100, need to count number of times i tlands on zero?
+    // TODO rotations can exceed 100, need to count number of times it lands on zero?
+    test("Left rotation, exceeds 100") {
+        Dial(50).rotate("L350").position shouldBe 0
+    }
 
 
 
