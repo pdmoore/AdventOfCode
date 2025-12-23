@@ -72,7 +72,11 @@ open class Dial(position: Int) {
 
     companion object {
         fun rotate(input: List<String>): Dial {
-            return Dial(32)
+            var currentDial = Dial(50)
+            for (i in input) {
+                currentDial = currentDial.rotate(i)
+            }
+            return currentDial
         }
     }
 
