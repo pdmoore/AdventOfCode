@@ -58,6 +58,10 @@ class Day01Tests : FunSpec ({
         Dial(52).rotate("R48").pointingAtZeroCount shouldBe 1
     }
 
+    test("part 2 - right rotation past 0 twice, then lands on 0") {
+        Dial(52).rotate("R248").pointingAtZeroCount shouldBe 3
+    }
+
     test("part 2 - left rotation lands on 0") {
         Dial(55).rotate("L55").pointingAtZeroCount shouldBe 1
     }
