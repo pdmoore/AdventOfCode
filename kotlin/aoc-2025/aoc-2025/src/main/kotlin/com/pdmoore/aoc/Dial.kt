@@ -9,9 +9,13 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
         val distance = rotation.substring(1).toInt()
 
 
-        var newPosition = (position + (leftOrRight * distance)) % 100
+        var newPosition = (position + (leftOrRight * distance))
+        while (newPosition >= 100) {
+            pointingAtZeroCount += 1
+            newPosition -= 100
+        }
 
-        if (newPosition < 0) {
+        while (newPosition < 0) {
             pointingAtZeroCount += 1
             newPosition += 100
         }
