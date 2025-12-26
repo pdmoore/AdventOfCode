@@ -11,4 +11,13 @@ open class Day01(val input: List<String>) {
 
         return zeroCount
     }
+
+    fun solvePart2() : Int {
+        var currentDial = Dial(50)
+        input.forEach { rotation ->
+            currentDial = currentDial.rotate(rotation)
+        }
+
+        return currentDial.pointingAtZeroCount
+    }
 }

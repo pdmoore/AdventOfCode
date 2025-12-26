@@ -70,6 +70,10 @@ class Day01Tests : FunSpec ({
         Dial(55).rotate("L155").pointingAtZeroCount shouldBe 2
     }
 
+    test("part 2 - start at 0, don't count it twice") {
+        Dial(0).rotate("L5").pointingAtZeroCount shouldBe 0
+    }
+
     test("part 1, example") {
         Day01(sampleInput).solve() shouldBe 3
     }
@@ -77,6 +81,10 @@ class Day01Tests : FunSpec ({
     test("part 1 solution") {
         val input = PuzzleInput.asStringListFrom("./data/day01")
         Day01(input).solve() shouldBe 1055
+    }
+
+    test("part 2, example") {
+        Day01(sampleInput).solvePart2() shouldBe 6
     }
 })
 

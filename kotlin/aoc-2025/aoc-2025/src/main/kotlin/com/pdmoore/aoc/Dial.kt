@@ -10,20 +10,28 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
 
 
         var newPosition = (position + (leftOrRight * distance))
-        while (newPosition >= 100) {
-            pointingAtZeroCount += 1
-            newPosition -= 100
-        }
-
-        if (leftOrRight == -1 && newPosition == 0) {
-            pointingAtZeroCount += 1
-        } else {
-            while (newPosition < 0) {
+        if (leftOrRight == 1) {
+            while (newPosition >= 100) {
                 pointingAtZeroCount += 1
-                newPosition += 100
+                newPosition -= 100
             }
-            if (leftOrRight == -1 && newPosition == 0) {
-                pointingAtZeroCount += 1
+        } else {
+            if (newPosition == 0) {
+                 pointingAtZeroCount += 1
+            } else if (distance > 100) {
+                pointingAtZeroCount += (distance / 100) + 1
+                while (newPosition < 0) {
+                    newPosition += 100
+                }
+            } else {
+                while (newPosition < 0) {
+                    newPosition += 100
+                    pointingAtZeroCount += 1
+                }
+            }
+
+            if (position == 0) {
+                pointingAtZeroCount -= 1
             }
         }
         return Dial(newPosition, pointingAtZeroCount)
