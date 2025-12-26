@@ -86,5 +86,10 @@ class Day01Tests : FunSpec ({
     test("part 2, example") {
         Day01(sampleInput).solvePart2() shouldBe 6
     }
+
+    test("part 2 solution") {
+        val input = PuzzleInput.asStringListFrom("./data/day01")
+        Day01(input).solvePart2() shouldBe 6498
+    }
 })
 

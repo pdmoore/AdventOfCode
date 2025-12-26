@@ -30,6 +30,7 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
                 }
             }
 
+            // When starting at 0 that has already been counted
             if (position == 0) {
                 pointingAtZeroCount -= 1
             }
