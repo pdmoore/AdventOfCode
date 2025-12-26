@@ -62,6 +62,10 @@ class Day01Tests : FunSpec ({
         Dial(55).rotate("L55").pointingAtZeroCount shouldBe 1
     }
 
+    test("part 2 - left rotation past 0 one, then lands on 0") {
+        Dial(55).rotate("L155").pointingAtZeroCount shouldBe 2
+    }
+
     test("part 1, example") {
         Day01(sampleInput).solve() shouldBe 3
     }

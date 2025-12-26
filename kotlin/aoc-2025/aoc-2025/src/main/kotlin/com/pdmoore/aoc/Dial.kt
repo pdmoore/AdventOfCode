@@ -15,12 +15,15 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
             newPosition -= 100
         }
 
-        if (leftOrRight == -1 && newPosition ==0) {
+        if (leftOrRight == -1 && newPosition == 0) {
             pointingAtZeroCount += 1
         } else {
             while (newPosition < 0) {
                 pointingAtZeroCount += 1
                 newPosition += 100
+            }
+            if (leftOrRight == -1 && newPosition == 0) {
+                pointingAtZeroCount += 1
             }
         }
         return Dial(newPosition, pointingAtZeroCount)
