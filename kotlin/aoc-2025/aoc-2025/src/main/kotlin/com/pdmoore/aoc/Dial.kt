@@ -8,7 +8,6 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
         val leftOrRight = if (rotation.contains("L")) -1 else 1;
         val distance = rotation.substring(1).toInt()
 
-
         var newPosition = (position + (leftOrRight * distance))
         if (leftOrRight == 1) {
             while (newPosition >= 100) {

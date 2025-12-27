@@ -74,6 +74,10 @@ class Day01Tests : FunSpec ({
         Dial(0).rotate("L5").pointingAtZeroCount shouldBe 0
     }
 
+    test("part 2 last example") {
+        Dial(50).rotate("R1000").pointingAtZeroCount shouldBe 10
+    }
+
     test("part 1, example") {
         Day01(sampleInput).solve() shouldBe 3
     }
@@ -89,7 +93,9 @@ class Day01Tests : FunSpec ({
 
     test("part 2 solution") {
         val input = PuzzleInput.asStringListFrom("./data/day01")
-        Day01(input).solvePart2() shouldBe 6498
+        // Came up with 6498 on my first attempt
+        // tried the brute force single click approach and found the right answer
+        Day01(input).solvePart2() shouldBe 6386
     }
 })
 
