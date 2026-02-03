@@ -56,7 +56,7 @@ class Day02Tests: FunSpec ( {
         val input = "11-22,95-115"
         val sut = Thing()
         val invalidIDs = sut.findAllInvalidIdsIn(input)
-        invalidIDs.size shouldBe listOf<Int>(11, 22, 99).count()
+        invalidIDs.size shouldBe listOf(11, 22, 99).count()
     }
 
     test("isInvalid - remaining examples of invalid IDs") {
@@ -99,7 +99,7 @@ open class Thing {
     }
 
     fun findAllInvalidIdsIn(range: String): MutableList<BigInteger> {
-        var allRanges: MutableList<String> = mutableListOf()
+        val allRanges: MutableList<String> = mutableListOf()
         if (range.contains(",")) {
             allRanges.addAll(range.split(","))
         } else {
