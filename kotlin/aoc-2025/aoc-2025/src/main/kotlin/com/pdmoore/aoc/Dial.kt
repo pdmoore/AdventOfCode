@@ -29,7 +29,7 @@ open class Dial(position: Int, pointingAtZeroCount: Int = 0) {
                 }
             }
 
-            // When starting at 0 that has already been counted
+            // When starting at 0 that has already been counted, but not ending on zero
             if (position == 0) {
                 pointingAtZeroCount -= 1
             }

@@ -78,6 +78,20 @@ class Day01Tests : FunSpec ({
         Dial(50).rotate("R1000").pointingAtZeroCount shouldBe 10
     }
 
+    // TODO - double check the inputs, then debug the code
+    // feels like this will still be wrong in the day01 input
+    test("part 2 - reddit examples") {
+        val d = Dial(50).rotate("R50")
+        d.rotate("L100").pointingAtZeroCount shouldBe 2
+        val d2 = Dial(50).rotate("L50")
+        d2.rotate("L100").pointingAtZeroCount shouldBe 2
+    }
+
+    test("part 2 - reddit examples as list") {
+        val input = listOf("R50", "L100")
+        Day01(input).solvePart2() shouldBe 2
+    }
+
     test("part 1, example") {
         Day01(sampleInput).solve() shouldBe 3
     }
@@ -93,8 +107,6 @@ class Day01Tests : FunSpec ({
 
     test("part 2 solution") {
         val input = PuzzleInput.asStringListFrom("./data/day01")
-        // Came up with 6498 on my first attempt
-        // tried the brute force single click approach and found the right answer
         Day01(input).solvePart2() shouldBe 6386
     }
 })
