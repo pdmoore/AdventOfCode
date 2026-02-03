@@ -7,10 +7,9 @@ import java.math.BigInteger
 
 class Day02Tests: FunSpec ( {
 
-    val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,\n" +
-            "1698522-1698528,446443-446449,38593856-38593862,565653-565659,\n" +
+    val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
+            "1698522-1698528,446443-446449,38593856-38593862,565653-565659," +
             "824824821-824824827,2121212118-2121212124"
-
 
     test("split the input") {
         sampleInput.split(",").count() shouldBe 11
@@ -63,13 +62,6 @@ class Day02Tests: FunSpec ( {
         sut.isInvalid("222222") shouldBe true
     }
 
-    // pass thing all the input
-    // split the input
-    // for each pair in the input
-    // convert to BigInteger and loop through all
-    // collect invalid inputs
-    // sum invalid inputs
-
     test("sum IDs") {
         val invalidIDs = listOf(BigInteger("11"), BigInteger("22"), BigInteger("99"),
                         BigInteger("1010"), BigInteger("1188511885"), BigInteger("222222"),
@@ -78,6 +70,12 @@ class Day02Tests: FunSpec ( {
         val sut = Thing()
         sut.sum(invalidIDs) shouldBe BigInteger("1227775554")
     }
+
+    test("solve part 1 example") {
+        val sut = Thing()
+        sut.solve(sampleInput) shouldBe BigInteger("1227775554")
+    }
+
 })
 
 open class Thing {
@@ -119,5 +117,10 @@ open class Thing {
             current = current.add(BigInteger.ONE)
         }
         return invalidIDs
+    }
+
+    fun solve(listOfRanges: String): BigInteger {
+        val invalidIDsInAllRanges = findAllInvalidIdsIn(listOfRanges)
+        return sum(invalidIDsInAllRanges)
     }
 }
