@@ -2,6 +2,7 @@ package com.pdmoore.aoc
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.assertAll
 import java.math.BigInteger
 
 class Day02Tests: FunSpec ( {
@@ -30,6 +31,31 @@ class Day02Tests: FunSpec ( {
         sut.isInvalid("6464") shouldBe true
     }
 
+    test("find invalid IDs in range") {
+        val input = "11-22"
+        val sut = Thing()
+        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        assertAll(
+            {invalidIDs.size shouldBe 2},
+            {invalidIDs.contains(BigInteger("11")) shouldBe true},
+            {invalidIDs.contains(BigInteger("22")) shouldBe true}
+        )
+    }
+
+    test("find invalid IDs in range, when no invalid IDs exist") {
+        val input = "1698522-1698528"
+        val sut = Thing()
+        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        invalidIDs.size shouldBe 0
+    }
+
+    test("find invalid IDs when more than one range") {
+        val input = "11-22,95-115"
+        val sut = Thing()
+        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        invalidIDs.size shouldBe listOf<Int>(11, 22, 99).count()
+    }
+
     test("isInvalid - remaining examples of invalid IDs") {
         val sut = Thing()
         sut.isInvalid("123123") shouldBe true
@@ -52,17 +78,13 @@ class Day02Tests: FunSpec ( {
         val sut = Thing()
         sut.sum(invalidIDs) shouldBe BigInteger("1227775554")
     }
-
-
 })
 
 open class Thing {
     fun isInvalid(id: String): Boolean {
-        // can detect repeat based on splitting string in half?
         val middle = id.length / 2
         val firstHalf = id.substring(0, middle)
         val secondHalf = id.substring(middle)
-
         return firstHalf == secondHalf
     }
 
@@ -70,4 +92,32 @@ open class Thing {
         return invalidIDs.sumOf { it }
     }
 
+    fun findAllInvalidIdsIn(range: String): MutableList<BigInteger> {
+        var allRanges: MutableList<String> = mutableListOf()
+        if (range.contains(",")) {
+            allRanges.addAll(range.split(","))
+        } else {
+            allRanges.add(range)
+        }
+
+        val invalidIDs: MutableList<BigInteger> = mutableListOf()
+        for (range in allRanges) {
+            invalidIDs.addAll(findAllInvalidIdsInSingleRange(range))
+        }
+        return invalidIDs
+    }
+
+    private fun findAllInvalidIdsInSingleRange(range: String): Collection<BigInteger> {
+        val invalidIDs: MutableList<BigInteger> = mutableListOf()
+        val split = range.split("-")
+        var current = BigInteger(split[0])
+        val upper = BigInteger(split[1])
+        while (current <= upper) {
+            if (isInvalid(current.toString())) {
+                invalidIDs.add(current)
+            }
+            current = current.add(BigInteger.ONE)
+        }
+        return invalidIDs
+    }
 }
