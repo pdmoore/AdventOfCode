@@ -87,13 +87,6 @@ class Day02Tests: FunSpec ( {
 })
 
 open class Thing {
-    fun isInvalid(id: String): Boolean {
-        val middle = id.length / 2
-        val firstHalf = id.substring(0, middle)
-        val secondHalf = id.substring(middle)
-        return firstHalf == secondHalf
-    }
-
     fun sum(invalidIDs: List<BigInteger>): BigInteger {
         return invalidIDs.sumOf { it }
     }
@@ -116,15 +109,25 @@ open class Thing {
     private fun findAllInvalidIdsInSingleRange(range: String): Collection<BigInteger> {
         val invalidIDs: MutableList<BigInteger> = mutableListOf()
         val split = range.split("-")
-        var current = BigInteger(split[0])
-        val upper = BigInteger(split[1])
-        while (current <= upper) {
-            if (isInvalid(current.toString())) {
-                invalidIDs.add(current)
+        var currentIDbeingChecked = BigInteger(split[0])
+        val upperLimitID = BigInteger(split[1])
+        while (currentIDbeingChecked <= upperLimitID) {
+            if (isInvalid(currentIDbeingChecked)) {
+                invalidIDs.add(currentIDbeingChecked)
             }
-            current = current.add(BigInteger.ONE)
+            currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
         }
         return invalidIDs
+    }
+
+    private fun isInvalid(id: BigInteger): Boolean {
+        return isInvalid(id.toString())
+    }
+    fun isInvalid(id: String): Boolean {
+        val middle = id.length / 2
+        val firstHalf = id.substring(0, middle)
+        val secondHalf = id.substring(middle)
+        return firstHalf == secondHalf
     }
 
     fun solve(listOfRanges: String): BigInteger {
