@@ -21,17 +21,17 @@ class Day02Tests: FunSpec ( {
 
     test("isInvalid signature - returns true when valid") {
         val sut = Thing()
-        sut.isInvalid("1") shouldBe false
+        sut.isInvalid(BigInteger("1")) shouldBe false
     }
 
     test("isInvalid - same digit repeated twice") {
         val sut = Thing()
-        sut.isInvalid("55") shouldBe true
+        sut.isInvalid(BigInteger("55")) shouldBe true
     }
 
     test("isInvalid - two digits repeated twice") {
         val sut = Thing()
-        sut.isInvalid("6464") shouldBe true
+        sut.isInvalid(BigInteger("6464")) shouldBe true
     }
 
     test("find invalid IDs in range") {
@@ -61,9 +61,9 @@ class Day02Tests: FunSpec ( {
 
     test("isInvalid - remaining examples of invalid IDs") {
         val sut = Thing()
-        sut.isInvalid("123123") shouldBe true
-        sut.isInvalid("1188511885") shouldBe true
-        sut.isInvalid("222222") shouldBe true
+        sut.isInvalid(BigInteger("123123")) shouldBe true
+        sut.isInvalid(BigInteger("1188511885")) shouldBe true
+        sut.isInvalid(BigInteger("222222")) shouldBe true
     }
 
     test("sum IDs") {
@@ -112,18 +112,18 @@ open class Thing {
         var currentIDbeingChecked = BigInteger(split[0])
         val upperLimitID = BigInteger(split[1])
         while (currentIDbeingChecked <= upperLimitID) {
-            if (isInvalid(currentIDbeingChecked)) {
-                invalidIDs.add(currentIDbeingChecked)
+            when {
+                isInvalid(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
             }
             currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
         }
         return invalidIDs
     }
 
-    private fun isInvalid(id: BigInteger): Boolean {
+    fun isInvalid(id: BigInteger): Boolean {
         return isInvalid(id.toString())
     }
-    fun isInvalid(id: String): Boolean {
+    private fun isInvalid(id: String): Boolean {
         val middle = id.length / 2
         val firstHalf = id.substring(0, middle)
         val secondHalf = id.substring(middle)
