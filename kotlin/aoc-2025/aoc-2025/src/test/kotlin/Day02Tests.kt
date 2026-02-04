@@ -5,10 +5,10 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.assertAll
 import java.math.BigInteger
 
-class Day02Tests: FunSpec ( {
+class Day02Tests : FunSpec({
 
     // part 1 solved
-    // tackle part 2
+    // part 2 in progress - see idRepeatsAtLeastTwice and failing test
 
     val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
             "1698522-1698528,446443-446449,38593856-38593862,565653-565659," +
@@ -38,9 +38,9 @@ class Day02Tests: FunSpec ( {
         val sut = Thing()
         val invalidIDs = sut.findAllIdsThatRepeatTwiceIn(input)
         assertAll(
-            {invalidIDs.size shouldBe 2},
-            {invalidIDs.contains(BigInteger("11")) shouldBe true},
-            {invalidIDs.contains(BigInteger("22")) shouldBe true}
+            { invalidIDs.size shouldBe 2 },
+            { invalidIDs.contains(BigInteger("11")) shouldBe true },
+            { invalidIDs.contains(BigInteger("22")) shouldBe true }
         )
     }
 
@@ -66,9 +66,11 @@ class Day02Tests: FunSpec ( {
     }
 
     test("sum IDs") {
-        val invalidIDs = listOf(BigInteger("11"), BigInteger("22"), BigInteger("99"),
-                        BigInteger("1010"), BigInteger("1188511885"), BigInteger("222222"),
-            BigInteger("446446"), BigInteger("38593859"))
+        val invalidIDs = listOf(
+            BigInteger("11"), BigInteger("22"), BigInteger("99"),
+            BigInteger("1010"), BigInteger("1188511885"), BigInteger("222222"),
+            BigInteger("446446"), BigInteger("38593859")
+        )
 
         val sut = Thing()
         sut.sum(invalidIDs) shouldBe BigInteger("1227775554")
@@ -76,10 +78,12 @@ class Day02Tests: FunSpec ( {
 
     test("detect patterns that repeat at least twice - part 2") {
         val sut = Thing()
-        sut.idRepeatsAtLeastTwice(BigInteger("1111111")) shouldBe true
-//        sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true
+        assertAll(
+            { sut.idRepeatsAtLeastTwice(BigInteger("1111111")) shouldBe true },
+            { sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true }
 //        sut.idRepeatsAtLeastTwice(BigInteger("123123123")) shouldBe true
 //        sut.idRepeatsAtLeastTwice(BigInteger("12341234")) shouldBe true
+        )
     }
 
     test("solve part 1 example") {
@@ -141,8 +145,16 @@ open class Thing {
     }
 
     fun idRepeatsAtLeastTwice(id: BigInteger): Boolean {
-
         val toString = id.toString()
-        return toString.all { it == toString[0] }
+        // check if first char is the only char, ie it repeats
+        if (toString.all {
+                it == toString[0]
+            }) return true
+
+        // otherwise check that first+1 substring repeats
+        // otherwise check that first+2 substring repeats
+        // up to first+mid
+
+        return false
     }
 }
