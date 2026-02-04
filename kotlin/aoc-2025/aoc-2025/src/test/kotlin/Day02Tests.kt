@@ -8,7 +8,6 @@ import java.math.BigInteger
 class Day02Tests: FunSpec ( {
 
     // part 1 solved
-    // Refactor part 1
     // tackle part 2
 
     val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
@@ -37,7 +36,7 @@ class Day02Tests: FunSpec ( {
     test("find invalid IDs in range") {
         val input = "11-22"
         val sut = Thing()
-        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        val invalidIDs = sut.findAllIdsThatRepeatTwiceIn(input)
         assertAll(
             {invalidIDs.size shouldBe 2},
             {invalidIDs.contains(BigInteger("11")) shouldBe true},
@@ -48,14 +47,14 @@ class Day02Tests: FunSpec ( {
     test("find invalid IDs in range, when no invalid IDs exist") {
         val input = "1698522-1698528"
         val sut = Thing()
-        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        val invalidIDs = sut.findAllIdsThatRepeatTwiceIn(input)
         invalidIDs.size shouldBe 0
     }
 
     test("find invalid IDs when more than one range") {
         val input = "11-22,95-115"
         val sut = Thing()
-        val invalidIDs = sut.findAllInvalidIdsIn(input)
+        val invalidIDs = sut.findAllIdsThatRepeatTwiceIn(input)
         invalidIDs.size shouldBe listOf(11, 22, 99).count()
     }
 
@@ -75,24 +74,32 @@ class Day02Tests: FunSpec ( {
         sut.sum(invalidIDs) shouldBe BigInteger("1227775554")
     }
 
+    test("detect patterns that repeat at least twice - part 2") {
+        val sut = Thing()
+        sut.idRepeatsAtLeastTwice(BigInteger("1111111")) shouldBe true
+//        sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true
+//        sut.idRepeatsAtLeastTwice(BigInteger("123123123")) shouldBe true
+//        sut.idRepeatsAtLeastTwice(BigInteger("12341234")) shouldBe true
+    }
+
     test("solve part 1 example") {
         val sut = Thing()
-        sut.solve(sampleInput) shouldBe BigInteger("1227775554")
+        sut.solvePart1(sampleInput) shouldBe BigInteger("1227775554")
     }
 
     test("solve part 1") {
         val sut = Thing()
-        sut.solve(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("30599400849")
+        sut.solvePart1(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("30599400849")
     }
 })
 
 open class Thing {
-    fun solve(listOfRanges: String): BigInteger {
-        val invalidIDsInAllRanges = findAllInvalidIdsIn(listOfRanges)
+    fun solvePart1(listOfRanges: String): BigInteger {
+        val invalidIDsInAllRanges = findAllIdsThatRepeatTwiceIn(listOfRanges)
         return sum(invalidIDsInAllRanges)
     }
 
-    fun findAllInvalidIdsIn(range: String): MutableList<BigInteger> {
+    fun findAllIdsThatRepeatTwiceIn(range: String): MutableList<BigInteger> {
         val allRanges: MutableList<String> = mutableListOf()
         if (range.contains(",")) {
             allRanges.addAll(range.split(","))
@@ -131,5 +138,11 @@ open class Thing {
 
     fun sum(invalidIDs: List<BigInteger>): BigInteger {
         return invalidIDs.sumOf { it }
+    }
+
+    fun idRepeatsAtLeastTwice(id: BigInteger): Boolean {
+
+        val toString = id.toString()
+        return toString.all { it == toString[0] }
     }
 }
