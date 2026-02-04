@@ -87,8 +87,9 @@ class Day02Tests: FunSpec ( {
 })
 
 open class Thing {
-    fun sum(invalidIDs: List<BigInteger>): BigInteger {
-        return invalidIDs.sumOf { it }
+    fun solve(listOfRanges: String): BigInteger {
+        val invalidIDsInAllRanges = findAllInvalidIdsIn(listOfRanges)
+        return sum(invalidIDsInAllRanges)
     }
 
     fun findAllInvalidIdsIn(range: String): MutableList<BigInteger> {
@@ -121,17 +122,14 @@ open class Thing {
     }
 
     fun isInvalid(id: BigInteger): Boolean {
-        return isInvalid(id.toString())
-    }
-    private fun isInvalid(id: String): Boolean {
-        val middle = id.length / 2
-        val firstHalf = id.substring(0, middle)
-        val secondHalf = id.substring(middle)
+        val idAsString = id.toString()
+        val middle = idAsString.length / 2
+        val firstHalf = idAsString.substring(0, middle)
+        val secondHalf = idAsString.substring(middle)
         return firstHalf == secondHalf
     }
 
-    fun solve(listOfRanges: String): BigInteger {
-        val invalidIDsInAllRanges = findAllInvalidIdsIn(listOfRanges)
-        return sum(invalidIDsInAllRanges)
+    fun sum(invalidIDs: List<BigInteger>): BigInteger {
+        return invalidIDs.sumOf { it }
     }
 }
