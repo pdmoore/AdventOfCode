@@ -8,7 +8,9 @@ import java.math.BigInteger
 class Day02Tests : FunSpec({
 
     // part 1 solved
-    // part 2 in progress - see idRepeatsAtLeastTwice and failing test
+    // part 2 solved
+    // refactor - part 2 was a lot of copy/paste to get the answer
+    // refactor part 1 to use chunks
 
     val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
             "1698522-1698528,446443-446449,38593856-38593862,565653-565659," +
@@ -80,9 +82,9 @@ class Day02Tests : FunSpec({
         val sut = Thing()
         assertAll(
             { sut.idRepeatsAtLeastTwice(BigInteger("1111111")) shouldBe true },
-            { sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true }
-//        sut.idRepeatsAtLeastTwice(BigInteger("123123123")) shouldBe true
-//        sut.idRepeatsAtLeastTwice(BigInteger("12341234")) shouldBe true
+            { sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true },
+            { sut.idRepeatsAtLeastTwice(BigInteger("123123123")) shouldBe true },
+            { sut.idRepeatsAtLeastTwice(BigInteger("12341234")) shouldBe true }
         )
     }
 
@@ -95,6 +97,16 @@ class Day02Tests : FunSpec({
         val sut = Thing()
         sut.solvePart1(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("30599400849")
     }
+
+    test("solve part 2 example") {
+        val sut = Thing()
+        sut.solvePart2(sampleInput) shouldBe BigInteger("4174379265")
+    }
+
+    test("solve part 2") {
+        val sut = Thing()
+        sut.solvePart2(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("46270373595")
+    }
 })
 
 open class Thing {
@@ -102,6 +114,12 @@ open class Thing {
         val invalidIDsInAllRanges = findAllIdsThatRepeatTwiceIn(listOfRanges)
         return sum(invalidIDsInAllRanges)
     }
+
+    fun solvePart2(listOfRanges: String): BigInteger {
+        val invalidIDsInAllRanges = findAllInvalidIdsIn(listOfRanges)
+        return sum(invalidIDsInAllRanges)
+    }
+
 
     fun findAllIdsThatRepeatTwiceIn(range: String): MutableList<BigInteger> {
         val allRanges: MutableList<String> = mutableListOf()
@@ -117,6 +135,36 @@ open class Thing {
         }
         return invalidIDs
     }
+
+    private fun findAllInvalidIdsIn(range: String): MutableList<BigInteger> {
+        val allRanges: MutableList<String> = mutableListOf()
+        if (range.contains(",")) {
+            allRanges.addAll(range.split(","))
+        } else {
+            allRanges.add(range)
+        }
+
+        val invalidIDs: MutableList<BigInteger> = mutableListOf()
+        for (range in allRanges) {
+            invalidIDs.addAll(part2Loop(range))
+        }
+        return invalidIDs
+    }
+
+    private fun part2Loop(range: String): Collection<BigInteger> {
+        val invalidIDs: MutableList<BigInteger> = mutableListOf()
+        val split = range.split("-")
+        var currentIDbeingChecked = BigInteger(split[0])
+        val upperLimitID = BigInteger(split[1])
+        while (currentIDbeingChecked <= upperLimitID) {
+            when {
+                idRepeatsAtLeastTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
+            }
+            currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
+        }
+        return invalidIDs
+    }
+
 
     private fun findAllInvalidIdsInSingleRange(range: String): Collection<BigInteger> {
         val invalidIDs: MutableList<BigInteger> = mutableListOf()
@@ -145,16 +193,11 @@ open class Thing {
     }
 
     fun idRepeatsAtLeastTwice(id: BigInteger): Boolean {
-        val toString = id.toString()
-        // check if first char is the only char, ie it repeats
-        if (toString.all {
-                it == toString[0]
-            }) return true
-
-        // otherwise check that first+1 substring repeats
-        // otherwise check that first+2 substring repeats
-        // up to first+mid
+        for (i in 1..id.toString().length / 2) {
+            if (id.toString().chunked(i).distinct().size == 1) return true;
+        }
 
         return false
     }
+
 }
