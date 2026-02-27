@@ -10,7 +10,7 @@ class Day02Tests : FunSpec({
     // part 1 solved
     // part 2 solved
     // refactor - part 2 was a lot of copy/paste to get the answer
-    // refactor part 1 to use chunks
+    // try to pass the function that determines if an ID is invalid to the looping functions
 
     val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
             "1698522-1698528,446443-446449,38593856-38593862,565653-565659," +
