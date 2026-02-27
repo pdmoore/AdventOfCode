@@ -65,6 +65,7 @@ class Day02Tests : FunSpec({
         sut.isInvalid(BigInteger("123123")) shouldBe true
         sut.isInvalid(BigInteger("1188511885")) shouldBe true
         sut.isInvalid(BigInteger("222222")) shouldBe true
+        sut.isInvalid(BigInteger("111")) shouldBe false
     }
 
     test("sum IDs") {
@@ -182,10 +183,10 @@ open class Thing {
 
     fun isInvalid(id: BigInteger): Boolean {
         val idAsString = id.toString()
+        if (idAsString.length % 2 != 0) return false
         val middle = idAsString.length / 2
-        val firstHalf = idAsString.substring(0, middle)
-        val secondHalf = idAsString.substring(middle)
-        return firstHalf == secondHalf
+
+        return id.toString().chunked(middle).distinct().size == 1
     }
 
     fun sum(invalidIDs: List<BigInteger>): BigInteger {
