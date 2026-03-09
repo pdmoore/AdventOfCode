@@ -132,42 +132,33 @@ open class Thing {
 
         val invalidIDs: MutableList<BigInteger> = mutableListOf()
         for (range in allRanges) {
+            invalidIDs.addAll(findAllInvalidIdsInSingleRange(range, partNumber))
+        }
+        return invalidIDs
+    }
+
+    private fun findAllInvalidIdsInSingleRange(range: String, partNumber: Int): Collection<BigInteger> {
+        val invalidIDs: MutableList<BigInteger> = mutableListOf()
+        val split = range.split("-")
+        var currentIDbeingChecked = BigInteger(split[0])
+        val upperLimitID = BigInteger(split[1])
+        while (currentIDbeingChecked <= upperLimitID) {
             if (partNumber == 1) {
-                invalidIDs.addAll(findAllInvalidIdsInSingleRange(range))
+
+                when {
+                    idRepeatsTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
+                }
             } else {
-                invalidIDs.addAll(part2Loop(range))
-            }
-        }
-        return invalidIDs
-    }
+                when {
+                    idRepeatsAtLeastTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
+                }
 
-    private fun part2Loop(range: String): Collection<BigInteger> {
-        val invalidIDs: MutableList<BigInteger> = mutableListOf()
-        val split = range.split("-")
-        var currentIDbeingChecked = BigInteger(split[0])
-        val upperLimitID = BigInteger(split[1])
-        while (currentIDbeingChecked <= upperLimitID) {
-            when {
-                idRepeatsAtLeastTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
             }
             currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
         }
         return invalidIDs
     }
 
-    private fun findAllInvalidIdsInSingleRange(range: String): Collection<BigInteger> {
-        val invalidIDs: MutableList<BigInteger> = mutableListOf()
-        val split = range.split("-")
-        var currentIDbeingChecked = BigInteger(split[0])
-        val upperLimitID = BigInteger(split[1])
-        while (currentIDbeingChecked <= upperLimitID) {
-            when {
-                idRepeatsTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
-            }
-            currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
-        }
-        return invalidIDs
-    }
 
     fun idRepeatsTwice(id: BigInteger): Boolean {
         val idAsString = id.toString()
