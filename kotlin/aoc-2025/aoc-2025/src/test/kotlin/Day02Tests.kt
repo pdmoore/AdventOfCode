@@ -9,8 +9,8 @@ class Day02Tests : FunSpec({
 
     // part 1 solved
     // part 2 solved
-    // refactor - part 2 was a lot of copy/paste to get the answer
-    // try to pass the function that determines if an ID is invalid to the looping functions
+    // using partNumber to switch between filtering behavior,
+    // refactor - try to pass the function that determines if an ID is invalid to the looping function
 
     val sampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
             "1698522-1698528,446443-446449,38593856-38593862,565653-565659," +
@@ -21,23 +21,23 @@ class Day02Tests : FunSpec({
     }
 
     test("isInvalid signature - returns true when valid") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.idRepeatsTwice(BigInteger("1")) shouldBe false
     }
 
     test("isInvalid - same digit repeated twice") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.idRepeatsTwice(BigInteger("55")) shouldBe true
     }
 
     test("isInvalid - two digits repeated twice") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.idRepeatsTwice(BigInteger("6464")) shouldBe true
     }
 
     test("find invalid IDs in range") {
         val input = "11-22"
-        val sut = Thing()
+        val sut = Day02Solver()
         val invalidIDs = sut.findAllInvalidsIn(input, 1)
         assertAll(
             { invalidIDs.size shouldBe 2 },
@@ -48,20 +48,20 @@ class Day02Tests : FunSpec({
 
     test("find invalid IDs in range, when no invalid IDs exist") {
         val input = "1698522-1698528"
-        val sut = Thing()
+        val sut = Day02Solver()
         val invalidIDs = sut.findAllInvalidsIn(input, 1)
         invalidIDs.size shouldBe 0
     }
 
     test("find invalid IDs when more than one range") {
         val input = "11-22,95-115"
-        val sut = Thing()
+        val sut = Day02Solver()
         val invalidIDs = sut.findAllInvalidsIn(input, 1)
         invalidIDs.size shouldBe listOf(11, 22, 99).count()
     }
 
     test("isInvalid - remaining examples of invalid IDs") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.idRepeatsTwice(BigInteger("123123")) shouldBe true
         sut.idRepeatsTwice(BigInteger("1188511885")) shouldBe true
         sut.idRepeatsTwice(BigInteger("222222")) shouldBe true
@@ -75,12 +75,12 @@ class Day02Tests : FunSpec({
             BigInteger("446446"), BigInteger("38593859")
         )
 
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.sum(invalidIDs) shouldBe BigInteger("1227775554")
     }
 
     test("detect patterns that repeat at least twice - part 2") {
-        val sut = Thing()
+        val sut = Day02Solver()
         assertAll(
             { sut.idRepeatsAtLeastTwice(BigInteger("1111111")) shouldBe true },
             { sut.idRepeatsAtLeastTwice(BigInteger("1212121212")) shouldBe true },
@@ -90,27 +90,27 @@ class Day02Tests : FunSpec({
     }
 
     test("solve part 1 example") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.solvePart1(sampleInput) shouldBe BigInteger("1227775554")
     }
 
     test("solve part 1") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.solvePart1(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("30599400849")
     }
 
     test("solve part 2 example") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.solvePart2(sampleInput) shouldBe BigInteger("4174379265")
     }
 
     test("solve part 2") {
-        val sut = Thing()
+        val sut = Day02Solver()
         sut.solvePart2(PuzzleInput.asStringFrom("./data/day02")) shouldBe BigInteger("46270373595")
     }
 })
 
-open class Thing {
+open class Day02Solver {
     fun solvePart1(listOfRanges: String): BigInteger {
         val invalidIDsInAllRanges = findAllInvalidsIn(listOfRanges, 1)
         return sum(invalidIDsInAllRanges)
@@ -121,20 +121,24 @@ open class Thing {
         return sum(invalidIDsInAllRanges)
     }
 
-
     fun findAllInvalidsIn(range: String, partNumber: Int): MutableList<BigInteger> {
-        val allRanges: MutableList<String> = mutableListOf()
-        if (range.contains(",")) {
-            allRanges.addAll(range.split(","))
-        } else {
-            allRanges.add(range)
-        }
+        val allRanges: MutableList<String> = parseRangesFromInput(range)
 
         val invalidIDs: MutableList<BigInteger> = mutableListOf()
         for (range in allRanges) {
             invalidIDs.addAll(findAllInvalidIdsInSingleRange(range, partNumber))
         }
         return invalidIDs
+    }
+
+    private fun parseRangesFromInput(range: String): MutableList<String> {
+        val allRanges: MutableList<String> = mutableListOf()
+        if (range.contains(",")) {
+            allRanges.addAll(range.split(","))
+        } else {
+            allRanges.add(range)
+        }
+        return allRanges
     }
 
     private fun findAllInvalidIdsInSingleRange(range: String, partNumber: Int): Collection<BigInteger> {
@@ -144,7 +148,6 @@ open class Thing {
         val upperLimitID = BigInteger(split[1])
         while (currentIDbeingChecked <= upperLimitID) {
             if (partNumber == 1) {
-
                 when {
                     idRepeatsTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
                 }
@@ -152,13 +155,11 @@ open class Thing {
                 when {
                     idRepeatsAtLeastTwice(currentIDbeingChecked) -> invalidIDs.add(currentIDbeingChecked)
                 }
-
             }
             currentIDbeingChecked = currentIDbeingChecked.add(BigInteger.ONE)
         }
         return invalidIDs
     }
-
 
     fun idRepeatsTwice(id: BigInteger): Boolean {
         val idAsString = id.toString()
