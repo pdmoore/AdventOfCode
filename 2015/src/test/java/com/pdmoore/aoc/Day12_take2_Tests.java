@@ -22,13 +22,22 @@ public class Day12_take2_Tests {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void sumPositiveNumbers_CharactersMixedIn() {
+        String input = "{\"a\":2,\"b\":4}";
+
+        int actual = sumAllNumbersIn(input);
+
+        assertEquals(6, actual);
+    }
     private int sumAllNumbersIn(String s) {
         //naive approach - strip away everything but commas, dashes, and digits
         // the split and sum the numbers
 
 //        String stripped = s.replace("[", "").replace("]", "");
 //        stripped = stripped.replace("{", "").replace("}", "");
-        String stripped = s.replaceAll("[\\[\\]\\{\\}]", "");
+        String stripped = s.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
         if (stripped.isEmpty()) return 0;
         int sum1 = Arrays.stream(stripped.split(",")).mapToInt(Integer::parseInt).sum();
         return sum1;
