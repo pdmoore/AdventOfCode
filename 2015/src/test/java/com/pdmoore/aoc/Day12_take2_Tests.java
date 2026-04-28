@@ -44,7 +44,17 @@ public class Day12_take2_Tests {
         String input = "{\"a\":{\"b\":4},\"c\":-1}";
         int actual = sumAllNumbersIn(input);
         assertEquals(3, actual);
+
+        input = "{\"a\":[-1,1]}";
+        actual = sumAllNumbersIn(input);
+        assertEquals(0, actual);
+
+        input = "[-1,{\"a\":1}]";
+        actual = sumAllNumbersIn(input);
+        assertEquals(0, actual);
     }
+
+
 
     private int sumAllNumbersIn(String s) {
         //naive approach - strip away everything but commas, dashes, and digits
