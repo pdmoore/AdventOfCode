@@ -62,19 +62,18 @@ public class Day12_take2_Tests {
         assertEquals(expected, actual);
     }
 
-
+    @Test
+    void part1_solution() {
+        String input = PuzzleInput.asStringFrom("data/day12");
+        int actual = sumAllNumbersIn(input);
+        assertEquals(156366, actual);
+    }
 
     private int sumAllNumbersIn(String input) {
-        //naive approach - strip away everything but commas, dashes, and digits
-        // the split and sum the numbers
-
-//        String stripped = s.replace("[", "").replace("]", "");
-//        stripped = stripped.replace("{", "").replace("}", "");
         String stripped = input.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
         if (stripped.isEmpty()) return 0;
-        int sum1 = Arrays.stream(stripped.split(","))
+        return Arrays.stream(stripped.split(","))
                 .filter(s -> !s.isEmpty())
                 .mapToInt(Integer::parseInt).sum();
-        return sum1;
     }
 }
