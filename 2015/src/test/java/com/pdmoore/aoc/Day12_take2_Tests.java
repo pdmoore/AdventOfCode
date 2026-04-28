@@ -54,17 +54,27 @@ public class Day12_take2_Tests {
         assertEquals(0, actual);
     }
 
+    @Test
+    void longerExample() {
+        String input = "[\"violet\",{\"e\":\"blue\",\"a\":187,\"d\":115,\"j\":193,\"c\":119,\"h\":\"yellow\",\"b\":\"yellow\",\"g\":\"red\",\"f\":74,\"i\":25},\"orange\",0,-17,\"yellow\",-23]";
+        int actual = sumAllNumbersIn(input);
+        int expected = 187+115+193+119+74+25+0-17-23;
+        assertEquals(expected, actual);
+    }
 
 
-    private int sumAllNumbersIn(String s) {
+
+    private int sumAllNumbersIn(String input) {
         //naive approach - strip away everything but commas, dashes, and digits
         // the split and sum the numbers
 
 //        String stripped = s.replace("[", "").replace("]", "");
 //        stripped = stripped.replace("{", "").replace("}", "");
-        String stripped = s.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
+        String stripped = input.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
         if (stripped.isEmpty()) return 0;
-        int sum1 = Arrays.stream(stripped.split(",")).mapToInt(Integer::parseInt).sum();
+        int sum1 = Arrays.stream(stripped.split(","))
+                .filter(s -> !s.isEmpty())
+                .mapToInt(Integer::parseInt).sum();
         return sum1;
     }
 }
