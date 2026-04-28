@@ -24,6 +24,13 @@ public class Day12_take2_Tests {
     }
 
     @Test
+    void sumPositiveNumber_nestedBrackets() {
+        String input = "[[[3]]]";
+        int actual = sumAllNumbersIn(input);
+        assertEquals(3, actual);
+    }
+
+    @Test
     void sumPositiveNumbers_CharactersMixedIn() {
         String input = "{\"a\":2,\"b\":4}";
 
@@ -31,6 +38,14 @@ public class Day12_take2_Tests {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void sumNegativeNumber() {
+        String input = "{\"a\":{\"b\":4},\"c\":-1}";
+        int actual = sumAllNumbersIn(input);
+        assertEquals(3, actual);
+    }
+
     private int sumAllNumbersIn(String s) {
         //naive approach - strip away everything but commas, dashes, and digits
         // the split and sum the numbers
