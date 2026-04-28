@@ -26,8 +26,9 @@ public class Day12_take2_Tests {
         //naive approach - strip away everything but commas, dashes, and digits
         // the split and sum the numbers
 
-        String stripped = s.replace("[", "").replace("]", "");
-        stripped = stripped.replace("{", "").replace("}", "");
+//        String stripped = s.replace("[", "").replace("]", "");
+//        stripped = stripped.replace("{", "").replace("}", "");
+        String stripped = s.replaceAll("[\\[\\]\\{\\}]", "");
         if (stripped.isEmpty()) return 0;
         int sum1 = Arrays.stream(stripped.split(",")).mapToInt(Integer::parseInt).sum();
         return sum1;
