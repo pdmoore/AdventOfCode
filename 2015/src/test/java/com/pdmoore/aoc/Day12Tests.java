@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Day12_take2_Tests {
+public class Day12Tests {
 
     @Test
     void emptyElements_SumToZero() {
