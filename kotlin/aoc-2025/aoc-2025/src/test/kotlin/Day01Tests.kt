@@ -5,6 +5,8 @@ import io.kotest.matchers.shouldBe
 
 class Day01Tests : FunSpec ({
 
+    // TODO 2025-05-05 - noticed some of part 2 is failing, but AOC site shows I have the star?
+
     val sampleInput: List<String> = listOf("L68",
         "L30",
         "R48",
