@@ -69,6 +69,33 @@ public class Day12Tests {
         assertEquals(156366, actual);
     }
 
+    //Part 2
+    //Ignore any object (and all of its children) which has any property
+    // with the value "red".
+    // Do this only for objects ({...}), not arrays ([...]).
+    //[1,2,3] still has a sum of 6.
+    //[1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
+    //{"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
+    //[1,"red",5] has a sum of 6, because "red" in an array has no effect.
+
+    @Test
+    void part2_sum_array() {
+        var input = "[1,2,3]";
+        int actual = part2Thingy(input);
+        assertEquals(6, actual);
+    }
+
+    private int part2Thingy(String input) {
+
+        // convert string to JSON
+        // detect json object is an array
+        // sum the contents of an array
+        // PAUSED HERE TO RED UP ON JSON
+
+        return 1+2+3;
+    }
+
+
     private int sumAllNumbersIn(String input) {
         String stripped = input.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
         if (stripped.isEmpty()) return 0;
