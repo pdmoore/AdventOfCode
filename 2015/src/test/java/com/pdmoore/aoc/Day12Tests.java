@@ -1,5 +1,9 @@
 package com.pdmoore.aoc;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -90,9 +94,33 @@ public class Day12Tests {
         // convert string to JSON
         // detect json object is an array
         // sum the contents of an array
-        // PAUSED HERE TO RED UP ON JSON
 
-        return 1+2+3;
+        int sum = 0;
+
+        JsonElement rootNode = JsonParser.parseString(input);
+        if (rootNode.isJsonObject()) {
+
+            // NOT NEEDED
+
+//            JsonObject jsonObject = rootNode.getAsJsonObject();
+//            jsonObject.keySet().forEach(key -> {
+//                key = key.toString();
+//                if (jsonObject.get(key).isJsonArray()) {
+//                    int sam = 0;
+//                }
+//            });
+        } else if (rootNode.isJsonArray()) {
+            JsonArray jsonArray = rootNode.getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                if (element.isJsonPrimitive() &&
+                        element.getAsJsonPrimitive().isNumber()) {
+                    sum += element.getAsInt();
+                }
+
+            }
+        }
+        return sum;
+
     }
 
 
