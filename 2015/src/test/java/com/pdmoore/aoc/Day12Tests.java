@@ -2,7 +2,6 @@ package com.pdmoore.aoc;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
@@ -77,14 +76,21 @@ public class Day12Tests {
     //Ignore any object (and all of its children) which has any property
     // with the value "red".
     // Do this only for objects ({...}), not arrays ([...]).
-    //[1,2,3] still has a sum of 6.
+    //DONE [1,2,3] still has a sum of 6.
     //[1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
     //{"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
-    //[1,"red",5] has a sum of 6, because "red" in an array has no effect.
+    //DONE [1,"red",5] has a sum of 6, because "red" in an array has no effect.
 
     @Test
-    void part2_sum_array() {
+    void part2_sum_array_of_numbers() {
         var input = "[1,2,3]";
+        int actual = part2Thingy(input);
+        assertEquals(6, actual);
+    }
+
+    @Test
+    void part2_sum_array_that_has_red() {
+        var input = "[1,\"red\",5]";
         int actual = part2Thingy(input);
         assertEquals(6, actual);
     }
@@ -100,7 +106,12 @@ public class Day12Tests {
         JsonElement rootNode = JsonParser.parseString(input);
         if (rootNode.isJsonObject()) {
 
-            // NOT NEEDED
+            // Maybe try this - flatten the object to an array and sum
+            // unless red is encountered in which case stop
+//            JsonArray jsonArray = jsonObject.getAsJsonArray("myArray");
+//            for (JsonElement element : jsonArray) {
+//                System.out.println(element.getAsString());
+//            }
 
 //            JsonObject jsonObject = rootNode.getAsJsonObject();
 //            jsonObject.keySet().forEach(key -> {
