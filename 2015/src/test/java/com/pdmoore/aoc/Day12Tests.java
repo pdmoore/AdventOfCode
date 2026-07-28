@@ -160,13 +160,10 @@ public class Day12Tests {
             return 0;
         }
 
-        Iterator<String> keys = jsonObject.keySet().iterator();
-        int sum = 0;
-        while(keys.hasNext()) {
-            JsonElement jsonElement = jsonObject.get(keys.next());
-            sum += sumFor(jsonElement);
-        }
-        return sum;
+        return jsonObject.keySet().stream()
+                .map(jsonObject::get)
+                .mapToInt(this::sumFor)
+                .sum();
     }
 
     private int sumFor(JsonElement jsonElement) {
@@ -184,9 +181,7 @@ public class Day12Tests {
     }
 
     private boolean containsValueRed(JsonObject jsonObject) {
-        Iterator<String> keys = jsonObject.keySet().iterator();
-        while(keys.hasNext()) {
-            String key = keys.next();
+        for (String key : jsonObject.keySet()) {
             JsonElement jsonElement = jsonObject.get(key);
             if (jsonElement.isJsonPrimitive() &&
                     jsonElement.getAsJsonPrimitive().isString()) {
