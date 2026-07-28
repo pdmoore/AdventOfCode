@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -82,8 +84,8 @@ public class Day12Tests {
     //DONE {"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
     //DONE [1,"red",5] has a sum of 6, because "red" in an array has no effect.
     //DONE{"d":2,"e":[1,2,3,4],"f":5} should be 17, need to sum array when it is value
-    //[1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
-    // MAKE SURE HANDLING THE OBJECT INSIDE AREA AND ARRAY INSIDE OBJECT RESCURSION
+    //DONE [1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
+    // MAKE SURE HANDLING THE OBJECT INSIDE AREA AND ARRAY INSIDE OBJECT RECURSION
 
 
     @Test
@@ -135,6 +137,21 @@ public class Day12Tests {
         assertEquals(12, actual);
     }
 
+    @Test
+    void part2_sum_array_inside_array() {
+        var input = "[1,2,[2,5],3]";
+        int actual = part2Thingy(input);
+        assertEquals(13, actual);
+    }
+
+    @Test
+    @Disabled
+    void part2_solution() {
+        String input = PuzzleInput.asStringFrom("data/day12");
+        int actual = part2Thingy(input);
+        assertEquals(-99, actual);
+    }
+
     private int part2Thingy(String input) {
         int sum = 0;
         JsonElement rootNode = JsonParser.parseString(input);
@@ -165,12 +182,12 @@ public class Day12Tests {
         while(keys.hasNext()) {
             String key = keys.next();
             JsonElement jsonElement = jsonObject.get(key);
+            if (jsonElement.isJsonArray()) {
+                objectSum += sumOfArray(jsonElement.getAsJsonArray());
+            }
             if (jsonElement.isJsonPrimitive() &&
                 jsonElement.getAsJsonPrimitive().isNumber()) {
                 objectSum += jsonElement.getAsInt();
-            }
-            if (jsonElement.isJsonArray()) {
-                objectSum += sumOfArray(jsonElement.getAsJsonArray());
             }
         }
         return objectSum;
@@ -179,12 +196,15 @@ public class Day12Tests {
     private int sumOfArray(JsonArray jsonArray) {
         int sum = 0;
         for (JsonElement element : jsonArray) {
+            if (element.isJsonObject()) {
+                sum += sumOfObject(element.getAsJsonObject());
+            }
+            if (element.isJsonArray()) {
+                sum += sumOfArray(element.getAsJsonArray());
+            }
             if (element.isJsonPrimitive() &&
                     element.getAsJsonPrimitive().isNumber()) {
                 sum += element.getAsInt();
-            }
-            if (element.isJsonObject()) {
-                sum += sumOfObject(element.getAsJsonObject());
             }
         }
         return sum;
