@@ -147,12 +147,7 @@ public class Day12Tests {
     private int sumNumbersIgnoringObjectsContainingRed(String input) {
         int sum = 0;
         JsonElement rootNode = JsonParser.parseString(input);
-        if (rootNode.isJsonObject()) {
-            sum += sumOfObject(rootNode.getAsJsonObject());
-        } else if (rootNode.isJsonArray()) {
-            sum += sumOfArray(rootNode.getAsJsonArray());
-        }
-        return sum;
+        return sumFor(rootNode);
     }
 
     private int sumOfObject(JsonObject jsonObject) {
