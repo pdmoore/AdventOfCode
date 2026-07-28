@@ -121,53 +121,70 @@ public class Day12Tests {
         assertEquals(17, actual);
     }
 
+    @Test
+    void part2_sum_object_inside_array_contains_red() {
+        var input = "[1,{\"c\":\"red\",\"b\":2},3]";
+        int actual = part2Thingy(input);
+        assertEquals(4, actual);
+    }
+
+    @Test
+    void part2_sum_object_inside_array() {
+        var input = "[1,{\"c\":6,\"b\":2},3]";
+        int actual = part2Thingy(input);
+        assertEquals(12, actual);
+    }
 
     private int part2Thingy(String input) {
-
-        // convert string to JSON
-        // detect json object is an array
-        // sum the contents of an array
-
         int sum = 0;
-
         JsonElement rootNode = JsonParser.parseString(input);
         if (rootNode.isJsonObject()) {
+            sum += sumOfObject(rootNode.getAsJsonObject());
+        } else if (rootNode.isJsonArray()) {
+            sum += sumOfArray(rootNode.getAsJsonArray());
+        }
+        return sum;
+    }
 
-            JsonObject jsonObject = rootNode.getAsJsonObject();
-            Iterator<String> keys = jsonObject.keySet().iterator();
-            int objectSum = 0;
-            while(keys.hasNext()) {
-                String key = keys.next();
-                JsonElement jsonElement = jsonObject.get(key);
-                if (jsonElement.isJsonPrimitive() &&
-                        jsonElement.getAsJsonPrimitive().isString()) {
-                    String value = jsonElement.getAsString();
-                    if ("red".equals(value)) {
-                        objectSum = 0;
-                        break;
-                    }
-                }
-                if (jsonElement.isJsonPrimitive() &&
-                    jsonElement.getAsJsonPrimitive().isNumber()) {
-                    objectSum += jsonElement.getAsInt();
-                }
-                if (jsonElement.isJsonArray()) {
-                    for (JsonElement element : jsonElement.getAsJsonArray()) {
-                        if (element.isJsonPrimitive() &&
-                                element.getAsJsonPrimitive().isNumber()) {
-                            objectSum += element.getAsInt();
-                        }
-                    }
+    private int sumOfObject(JsonObject jsonObject) {
+        Iterator<String> keys = jsonObject.keySet().iterator();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            JsonElement jsonElement = jsonObject.get(key);
+            if (jsonElement.isJsonPrimitive() &&
+                    jsonElement.getAsJsonPrimitive().isString()) {
+                String value = jsonElement.getAsString();
+                if ("red".equals(value)) {
+                    return 0;
                 }
             }
-            sum += objectSum;
-        } else if (rootNode.isJsonArray()) {
-            JsonArray jsonArray = rootNode.getAsJsonArray();
-            for (JsonElement element : jsonArray) {
-                if (element.isJsonPrimitive() &&
-                        element.getAsJsonPrimitive().isNumber()) {
-                    sum += element.getAsInt();
-                }
+        }
+
+        keys = jsonObject.keySet().iterator();
+        int objectSum = 0;
+        while(keys.hasNext()) {
+            String key = keys.next();
+            JsonElement jsonElement = jsonObject.get(key);
+            if (jsonElement.isJsonPrimitive() &&
+                jsonElement.getAsJsonPrimitive().isNumber()) {
+                objectSum += jsonElement.getAsInt();
+            }
+            if (jsonElement.isJsonArray()) {
+                objectSum += sumOfArray(jsonElement.getAsJsonArray());
+            }
+        }
+        return objectSum;
+    }
+
+    private int sumOfArray(JsonArray jsonArray) {
+        int sum = 0;
+        for (JsonElement element : jsonArray) {
+            if (element.isJsonPrimitive() &&
+                    element.getAsJsonPrimitive().isNumber()) {
+                sum += element.getAsInt();
+            }
+            if (element.isJsonObject()) {
+                sum += sumOfObject(element.getAsJsonObject());
             }
         }
         return sum;
