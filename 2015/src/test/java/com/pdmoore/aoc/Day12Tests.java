@@ -156,6 +156,34 @@ public class Day12Tests {
     }
 
     private int sumOfObject(JsonObject jsonObject) {
+        if (containsValueRed(jsonObject)) {
+            return 0;
+        }
+
+        Iterator<String> keys = jsonObject.keySet().iterator();
+        int sum = 0;
+        while(keys.hasNext()) {
+            JsonElement jsonElement = jsonObject.get(keys.next());
+            sum += sumFor(jsonElement);
+        }
+        return sum;
+    }
+
+    private int sumFor(JsonElement jsonElement) {
+        if (jsonElement.isJsonObject()) {
+            return sumOfObject(jsonElement.getAsJsonObject());
+        }
+        if (jsonElement.isJsonArray()) {
+            return sumOfArray(jsonElement.getAsJsonArray());
+        }
+        if (jsonElement.isJsonPrimitive() &&
+                jsonElement.getAsJsonPrimitive().isNumber()) {
+            return jsonElement.getAsInt();
+        }
+        return 0;
+    }
+
+    private boolean containsValueRed(JsonObject jsonObject) {
         Iterator<String> keys = jsonObject.keySet().iterator();
         while(keys.hasNext()) {
             String key = keys.next();
@@ -164,43 +192,17 @@ public class Day12Tests {
                     jsonElement.getAsJsonPrimitive().isString()) {
                 String value = jsonElement.getAsString();
                 if ("red".equals(value)) {
-                    return 0;
+                    return true;
                 }
             }
         }
-
-        keys = jsonObject.keySet().iterator();
-        int objectSum = 0;
-        while(keys.hasNext()) {
-            String key = keys.next();
-            JsonElement jsonElement = jsonObject.get(key);
-            if (jsonElement.isJsonObject()) {
-                objectSum += sumOfObject(jsonElement.getAsJsonObject());
-            }
-            if (jsonElement.isJsonArray()) {
-                objectSum += sumOfArray(jsonElement.getAsJsonArray());
-            }
-            if (jsonElement.isJsonPrimitive() &&
-                jsonElement.getAsJsonPrimitive().isNumber()) {
-                objectSum += jsonElement.getAsInt();
-            }
-        }
-        return objectSum;
+        return false;
     }
 
     private int sumOfArray(JsonArray jsonArray) {
         int sum = 0;
         for (JsonElement element : jsonArray) {
-            if (element.isJsonObject()) {
-                sum += sumOfObject(element.getAsJsonObject());
-            }
-            if (element.isJsonArray()) {
-                sum += sumOfArray(element.getAsJsonArray());
-            }
-            if (element.isJsonPrimitive() &&
-                    element.getAsJsonPrimitive().isNumber()) {
-                sum += element.getAsInt();
-            }
+            sum += sumFor(element);
         }
         return sum;
     }
