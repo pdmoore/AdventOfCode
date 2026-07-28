@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -80,9 +79,12 @@ public class Day12Tests {
     // with the value "red".
     // Do this only for objects ({...}), not arrays ([...]).
     //DONE [1,2,3] still has a sum of 6.
-    //[1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
-    //{"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
+    //DONE {"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
     //DONE [1,"red",5] has a sum of 6, because "red" in an array has no effect.
+    //DONE{"d":2,"e":[1,2,3,4],"f":5} should be 17, need to sum array when it is value
+    //[1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
+    // MAKE SURE HANDLING THE OBJECT INSIDE AREA AND ARRAY INSIDE OBJECT RESCURSION
+
 
     @Test
     void part2_sum_array_of_numbers() {
@@ -112,6 +114,13 @@ public class Day12Tests {
         assertEquals(9, actual);
     }
 
+    @Test
+    void part2_sum_object_when_value_is_an_array() {
+        var input = "{\"d\":2,\"e\":[1,2,3,4],\"f\":5}";
+        int actual = part2Thingy(input);
+        assertEquals(17, actual);
+    }
+
 
     private int part2Thingy(String input) {
 
@@ -124,19 +133,7 @@ public class Day12Tests {
         JsonElement rootNode = JsonParser.parseString(input);
         if (rootNode.isJsonObject()) {
 
-            // flattens whole structure to one array
-            //            JsonObject jsonObject = rootNode.getAsJsonObject();
-//            JsonArray jsonArray = jsonObject.getAsJsonArray("myArray");
-//            for (JsonElement element : jsonArray) {
-//                System.out.println(element.getAsString());
-//            }
-
-            // probably need to do this - halt if value is "red", sum values/arrays otherwise
             JsonObject jsonObject = rootNode.getAsJsonObject();
-            //                if (jsonObject.get(key).isJsonArray()) {
-            //                    int sam = 0;
-            //                }
-//            {"d":"red","e":[1,2,3,4],"f":5}
             Iterator<String> keys = jsonObject.keySet().iterator();
             int objectSum = 0;
             while(keys.hasNext()) {
@@ -154,6 +151,14 @@ public class Day12Tests {
                     jsonElement.getAsJsonPrimitive().isNumber()) {
                     objectSum += jsonElement.getAsInt();
                 }
+                if (jsonElement.isJsonArray()) {
+                    for (JsonElement element : jsonElement.getAsJsonArray()) {
+                        if (element.isJsonPrimitive() &&
+                                element.getAsJsonPrimitive().isNumber()) {
+                            objectSum += element.getAsInt();
+                        }
+                    }
+                }
             }
             sum += objectSum;
         } else if (rootNode.isJsonArray()) {
@@ -163,13 +168,10 @@ public class Day12Tests {
                         element.getAsJsonPrimitive().isNumber()) {
                     sum += element.getAsInt();
                 }
-
             }
         }
         return sum;
-
     }
-
 
     private int sumAllNumbersIn(String input) {
         String stripped = input.replaceAll("[a-z\"\\:\\[\\]\\{\\}]", "");
