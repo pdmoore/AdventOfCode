@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -75,90 +74,77 @@ public class Day12Tests {
         assertEquals(156366, actual);
     }
 
-    //Part 2
-    //Ignore any object (and all of its children) which has any property
-    // with the value "red".
-    // Do this only for objects ({...}), not arrays ([...]).
-    //DONE [1,2,3] still has a sum of 6.
-    //DONE {"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
-    //DONE [1,"red",5] has a sum of 6, because "red" in an array has no effect.
-    //DONE{"d":2,"e":[1,2,3,4],"f":5} should be 17, need to sum array when it is value
-    //DONE [1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
-    // MAKE SURE HANDLING THE OBJECT INSIDE AREA AND ARRAY INSIDE OBJECT RECURSION
-
-
     @Test
     void part2_sum_array_of_numbers() {
         var input = "[1,2,3]";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(6, actual);
     }
 
     @Test
     void part2_sum_array_that_has_red() {
         var input = "[1,\"red\",5]";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(6, actual);
     }
 
     @Test
     void part2_ignore_object_that_has_red() {
         var input = "{\"d\":\"red\",\"e\":[1,2,3,4],\"f\":5}";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(0, actual);
     }
 
     @Test
     void part2_sum_object_values() {
         var input = "{\"d\":4,\"f\":5}";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(9, actual);
     }
 
     @Test
     void part2_sum_object_when_value_is_an_array() {
         var input = "{\"d\":2,\"e\":[1,2,3,4],\"f\":5}";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(17, actual);
     }
 
     @Test
     void part2_sum_object_inside_array_contains_red() {
         var input = "[1,{\"c\":\"red\",\"b\":2},3]";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(4, actual);
     }
 
     @Test
     void part2_sum_object_inside_array() {
         var input = "[1,{\"c\":6,\"b\":2},3]";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(12, actual);
     }
 
     @Test
     void part2_sum_array_inside_array() {
         var input = "[1,2,[2,5],3]";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(13, actual);
     }
 
     @Test
     void part2_sum_object_inside_object() {
         var input = "{\"d\":2,\"e\":{\"z\":9},\"f\":5}";
-        int actual = part2Thingy(input);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
         assertEquals(16, actual);
     }
 
     @Test
-    @Disabled
     void part2_solution() {
         String input = PuzzleInput.asStringFrom("data/day12");
-        int actual = part2Thingy(input);
-        assertEquals(-99, actual);
+        int actual = sumNumbersIgnoringObjectsContainingRed(input);
+        assertEquals(96852, actual);
     }
 
-    private int part2Thingy(String input) {
+    private int sumNumbersIgnoringObjectsContainingRed(String input) {
         int sum = 0;
         JsonElement rootNode = JsonParser.parseString(input);
         if (rootNode.isJsonObject()) {
