@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -145,6 +144,13 @@ public class Day12Tests {
     }
 
     @Test
+    void part2_sum_object_inside_object() {
+        var input = "{\"d\":2,\"e\":{\"z\":9},\"f\":5}";
+        int actual = part2Thingy(input);
+        assertEquals(16, actual);
+    }
+
+    @Test
     @Disabled
     void part2_solution() {
         String input = PuzzleInput.asStringFrom("data/day12");
@@ -182,6 +188,9 @@ public class Day12Tests {
         while(keys.hasNext()) {
             String key = keys.next();
             JsonElement jsonElement = jsonObject.get(key);
+            if (jsonElement.isJsonObject()) {
+                objectSum += sumOfObject(jsonElement.getAsJsonObject());
+            }
             if (jsonElement.isJsonArray()) {
                 objectSum += sumOfArray(jsonElement.getAsJsonArray());
             }
