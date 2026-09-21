@@ -7,7 +7,6 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
